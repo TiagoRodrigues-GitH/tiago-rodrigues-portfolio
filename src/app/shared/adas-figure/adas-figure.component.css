@@ -1,0 +1,156 @@
+:host {
+  display: block;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.body {
+  stroke: var(--blue-150);
+  stroke-width: 2.2;
+}
+
+.body .rim {
+  stroke: var(--blue-300);
+  stroke-width: 1.4;
+}
+
+.detail {
+  stroke: var(--blue-300);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 5;
+  opacity: 0.75;
+}
+
+.ground {
+  stroke: var(--blue-300);
+  stroke-width: 1.2;
+}
+
+.centerline {
+  stroke: var(--blue-400);
+  stroke-width: 1;
+  stroke-dasharray: 14 4 2 4;
+}
+
+.cone-edge {
+  stroke: var(--signal);
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+  opacity: 0.55;
+}
+
+.bus {
+  stroke: var(--signal);
+  stroke-width: 1.6;
+  stroke-dasharray: 8 5;
+}
+
+.ecu {
+  fill: var(--blue-900);
+  stroke: var(--signal);
+  stroke-width: 1.6;
+}
+
+.sensor {
+  fill: var(--signal);
+}
+
+.wave {
+  stroke: var(--signal);
+  stroke-width: 1.4;
+}
+
+.leader {
+  stroke: var(--blue-300);
+  stroke-width: 1;
+}
+
+.balloon circle {
+  fill: var(--blue-950);
+  stroke: var(--blue-300);
+  stroke-width: 1.4;
+}
+
+.balloon text {
+  fill: var(--blue-150);
+  stroke: none;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* One-time draw-in; finishes in under 3 s, so no pause control is needed (WCAG 2.2.2). */
+@media (prefers-reduced-motion: no-preference) {
+  .draw {
+    stroke-dasharray: 1;
+    animation: draw 2.4s var(--ease) both;
+  }
+
+  .cones,
+  .bus,
+  .sensor,
+  .wave {
+    animation: appear 0.8s var(--ease) 1.6s both;
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+.part-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem 1.25rem;
+  margin: 0;
+  padding: 1rem 0 0;
+  list-style: none;
+  border-top: 1px solid var(--rule-dark);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-on-dark);
+}
+
+.part-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.part-no {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid var(--blue-300);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  color: var(--blue-150);
+}
+
+@media (max-width: 560px) {
+  .part-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

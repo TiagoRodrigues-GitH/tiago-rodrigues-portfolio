@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "portfolio-frontend": {
+    "tiago-rodrigues-portfolio": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -53,7 +53,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref":"/portfolio-frontend/",
+              "baseHref": "/tiago-rodrigues-portfolio/",
               "budgets": [
                 {
                   "type": "initial",
@@ -62,7 +62,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
+                  "maximumWarning": "6kB",
                   "maximumError": "8kB"
                 }
               ],
@@ -84,10 +84,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "portfolio-frontend:build:production"
+              "buildTarget": "tiago-rodrigues-portfolio:build:production"
             },
             "development": {
-              "buildTarget": "portfolio-frontend:build:development"
+              "buildTarget": "tiago-rodrigues-portfolio:build:development"
             }
           },
           "defaultConfiguration": "development"

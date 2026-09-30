@@ -1,30 +1,32 @@
-// src/app/app-routing.module.ts
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule, inject } from '@angular/core';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
-import { ProjectDetailComponent } from './pages/project-detail/project-detail.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LanguagePageComponent } from './pages/language-page/language-page.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'projects/:id', component: ProjectDetailComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'language/:lang', component: LanguagePageComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '', component: HomeComponent, data: { page: 'home' } },
+  { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
+  { path: 'about', component: AboutComponent, data: { page: 'about' } },
+  { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
+  { path: 'login', component: LoginComponent, data: { page: 'login' } },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { page: 'admin' } },
+  // Legacy URLs from earlier versions of the site
+  { path: 'projects/:id', redirectTo: 'projects' },
+  {
+    path: 'language/:lang',
+    redirectTo: ({ params }) => inject(Router).createUrlTree(['/'], { queryParams: { lang: params['lang'] } }),
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
-  exports: [RouterModule]
+  // Scrolling is handled in AppComponent so a language switch keeps the reader's position.
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

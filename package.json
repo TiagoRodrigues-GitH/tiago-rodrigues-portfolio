@@ -1,6 +1,10 @@
 {
-  "name": "portfolio-frontend",
-  "version": "0.0.0",
+  "name": "tiago-rodrigues-portfolio",
+  "version": "1.0.0",
+  "description": "Multilingual, accessible portfolio of Tiago Rodrigues — software development for the automotive industry.",
+  "author": "Tiago Rodrigues",
+  "private": true,
+  "packageManager": "npm@11.9.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
@@ -8,10 +12,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:portfolio-frontend": "node dist/portfolio-frontend/server/server.mjs"
+    "serve:ssr:tiago-rodrigues-portfolio": "node dist/tiago-rodrigues-portfolio/server/server.mjs"
   },
-  "private": true,
-  "packageManager": "npm@11.9.0",
   "dependencies": {
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",

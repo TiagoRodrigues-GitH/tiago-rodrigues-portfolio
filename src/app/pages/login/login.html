@@ -1,74 +1,56 @@
-<div class="login-container">
+<section class="login-page graph-paper" aria-labelledby="login-title">
   <div class="login-card">
-    <div class="login-header">
-      <h1>{{ t.title }}</h1>
-      <p>{{ t.intro }}</p>
-    </div>
+    <p class="mono-label">{{ t.eyebrow }}</p>
+    <h1 id="login-title">{{ t.title }}</h1>
+    <p class="intro">{{ t.intro }}</p>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error-message">
-      <span class="error-icon">⚠️</span>
-      {{ errorMessage }}
-    </div>
+    @if (errorMessage()) {
+      <p id="login-error" class="form-error" role="alert">{{ errorMessage() }}</p>
+    }
 
-    <!-- Login Form -->
-    <form class="login-form" (ngSubmit)="login()">
-      <div class="form-group">
-        <label for="email">Email</label>
+    <form class="login-form" (ngSubmit)="login()" novalidate>
+      <div class="field">
+        <label for="email">{{ t.email }}</label>
         <input
           id="email"
           type="email"
-          [(ngModel)]="credentials.email"
           name="email"
-          placeholder="name@example.com"
-          [disabled]="isLoading"
+          [(ngModel)]="credentials.email"
+          [disabled]="isLoading()"
           autocomplete="email"
+          required
+          [attr.aria-describedby]="errorMessage() ? 'login-error' : null"
         />
       </div>
 
-      <div class="form-group">
-          <label for="password">{{ t.password }}</label>
-        <div class="password-input-group">
+      <div class="field">
+        <label for="password">{{ t.password }}</label>
+        <div class="password-row">
           <input
             id="password"
-            [type]="showPassword ? 'text' : 'password'"
-            [(ngModel)]="credentials.password"
+            [type]="showPassword() ? 'text' : 'password'"
             name="password"
-            [placeholder]="t.passwordPlaceholder"
-            [disabled]="isLoading"
+            [(ngModel)]="credentials.password"
+            [disabled]="isLoading()"
             autocomplete="current-password"
+            required
+            [attr.aria-describedby]="errorMessage() ? 'login-error' : null"
           />
           <button
             type="button"
             class="toggle-password"
             (click)="togglePasswordVisibility()"
-            [disabled]="isLoading"
-            tabindex="-1"
-          >
-            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
-          </button>
+            [attr.aria-pressed]="showPassword()"
+            [disabled]="isLoading()"
+          >{{ t.showPassword }}</button>
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="btn-login"
-        [disabled]="isLoading"
-      >
-        {{ isLoading ? t.loading : t.submit }}
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
+        {{ isLoading() ? t.loading : t.submit }}
       </button>
     </form>
 
-    <!-- Footer -->
-    <div class="login-footer">
-      <p>{{ t.footer }}</p>
-    </div>
+    <p class="login-footer">{{ t.footer }}</p>
   </div>
-
-  <!-- Background decoration -->
-  <div class="background-decoration">
-    <div class="decoration-element decoration-1"></div>
-    <div class="decoration-element decoration-2"></div>
-    <div class="decoration-element decoration-3"></div>
-  </div>
-</div>
+</section>

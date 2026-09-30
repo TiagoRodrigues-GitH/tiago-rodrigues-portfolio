@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.road {
+  fill: var(--blue-900);
+}
+
+.edge {
+  stroke: var(--blue-300);
+  stroke-width: 2;
+}
+
+.horizon {
+  stroke: var(--blue-400);
+  stroke-dasharray: 14 4 2 4;
+}
+
+.marking {
+  stroke: var(--blue-150);
+  stroke-width: 3;
+  stroke-dasharray: 16 12;
+  opacity: 0.6;
+}
+
+.row {
+  stroke: var(--blue-400);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+}
+
+.cells {
+  stroke: var(--blue-400);
+  stroke-width: 6;
+  stroke-dasharray: 1 23;
+  stroke-linecap: butt;
+  opacity: 0.6;
+}
+
+.fit {
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.cell {
+  fill: rgba(111, 214, 255, 0.28);
+  stroke: var(--signal);
+  stroke-width: 1.2;
+}
+
+.point {
+  fill: var(--signal);
+}
+
+.leader {
+  stroke: var(--blue-300);
+}
+
+text {
+  fill: var(--blue-150);
+  stroke: var(--blue-950);
+  stroke-width: 5px;
+  paint-order: stroke;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}

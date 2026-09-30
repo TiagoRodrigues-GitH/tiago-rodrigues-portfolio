@@ -1,66 +1,38 @@
-<div class="admin-page">
-  <h1>{{ t.panel }}</h1>
+<section class="admin-page shell" aria-labelledby="admin-title">
+  <h1 id="admin-title">{{ t.panel }}</h1>
 
-  <div *ngIf="isCheckingAuth" class="loading">
-    {{ t.verify }}
-  </div>
-
-  <div *ngIf="!isCheckingAuth">
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
+  @if (isCheckingAuth()) {
+    <p class="loading" role="status">{{ t.verify }}</p>
+  } @else {
+    <div class="messages">
+      @if (errorMessage()) {
+        <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+      <p class="success-message" [class.visible]="successMessage()" role="status">{{ successMessage() }}</p>
     </div>
 
-    <!-- Success Message -->
-    <div *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </div>
-
-    <!-- Form Section -->
     <div class="form-section">
-      <h2>{{ editingId ? t.editProject : t.createNew }}</h2>
-      <form (ngSubmit)="submitForm()">
+      <h2>{{ editingId() ? t.editProject : t.createNew }}</h2>
+      <p class="hint">{{ t.requiredHint }}</p>
+      <form (ngSubmit)="submitForm()" novalidate>
         <div class="form-group">
-          <label for="title">{{ t.title }} *</label>
-          <input
-            id="title"
-            type="text"
-            [(ngModel)]="newProject.title"
-            name="title"
-            required
-            [placeholder]="t.titlePlaceholder"
-          />
+          <label for="title">{{ t.title }} <span aria-hidden="true">*</span></label>
+          <input id="title" type="text" [(ngModel)]="newProject.title" name="title" required />
         </div>
 
         <div class="form-group">
-          <label for="description">{{ t.description }} *</label>
-          <textarea
-            id="description"
-            [(ngModel)]="newProject.description"
-            name="description"
-            required
-            [placeholder]="t.descriptionPlaceholder"
-            rows="4"
-          ></textarea>
+          <label for="description">{{ t.description }} <span aria-hidden="true">*</span></label>
+          <textarea id="description" [(ngModel)]="newProject.description" name="description" required rows="4"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="mediaUrl">URL da Mídia (Imagem/Vídeo)</label>
-          <input
-            id="mediaUrl"
-            type="text"
-            [(ngModel)]="newProject.mediaUrl"
-            name="mediaUrl"
-            [placeholder]="t.mediaUrlPlaceholder"
-          />
+          <label for="mediaUrl">{{ t.mediaUrl }}</label>
+          <input id="mediaUrl" type="url" [(ngModel)]="newProject.mediaUrl" name="mediaUrl" [placeholder]="t.mediaUrlPlaceholder" />
         </div>
 
         <div class="form-group">
           <label for="mediaType">{{ t.mediaType }}</label>
-          <select
-            id="mediaType"
-            [(ngModel)]="newProject.mediaType"
-            name="mediaType"
-          >
+          <select id="mediaType" [(ngModel)]="newProject.mediaType" name="mediaType">
             <option value="IMAGE">{{ t.image }}</option>
             <option value="VIDEO">{{ t.video }}</option>
           </select>
@@ -68,117 +40,80 @@
 
         <div class="form-group">
           <label for="thumbnailUrl">{{ t.thumbnailUrl }}</label>
-          <input
-            id="thumbnailUrl"
-            type="text"
-            [(ngModel)]="newProject.thumbnailUrl"
-            name="thumbnailUrl"
-            [placeholder]="t.thumbnailUrlPlaceholder"
-          />
+          <input id="thumbnailUrl" type="url" [(ngModel)]="newProject.thumbnailUrl" name="thumbnailUrl" [placeholder]="t.thumbnailUrlPlaceholder" />
         </div>
 
         <div class="form-group">
           <label for="projectUrl">{{ t.projectUrl }}</label>
-          <input
-            id="projectUrl"
-            type="text"
-            [(ngModel)]="newProject.projectUrl"
-            name="projectUrl"
-            [placeholder]="t.projectUrlPlaceholder"
-          />
+          <input id="projectUrl" type="url" [(ngModel)]="newProject.projectUrl" name="projectUrl" [placeholder]="t.projectUrlPlaceholder" />
         </div>
 
         <div class="form-group">
           <label for="displayOrder">{{ t.order }}</label>
-          <input
-            id="displayOrder"
-            type="number"
-            [(ngModel)]="newProject.displayOrder"
-            name="displayOrder"
-            min="0"
-          />
+          <input id="displayOrder" type="number" [(ngModel)]="newProject.displayOrder" name="displayOrder" min="0" />
         </div>
 
         <div class="form-group checkbox">
-          <label>
-            <input
-              type="checkbox"
-              [(ngModel)]="newProject.published"
-              name="published"
-            />
-            {{ t.published }}
-          </label>
+          <input id="published" type="checkbox" [(ngModel)]="newProject.published" name="published" />
+          <label for="published">{{ t.published }}</label>
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-submit">
-            {{ editingId ? t.update : t.create }}
-          </button>
-          <button
-            *ngIf="editingId"
-            type="button"
-            class="btn-cancel"
-            (click)="resetForm()"
-          >
-            {{ t.cancel }}
-          </button>
+          <button type="submit" class="btn btn-primary">{{ editingId() ? t.update : t.create }}</button>
+          @if (editingId()) {
+            <button type="button" class="btn btn-outline" (click)="resetForm()">{{ t.cancel }}</button>
+          }
         </div>
       </form>
     </div>
 
-    <!-- Projects List Section -->
     <div class="projects-section">
       <h2>{{ t.list }}</h2>
 
-      <div *ngIf="isLoading" class="loading">
-        {{ t.loading }}
-      </div>
-
-      <div *ngIf="!isLoading && projects.length === 0" class="empty-state">
-        {{ t.empty }}
-      </div>
-
-      <table *ngIf="!isLoading && projects.length > 0" class="projects-table">
-        <thead>
-          <tr>
-            <th>{{ t.id }}</th>
-            <th>{{ t.title }}</th>
-            <th>{{ t.description }}</th>
-            <th>{{ t.published }}</th>
-            <th>{{ t.order }}</th>
-            <th>{{ t.actions }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let project of projects">
-            <td>{{ project.id }}</td>
-            <td>{{ project.title }}</td>
-            <td>{{ project.description | slice: 0:50 }}...</td>
-            <td>
-              <span [class.badge-published]="project.published" [class.badge-unpublished]="!project.published">
-                {{ project.published ? t.yes : t.no }}
-              </span>
-            </td>
-            <td>{{ project.displayOrder }}</td>
-            <td class="actions">
-              <button
-                type="button"
-                class="btn-edit"
-                (click)="editProject(project)"
-              >
-                {{ t.edit }}
-              </button>
-              <button
-                type="button"
-                class="btn-delete"
-                (click)="deleteProject(project.id)"
-              >
-                {{ t.delete }}
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      @if (isLoading()) {
+        <p class="loading" role="status">{{ t.loading }}</p>
+      } @else if (projects().length === 0) {
+        <p class="empty-state">{{ t.empty }}</p>
+      } @else {
+        <div class="table-scroll">
+          <table class="projects-table">
+            <caption class="visually-hidden">{{ t.list }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ t.id }}</th>
+                <th scope="col">{{ t.title }}</th>
+                <th scope="col">{{ t.description }}</th>
+                <th scope="col">{{ t.published }}</th>
+                <th scope="col">{{ t.order }}</th>
+                <th scope="col">{{ t.actions }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (project of projects(); track project.id) {
+                <tr>
+                  <td>{{ project.id }}</td>
+                  <th scope="row">{{ project.title }}</th>
+                  <td>{{ project.description | slice: 0 : 50 }}{{ project.description.length > 50 ? '…' : '' }}</td>
+                  <td>
+                    <span [class.badge-published]="project.published" [class.badge-unpublished]="!project.published">
+                      {{ project.published ? t.yes : t.no }}
+                    </span>
+                  </td>
+                  <td>{{ project.displayOrder }}</td>
+                  <td class="actions">
+                    <button type="button" class="btn-edit" (click)="editProject(project)">
+                      {{ t.edit }}<span class="visually-hidden">: {{ project.title }}</span>
+                    </button>
+                    <button type="button" class="btn-delete" (click)="deleteProject(project.id)">
+                      {{ t.delete }}<span class="visually-hidden">: {{ project.title }}</span>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
     </div>
-  </div>
-</div>
+  }
+</section>

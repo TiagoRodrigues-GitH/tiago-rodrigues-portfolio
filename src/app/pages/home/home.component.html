@@ -1,183 +1,179 @@
-<!-- src/app/pages/home/home.component.html -->
-<div class="home">
-  <!-- Hero Section -->
-  <section class="hero-section" [style.background-image]="heroBackground">
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1 class="animate-title">
-          {{ t.heroTitle }}
-        </h1>
-        <p class="animate-subtitle">
-          {{ t.heroSubtitle }}
-        </p>
-        <div class="hero-buttons">
-          <button class="btn-primary" routerLink="/projects" [queryParams]="{ lang: locale }">
-            {{ t.viewProjects }}
-          </button>
-          <button class="btn-secondary" routerLink="/contact" [queryParams]="{ lang: locale }">
-            {{ t.contactUs }}
-          </button>
-        </div>
+<!-- Hero -->
+<section class="hero blueprint" aria-labelledby="hero-title">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <p class="mono-label">{{ t.eyebrow }}</p>
+      <h1 id="hero-title" class="hero-title">{{ t.titleLead }} <span class="accent">{{ t.titleAccent }}</span></h1>
+      <p class="hero-intro">{{ t.intro }}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" routerLink="/projects" [queryParams]="{ lang: locale() }">
+          {{ t.viewProjects }} <span aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn-outline" routerLink="/" [queryParams]="{ lang: locale() }" fragment="articles">{{ t.readArticles }}</a>
       </div>
-      <div class="hero-image animate-image">
-        <img src="assets/images/home.png" alt="Developer illustration" class="fixed-photo" />
-      </div>
+      <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
     </div>
-  </section>
+    <app-adas-figure class="hero-figure" [labels]="t.figure" />
+  </div>
+</section>
 
-  <!-- Stats Section -->
-  <section class="stats-section">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">{{ t.stats.automotive.label }}</div>
-          <p class="stat-description">{{ t.stats.automotive.description }}</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">{{ t.stats.software.label }}</div>
-          <p class="stat-description">{{ t.stats.software.description }}</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">{{ t.stats.artificialIntelligence.label }}</div>
-          <p class="stat-description">{{ t.stats.artificialIntelligence.description }}</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">{{ t.stats.embedded.label }}</div>
-          <p class="stat-description">{{ t.stats.embedded.description }}</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">{{ t.stats.international.label }}</div>
-          <p class="stat-description">{{ t.stats.international.description }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- 01 Spec sheet -->
+<section class="section graph-paper" aria-labelledby="spec-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="section-index">{{ t.specIndex }}</p>
+      <h2 id="spec-title" class="section-title">{{ t.specTitle }}</h2>
+      <p class="section-lede">{{ t.specLede }}</p>
+    </header>
 
-  <!-- Authorial Texts Section -->
-  <section class="authorial-section">
-    <div class="container">
-      <div class="section-header">
-        <h2>{{ t.authorialTitle }}</h2>
-        <p>{{ t.authorialSubtitle }}</p>
-      </div>
-
-      <div class="authorial-grid">
-        <article
-          class="authorial-card"
-          *ngFor="let item of t.authorialCards"
-          [class.authorial-card-wide]="item.text.length > 220 || item.references.length > 170"
-        >
-          <span class="card-tag">{{ item.tag }}</span>
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.text }}</p>
-          <small>{{ item.references }}</small>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Projects Section -->
-  <section class="featured-section">
-    <div class="container">
-      <div class="section-header">
-        <h2>{{ t.featuredTitle }}</h2>
-        <p>{{ t.featuredSubtitle }}</p>
-      </div>
-
-      <div *ngIf="featuredProjects.length > 0; else noProjects" class="projects-grid">
-        <article *ngFor="let project of featuredProjects" class="project-card">
-          <div class="card-image">
-            <img [src]="project.image" [alt]="project.alt" />
-          </div>
-          <div class="card-content">
-            <h3>{{ project.title }}</h3>
-            <p>{{ truncateDescription(project.description) }}</p>
-            <div class="card-actions">
-              <button class="btn-details" (click)="openProjects()">
-                {{ t.projectDetails }} →
-              </button>
+    <dl class="bento">
+      @for (spec of t.specs; track spec.key; let first = $first) {
+        <div class="tile reveal" [class.tile-feature]="first" [class.blueprint]="first">
+          <dt class="mono-label">{{ spec.key }}</dt>
+          <dd>
+            <span class="tile-value">{{ spec.value }}</span>
+            <span class="tile-detail">{{ spec.detail }}</span>
+            @if (first) {
+              <img class="tile-art" [src]="chassis" width="849" height="348" alt="" loading="lazy" decoding="async" />
+            }
+          </dd>
+        </div>
+      }
+      <div class="tile tile-stack reveal">
+        <dt class="mono-label">{{ t.stackTitle }}</dt>
+        <dd>
+          @for (group of t.stack; track group.key) {
+            <div class="stack-group">
+              <p class="stack-key">{{ group.key }}</p>
+              <ul class="chips">
+                @for (item of group.items; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
             </div>
-          </div>
-        </article>
+          }
+        </dd>
       </div>
+    </dl>
+  </div>
+</section>
 
-      <ng-template #noProjects>
-        <div class="no-projects">
-          <div class="empty-state">
-            <div class="empty-icon">📦</div>
-            <h3>{{ t.noProjectsTitle }}</h3>
-            <p>{{ t.noProjectsText }}</p>
-          </div>
-        </div>
-      </ng-template>
+<!-- 02 Projects -->
+<section class="section" aria-labelledby="projects-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="section-index">{{ t.projectsIndex }}</p>
+      <h2 id="projects-title" class="section-title">{{ t.projectsTitle }}</h2>
+      <p class="section-lede">{{ t.projectsLede }}</p>
+    </header>
 
-      <div *ngIf="featuredProjects.length > 0" class="view-all">
-        <button class="btn-view-all" (click)="openProjects()">
-          {{ t.allProjects }} →
-        </button>
-      </div>
-    </div>
-  </section>
+    <ul class="project-cards">
+      @for (project of projects(); track project.id) {
+        <li class="project-card reveal">
+          <div class="frame card-media">
+            <img [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" alt="" loading="lazy" decoding="async" />
+          </div>
+          <div class="card-body">
+            <p class="card-meta">
+              <span class="mono-label">P-0{{ project.id }}</span>
+              <span class="status" [class.status-soon]="project.status === 'soon'">
+                {{ project.status === 'done' ? t.statusDone : t.statusSoon }}
+              </span>
+            </p>
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.summary }}</p>
+            <a class="arrow-link" routerLink="/projects" [queryParams]="{ lang: locale() }" [fragment]="'project-' + project.id">
+              {{ t.projectLink }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </li>
+      }
+    </ul>
 
-  <!-- Skills Section -->
-  <section class="skills-section">
-    <div class="container">
-      <div class="section-header">
-        <h2>{{ t.skills.title }}</h2>
-        <p>{{ t.skills.subtitle }}</p>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <div class="skill-icon">🚀</div>
-          <h3>{{ t.skills.frontend }}</h3>
-          <div class="skill-tags">
-            <span>Angular</span>
-            <span>TypeScript</span>
-            <span>HTML5/CSS3</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-icon">⚙️</div>
-          <h3>{{ t.skills.backend }}</h3>
-          <div class="skill-tags">
-            <span>Java</span>
-            <span>Spring Boot</span>
-            <span>Python</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-icon">🗄️</div>
-          <h3>{{ t.skills.database }}</h3>
-          <div class="skill-tags">
-            <span>MariaDB</span>
-            <span>MySQL</span>
-            <span>MongoDB</span>
-            <span>H2</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-icon">🛠️</div>
-          <h3>{{ t.skills.tools }}</h3>
-          <div class="skill-tags">
-            <span>Git</span>
-            <span>Docker</span>
-            <span>Maven</span>
-            <span>IntelliJ</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <a class="btn btn-outline all-projects" routerLink="/projects" [queryParams]="{ lang: locale() }">{{ t.allProjects }}</a>
+  </div>
+</section>
 
+<!-- 03 Articles -->
+<section id="articles" class="section articles" aria-labelledby="articles-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="section-index">{{ t.articlesIndex }}</p>
+      <h2 id="articles-title" class="section-title">{{ t.articlesTitle }}</h2>
+      <p class="section-lede">{{ t.articlesLede }}</p>
+    </header>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>{{ t.ctaTitle }}</h2>
-      <p>{{ t.ctaText }}</p>
-      <button class="btn-primary-large" (click)="openContact()">
-        {{ t.ctaButton }} →
-      </button>
-    </div>
-  </section>
-</div>
+    <ol class="chapters">
+      @for (article of articles(); track article.id; let i = $index) {
+        <li class="chapter reveal">
+          <article [attr.aria-labelledby]="'chapter-' + article.id">
+            <div class="chapter-aside">
+              <p class="chapter-no" aria-hidden="true">0{{ i + 1 }}</p>
+              <p class="mono-label">{{ t.chapter }} {{ i + 1 }} · {{ article.tag }}</p>
+              <p class="chapter-time">{{ readingTime(article) }} {{ t.minutes }}</p>
+            </div>
+
+            <div class="chapter-body">
+              <h3 [id]="'chapter-' + article.id" class="chapter-title">{{ article.title }}</h3>
+              <p class="chapter-lede">{{ article.lede }}</p>
+
+              <figure class="figure">
+                <div class="frame">
+                  @if (article.figure.src === 'lane-diagram') {
+                    <app-lane-diagram [labels]="t.laneDiagram" [description]="article.figure.alt" />
+                  } @else {
+                    <img
+                      [src]="article.figure.src"
+                      [alt]="article.figure.alt"
+                      [width]="article.figure.width"
+                      [height]="article.figure.height"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  }
+                </div>
+                <figcaption>{{ article.figure.caption }}</figcaption>
+              </figure>
+
+              <details class="chapter-more">
+                <summary>
+                  <span class="when-closed">{{ t.readMore }}</span>
+                  <span class="when-open">{{ t.readLess }}</span>
+                </summary>
+                <div class="chapter-text">
+                  @for (paragraph of article.paragraphs; track $index) {
+                    <p>{{ paragraph }}</p>
+                  }
+                </div>
+                <details class="refs">
+                  <summary>{{ t.references }} ({{ article.references.length }})</summary>
+                  <ol>
+                    @for (reference of article.references; track $index) {
+                      <li>
+                        {{ reference.text }}
+                        @if (reference.url) {
+                          <a [href]="reference.url" target="_blank" rel="noopener noreferrer">{{ displayUrl(reference.url) }}<span class="visually-hidden"> {{ newTab }}</span></a>
+                        }
+                      </li>
+                    }
+                  </ol>
+                </details>
+              </details>
+            </div>
+          </article>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta blueprint" aria-labelledby="cta-title">
+  <div class="shell cta-inner reveal">
+    <h2 id="cta-title" class="cta-title">{{ t.ctaTitle }}</h2>
+    <p>{{ t.ctaText }}</p>
+    <a class="btn btn-primary" routerLink="/contact" [queryParams]="{ lang: locale() }">
+      {{ t.ctaButton }} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

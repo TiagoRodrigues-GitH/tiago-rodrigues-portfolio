@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { I18nService, Locale } from '../../services/i18n.service';
+import { Component, inject } from '@angular/core';
+import { AboutTranslations, I18nService } from '../../services/i18n.service';
+import { injectLocale } from '../../services/locale';
 
 @Component({
   selector: 'app-about',
@@ -8,29 +8,14 @@ import { I18nService, Locale } from '../../services/i18n.service';
   templateUrl: './about.html',
   styleUrls: ['./about.css'],
 })
-export class AboutComponent implements OnInit {
-  locale: Locale = 'pt';
+export class AboutComponent {
+  private readonly i18n = inject(I18nService);
 
-  constructor(
-    private route: ActivatedRoute,
-    public i18n: I18nService,
-  ) {}
+  readonly locale = injectLocale();
+  readonly resumeUrl = 'curriculo.pdf';
+  readonly profileImage = 'assets/images/perfil_foto.jpeg';
 
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      this.locale = this.i18n.getLocale(params.get('lang'));
-    });
-  }
-
-  get t() {
-    return this.i18n.about[this.locale];
-  }
-
-  get resumeUrl(): string {
-    return 'curriculo.pdf';
-  }
-
-  get pageBackground(): string {
-    return 'linear-gradient(135deg, rgba(239, 246, 255, 0.86), rgba(219, 234, 254, 0.8)), url("assets/images/image.png")';
+  get t(): AboutTranslations {
+    return this.i18n.about[this.locale()];
   }
 }

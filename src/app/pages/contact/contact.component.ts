@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { I18nService, Locale } from '../../services/i18n.service';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ContactTranslations, I18nService } from '../../services/i18n.service';
+import { injectLocale } from '../../services/locale';
 
-interface ContactLink {
+interface ProfileLink {
   label: string;
-  value: string;
+  handle: string;
   href: string;
   description: string;
-  icon: string;
 }
 
 @Component({
@@ -16,52 +16,55 @@ interface ContactLink {
   templateUrl: './contact.html',
   styleUrls: ['./contact.css'],
 })
-export class ContactComponent implements OnInit {
-  profileImage = 'assets/images/perfil_foto.jpeg';
-  locale: Locale = 'pt';
+export class ContactComponent implements OnDestroy {
+  private readonly i18n = inject(I18nService);
+  private readonly document = inject(DOCUMENT);
+  private resetTimer?: ReturnType<typeof setTimeout>;
 
-  constructor(
-    private route: ActivatedRoute,
-    public i18n: I18nService,
-  ) {}
+  readonly locale = injectLocale();
+  readonly email = 'tiagorodrigues@alunos.utfpr.edu.br';
+  readonly emailUser = this.email.split('@')[0];
+  readonly emailDomain = this.email.split('@')[1];
+  readonly profileImage = 'assets/images/perfil_foto.jpeg';
+  readonly copyMessage = signal('');
 
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      this.locale = this.i18n.getLocale(params.get('lang'));
-    });
+  get t(): ContactTranslations {
+    return this.i18n.contact[this.locale()];
   }
 
-  get t() {
-    return this.i18n.contact[this.locale];
+  get newTab(): string {
+    return this.i18n.shell[this.locale()].newTab;
   }
 
-  get pageBackground(): string {
-    return 'radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 28%), radial-gradient(circle at bottom left, rgba(147, 197, 253, 0.14), transparent 24%), linear-gradient(rgba(237, 246, 255, 0.84), rgba(223, 238, 255, 0.88)), url("assets/images/image_contact.png")';
-  }
-
-  get contactLinks(): ContactLink[] {
+  get profiles(): ProfileLink[] {
     return [
       {
-        label: this.t.emailLabel,
-        value: 'tiagorodrigues@alunos.utfpr.edu.br',
-        href: 'mailto:tiagorodrigues@alunos.utfpr.edu.br',
-        description: this.t.emailDescription,
-        icon: '✉️',
-      },
-      {
         label: this.t.linkedInLabel,
-        value: 'tiagorodriguesde',
+        handle: 'in/tiagorodriguesde',
         href: 'https://www.linkedin.com/in/tiagorodriguesde/',
         description: this.t.linkedInDescription,
-        icon: '🔗',
       },
       {
         label: this.t.githubLabel,
-        value: 'TiagoRodrigues-GitH',
+        handle: 'TiagoRodrigues-GitH',
         href: 'https://github.com/TiagoRodrigues-GitH',
         description: this.t.githubDescription,
-        icon: '🐙',
       },
     ];
+  }
+
+  async copyEmail(): Promise<void> {
+    try {
+      await this.document.defaultView?.navigator.clipboard.writeText(this.email);
+      this.copyMessage.set(this.t.copied);
+    } catch {
+      this.copyMessage.set(this.t.copyFailed);
+    }
+    clearTimeout(this.resetTimer);
+    this.resetTimer = setTimeout(() => this.copyMessage.set(''), 5000);
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.resetTimer);
   }
 }

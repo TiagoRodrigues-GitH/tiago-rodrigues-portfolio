@@ -1,0 +1,80 @@
+<figure class="figure adas">
+  <svg viewBox="0 0 960 400" role="img" aria-labelledby="adas-title adas-desc">
+    <title id="adas-title">{{ labels.title }}</title>
+    <desc id="adas-desc">{{ labels.desc }}</desc>
+    <defs>
+      <linearGradient id="adas-cone-right" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6fd6ff" stop-opacity="0.34" />
+        <stop offset="1" stop-color="#6fd6ff" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="adas-cone-left" x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0" stop-color="#6fd6ff" stop-opacity="0.34" />
+        <stop offset="1" stop-color="#6fd6ff" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+
+    <!-- Sensor fields of view -->
+    <g class="cones">
+      <polygon class="cone" points="566,138 960,40 960,236" fill="url(#adas-cone-right)" />
+      <polygon class="cone" points="766,232 960,170 960,294" fill="url(#adas-cone-right)" />
+      <polygon class="cone" points="148,232 0,170 0,294" fill="url(#adas-cone-left)" />
+      <path class="cone-edge" d="M566 138 L960 40 M566 138 L960 236 M766 232 L960 170 M766 232 L960 294 M148 232 L0 170 M148 232 L0 294" />
+    </g>
+
+    <!-- Ground and wheel centerlines -->
+    <path class="ground" d="M30 302 H930" />
+    <path class="centerline" d="M244 204 V320 M186 262 H302 M644 204 V320 M586 262 H702" />
+
+    <!-- Internal structure -->
+    <g class="detail">
+      <rect x="300" y="238" width="286" height="14" rx="2" />
+      <path d="M326 238v14M352 238v14M378 238v14M404 238v14M430 238v14M456 238v14M482 238v14M508 238v14M534 238v14M560 238v14" />
+      <path d="M356 226 L344 180 M356 226 L404 222 M492 226 L480 178 M492 226 L540 222" />
+      <path d="M556 214 L574 182 M566 176 L584 188" />
+      <rect x="650" y="190" width="52" height="22" rx="3" />
+    </g>
+
+    <!-- Body -->
+    <g class="body">
+      <path class="draw" pathLength="1" d="M150 258 L146 214 Q148 190 178 180 L260 168 Q316 122 384 114 L522 112 Q559 114 594 150 L614 168 Q704 176 748 190 Q768 198 770 222 L768 250 Q766 260 754 262 L694 262 A50 50 0 0 0 594 262 L294 262 A50 50 0 0 0 194 262 L154 262 Z" />
+      <path class="draw" pathLength="1" d="M286 170 Q330 132 388 126 L516 124 Q544 126 574 156 L584 168 Z" />
+      <path d="M444 125 V169 M296 174 L300 254 M444 170 V256 M590 172 Q598 212 590 252 M418 186 H436 M562 186 H580 M736 194 L762 202 M150 204 L164 200" />
+      <circle cx="244" cy="262" r="40" />
+      <circle cx="644" cy="262" r="40" />
+      <circle class="rim" cx="244" cy="262" r="26" />
+      <circle class="rim" cx="644" cy="262" r="26" />
+      <circle cx="244" cy="262" r="6" />
+      <circle cx="644" cy="262" r="6" />
+    </g>
+
+    <!-- CAN backbone, control unit and sensors -->
+    <path class="bus" d="M152 232 H766 M566 142 V232" />
+    <rect class="ecu" x="452" y="222" width="48" height="20" rx="3" />
+    <g class="sensor">
+      <rect x="560" y="134" width="12" height="8" rx="1.5" />
+      <rect x="762" y="222" width="8" height="20" rx="1.5" />
+      <rect x="144" y="222" width="8" height="20" rx="1.5" />
+      <circle cx="766" cy="252" r="3.5" />
+      <circle cx="150" cy="252" r="3.5" />
+    </g>
+    <path class="wave" d="M776 244 A12 12 0 0 1 776 260 M784 238 A20 20 0 0 1 784 266 M140 244 A12 12 0 0 0 140 260 M132 238 A20 20 0 0 0 132 266" />
+
+    <!-- Callouts, keyed to the parts list below -->
+    <path class="leader" d="M566 134 L639 64 M770 240 L862 331 M144 226 L81 160 M146 256 L90 338 M476 242 V341 M330 232 V341" />
+    <g class="balloon">
+      <circle cx="650" cy="56" r="15" /><text x="650" y="56">1</text>
+      <circle cx="872" cy="340" r="15" /><text x="872" y="340">2</text>
+      <circle cx="70" cy="150" r="15" /><text x="70" y="150">3</text>
+      <circle cx="80" cy="350" r="15" /><text x="80" y="350">4</text>
+      <circle cx="476" cy="356" r="15" /><text x="476" y="356">5</text>
+      <circle cx="330" cy="356" r="15" /><text x="330" y="356">6</text>
+    </g>
+  </svg>
+
+  <ol class="part-list">
+    @for (part of parts; track $index) {
+      <li><span class="part-no" aria-hidden="true">{{ $index + 1 }}</span>{{ part }}</li>
+    }
+  </ol>
+  <figcaption>{{ labels.caption }}</figcaption>
+</figure>

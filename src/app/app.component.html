@@ -1,91 +1,116 @@
-<!-- src/app/app.component.html -->
-<nav class="navbar" role="navigation" aria-label="Menu principal">
-  <div class="nav-container">
-    <a routerLink="/about" [queryParams]="{ lang: currentLanguage }" class="logo" aria-label="Sobre mim" (click)="scrollToTop()">
-      <span class="logo-mark"></span> Tiago Rodrigues
+<a class="skip-link" href="#main-content" (click)="skipToMain($event)">{{ t.skipLink }}</a>
+
+<header class="site-header on-dark">
+  <div class="header-bar shell">
+    <a class="brand" routerLink="/" [queryParams]="{ lang: lang() }" [attr.aria-label]="t.homeLink">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="8.5" />
+        <circle cx="12" cy="12" r="2.5" />
+        <path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5" />
+      </svg>
+      <span class="brand-name">Tiago Rodrigues</span>
     </a>
 
-    <div class="nav-links" [class.active]="menuOpen">
-      <a routerLink="/" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="scrollToTop()">{{ homeLabel }}</a>
-      <a routerLink="/projects" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ projectsLabel }}</a>
-      <a routerLink="/contact" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ contactLabel }}</a>
-      <a routerLink="/about" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ aboutLabel }}</a>
+    <nav id="primary-nav" class="primary-nav" [class.open]="menuOpen()" [attr.aria-label]="t.mainNav">
+      <ul class="nav-list">
+        @for (item of navItems; track item.path) {
+          <li>
+            <a
+              [routerLink]="item.path"
+              [queryParams]="{ lang: lang() }"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+              (click)="closeMenu()"
+            >{{ t.nav[item.key] }}</a>
+          </li>
+        }
+      </ul>
+      <ul class="profile-links" [attr.aria-label]="t.profiles">
+        <li>
+          <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> {{ t.newTab }}</span></a>
+        </li>
+        <li>
+          <a [href]="linkedInUrl" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> {{ t.newTab }}</span></a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="lang-switch" role="group" [attr.aria-label]="t.language">
+      @for (option of i18n.locales; track option.locale) {
+        <button
+          type="button"
+          [attr.lang]="option.htmlLang"
+          [attr.aria-pressed]="lang() === option.locale"
+          (click)="setLanguage(option.locale)"
+        >{{ option.code }}<span class="visually-hidden"> {{ option.label }}</span></button>
+      }
     </div>
 
-    <div class="social-links">
-      <a href="https://github.com/TiagoRodrigues-GitH" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-        <span>🐙</span> GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/tiagorodriguesde/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <span>🔗</span> LinkedIn
-      </a>
-      <a href="mailto:tiagorodrigues@alunos.utfpr.edu.br" aria-label="Email">
-        <span>📧</span> Email
-      </a>
-    </div>
-
-    <div class="language-switcher" aria-label="Seleção de idioma">
-      <button
-        type="button"
-        class="language-flag"
-        [class.active]="isLanguageActive('pt')"
-        (click)="setLanguage('pt')"
-        title="Português"
-        aria-label="Português"
-      >BR</button>
-      <button
-        type="button"
-        class="language-flag"
-        [class.active]="isLanguageActive('en')"
-        (click)="setLanguage('en')"
-        title="English"
-        aria-label="English"
-      >EN</button>
-      <button
-        type="button"
-        class="language-flag"
-        [class.active]="isLanguageActive('de')"
-        (click)="setLanguage('de')"
-        title="Deutsch"
-        aria-label="Deutsch"
-      >DE</button>
-    </div>
-
-    <button class="mobile-menu-btn" (click)="toggleMenu()" aria-label="Menu">
-      ☰
+    <button
+      #menuButton
+      type="button"
+      class="menu-toggle"
+      aria-controls="primary-nav"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="toggleMenu()"
+    >
+      <span class="menu-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">{{ menuOpen() ? t.closeMenu : t.openMenu }}</span>
     </button>
   </div>
-</nav>
+</header>
 
-<main>
-  <router-outlet></router-outlet>
+<main id="main-content" #mainContent tabindex="-1">
+  <router-outlet />
 </main>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>{{ footerTitle }}</h3>
-        <p>{{ footerDescription }}</p>
-      </div>
-      <div class="footer-section">
-        <h3>{{ quickLinksLabel }}</h3>
-        <ul>
-          <li><a routerLink="/" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ homeLabel }}</a></li>
-          <li><a routerLink="/projects" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ projectsLabel }}</a></li>
-          <li><a routerLink="/contact" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ contactLabel }}</a></li>
-          <li><a routerLink="/about" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ aboutLabel }}</a></li>
-          <li><a routerLink="/admin" [queryParams]="{ lang: currentLanguage }" routerLinkActive="active" (click)="scrollToTop()">{{ adminLabel }}</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>{{ footerContactLabel }}</h3>
-        <p>📧 tiagorodrigues@alunos.utfpr.edu.br</p>
+<footer class="site-footer blueprint">
+  <div class="shell footer-grid">
+    <div class="footer-intro">
+      <p class="footer-name">Tiago Rodrigues</p>
+      <p class="footer-tagline">{{ t.footer.tagline }}</p>
+    </div>
 
-      </div>
+    <nav aria-labelledby="footer-nav-title">
+      <h2 id="footer-nav-title" class="mono-label">{{ t.footer.navigate }}</h2>
+      <ul class="footer-list">
+        @for (item of navItems; track item.path) {
+          <li><a [routerLink]="item.path" [queryParams]="{ lang: lang() }">{{ t.nav[item.key] }}</a></li>
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="mono-label">{{ t.footer.contact }}</h2>
+      <ul class="footer-list">
+        <li><a [href]="'mailto:' + email">{{ emailUser }}@<wbr />{{ emailDomain }}</a></li>
+        <li><a [href]="linkedInUrl" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> {{ t.newTab }}</span></a></li>
+        <li><a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> {{ t.newTab }}</span></a></li>
+      </ul>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 {{ footerTitle }}. {{ copyrightText }}</p>
-    </div>
+
+    <dl class="title-block">
+      <div><dt>{{ t.footer.author }}</dt><dd>Tiago Rodrigues</dd></div>
+      <div><dt>{{ t.footer.revision }}</dt><dd>{{ year }}</dd></div>
+      <div><dt>{{ t.language }}</dt><dd>PT · EN · DE</dd></div>
+    </dl>
+  </div>
+
+  <div class="shell footer-meta">
+    <details class="credits">
+      <summary>{{ t.footer.credits }}</summary>
+      <p>{{ t.footer.creditsIntro }}</p>
+      <ul>
+        @for (credit of credits; track credit.url) {
+          <li>
+            <a [href]="credit.url" target="_blank" rel="noopener noreferrer">{{ credit.title }}<span class="visually-hidden"> {{ t.newTab }}</span></a>
+            — {{ credit.author }} · {{ credit.license ?? t.footer.publicDomain }}
+          </li>
+        }
+      </ul>
+    </details>
+    <p>&copy; {{ year }} Tiago Rodrigues. {{ t.footer.rights }}</p>
+    <button type="button" class="to-top" (click)="backToTop()">{{ t.footer.backToTop }} <span aria-hidden="true">↑</span></button>
   </div>
 </footer>

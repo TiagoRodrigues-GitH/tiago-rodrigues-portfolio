@@ -1,46 +1,44 @@
-<section class="contact-page" [style.background-image]="pageBackground">
-	<div class="contact-shell">
-		<div class="contact-header">
-			<div class="profile-card">
-				<img [src]="profileImage" alt="Foto de perfil de Tiago Rodrigues" />
-				<div>
-					<p class="eyebrow">{{ t.eyebrow }}</p>
-					<h1>{{ t.title }}</h1>
-					<p class="intro">{{ t.intro }}</p>
-				</div>
-			</div>
+<section class="page-hero graph-paper" aria-labelledby="contact-title">
+  <div class="shell contact-hero">
+    <div>
+      <p class="mono-label">{{ t.eyebrow }}</p>
+      <h1 id="contact-title" class="page-title">{{ t.title }}</h1>
+      <p class="section-lede">{{ t.intro }}</p>
+    </div>
 
-			<div class="contact-note">
-				<span class="note-label">{{ t.availabilityLabel }}</span>
-				<p>{{ t.availabilityText }}</p>
-			</div>
-		</div>
-
-		<div class="contact-links">
-			<a
-				*ngFor="let contact of contactLinks"
-				class="contact-link-card"
-				[href]="contact.href"
-				target="_blank"
-				rel="noopener noreferrer"
-				[attr.aria-label]="contact.label + ' - ' + contact.value"
-			>
-				<span class="contact-icon">{{ contact.icon }}</span>
-				<div class="contact-content">
-					<span class="contact-label">{{ contact.label }}</span>
-					<strong>{{ contact.value }}</strong>
-					<p>{{ contact.description }}</p>
-				</div>
-				<span class="contact-arrow">↗</span>
-			</a>
-		</div>
-
-		<div class="media-preview-card">
-			<p class="media-label">{{ t.mediaLabel }}</p>
-			<a class="media-link" href="https://www.linkedin.com/in/tiagorodriguesde/" target="_blank" rel="noopener noreferrer">
-				<span class="media-badge">📷</span>
-				<span>{{ t.mediaLinkLabel }}</span>
-			</a>
-		</div>
-	</div>
+    <aside class="availability blueprint" aria-labelledby="availability-title">
+      <div class="person">
+        <img [src]="profileImage" width="534" height="627" alt="" />
+        <p class="person-name">Tiago Rodrigues</p>
+      </div>
+      <h2 id="availability-title" class="mono-label">{{ t.availabilityLabel }}</h2>
+      <p>{{ t.availabilityText }}</p>
+    </aside>
+  </div>
 </section>
+
+<div class="shell channels">
+  <ul class="channel-list">
+    <li class="channel channel-email">
+      <h2 class="mono-label">{{ t.emailLabel }}</h2>
+      <p class="channel-value">{{ emailUser }}@<wbr />{{ emailDomain }}</p>
+      <p class="channel-desc">{{ t.emailDescription }}</p>
+      <div class="channel-actions">
+        <a class="btn btn-primary" [href]="'mailto:' + email">{{ t.writeEmail }}</a>
+        <button type="button" class="btn btn-outline" (click)="copyEmail()">{{ t.copyEmail }}</button>
+      </div>
+      <p class="copy-status" role="status">{{ copyMessage() }}</p>
+    </li>
+
+    @for (profile of profiles; track profile.href) {
+      <li class="channel">
+        <h2 class="mono-label">{{ profile.label }}</h2>
+        <p class="channel-value">{{ profile.handle }}</p>
+        <p class="channel-desc">{{ profile.description }}</p>
+        <a class="arrow-link" [href]="profile.href" target="_blank" rel="noopener noreferrer">
+          {{ t.open }}<span class="visually-hidden"> {{ profile.label }} {{ newTab }}</span> <span aria-hidden="true">↗</span>
+        </a>
+      </li>
+    }
+  </ul>
+</div>

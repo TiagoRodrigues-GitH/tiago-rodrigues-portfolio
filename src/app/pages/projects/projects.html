@@ -1,97 +1,96 @@
-<section class="projects-page" [style.background-image]="pageBackground">
-	<header class="page-hero">
-		<div class="hero-copy">
-			<p class="eyebrow">{{ t.portfolio }}</p>
-			<h1>{{ t.developed }}</h1>
-			<p class="hero-text"></p>
-		</div>
-
-		<div class="profile-card">
-			<img [src]="profileImage" alt="Foto de perfil" />
-			<div>
-				<h2>Tiago Rodrigues</h2>
-				<p>{{ t.profile }}</p>
-			</div>
-		</div>
-	</header>
-
-	<div class="project-showcase" *ngFor="let project of localizedProjects; let i = index">
-		<div class="project-copy">
-			<p class="project-index">0{{ project.id }}</p>
-			<h2>{{ project.title }}</h2>
-			<p class="project-summary" *ngIf="project.summary">{{ project.summary }}</p>
-			<p class="project-description">{{ project.details || project.description }}</p>
-
-			<div class="project-meta">
-				<div>
-					<span class="meta-label">{{ t.role }}</span>
-					<p>{{ project.role || t.profile }}</p>
-				</div>
-				<div>
-					<span class="meta-label">{{ t.stack }}</span>
-					<p>{{ project.stack?.join(' • ') || 'Angular • TypeScript' }}</p>
-				</div>
-			</div>
-
-			<div class="project-tags" *ngIf="project.stack?.length">
-				<span *ngFor="let item of project.stack">{{ item }}</span>
-			</div>
-		</div>
-
-		<div class="project-media">
-			<button
-				type="button"
-				class="image-trigger featured-image"
-				(click)="openImage(i, 0)"
-				[attr.aria-label]="t.openImage + ' ' + project.title"
-			>
-				<img [src]="project.image" [alt]="project.alt" />
-			</button>
-
-			<div class="gallery-grid" *ngIf="project.gallery?.length">
-				<button
-					type="button"
-					class="image-trigger gallery-item"
-					*ngFor="let image of project.gallery; let imageIndex = index"
-					(click)="openImage(i, imageIndex)"
-					[attr.aria-label]="t.openImage + ': ' + image.alt"
-				>
-					<img [src]="image.src" [alt]="image.alt" />
-				</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="lightbox" *ngIf="previewImage" (click)="closeImage()">
-		<div class="lightbox-panel" (click)="$event.stopPropagation()">
-			<button type="button" class="lightbox-close" (click)="closeImage()" [attr.aria-label]="t.close">
-				×
-			</button>
-			<button
-				type="button"
-				class="lightbox-nav lightbox-prev"
-				*ngIf="hasMultipleImages"
-				(click)="showPreviousImage()"
-				[attr.aria-label]="t.previous"
-			>
-				‹
-			</button>
-			<button
-				type="button"
-				class="lightbox-nav lightbox-next"
-				*ngIf="hasMultipleImages"
-				(click)="showNextImage()"
-				[attr.aria-label]="t.next"
-			>
-				›
-			</button>
-			<img [src]="previewImage.src" [alt]="previewImage.alt" />
-			<p>
-				{{ previewImage.alt }}
-				<span *ngIf="hasMultipleImages" class="lightbox-counter">
-					{{ activeImageIndex + 1 }} / {{ activeProject?.gallery?.length }}
-				</span>
-			</p>
-		</div>
-	</div>
+<section class="page-hero graph-paper" aria-labelledby="projects-title">
+  <div class="shell hero-grid">
+    <div>
+      <p class="mono-label">{{ t.eyebrow }}</p>
+      <h1 id="projects-title" class="page-title">{{ t.title }}</h1>
+      <p class="section-lede">{{ t.intro }}</p>
+    </div>
+    <figure class="figure">
+      <div class="frame">
+        <img [src]="chassis" width="849" height="348" [alt]="t.figureAlt" />
+      </div>
+      <figcaption>{{ t.figureCaption }}</figcaption>
+    </figure>
+  </div>
 </section>
+
+<div class="shell project-list">
+  @for (project of projects(); track project.id; let i = $index) {
+    <article class="project reveal" [id]="'project-' + project.id" [attr.aria-labelledby]="'project-title-' + project.id">
+      <div class="project-copy">
+        <div class="project-head">
+          <p class="project-index" aria-hidden="true">0{{ project.id }}</p>
+          <p class="status" [class.status-soon]="project.status === 'soon'">
+            <span class="visually-hidden">{{ t.status }}: </span>{{ project.status === 'done' ? t.statusDone : t.statusSoon }}
+          </p>
+        </div>
+        <h2 [id]="'project-title-' + project.id" class="project-title">{{ project.title }}</h2>
+        <p class="project-summary">{{ project.summary }}</p>
+        <p class="project-details">{{ project.details }}</p>
+
+        <dl class="project-meta">
+          <div>
+            <dt class="mono-label">{{ t.role }}</dt>
+            <dd>{{ project.role }}</dd>
+          </div>
+          <div>
+            <dt class="mono-label">{{ t.stack }}</dt>
+            <dd>
+              <ul class="chips">
+                @for (item of project.stack; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="project-media">
+        @for (image of project.gallery; track image.src; let j = $index) {
+          <button
+            type="button"
+            class="frame zoom"
+            (click)="openImage(i, j, $event.currentTarget)"
+            [attr.aria-label]="t.zoom + ': ' + image.alt"
+          >
+            <img [src]="image.src" [width]="image.width" [height]="image.height" alt="" loading="lazy" decoding="async" />
+            <span class="zoom-icon" aria-hidden="true">+</span>
+          </button>
+        }
+      </div>
+    </article>
+  }
+</div>
+
+@if (activeImage(); as image) {
+  <div class="lightbox" (click)="closeImage()">
+    <div
+      #dialog
+      class="lightbox-panel"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="t.dialogLabel + ': ' + activeProject()?.title"
+      (click)="$event.stopPropagation()"
+    >
+      <button #closeButton type="button" class="lightbox-close" (click)="closeImage()">
+        {{ t.close }} <span aria-hidden="true">✕</span>
+      </button>
+      <figure class="figure">
+        <img [src]="image.src" [alt]="image.alt" [width]="image.width" [height]="image.height" />
+        <figcaption>{{ activeProject()?.title }}</figcaption>
+      </figure>
+      @if ((activeProject()?.gallery?.length ?? 0) > 1) {
+        <div class="lightbox-nav">
+          <button type="button" class="btn btn-outline" (click)="step(-1)">
+            <span aria-hidden="true">←</span> {{ t.previous }}
+          </button>
+          <p class="lightbox-counter" aria-live="polite">{{ counter }}</p>
+          <button type="button" class="btn btn-outline" (click)="step(1)">
+            {{ t.next }} <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

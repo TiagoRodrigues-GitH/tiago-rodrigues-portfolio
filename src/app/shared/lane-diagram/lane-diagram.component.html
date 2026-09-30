@@ -1,0 +1,28 @@
+<svg viewBox="0 0 600 330" role="img" aria-labelledby="lane-title">
+  <title id="lane-title">{{ description }}</title>
+
+  <polygon class="road" points="40,320 560,320 312,90 288,90" />
+  <path class="edge" d="M40 320 L288 90 M560 320 L312 90" />
+  <path class="horizon" d="M0 90 H600" />
+  <path class="marking" d="M170 320 L295 90 M430 320 L305 90" />
+
+  @for (row of rows; track row.y) {
+    <path class="row" [attr.d]="'M24 ' + row.y + ' H576'" />
+    <path class="cells" [attr.d]="'M24 ' + row.y + ' H576'" />
+  }
+
+  <polyline class="fit" [attr.points]="leftLane" />
+  <polyline class="fit" [attr.points]="rightLane" />
+
+  @for (row of rows; track row.y) {
+    <rect class="cell" [attr.x]="row.left - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
+    <rect class="cell" [attr.x]="row.right - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
+    <circle class="point" [attr.cx]="row.left" [attr.cy]="row.y" r="3" />
+    <circle class="point" [attr.cx]="row.right" [attr.cy]="row.y" r="3" />
+  }
+
+  <path class="leader" d="M152 204 L234 191" />
+  <text x="20" y="80">{{ labels.horizon }}</text>
+  <text x="580" y="118" text-anchor="end">{{ labels.rows }}</text>
+  <text x="20" y="208">{{ labels.lane }}</text>
+</svg>

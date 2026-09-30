@@ -2,81 +2,112 @@ import { Injectable } from '@angular/core';
 
 export type Locale = 'pt' | 'en' | 'de';
 
+export type PageKey = 'home' | 'projects' | 'about' | 'contact' | 'login' | 'admin';
+
 export interface LocaleOption {
   locale: Locale;
+  /** Short code shown in the language switcher (ISO 639-1, not a country). */
+  code: string;
+  /** Language name written in that language. */
   label: string;
-  flag: string;
+  /** Value for the `lang` attribute (WCAG 3.1.1 / 3.1.2). */
+  htmlLang: string;
 }
 
-export interface NavTranslations {
-  home: string;
-  projects: string;
-  contact: string;
-  about: string;
+export interface ShellTranslations {
+  nav: { home: string; projects: string; about: string; contact: string };
+  skipLink: string;
+  mainNav: string;
+  homeLink: string;
+  openMenu: string;
+  closeMenu: string;
+  language: string;
+  profiles: string;
+  newTab: string;
+  footer: {
+    tagline: string;
+    navigate: string;
+    contact: string;
+    author: string;
+    revision: string;
+    credits: string;
+    creditsIntro: string;
+    publicDomain: string;
+    rights: string;
+    backToTop: string;
+  };
+  titles: Record<PageKey, string>;
 }
 
-export interface AboutTranslations {
-  eyebrow: string;
-  title: string;
-  intro: string;
-  technicalSkills: string;
-  java: string;
-  database: string;
-  ai: string;
-  languages: string;
-  portuguese: string;
-  english: string;
-  germanExperience: string;
-  personalExperienceTitle: string;
-  personalExperience: string;
-  certifications: string;
-  achievements: string[];
-  timeline: Array<{ period: string; title: string; text: string }>;
-  resumeLabel: string;
-}
-
-export interface StatTranslation {
-  label: string;
-  description: string;
+export interface SpecItem {
+  key: string;
+  value: string;
+  detail: string;
 }
 
 export interface HomeTranslations {
-  heroTitle: string;
-  heroSubtitle: string;
+  eyebrow: string;
+  titleLead: string;
+  titleAccent: string;
+  intro: string;
   viewProjects: string;
-  contactUs: string;
-  projectDetails: string;
+  readArticles: string;
+  availability: string;
+  figure: {
+    title: string;
+    desc: string;
+    caption: string;
+    camera: string;
+    radar: string;
+    rearRadar: string;
+    ultrasonic: string;
+    ecu: string;
+    bus: string;
+  };
+  specIndex: string;
+  specTitle: string;
+  specLede: string;
+  specs: SpecItem[];
+  stackTitle: string;
+  stack: Array<{ key: string; items: string[] }>;
+  projectsIndex: string;
+  projectsTitle: string;
+  projectsLede: string;
+  projectLink: string;
   allProjects: string;
-  noProjectsTitle: string;
-  noProjectsText: string;
-  stats: {
-    automotive: StatTranslation;
-    software: StatTranslation;
-    artificialIntelligence: StatTranslation;
-    embedded: StatTranslation;
-    international: StatTranslation;
-  };
-  featuredTitle: string;
-  featuredSubtitle: string;
-  authorialTitle: string;
-  authorialSubtitle: string;
-  authorialCards: Array<{
-    tag: string;
-    title: string;
-    text: string;
-    references: string;
-  }>;
-  skills: {
-    title: string;
-    subtitle: string;
-    frontend: string;
-    backend: string;
-    database: string;
-    tools: string;
-  };
+  statusDone: string;
+  statusSoon: string;
+  articlesIndex: string;
+  articlesTitle: string;
+  articlesLede: string;
+  chapter: string;
+  minutes: string;
+  readMore: string;
+  readLess: string;
+  references: string;
+  laneDiagram: { rows: string; lane: string; horizon: string };
   ctaTitle: string;
   ctaText: string;
   ctaButton: string;
+}
+
+export interface ProjectsTranslations {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  figureAlt: string;
+  figureCaption: string;
+  role: string;
+  stack: string;
+  status: string;
+  statusDone: string;
+  statusSoon: string;
+  zoom: string;
+  dialogLabel: string;
+  previous: string;
+  next: string;
+  close: string;
+  counter: string;
 }
 
 export interface ContactTranslations {
@@ -87,26 +118,423 @@ export interface ContactTranslations {
   availabilityText: string;
   emailLabel: string;
   emailDescription: string;
+  writeEmail: string;
+  copyEmail: string;
+  copied: string;
+  copyFailed: string;
   linkedInLabel: string;
   linkedInDescription: string;
   githubLabel: string;
   githubDescription: string;
-  mediaLabel: string;
-  mediaLinkLabel: string;
+  open: string;
+}
+
+export interface AboutTranslations {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  photoAlt: string;
+  resumeLabel: string;
+  resumeHint: string;
+  timelineTitle: string;
+  timeline: Array<{ period: string; title: string; text: string }>;
+  certifications: string;
+  achievements: string[];
+  languages: string;
+  languageList: string[];
+  personalExperienceTitle: string;
+  personalExperience: string;
+  technicalSkills: string;
+  skillGroups: Array<{ title: string; text: string }>;
 }
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
   readonly locales: LocaleOption[] = [
-    { locale: 'pt', label: 'Português', flag: '🇧🇷' },
-    { locale: 'en', label: 'English', flag: '🇬🇧' },
-    { locale: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { locale: 'pt', code: 'PT', label: 'Português', htmlLang: 'pt-BR' },
+    { locale: 'en', code: 'EN', label: 'English', htmlLang: 'en' },
+    { locale: 'de', code: 'DE', label: 'Deutsch', htmlLang: 'de' },
   ];
 
-  readonly nav: Record<Locale, NavTranslations> = {
-    pt: { home: 'Home', projects: 'Projetos', contact: 'Contato', about: 'Sobre mim' },
-    en: { home: 'Home', projects: 'Projects', contact: 'Contact', about: 'About me' },
-    de: { home: 'Startseite', projects: 'Projekte', contact: 'Kontakt', about: 'Über mich' },
+  readonly shell: Record<Locale, ShellTranslations> = {
+    pt: {
+      nav: { home: 'Início', projects: 'Projetos', about: 'Sobre mim', contact: 'Contato' },
+      skipLink: 'Pular para o conteúdo',
+      mainNav: 'Navegação principal',
+      homeLink: 'Tiago Rodrigues — página inicial',
+      openMenu: 'Abrir menu',
+      closeMenu: 'Fechar menu',
+      language: 'Idioma',
+      profiles: 'Perfis profissionais',
+      newTab: '(abre em nova aba)',
+      footer: {
+        tagline: 'Software para a indústria automotiva: sistemas, dados e inteligência artificial aplicados à mobilidade.',
+        navigate: 'Navegação',
+        contact: 'Contato',
+        author: 'Autor',
+        revision: 'Revisão',
+        credits: 'Créditos das imagens',
+        creditsIntro: 'Ilustrações técnicas em domínio público ou com licença livre, convertidas para o estilo blueprint deste site.',
+        publicDomain: 'Domínio público',
+        rights: 'Todos os direitos reservados.',
+        backToTop: 'Voltar ao topo',
+      },
+      titles: {
+        home: 'Tiago Rodrigues — Software para a indústria automotiva',
+        projects: 'Projetos · Tiago Rodrigues',
+        about: 'Sobre mim · Tiago Rodrigues',
+        contact: 'Contato · Tiago Rodrigues',
+        login: 'Acesso administrativo · Tiago Rodrigues',
+        admin: 'Painel administrativo · Tiago Rodrigues',
+      },
+    },
+    en: {
+      nav: { home: 'Home', projects: 'Projects', about: 'About me', contact: 'Contact' },
+      skipLink: 'Skip to content',
+      mainNav: 'Main navigation',
+      homeLink: 'Tiago Rodrigues — home',
+      openMenu: 'Open menu',
+      closeMenu: 'Close menu',
+      language: 'Language',
+      profiles: 'Professional profiles',
+      newTab: '(opens in a new tab)',
+      footer: {
+        tagline: 'Software for the automotive industry: systems, data and artificial intelligence applied to mobility.',
+        navigate: 'Navigation',
+        contact: 'Contact',
+        author: 'Author',
+        revision: 'Revision',
+        credits: 'Image credits',
+        creditsIntro: 'Public-domain or openly licensed technical illustrations, converted to this site’s blueprint style.',
+        publicDomain: 'Public domain',
+        rights: 'All rights reserved.',
+        backToTop: 'Back to top',
+      },
+      titles: {
+        home: 'Tiago Rodrigues — Software for the automotive industry',
+        projects: 'Projects · Tiago Rodrigues',
+        about: 'About me · Tiago Rodrigues',
+        contact: 'Contact · Tiago Rodrigues',
+        login: 'Administrative access · Tiago Rodrigues',
+        admin: 'Admin panel · Tiago Rodrigues',
+      },
+    },
+    de: {
+      nav: { home: 'Startseite', projects: 'Projekte', about: 'Über mich', contact: 'Kontakt' },
+      skipLink: 'Zum Inhalt springen',
+      mainNav: 'Hauptnavigation',
+      homeLink: 'Tiago Rodrigues – Startseite',
+      openMenu: 'Menü öffnen',
+      closeMenu: 'Menü schließen',
+      language: 'Sprache',
+      profiles: 'Berufliche Profile',
+      newTab: '(öffnet in neuem Tab)',
+      footer: {
+        tagline: 'Software für die Automobilindustrie: Systeme, Daten und künstliche Intelligenz für die Mobilität.',
+        navigate: 'Navigation',
+        contact: 'Kontakt',
+        author: 'Autor',
+        revision: 'Revision',
+        credits: 'Bildnachweise',
+        creditsIntro: 'Gemeinfreie oder frei lizenzierte technische Abbildungen, im Blueprint-Stil dieser Website bearbeitet.',
+        publicDomain: 'Gemeinfrei',
+        rights: 'Alle Rechte vorbehalten.',
+        backToTop: 'Nach oben',
+      },
+      titles: {
+        home: 'Tiago Rodrigues – Software für die Automobilindustrie',
+        projects: 'Projekte · Tiago Rodrigues',
+        about: 'Über mich · Tiago Rodrigues',
+        contact: 'Kontakt · Tiago Rodrigues',
+        login: 'Administrativer Zugang · Tiago Rodrigues',
+        admin: 'Admin-Bereich · Tiago Rodrigues',
+      },
+    },
+  };
+
+  readonly home: Record<Locale, HomeTranslations> = {
+    pt: {
+      eyebrow: 'Desenvolvedor de software · Indústria automotiva',
+      titleLead: 'Software para veículos que',
+      titleAccent: 'enxergam a estrada.',
+      intro: 'Sou Tiago Rodrigues, desenvolvedor Java e de inteligência artificial. Construo sistemas, APIs e modelos de percepção pensando no que um carro precisa: precisão, tempo real e segurança.',
+      viewProjects: 'Ver projetos',
+      readArticles: 'Ler os artigos',
+      availability: 'Aberto a projetos e oportunidades na indústria automotiva',
+      figure: {
+        title: 'Ilustração esquemática de um veículo genérico com sensores ADAS',
+        desc: 'Vista lateral em estilo blueprint: câmera frontal atrás do para-brisa, radar frontal no para-choque, radar traseiro e sensores de ultrassom, todos ligados a uma unidade de controle ADAS pelo barramento CAN.',
+        caption: 'Fig. 00 — Arquitetura de sensores ADAS (ilustração esquemática, veículo genérico).',
+        camera: 'Câmera frontal',
+        radar: 'Radar frontal',
+        rearRadar: 'Radar traseiro',
+        ultrasonic: 'Ultrassom',
+        ecu: 'ECU ADAS',
+        bus: 'Barramento CAN',
+      },
+      specIndex: '01 — Perfil',
+      specTitle: 'Ficha técnica',
+      specLede: 'Uma transição de carreira com direção definida: software, inteligência artificial e a indústria automotiva.',
+      specs: [
+        { key: 'Foco', value: 'Indústria automotiva', detail: 'Transição de carreira para o setor automotivo, com foco em desenvolvimento de software e tecnologias inteligentes.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Engenharia de software, APIs REST e bancos de dados.' },
+        { key: 'Inteligência artificial', value: 'Percepção', detail: 'Machine learning, reconhecimento de padrões, inteligência computacional e detecção de faixas.' },
+        { key: 'Embarcados', value: 'IoT e sensores', detail: 'Sistemas embarcados, IoT e aplicações que coletam e interpretam dados de sensores.' },
+        { key: 'Idiomas', value: 'PT · EN · DE', detail: 'Português nativo, inglês B2 e alemão B2, com cinco anos de vivência na Alemanha.' },
+      ],
+      stackTitle: 'Tecnologias do dia a dia',
+      stack: [
+        { key: 'Front-end', items: ['Angular', 'TypeScript', 'HTML e CSS'] },
+        { key: 'Back-end', items: ['Java', 'Spring Boot', 'Python'] },
+        { key: 'Dados', items: ['MariaDB', 'MySQL', 'MongoDB', 'H2'] },
+        { key: 'Ferramentas', items: ['Git', 'Docker', 'Maven', 'IntelliJ IDEA'] },
+      ],
+      projectsIndex: '02 — Projetos',
+      projectsTitle: 'Projetos selecionados',
+      projectsLede: 'Um projeto concluído e dois espaços reservados para o que vem a seguir.',
+      projectLink: 'Ver detalhes',
+      allProjects: 'Ver todos os projetos',
+      statusDone: 'Concluído',
+      statusSoon: 'Em breve',
+      articlesIndex: '03 — Artigos',
+      articlesTitle: 'Da percepção à estrada',
+      articlesLede: 'Uma história em três capítulos sobre como os carros aprenderam a perceber o ambiente — e o que é preciso para que essa percepção seja segura.',
+      chapter: 'Capítulo',
+      minutes: 'min de leitura',
+      readMore: 'Ler o capítulo completo',
+      readLess: 'Recolher o capítulo',
+      references: 'Referências',
+      laneDiagram: { rows: 'linhas de referência', lane: 'faixa detectada', horizon: 'horizonte' },
+      ctaTitle: 'Vamos conversar sobre software para a indústria automotiva?',
+      ctaText: 'Estou aberto a projetos, colaborações e oportunidades em desenvolvimento de sistemas, IA e ADAS.',
+      ctaButton: 'Entrar em contato',
+    },
+    en: {
+      eyebrow: 'Software developer · Automotive industry',
+      titleLead: 'Software for vehicles that',
+      titleAccent: 'read the road.',
+      intro: 'I’m Tiago Rodrigues, a Java and artificial intelligence developer. I build systems, APIs and perception models around what a vehicle needs: accuracy, real-time performance and safety.',
+      viewProjects: 'View projects',
+      readArticles: 'Read the articles',
+      availability: 'Open to projects and opportunities in the automotive industry',
+      figure: {
+        title: 'Schematic illustration of a generic vehicle with ADAS sensors',
+        desc: 'Blueprint-style side view: a front camera behind the windshield, a front radar in the bumper, a rear radar and ultrasonic sensors, all connected to an ADAS control unit over the CAN bus.',
+        caption: 'Fig. 00 — ADAS sensor architecture (schematic illustration, generic vehicle).',
+        camera: 'Front camera',
+        radar: 'Front radar',
+        rearRadar: 'Rear radar',
+        ultrasonic: 'Ultrasonic',
+        ecu: 'ADAS ECU',
+        bus: 'CAN bus',
+      },
+      specIndex: '01 — Profile',
+      specTitle: 'Spec sheet',
+      specLede: 'A career change with a clear direction: software, artificial intelligence and the automotive industry.',
+      specs: [
+        { key: 'Focus', value: 'Automotive industry', detail: 'Career transition into the automotive sector, focused on software development and intelligent technologies.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Software engineering, REST APIs and databases.' },
+        { key: 'Artificial intelligence', value: 'Perception', detail: 'Machine learning, pattern recognition, computational intelligence and lane detection.' },
+        { key: 'Embedded', value: 'IoT & sensors', detail: 'Embedded systems, IoT and applications that collect and interpret sensor data.' },
+        { key: 'Languages', value: 'PT · EN · DE', detail: 'Native Portuguese, B2 English and B2 German, with five years of living in Germany.' },
+      ],
+      stackTitle: 'Everyday tools',
+      stack: [
+        { key: 'Front end', items: ['Angular', 'TypeScript', 'HTML & CSS'] },
+        { key: 'Back end', items: ['Java', 'Spring Boot', 'Python'] },
+        { key: 'Data', items: ['MariaDB', 'MySQL', 'MongoDB', 'H2'] },
+        { key: 'Tools', items: ['Git', 'Docker', 'Maven', 'IntelliJ IDEA'] },
+      ],
+      projectsIndex: '02 — Projects',
+      projectsTitle: 'Selected projects',
+      projectsLede: 'One finished project and two spaces reserved for what comes next.',
+      projectLink: 'View details',
+      allProjects: 'View all projects',
+      statusDone: 'Completed',
+      statusSoon: 'Coming soon',
+      articlesIndex: '03 — Articles',
+      articlesTitle: 'From perception to the road',
+      articlesLede: 'A story in three chapters about how cars learned to perceive their surroundings — and what it takes to make that perception safe.',
+      chapter: 'Chapter',
+      minutes: 'min read',
+      readMore: 'Read the full chapter',
+      readLess: 'Collapse the chapter',
+      references: 'References',
+      laneDiagram: { rows: 'reference rows', lane: 'detected lane', horizon: 'horizon' },
+      ctaTitle: 'Shall we talk about software for the automotive industry?',
+      ctaText: 'I’m open to projects, collaborations and opportunities in systems development, AI and ADAS.',
+      ctaButton: 'Get in touch',
+    },
+    de: {
+      eyebrow: 'Softwareentwickler · Automobilindustrie',
+      titleLead: 'Software für Fahrzeuge,',
+      titleAccent: 'die ihre Umgebung verstehen.',
+      intro: 'Ich bin Tiago Rodrigues, Java- und KI-Entwickler. Ich entwickle Systeme, APIs und Wahrnehmungsmodelle mit Blick auf das, was ein Fahrzeug braucht: Genauigkeit, Echtzeitfähigkeit und Sicherheit.',
+      viewProjects: 'Projekte ansehen',
+      readArticles: 'Artikel lesen',
+      availability: 'Offen für Projekte und Positionen in der Automobilindustrie',
+      figure: {
+        title: 'Schematische Darstellung eines generischen Fahrzeugs mit ADAS-Sensoren',
+        desc: 'Seitenansicht im Blueprint-Stil: Frontkamera hinter der Windschutzscheibe, Frontradar im Stoßfänger, Heckradar und Ultraschallsensoren, alle über den CAN-Bus mit einem ADAS-Steuergerät verbunden.',
+        caption: 'Abb. 00 – ADAS-Sensorarchitektur (schematische Darstellung, generisches Fahrzeug).',
+        camera: 'Frontkamera',
+        radar: 'Frontradar',
+        rearRadar: 'Heckradar',
+        ultrasonic: 'Ultraschall',
+        ecu: 'ADAS-Steuergerät',
+        bus: 'CAN-Bus',
+      },
+      specIndex: '01 — Profil',
+      specTitle: 'Datenblatt',
+      specLede: 'Ein Berufswechsel mit klarer Richtung: Software, künstliche Intelligenz und die Automobilindustrie.',
+      specs: [
+        { key: 'Schwerpunkt', value: 'Automobilindustrie', detail: 'Beruflicher Wechsel in die Automobilbranche mit Fokus auf Softwareentwicklung und intelligente Technologien.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Softwaretechnik, REST-APIs und Datenbanken.' },
+        { key: 'Künstliche Intelligenz', value: 'Wahrnehmung', detail: 'Machine Learning, Mustererkennung, Computational Intelligence und Fahrspurerkennung.' },
+        { key: 'Eingebettet', value: 'IoT & Sensorik', detail: 'Eingebettete Systeme, IoT und Anwendungen, die Sensordaten erfassen und auswerten.' },
+        { key: 'Sprachen', value: 'PT · EN · DE', detail: 'Portugiesisch als Muttersprache, Englisch B2 und Deutsch B2 – mit fünf Jahren Lebenserfahrung in Deutschland.' },
+      ],
+      stackTitle: 'Werkzeuge im Alltag',
+      stack: [
+        { key: 'Frontend', items: ['Angular', 'TypeScript', 'HTML & CSS'] },
+        { key: 'Backend', items: ['Java', 'Spring Boot', 'Python'] },
+        { key: 'Daten', items: ['MariaDB', 'MySQL', 'MongoDB', 'H2'] },
+        { key: 'Werkzeuge', items: ['Git', 'Docker', 'Maven', 'IntelliJ IDEA'] },
+      ],
+      projectsIndex: '02 — Projekte',
+      projectsTitle: 'Ausgewählte Projekte',
+      projectsLede: 'Ein abgeschlossenes Projekt und zwei Plätze für das, was als Nächstes kommt.',
+      projectLink: 'Details ansehen',
+      allProjects: 'Alle Projekte ansehen',
+      statusDone: 'Abgeschlossen',
+      statusSoon: 'Demnächst',
+      articlesIndex: '03 — Artikel',
+      articlesTitle: 'Von der Wahrnehmung auf die Straße',
+      articlesLede: 'Eine Geschichte in drei Kapiteln darüber, wie Autos lernten, ihre Umgebung wahrzunehmen – und was nötig ist, damit diese Wahrnehmung sicher ist.',
+      chapter: 'Kapitel',
+      minutes: 'Min. Lesezeit',
+      readMore: 'Ganzes Kapitel lesen',
+      readLess: 'Kapitel einklappen',
+      references: 'Quellen',
+      laneDiagram: { rows: 'Referenzzeilen', lane: 'erkannte Fahrspur', horizon: 'Horizont' },
+      ctaTitle: 'Sprechen wir über Software für die Automobilindustrie?',
+      ctaText: 'Ich freue mich über Projekte, Kooperationen und Chancen in Systementwicklung, KI und ADAS.',
+      ctaButton: 'Kontakt aufnehmen',
+    },
+  };
+
+  readonly projects: Record<Locale, ProjectsTranslations> = {
+    pt: {
+      eyebrow: 'Portfólio',
+      title: 'Projetos',
+      intro: 'Do sistema acadêmico às próximas ideias: projetos que conectam software, dados e o universo automotivo.',
+      figureAlt: 'Desenho técnico de um chassi com motor, transmissão, suspensão e rodas, sem carroceria.',
+      figureCaption: 'Fig. — Chassi com motor, transmissão e suspensão (ilustração em domínio público).',
+      role: 'Função',
+      stack: 'Tecnologias',
+      status: 'Status',
+      statusDone: 'Concluído',
+      statusSoon: 'Em breve',
+      zoom: 'Ampliar imagem',
+      dialogLabel: 'Visualização de imagem',
+      previous: 'Imagem anterior',
+      next: 'Próxima imagem',
+      close: 'Fechar',
+      counter: 'Imagem {current} de {total}',
+    },
+    en: {
+      eyebrow: 'Portfolio',
+      title: 'Projects',
+      intro: 'From an academic system to the next ideas: projects that connect software, data and the automotive world.',
+      figureAlt: 'Technical drawing of a chassis with engine, transmission, suspension and wheels, without the body.',
+      figureCaption: 'Fig. — Chassis with engine, transmission and suspension (public-domain illustration).',
+      role: 'Role',
+      stack: 'Technologies',
+      status: 'Status',
+      statusDone: 'Completed',
+      statusSoon: 'Coming soon',
+      zoom: 'Enlarge image',
+      dialogLabel: 'Image viewer',
+      previous: 'Previous image',
+      next: 'Next image',
+      close: 'Close',
+      counter: 'Image {current} of {total}',
+    },
+    de: {
+      eyebrow: 'Portfolio',
+      title: 'Projekte',
+      intro: 'Vom Studienprojekt zu den nächsten Ideen: Projekte, die Software, Daten und die Welt des Automobils verbinden.',
+      figureAlt: 'Technische Zeichnung eines Fahrgestells mit Motor, Getriebe, Aufhängung und Rädern, ohne Karosserie.',
+      figureCaption: 'Abb. – Fahrgestell mit Motor, Getriebe und Aufhängung (gemeinfreie Illustration).',
+      role: 'Rolle',
+      stack: 'Technologien',
+      status: 'Status',
+      statusDone: 'Abgeschlossen',
+      statusSoon: 'Demnächst',
+      zoom: 'Bild vergrößern',
+      dialogLabel: 'Bildansicht',
+      previous: 'Vorheriges Bild',
+      next: 'Nächstes Bild',
+      close: 'Schließen',
+      counter: 'Bild {current} von {total}',
+    },
+  };
+
+  readonly contact: Record<Locale, ContactTranslations> = {
+    pt: {
+      eyebrow: 'Contato',
+      title: 'Vamos conversar',
+      intro: 'Estou disponível para conversar sobre projetos, colaborações e oportunidades profissionais. Escolha o canal que preferir.',
+      availabilityLabel: 'Disponível para',
+      availabilityText: 'desenvolvimento de sistemas front-end e back-end, implementação de modelos de IA e soluções para a indústria automotiva, incluindo sistemas ADAS (Advanced Driver Assistance Systems).',
+      emailLabel: 'E-mail',
+      emailDescription: 'Para propostas, dúvidas e oportunidades profissionais.',
+      writeEmail: 'Escrever e-mail',
+      copyEmail: 'Copiar endereço',
+      copied: 'Endereço de e-mail copiado.',
+      copyFailed: 'Não foi possível copiar. Selecione o endereço e copie manualmente.',
+      linkedInLabel: 'LinkedIn',
+      linkedInDescription: 'Trajetória profissional e experiência em desenvolvimento.',
+      githubLabel: 'GitHub',
+      githubDescription: 'Repositórios, projetos e estudos de programação.',
+      open: 'Abrir perfil',
+    },
+    en: {
+      eyebrow: 'Contact',
+      title: 'Let’s talk',
+      intro: 'I’m open to discussing projects, collaborations and professional opportunities. Pick whichever channel suits you best.',
+      availabilityLabel: 'Available for',
+      availabilityText: 'front-end and back-end development, AI model implementation and solutions for the automotive industry, including ADAS (Advanced Driver Assistance Systems).',
+      emailLabel: 'Email',
+      emailDescription: 'For proposals, questions and professional opportunities.',
+      writeEmail: 'Write an email',
+      copyEmail: 'Copy address',
+      copied: 'Email address copied.',
+      copyFailed: 'Could not copy. Please select the address and copy it manually.',
+      linkedInLabel: 'LinkedIn',
+      linkedInDescription: 'Professional background and development experience.',
+      githubLabel: 'GitHub',
+      githubDescription: 'Repositories, projects and programming studies.',
+      open: 'Open profile',
+    },
+    de: {
+      eyebrow: 'Kontakt',
+      title: 'Lassen Sie uns sprechen',
+      intro: 'Ich freue mich über Gespräche zu Projekten, Zusammenarbeit und beruflichen Möglichkeiten. Wählen Sie den Kanal, der Ihnen am besten passt.',
+      availabilityLabel: 'Verfügbar für',
+      availabilityText: 'Front-End- und Back-End-Entwicklung, Umsetzung von KI-Modellen sowie Lösungen für die Automobilindustrie, einschließlich ADAS (Advanced Driver Assistance Systems).',
+      emailLabel: 'E-Mail',
+      emailDescription: 'Für Projektanfragen, Fragen und berufliche Möglichkeiten.',
+      writeEmail: 'E-Mail schreiben',
+      copyEmail: 'Adresse kopieren',
+      copied: 'E-Mail-Adresse kopiert.',
+      copyFailed: 'Kopieren nicht möglich. Bitte markieren Sie die Adresse und kopieren Sie sie manuell.',
+      linkedInLabel: 'LinkedIn',
+      linkedInDescription: 'Beruflicher Werdegang und Erfahrung in der Softwareentwicklung.',
+      githubLabel: 'GitHub',
+      githubDescription: 'Repositories, Projekte und Programmierstudien.',
+      open: 'Profil öffnen',
+    },
   };
 
   readonly about: Record<Locale, AboutTranslations> = {
@@ -114,343 +542,100 @@ export class I18nService {
       eyebrow: 'Perfil profissional',
       title: 'Sobre mim',
       intro: 'Desenvolvedor de software em formação contínua, com foco em Java, inteligência artificial e soluções para a indústria automotiva.',
-      technicalSkills: 'Competências técnicas',
-      java: 'Java 17+, Spring Boot, Jakarta EE, RESTful APIs, JPA, Maven, Gradle, Thymeleaf, Lombok, tratamento de exceções e autenticação JWT.',
-      database: 'MySQL, MariaDB, H2, SQL e modelagem de bancos de dados.',
-      ai: 'Python, TensorFlow, PyTorch, Scikit-learn, fine-tuning e avaliação de modelos.',
-      languages: 'Idiomas',
-      portuguese: 'Português (nativo)',
-      english: 'Inglês (B2, TOEFL)',
-      germanExperience: 'Alemão (B2, curso DFKA em parceria com a LMU).',
-      personalExperienceTitle: 'Experiências pessoais',
-      personalExperience: 'Residência de cinco anos em Munique, principalmente em Schwabing, entre a Leopoldstrasse e o Englischer Garten. Alemão nível B2, com curso realizado na DFKA em parceria com a LMU. Imersão cultural com acompanhamento das tradições locais, do Bayern de Munique, da Oktoberfest, da mídia alemã e de museus e centros culturais como BMW Welt, Deutsches Verkehrszentrum, MotorWorld Munich e Deutsches Museum.',
-      certifications: 'Certificações e conquistas',
-      achievements: [
-        'Aluno especial do Mestrado em Informática da UTFPR: Engenharia de Software, Mineração de Dados, Linguagens de Programação e Inteligência Computacional.',
-        'AI Residency Program: participação em grupo de estudos de IA, com pesquisa em detecção de faixas para sistemas embarcados e veículos autônomos.',
-        'Pós-graduação em Tecnologias Java pela UTFPR (360 horas), com aplicações para gestão de veículos e sensores IoT.',
-        'Microsoft Student Summit Africa 2021 Hackathon: desenvolvimento de uma solução IoT para monitoramento animal.',
-        'Diploma em Medicina Tropical e Saúde Internacional pela LMU (2019) e graduação em Medicina pela UNIOESTE (2013-2018).',
-      ],
+      photoAlt: 'Retrato de Tiago Rodrigues',
+      resumeLabel: 'Baixar currículo',
+      resumeHint: 'PDF',
+      timelineTitle: 'Trajetória',
       timeline: [
         { period: '2025–2026', title: 'Pesquisa e mestrado', text: 'AI Residency Program e disciplinas do mestrado em Informática da UTFPR.' },
-        { period: '2024–2025', title: 'Pós-graduação em Tecnologias Java', text: 'Formação de 360 horas pela UTFPR, com projetos de gestão de veículos e IoT.' },
+        { period: '2024–2025', title: 'Pós-graduação em Tecnologias Java', text: 'Especialização de 360 horas pela UTFPR, com projetos de gestão de veículos e IoT.' },
         { period: '2019', title: 'LMU, Alemanha', text: 'Diploma em Medicina Tropical e Saúde Internacional.' },
-        { period: '2013-2018', title: 'Graduação em Medicina', text: 'Formação médica pela UNIOESTE.' },
+        { period: '2013–2018', title: 'Graduação em Medicina', text: 'Formação médica pela UNIOESTE.' },
       ],
-      resumeLabel: 'Baixar currículo em PDF',
+      certifications: 'Formação e conquistas',
+      achievements: [
+        'Aluno especial do mestrado em Informática da UTFPR: Engenharia de Software, Mineração de Dados, Linguagens de Programação e Inteligência Computacional.',
+        'AI Residency Program: participação em grupo de estudos de IA, com pesquisa em detecção de faixas para sistemas embarcados e veículos autônomos.',
+        'Pós-graduação em Tecnologias Java pela UTFPR (360 horas), com aplicações em gestão de veículos e sensores IoT.',
+        'Microsoft Student Summit Africa 2021 Hackathon: desenvolvimento de uma solução IoT para monitoramento animal.',
+        'Graduação em Medicina pela UNIOESTE (2013–2018) e Diploma em Medicina Tropical e Saúde Internacional pela LMU (2019).',
+      ],
+      languages: 'Idiomas',
+      languageList: ['Português — nativo', 'Inglês — B2 (TOEFL)', 'Alemão — B2 (curso na DFKA em parceria com a LMU)'],
+      personalExperienceTitle: 'Vivência na Alemanha',
+      personalExperience: 'Morei cinco anos em Munique, principalmente em Schwabing, entre a Leopoldstraße e o Englischer Garten. Lá cheguei ao nível B2 de alemão, em um curso da DFKA em parceria com a LMU, e vivi a cidade por dentro: as tradições locais, o futebol, a Oktoberfest, a mídia alemã e museus dedicados à ciência e à mobilidade, como o Deutsches Museum e o Deutsches Verkehrszentrum.',
+      technicalSkills: 'Competências técnicas',
+      skillGroups: [
+        { title: 'Java e back-end', text: 'Java 17+, Spring Boot, Jakarta EE, APIs RESTful, JPA, Maven, Gradle, Thymeleaf, Lombok, tratamento de exceções e autenticação JWT.' },
+        { title: 'Bancos de dados', text: 'MySQL, MariaDB, H2, SQL e modelagem de bancos de dados.' },
+        { title: 'IA e machine learning', text: 'Python, TensorFlow, PyTorch, scikit-learn, fine-tuning e avaliação de modelos.' },
+      ],
     },
     en: {
       eyebrow: 'Professional profile',
       title: 'About me',
       intro: 'Software developer committed to continuous learning, with a focus on Java, artificial intelligence and solutions for the automotive industry.',
-      technicalSkills: 'Technical skills',
-      java: 'Java 17+, Spring Boot, Jakarta EE, RESTful APIs, JPA, Maven, Gradle, Thymeleaf, Lombok, exception handling and JWT authentication.',
-      database: 'MySQL, MariaDB, H2, SQL and database design.',
-      ai: 'Python, TensorFlow, PyTorch, Scikit-learn, fine-tuning and model evaluation.',
-      languages: 'Languages',
-      portuguese: 'Portuguese (native)',
-      english: 'English (B2, TOEFL)',
-      germanExperience: 'German (B1/B2, DFKA course in partnership with LMU).',
-      personalExperienceTitle: 'Personal experiences',
-      personalExperience: 'I lived in Munich for five years, mainly in Schwabing, between Leopoldstrasse and the English Garden. I reached B2-level German through a DFKA course held in partnership with LMU. This experience also gave me first-hand contact with local traditions, FC Bayern Munich, Oktoberfest, German media, and museums and cultural centres such as BMW Welt, Deutsches Verkehrszentrum, MotorWorld Munich and Deutsches Museum.',
-      certifications: 'Certifications and achievements',
-      achievements: [
-        'Special student in UTFPR\'s Master\'s in Computer Science: Software Engineering, Data Mining, Programming Languages and Computational Intelligence.',
-        'AI Residency Program: AI Study Group research on lane-detection algorithms for embedded systems and autonomous vehicles.',
-        'Postgraduate degree in Java Technologies at UTFPR (360 hours), with applications for vehicle management and IoT sensors.',
-        'Microsoft Student Summit Africa 2021 Hackathon: development of an IoT solution for animal monitoring.',
-        'Diploma in Tropical Medicine and International Health from LMU (2019), followed by a medical degree at UNIOESTE (2013–2018).',
-      ],
+      photoAlt: 'Portrait of Tiago Rodrigues',
+      resumeLabel: 'Download résumé',
+      resumeHint: 'PDF',
+      timelineTitle: 'Timeline',
       timeline: [
-        { period: '2025–2026', title: 'Research and master\'s studies', text: 'AI Residency Program and master\'s-level Computer Science courses at UTFPR.' },
-        { period: '2024–2025', title: 'Postgraduate degree in Java Technologies', text: 'A 360-hour UTFPR program with projects in vehicle management and IoT.' },
+        { period: '2025–2026', title: 'Research and master’s studies', text: 'AI Residency Program and master’s-level Computer Science courses at UTFPR.' },
+        { period: '2024–2025', title: 'Postgraduate specialization in Java Technologies', text: 'A 360-hour UTFPR program with projects in vehicle management and IoT.' },
         { period: '2019', title: 'LMU, Germany', text: 'Diploma in Tropical Medicine and International Health.' },
-        { period: '2013-2018', title: 'Medical degree', text: 'Medical training at UNIOESTE.' },
+        { period: '2013–2018', title: 'Medical degree', text: 'Medical training at UNIOESTE.' },
       ],
-      resumeLabel: 'Download resume as PDF',
+      certifications: 'Education and achievements',
+      achievements: [
+        'Non-degree student in the Master’s program in Computer Science at UTFPR: Software Engineering, Data Mining, Programming Languages and Computational Intelligence.',
+        'AI Residency Program: member of an AI study group researching lane-detection algorithms for embedded systems and autonomous vehicles.',
+        'Postgraduate specialization in Java Technologies at UTFPR (360 hours), with applications in vehicle management and IoT sensors.',
+        'Microsoft Student Summit Africa 2021 Hackathon: development of an IoT solution for animal monitoring.',
+        'Medical degree from UNIOESTE (2013–2018) and Diploma in Tropical Medicine and International Health from LMU (2019).',
+      ],
+      languages: 'Languages',
+      languageList: ['Portuguese — native', 'English — B2 (TOEFL)', 'German — B2 (DFKA course in partnership with LMU)'],
+      personalExperienceTitle: 'Life in Germany',
+      personalExperience: 'I lived in Munich for five years, mostly in Schwabing, between Leopoldstraße and the English Garden. There I reached B2-level German through a DFKA course run in partnership with LMU, and experienced the city from the inside: local traditions, football, Oktoberfest, German media and museums dedicated to science and mobility, such as the Deutsches Museum and the Deutsches Verkehrszentrum.',
+      technicalSkills: 'Technical skills',
+      skillGroups: [
+        { title: 'Java and back end', text: 'Java 17+, Spring Boot, Jakarta EE, RESTful APIs, JPA, Maven, Gradle, Thymeleaf, Lombok, exception handling and JWT authentication.' },
+        { title: 'Databases', text: 'MySQL, MariaDB, H2, SQL and database design.' },
+        { title: 'AI and machine learning', text: 'Python, TensorFlow, PyTorch, scikit-learn, fine-tuning and model evaluation.' },
+      ],
     },
     de: {
       eyebrow: 'Berufliches Profil',
       title: 'Über mich',
       intro: 'Softwareentwickler in kontinuierlicher Weiterbildung mit Schwerpunkt auf Java, künstlicher Intelligenz und Lösungen für die Automobilindustrie.',
-      technicalSkills: 'Technische Kompetenzen',
-      java: 'Java 17+, Spring Boot, Jakarta EE, RESTful APIs, JPA, Maven, Gradle, Thymeleaf, Lombok, Ausnahmebehandlung und JWT-Authentifizierung.',
-      database: 'MySQL, MariaDB, H2, SQL und Datenbankdesign.',
-      ai: 'Python, TensorFlow, PyTorch, Scikit-learn, Fine-Tuning und Modellevaluierung.',
-      languages: 'Sprachen',
-      portuguese: 'Portugiesisch (Muttersprache)',
-      english: 'Englisch (B2, TOEFL)',
-      germanExperience: 'Deutsch (B1/B2, DFKA-Kurs in Zusammenarbeit mit der LMU).',
-      personalExperienceTitle: 'Persönliche Erfahrungen',
-      personalExperience: 'Fünf Jahre habe ich in München gelebt, vor allem in Schwabing zwischen Leopoldstraße und Englischem Garten. Meine Deutschkenntnisse auf B2-Niveau habe ich in einem DFKA-Kurs in Zusammenarbeit mit der LMU vertieft. Diese Zeit hat mir außerdem einen unmittelbaren Einblick in lokale Traditionen, den FC Bayern, das Oktoberfest, die deutsche Medienlandschaft sowie Museen und Kulturzentren wie die BMW Welt, das Deutsche Verkehrszentrum, MotorWorld Munich und das Deutsche Museum gegeben.',
-      certifications: 'Ausbildung und Erfolge',
-      achievements: [
-        'Masterstudium Informatik an der UTFPR als Gasthörer: Softwaretechnik, Data Mining, Programmiersprachen und Computational Intelligence.',
-        'AI Residency Program: Forschung in einer KI-Studiengruppe zur Fahrspurerkennung für eingebettete Systeme und autonome Fahrzeuge.',
-        'Aufbaustudium in Java-Technologien an der UTFPR (360 Stunden) mit Anwendungen für Fahrzeugverwaltung und IoT-Sensoren.',
-        'Microsoft Student Summit Africa 2021 Hackathon: Entwicklung einer IoT-Lösung zur Tierüberwachung.',
-        'Diplom in Tropenmedizin und Internationaler Gesundheit an der LMU (2019) sowie Medizinstudium an der UNIOESTE (2013–2018).',
-      ],
+      photoAlt: 'Porträt von Tiago Rodrigues',
+      resumeLabel: 'Lebenslauf herunterladen',
+      resumeHint: 'PDF',
+      timelineTitle: 'Werdegang',
       timeline: [
         { period: '2025–2026', title: 'Forschung und Masterstudium', text: 'AI Residency Program und Masterkurse in Informatik an der UTFPR.' },
         { period: '2024–2025', title: 'Aufbaustudium in Java-Technologien', text: '360-stündiges Programm an der UTFPR mit Projekten zur Fahrzeugverwaltung und zu IoT.' },
         { period: '2019', title: 'LMU, Deutschland', text: 'Diplom in Tropenmedizin und Internationaler Gesundheit.' },
-        { period: '2013-2018', title: 'Medizinstudium', text: 'Medizinische Ausbildung an der UNIOESTE.' },
+        { period: '2013–2018', title: 'Medizinstudium', text: 'Medizinische Ausbildung an der UNIOESTE.' },
       ],
-      resumeLabel: 'Lebenslauf als PDF herunterladen',
-    },
-  };
-
-  readonly home: Record<Locale, HomeTranslations> = {
-    pt: {
-      heroTitle: 'Bem-vindo ao meu Portfólio',
-      heroSubtitle: 'Transformando ideias em experiências digitais e soluções para mobilidade inteligente.',
-      viewProjects: 'Ver Projetos',
-      contactUs: 'Entrar em Contato',
-      projectDetails: 'Ver na página de projetos',
-      allProjects: 'Ver todos os projetos',
-      noProjectsTitle: 'Nenhum projeto disponível',
-      noProjectsText: 'Em breve novos projetos serão adicionados!',
-      stats: {
-        automotive: {
-          label: 'Foco automotivo',
-          description: 'Transição de carreira para a indústria automotiva, com foco em desenvolvimento de software e tecnologias inteligentes.',
-        },
-        software: {
-          label: 'Desenvolvimento de software',
-          description: 'Java • Python • Engenharia de Software • APIs • Banco de Dados',
-        },
-        artificialIntelligence: {
-          label: 'Inteligência artificial',
-          description: 'Machine Learning • Reconhecimento de Padrões • Inteligência Computacional • IA aplicada',
-        },
-        embedded: {
-          label: 'Sistemas embarcados & IoT',
-          description: 'Sistemas embarcados • IoT • Sensores • Desenvolvimento de aplicações',
-        },
-        international: {
-          label: 'Perfil internacional',
-          description: 'Alemão B2 • Inglês B2 • Vivência acadêmica e cultural na Alemanha',
-        },
-      },
-      featuredTitle: 'Projetos selecionados',
-      featuredSubtitle: 'Conheça alguns dos meus melhores trabalhos.',
-      authorialTitle: 'Artigos técnicos',
-      authorialSubtitle: 'Análises e notas técnicas sobre tecnologia, mobilidade e sistemas inteligentes.',
-      authorialCards: [
-        {
-          tag: 'O que são sistemas ADAS ?',
-          title: 'Sistemas Avançados de Assistência ao Condutor',
-          text: 'Os Sistemas Avançados de Assistência ao Condutor (Advanced Driver Assistance Systems — ADAS) são tecnologias embarcadas desenvolvidas para auxiliar o motorista na percepção do ambiente, na tomada de decisões e, em determinadas funções, na execução de intervenções sobre o veículo. Segundo Yurtsever et al. [1], os sistemas de assistência constituem uma etapa importante na evolução da automação veicular, combinando sensores, processamento computacional e algoritmos para interpretar o ambiente de condução. Entre suas aplicações estão o controle adaptativo de velocidade (ACC), a frenagem automática de emergência (AEB), o alerta de saída de faixa (LDWS) e o assistente de permanência em faixa (LKAS). Estudos de revisão também apontam que essas tecnologias são investigadas como ferramentas para aumentar a segurança e reduzir situações de risco no trânsito [2].Na prática, essas tecnologias já estão presentes em veículos comercializados no Brasil. O BMW i3, por exemplo, foi oferecido no mercado brasileiro com o Driving Assistant Plus, incluindo recursos de alerta de mudança involuntária de faixa, prevenção de aproximação frontal e outros sistemas de assistência [3]. Atualmente, a Honda disponibiliza o Honda SENSING em diferentes modelos comercializados no país, reunindo funções como ACC, frenagem para mitigação de colisões, LKAS e mitigação de saída de pista [4]. Esses exemplos mostram que ADAS não corresponde a uma única tecnologia, mas a um conjunto de funções que podem atuar de forma integrada, utilizando diferentes sensores e níveis de automação. Assim, um sistema ADAS deve ser compreendido como uma arquitetura de assistência ao condutor, e não simplesmente como um recurso isolado. A câmera, o radar, o processamento computacional e os algoritmos de percepção constituem partes de uma cadeia que transforma informações do ambiente em alertas ou ações de assistência. No caso do LKAS, por exemplo, a identificação das marcações da pista é uma etapa fundamental para estimar a posição do veículo em relação à faixa e permitir a assistência à direção. Essa integração entre percepção, processamento e atuação estabelece a conexão entre os sistemas ADAS atuais e as técnicas de visão computacional e inteligência artificial utilizadas em seu desenvolvimento.',
-          references: '[1] E. Yurtsever, J. Lambert, A. Carballo and K. Takeda, “A Survey of Autonomous Driving: Common Practices and Emerging Technologies,” IEEE Access, vol. 8, pp. 58443–58469, 2020, doi: 10.1109/ACCESS.2020.2983149.[2] S. A. Useche, M. Faus and F. Alonso, “Cyclist at 12 o’clock!: A systematic review of in-vehicle advanced driver assistance systems (ADAS) for preventing car-rider crashes,” Frontiers in Public Health, vol. 12, 2024, doi: 10.3389/fpubh.2024.1335209.[3] BMW GROUP BRASIL, “Novo BMW i3 chega ao Brasil,” BMW PressClub Brasil, 2018. A publicação descreve o Driving Assistant Plus e suas funções de assistência ao condutor.[4] HONDA AUTOMÓVEIS, “Honda SENSING — Segurança e assistência ao condutor,” Honda Brasil, 2026.',
-        },
-        {
-          tag: 'ADAS e regulamentação',
-          title: 'ADAS, regulamentação e maturidade tecnológica',
-          text: 'A expansão dos sistemas ADAS também está relacionada à evolução dos requisitos de segurança e regulamentação automotiva. No Brasil, a Lei nº 14.902/2024, que instituiu o Programa Mobilidade Verde e Inovação (MOVER), estabeleceu entre suas diretrizes o aumento da disponibilidade de tecnologias assistivas à direção nos veículos comercializados no país [1]. O Decreto nº 12.435/2025, que regulamenta o programa, definiu o índice de desempenho estrutural e tecnologias assistivas à direção (InTec) e incluiu, entre seus requisitos, sistemas como frenagem automática de emergência (AEB), alerta de afastamento de faixa (LDWS) e, no grupo de tecnologias inovadoras, o assistente de permanência em faixa (LKAS) [2]. Desde 1º de junho de 2025, a comercialização e a importação de determinados veículos novos passaram a estar condicionadas ao atendimento dos requisitos estabelecidos pelo programa [3]. Para a comprovação de desempenho, o próprio decreto prevê a utilização de regulamentações do CONTRAN e, quando não houver regulamentação nacional específica, referências internacionais como os regulamentos da UNECE e padrões ISO [2].O desenvolvimento de um ADAS, entretanto, envolve requisitos que vão além da homologação do veículo. A ISO 26262 estabelece uma estrutura para segurança funcional de sistemas elétricos e eletrônicos automotivos [4], enquanto a ISO 21448 (SOTIF) trata dos riscos relacionados à segurança da funcionalidade pretendida, aspecto especialmente relevante para sistemas que dependem de sensores e algoritmos de percepção [5]. Para funções de direção relacionadas à manutenção da trajetória, o UN Regulation No. 79 constitui uma referência internacional para sistemas de direção e funções de assistência [6]. A legislação brasileira também utiliza diferentes mecanismos de comprovação de desempenho conforme a tecnologia e a categoria do veículo. Portanto, normas de segurança funcional, requisitos de homologação e requisitos de desempenho devem ser considerados de maneira integrada no desenvolvimento de um sistema ADAS. A maturidade de uma tecnologia também pode ser descrita pelo Technology Readiness Level (TRL). Na metodologia utilizada pela FINEP MOVER, a escala varia de TRL 1, correspondente à observação de princípios básicos, até TRL 9, no qual o sistema está operando e comprovado em sua missão [7]. Para uma solução de Lane Detection, por exemplo, a validação de um modelo em datasets representa uma etapa experimental, enquanto a integração em hardware embarcado, testes em ambiente relevante, demonstração em veículo e qualificação do sistema correspondem a estágios progressivamente mais avançados. O TRL, portanto, não deve ser confundido com uma certificação obrigatória para ADAS, mas utilizado para caracterizar o nível de maturidade alcançado por uma tecnologia específica. No contexto brasileiro, essa perspectiva aproxima a pesquisa acadêmica das etapas de desenvolvimento, validação e eventual industrialização de soluções automotivas.',
-          references: '[1] BRASIL. Lei nº 14.902, de 27 de junho de 2024. Institui o Programa Mobilidade Verde e Inovação — Programa MOVER. Brasília, DF, 2024.[2] BRASIL. Decreto nº 12.435, de 15 de abril de 2025. Regulamenta o Programa Mobilidade Verde e Inovação — Programa MOVER. Brasília, DF, 2025.[3] BRASIL. Ministério do Desenvolvimento, Indústria, Comércio e Serviços. Programa MOVER. Brasília, 2026.[4] INTERNATIONAL ORGANIZATION FOR STANDARDIZATION. ISO 26262:2018 — Road vehicles — Functional safety. Geneva: ISO, 2018.[5] INTERNATIONAL ORGANIZATION FOR STANDARDIZATION. ISO 21448:2022 — Road vehicles — Safety of the intended functionality. Geneva: ISO, 2022.[6] UNITED NATIONS ECONOMIC COMMISSION FOR EUROPE. UN Regulation No. 79 — Uniform provisions concerning the approval of vehicles with regard to steering equipment. UNECE, 2022.[7] FINEP; MCTI; MDIC. Finep MOVER Empresarial — Anexo 5: Definição de Nível de Maturidade Tecnológica (TRL). Brasília, 2025.',
-        },
-        {
-          tag: 'ADAS e IA',
-          title: 'ADAS, Inteligência Artificial e sistemas embarcados',
-          text: 'A Inteligência Artificial (IA) tem ampliado as possibilidades de percepção utilizadas em sistemas ADAS, especialmente na interpretação de imagens e na identificação de elementos da via. Entre essas aplicações, a detecção de faixas (Lane Detection) é uma etapa importante para funções como LDWS e LKAS, pois permite estimar a localização e a geometria das marcações da pista. Revisões sobre o tema mostram uma evolução de métodos tradicionais de processamento de imagens para arquiteturas baseadas em aprendizado profundo, capazes de aprender representações diretamente dos dados [1], [2]. Essa evolução, entretanto, introduz um desafio específico para aplicações automotivas: o modelo precisa combinar capacidade de percepção com requisitos de processamento em tempo real, robustez e eficiência computacional.Nesse contexto, Qin, Wang e Li propuseram o Ultra Fast Structure-aware Deep Lane Detection (UFLD), formulando a detecção de faixas como um problema de seleção por linhas (row-based selection) em vez de depender exclusivamente de segmentação pixel a pixel [3]. Segundo os autores, essa formulação reduz significativamente o custo computacional e permite alcançar elevada velocidade de inferência, característica relevante para aplicações embarcadas. Outra abordagem, apresentada por Tabelini et al. no LaneATT, utiliza atenção para explorar informações globais da imagem e lidar com situações como oclusões e marcações incompletas, mantendo a preocupação com eficiência em tempo real [4]. Pesquisas mais recentes também exploram modelos temporais, nos quais informações de quadros consecutivos são utilizadas para melhorar a detecção em situações nas quais uma única imagem apresenta informações insuficientes [5]. Dessa forma, a escolha de um algoritmo para ADAS envolve não apenas a precisão do modelo, mas também latência, FPS, memória, consumo computacional e estabilidade das previsões. Para sistemas embarcados, portanto, o desenvolvimento de IA para ADAS exige uma relação entre desempenho de percepção e eficiência computacional. Um modelo pode apresentar excelentes resultados em um benchmark e, ainda assim, exigir recursos incompatíveis com a plataforma embarcada disponível. Trabalhos recentes sobre detecção de faixas em sistemas de baixo consumo reforçam a importância de arquiteturas capazes de operar em hardware limitado, inclusive plataformas baseadas exclusivamente em CPU [6]. Nesse cenário, arquiteturas leves como UFLD e LaneATT, juntamente com estratégias temporais, otimização de modelos e avaliação em hardware real, constituem caminhos para aproximar os resultados obtidos em pesquisa de aplicações automotivas. Para um sistema de Lane Keeping, essa abordagem permite investigar não somente se a faixa pode ser detectada, mas se ela pode ser detectada com precisão, estabilidade e velocidade suficientes para uma aplicação embarcada.',
-          references: '[1] N. J. Zakaria et al., “Lane Detection in Autonomous Vehicles: A Systematic Review,” IEEE Access, vol. 11, pp. 3729–3765, 2023, doi: 10.1109/ACCESS.2023.3234442.[2] J. Tang, S. Li and P. Liu, “A Review of Lane Detection Methods Based on Deep Learning,” Pattern Recognition, vol. 111, p. 107623, 2021, doi: 10.1016/j.patcog.2020.107623.[3] Z. Qin, H. Wang and X. Li, “Ultra Fast Structure-aware Deep Lane Detection,” in Proc. European Conference on Computer Vision (ECCV), 2020, pp. 276–291, doi: 10.1007/978-3-030-58586-0_17.[4] L. Tabelini et al., “Keep Your Eyes on the Lane: Real-Time Attention-Guided Lane Detection,” in Proc. IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, pp. 294–302, doi: 10.1109/CVPR46437.2021.00036.[5] Y. Dong et al., “A Hybrid Spatial–Temporal Deep Learning Architecture for Lane Detection,” Computer-Aided Civil and Infrastructure Engineering, vol. 38, no. 1, pp. 67–86, 2023, doi: 10.1111/mice.12829.[6] S.-E. Tsai, S.-M. Yang and C.-H. Hsieh, “Real-Time Deterministic Lane Detection on CPU-Only Embedded Systems via Binary Line Segment Filtering,” Electronics, vol. 15, no. 2, p. 351, 2026, doi: 10.3390/electronics15020351.',
-        },
+      certifications: 'Qualifikationen und Erfolge',
+      achievements: [
+        'Gaststudent im Masterstudiengang Informatik der UTFPR: Softwaretechnik, Data Mining, Programmiersprachen und Computational Intelligence.',
+        'AI Residency Program: Mitarbeit in einer KI-Studiengruppe, die Fahrspurerkennung für eingebettete Systeme und autonome Fahrzeuge erforscht.',
+        'Aufbaustudium in Java-Technologien an der UTFPR (360 Stunden) mit Anwendungen in Fahrzeugverwaltung und IoT-Sensorik.',
+        'Microsoft Student Summit Africa 2021 Hackathon: Entwicklung einer IoT-Lösung zur Tierüberwachung.',
+        'Medizinstudium an der UNIOESTE (2013–2018) und Diplom in Tropenmedizin und Internationaler Gesundheit an der LMU (2019).',
       ],
-      skills: {
-        title: 'Minhas Habilidades',
-        subtitle: 'Tecnologias que utilizo no dia a dia.',
-        frontend: 'Frontend',
-        backend: 'Backend',
-        database: 'Banco de Dados',
-        tools: 'Ferramentas',
-      },
-      ctaTitle: 'Vamos criar algo incrível juntos?',
-      ctaText: 'Estou disponível para novos projetos e desafios.',
-      ctaButton: 'Entre em Contato Agora',
-    },
-    en: {
-      heroTitle: 'Welcome to my Portfolio',
-      heroSubtitle: 'Turning ideas into digital experiences and intelligent mobility solutions.',
-      viewProjects: 'View Projects',
-      contactUs: 'Contact Me',
-      projectDetails: 'View on the projects page',
-      allProjects: 'View all projects',
-      noProjectsTitle: 'No projects available',
-      noProjectsText: 'New projects will be added soon!',
-      stats: {
-        automotive: {
-          label: 'Automotive focus',
-          description: 'Career transition into the automotive industry, focused on software development and intelligent technologies.',
-        },
-        software: {
-          label: 'Software development',
-          description: 'Java • Python • Software Engineering • APIs • Databases',
-        },
-        artificialIntelligence: {
-          label: 'Artificial intelligence',
-          description: 'Machine Learning • Pattern Recognition • Computational Intelligence • Applied AI',
-        },
-        embedded: {
-          label: 'Embedded systems & IoT',
-          description: 'Embedded systems • IoT • Sensors • Application development',
-        },
-        international: {
-          label: 'International profile',
-          description: 'German B2 • English B2 • Academic and cultural experience in Germany',
-        },
-      },
-      featuredTitle: 'Selected projects',
-      featuredSubtitle: 'Explore some of my best work.',
-      authorialTitle: 'Technical articles',
-      authorialSubtitle: 'Technical analysis and notes on technology, mobility and intelligent systems.',
-      authorialCards: [
-        {
-          tag: 'What ADAS systems are',
-          title: 'Advanced Driver Assistance Systems',
-          text: 'Advanced Driver Assistance Systems (ADAS) are embedded technologies designed to support the driver in perceiving the surrounding environment, making decisions and, in some functions, intervening in vehicle control. As described by Yurtsever et al. [1], driver-assistance systems represent an important step in the evolution of vehicle automation by combining sensors, computing and algorithms to interpret driving conditions. Typical applications include adaptive cruise control (ACC), automatic emergency braking (AEB), lane-departure warning (LDWS) and lane-keeping assistance (LKAS). Review studies also examine these technologies as tools for improving safety and reducing traffic risks [2]. These systems are already present in vehicles sold in Brazil. The BMW i3, for example, was offered with Driving Assistant Plus, including warnings for unintended lane changes, front-collision prevention and other assistance functions [3]. Honda currently offers Honda SENSING in several models sold in the country, combining ACC, collision-mitigation braking, LKAS and road-departure mitigation [4]. These examples show that ADAS is not a single technology, but a set of integrated functions using different sensors and levels of automation. An ADAS should therefore be understood as a driver-assistance architecture rather than an isolated feature: cameras, radar, computing and perception algorithms form a chain that turns environmental information into warnings or assistance actions.',
-          references: '[1] E. Yurtsever, J. Lambert, A. Carballo and K. Takeda, “A Survey of Autonomous Driving: Common Practices and Emerging Technologies,” IEEE Access, vol. 8, pp. 58443–58469, 2020. [2] S. A. Useche, M. Faus and F. Alonso, “Cyclist at 12 o’clock!: A systematic review of in-vehicle advanced driver assistance systems (ADAS) for preventing car-rider crashes,” Frontiers in Public Health, vol. 12, 2024. [3] BMW Group Brasil, “Novo BMW i3 chega ao Brasil,” BMW PressClub Brasil, 2018. [4] Honda Automóveis, “Honda SENSING — Segurança e assistência ao condutor,” Honda Brasil, 2026.',
-        },
-        {
-          tag: 'ADAS and regulation',
-          title: 'ADAS, regulation and technological maturity',
-          text: 'The expansion of ADAS is closely connected to the development of automotive safety requirements and regulation. In Brazil, Law No. 14,902/2024, which established the Green Mobility and Innovation Program (MOVER), included the wider availability of driver-assistance technologies among its guidelines [1]. Decree No. 12,435/2025 defined the InTec performance index and included functions such as automatic emergency braking (AEB), lane-departure warning (LDWS) and lane-keeping assistance (LKAS) among its requirements [2]. Since June 1, 2025, the sale and import of certain new vehicles have been subject to the program requirements [3]. The decree also refers to CONTRAN regulations and, where no specific national rule exists, international references such as UNECE regulations and ISO standards [2]. Vehicle approval, however, is only one part of the challenge. ISO 26262 addresses the functional safety of automotive electrical and electronic systems [4], while ISO 21448 (SOTIF) addresses risks related to the safety of intended functionality, especially in systems that depend on sensors and perception algorithms [5]. For functions related to trajectory keeping, UN Regulation No. 79 is an important international reference [6]. ADAS development therefore requires functional safety, approval requirements and performance targets to be treated as one connected engineering problem, from the first design decision to real-world validation.',
-          references: '[1] Brazil, Law No. 14,902 of June 27, 2024. Green Mobility and Innovation Program — MOVER. [2] Brazil, Decree No. 12,435 of April 15, 2025. [3] Brazil, Ministry of Development, Industry, Foreign Trade and Services. MOVER Program, 2026. [4] International Organization for Standardization. ISO 26262:2018. [5] International Organization for Standardization. ISO 21448:2022. [6] United Nations Economic Commission for Europe. UN Regulation No. 79, 2022.',
-        },
-        {
-          tag: 'ADAS and AI',
-          title: 'ADAS, artificial intelligence and embedded systems',
-          text: 'Artificial intelligence has expanded the perception capabilities used in ADAS, particularly for image interpretation and the identification of road elements. Lane detection is important for functions such as LDWS and LKAS because it estimates the position and geometry of lane markings. Research reviews describe a shift from traditional image-processing methods to deep-learning architectures that learn representations directly from data [1], [2]. This progress creates a specific challenge for automotive applications: a model must combine perception quality with real-time processing, robustness and computational efficiency. Qin, Wang and Li proposed Ultra Fast Structure-aware Deep Lane Detection (UFLD), framing lane detection as a row-based selection problem rather than relying exclusively on pixel-level segmentation [3]. LaneATT, presented by Tabelini et al., uses attention to capture global image information and handle occlusions or incomplete markings while maintaining real-time efficiency [4]. More recent work also explores temporal models that use consecutive frames to improve detection when a single image contains insufficient information [5]. Choosing an ADAS algorithm therefore involves more than model accuracy. Latency, frames per second, memory, energy consumption and prediction stability are equally important. For embedded systems, AI development must balance research performance with the practical limits of the hardware.',
-          references: '[1] N. J. Zakaria et al., “Lane Detection in Autonomous Vehicles: A Systematic Review,” IEEE Access, vol. 11, pp. 3729–3765, 2023. [2] J. Tang, S. Li and P. Liu, “A Review of Lane Detection Methods Based on Deep Learning,” Pattern Recognition, vol. 111, 2021. [3] Z. Qin, H. Wang and X. Li, “Ultra Fast Structure-aware Deep Lane Detection,” ECCV, 2020. [4] L. Tabelini et al., “Keep Your Eyes on the Lane: Real-Time Attention-Guided Lane Detection,” CVPR, 2021. [5] Y. Dong et al., “A Hybrid Spatial–Temporal Deep Learning Architecture for Lane Detection,” 2023.',
-        },
+      languages: 'Sprachen',
+      languageList: ['Portugiesisch – Muttersprache', 'Englisch – B2 (TOEFL)', 'Deutsch – B2 (DFKA-Kurs in Zusammenarbeit mit der LMU)'],
+      personalExperienceTitle: 'Leben in Deutschland',
+      personalExperience: 'Fünf Jahre habe ich in München gelebt, vor allem in Schwabing zwischen Leopoldstraße und Englischem Garten. Dort habe ich in einem DFKA-Kurs in Zusammenarbeit mit der LMU Deutsch auf B2-Niveau gelernt und die Stadt von innen erlebt: lokale Traditionen, Fußball, das Oktoberfest, die deutsche Medienlandschaft sowie Museen für Wissenschaft und Mobilität wie das Deutsche Museum und das Deutsche Verkehrszentrum.',
+      technicalSkills: 'Technische Kompetenzen',
+      skillGroups: [
+        { title: 'Java und Backend', text: 'Java 17+, Spring Boot, Jakarta EE, RESTful APIs, JPA, Maven, Gradle, Thymeleaf, Lombok, Ausnahmebehandlung und JWT-Authentifizierung.' },
+        { title: 'Datenbanken', text: 'MySQL, MariaDB, H2, SQL und Datenbankdesign.' },
+        { title: 'KI und Machine Learning', text: 'Python, TensorFlow, PyTorch, scikit-learn, Fine-Tuning und Modellevaluierung.' },
       ],
-      skills: {
-        title: 'My Skills',
-        subtitle: 'Technologies I use on a daily basis.',
-        frontend: 'Frontend',
-        backend: 'Backend',
-        database: 'Database',
-        tools: 'Tools',
-      },
-      ctaTitle: 'Let’s build something amazing together?',
-      ctaText: 'I am available for new projects and challenges.',
-      ctaButton: 'Get in Touch Now',
-    },
-    de: {
-      heroTitle: 'Willkommen in meinem Portfolio',
-      heroSubtitle: 'Ich entwickle aus Ideen digitale Erlebnisse und Lösungen für die intelligente Mobilität.',
-      viewProjects: 'Projekte ansehen',
-      contactUs: 'Kontakt aufnehmen',
-      projectDetails: 'Auf der Projektseite ansehen',
-      allProjects: 'Alle Projekte ansehen',
-      noProjectsTitle: 'Keine Projekte verfügbar',
-      noProjectsText: 'Bald werden neue Projekte hinzugefügt!',
-      stats: {
-        automotive: {
-          label: 'Automobiler Schwerpunkt',
-          description: 'Beruflicher Wechsel in die Automobilindustrie mit Fokus auf Softwareentwicklung und intelligente Technologien.',
-        },
-        software: {
-          label: 'Software-Entwicklung',
-          description: 'Java • Python • Softwaretechnik • APIs • Datenbanken',
-        },
-        artificialIntelligence: {
-          label: 'Künstliche Intelligenz',
-          description: 'Machine Learning • Mustererkennung • Computational Intelligence • Angewandte KI',
-        },
-        embedded: {
-          label: 'Eingebettete Systeme & IoT',
-          description: 'Eingebettete Systeme • IoT • Sensoren • Anwendungsentwicklung',
-        },
-        international: {
-          label: 'Internationales Profil',
-          description: 'Deutsch B2 • Englisch B2 • Akademische und kulturelle Erfahrung in Deutschland',
-        },
-      },
-      featuredTitle: 'Ausgewählte Projekte',
-      featuredSubtitle: 'Ein Einblick in ausgewählte Arbeiten.',
-      authorialTitle: 'Fachbeiträge',
-      authorialSubtitle: 'Analysen und technische Beiträge zu Technologie, Mobilität und intelligenten Systemen.',
-      authorialCards: [
-        {
-          tag: 'Was ADAS-Systeme leisten',
-          title: 'Fortgeschrittene Fahrerassistenzsysteme',
-          text: 'Advanced Driver Assistance Systems (ADAS) sind eingebettete Technologien, die den Fahrer bei der Wahrnehmung der Umgebung, bei Entscheidungen und in bestimmten Funktionen auch bei Eingriffen in die Fahrzeugsteuerung unterstützen. Wie Yurtsever et al. [1] zeigen, sind Fahrerassistenzsysteme ein wichtiger Schritt in der Entwicklung der Fahrzeugautomatisierung: Sensoren, Rechenleistung und Algorithmen werden miteinander verbunden, um die Verkehrssituation zu interpretieren. Zu den typischen Anwendungen gehören die adaptive Geschwindigkeitsregelung (ACC), die automatische Notbremsung (AEB), der Spurverlassenswarner (LDWS) und der Spurhalteassistent (LKAS). Übersichtsarbeiten untersuchen diese Technologien außerdem als Instrumente, um die Verkehrssicherheit zu erhöhen und Risikosituationen zu verringern [2]. In Brasilien sind solche Funktionen bereits in Fahrzeugen auf dem Markt zu finden. Der BMW i3 wurde beispielsweise mit Driving Assistant Plus angeboten, unter anderem mit Warnungen vor unbeabsichtigtem Spurwechsel und Funktionen zur Vermeidung von Frontkollisionen [3]. Honda bietet Honda SENSING inzwischen in mehreren Modellen an; dazu gehören ACC, kollisionsminderndes Bremsen, LKAS und die Minderung eines unbeabsichtigten Verlassens der Fahrbahn [4]. ADAS bezeichnet damit keine einzelne Technologie, sondern ein Zusammenspiel verschiedener Funktionen, Sensoren und Automatisierungsstufen. Ein ADAS ist folglich als Assistenzarchitektur zu verstehen: Kamera, Radar, Rechenleistung und Wahrnehmungsalgorithmen übersetzen Umgebungsdaten in Warnungen oder unterstützende Aktionen.',
-          references: '[1] E. Yurtsever, J. Lambert, A. Carballo und K. Takeda, “A Survey of Autonomous Driving: Common Practices and Emerging Technologies,” IEEE Access, Bd. 8, S. 58443–58469, 2020. [2] S. A. Useche, M. Faus und F. Alonso, “Cyclist at 12 o’clock!: A systematic review of in-vehicle advanced driver assistance systems (ADAS) for preventing car-rider crashes,” Frontiers in Public Health, Bd. 12, 2024. [3] BMW Group Brasil, “Novo BMW i3 chega ao Brasil,” BMW PressClub Brasil, 2018. [4] Honda Automóveis, “Honda SENSING — Segurança e assistência ao condutor,” Honda Brasil, 2026.',
-        },
-        {
-          tag: 'ADAS und Regulierung',
-          title: 'ADAS, Regulierung und technologische Reife',
-          text: 'Die Verbreitung von ADAS hängt eng mit der Entwicklung von Sicherheitsanforderungen und gesetzlichen Rahmenbedingungen zusammen. In Brasilien formuliert das Gesetz Nr. 14.902/2024, mit dem das Programm für grüne Mobilität und Innovation (MOVER) geschaffen wurde, die stärkere Verfügbarkeit von Fahrerassistenztechnologien als eines seiner Ziele [1]. Das Dekret Nr. 12.435/2025 definiert den Leistungsindex InTec und nennt unter anderem die automatische Notbremsung (AEB), den Spurverlassenswarner (LDWS) und den Spurhalteassistenten (LKAS) als relevante Funktionen [2]. Seit dem 1. Juni 2025 ist der Verkauf und Import bestimmter Neufahrzeuge an die Einhaltung dieser Anforderungen gebunden [3]. Für den Nachweis der Leistungsfähigkeit verweist das Dekret auf CONTRAN-Regelungen und, sofern keine nationale Vorschrift vorliegt, auf internationale Grundlagen wie UNECE-Regelungen und ISO-Normen [2]. Die Zulassung eines Fahrzeugs ist jedoch nur ein Teil der Aufgabe. ISO 26262 behandelt die funktionale Sicherheit elektrischer und elektronischer Systeme im Fahrzeug [4], während ISO 21448 (SOTIF) Risiken der bestimmungsgemäßen Funktion betrachtet – besonders relevant für Systeme, die auf Sensoren und Wahrnehmungsalgorithmen angewiesen sind [5]. Für Funktionen zur Spur- und Kursführung ist die UN-Regelung Nr. 79 eine wichtige internationale Referenz [6]. ADAS-Entwicklung bedeutet deshalb, funktionale Sicherheit, Zulassung und Leistungsanforderungen als zusammenhängende technische Aufgabe zu behandeln – von der ersten Architekturentscheidung bis zur Erprobung unter realen Bedingungen.',
-          references: '[1] Brasilien, Gesetz Nr. 14.902 vom 27. Juni 2024. Programm für grüne Mobilität und Innovation — MOVER. [2] Brasilien, Dekret Nr. 12.435 vom 15. April 2025. [3] Brasilien, Ministerium für Entwicklung, Industrie, Außenhandel und Dienstleistungen. MOVER-Programm, 2026. [4] International Organization for Standardization. ISO 26262:2018. [5] International Organization for Standardization. ISO 21448:2022. [6] Wirtschaftskommission der Vereinten Nationen für Europa. UN-Regelung Nr. 79, 2022.',
-        },
-        {
-          tag: 'ADAS und KI',
-          title: 'ADAS, künstliche Intelligenz und eingebettete Systeme',
-          text: 'Künstliche Intelligenz erweitert die Wahrnehmungsfähigkeiten von ADAS, insbesondere bei der Bildinterpretation und der Erkennung von Elementen der Fahrbahn. Die Fahrspurerkennung ist für Funktionen wie LDWS und LKAS zentral, weil sie Lage und Geometrie der Fahrbahnmarkierungen schätzt. Forschungsübersichten beschreiben den Übergang von klassischen Bildverarbeitungsverfahren zu Deep-Learning-Architekturen, die Repräsentationen direkt aus Daten lernen [1], [2]. Dieser Fortschritt bringt für automobile Anwendungen eine besondere Herausforderung mit sich: Ein Modell muss gute Wahrnehmung mit Echtzeitverarbeitung, Robustheit und begrenzten Rechenressourcen verbinden. Qin, Wang und Li formulierten mit Ultra Fast Structure-aware Deep Lane Detection (UFLD) die Fahrspurerkennung als zeilenbasierte Auswahlaufgabe, statt ausschließlich auf eine Segmentierung jedes einzelnen Pixels zu setzen [3]. LaneATT von Tabelini et al. nutzt Aufmerksamkeit, um globale Bildinformationen zu erfassen und mit Verdeckungen oder unvollständigen Markierungen umzugehen, ohne die Echtzeitfähigkeit aus dem Blick zu verlieren [4]. Neuere Arbeiten untersuchen außerdem zeitliche Modelle, die aufeinanderfolgende Bilder nutzen, wenn ein einzelnes Bild nicht genügend Informationen liefert [5]. Bei der Auswahl eines ADAS-Algorithmus zählt daher nicht nur die Genauigkeit. Ebenso wichtig sind Latenz, Bilder pro Sekunde, Speicherbedarf, Energieverbrauch und die Stabilität der Vorhersagen. Für eingebettete Systeme muss KI-Forschung deshalb immer mit den praktischen Grenzen der Hardware zusammen gedacht werden.',
-          references: '[1] N. J. Zakaria et al., “Lane Detection in Autonomous Vehicles: A Systematic Review,” IEEE Access, Bd. 11, S. 3729–3765, 2023. [2] J. Tang, S. Li und P. Liu, “A Review of Lane Detection Methods Based on Deep Learning,” Pattern Recognition, Bd. 111, 2021. [3] Z. Qin, H. Wang und X. Li, “Ultra Fast Structure-aware Deep Lane Detection,” ECCV, 2020. [4] L. Tabelini et al., “Keep Your Eyes on the Lane: Real-Time Attention-Guided Lane Detection,” CVPR, 2021. [5] Y. Dong et al., “A Hybrid Spatial–Temporal Deep Learning Architecture for Lane Detection,” 2023.',
-        },
-      ],
-      skills: {
-        title: 'Meine Fähigkeiten',
-        subtitle: 'Technologien, die ich täglich verwende.',
-        frontend: 'Frontend',
-        backend: 'Backend',
-        database: 'Datenbank',
-        tools: 'Werkzeuge',
-      },
-      ctaTitle: 'Gemeinsam etwas Besonderes entwickeln?',
-      ctaText: 'Ich freue mich über neue Projekte und anspruchsvolle Aufgaben.',
-      ctaButton: 'Kontakt aufnehmen',
-    },
-  };
-
-  readonly contact: Record<Locale, ContactTranslations> = {
-    pt: {
-      eyebrow: 'Contato',
-      title: 'Entre em contato',
-      intro: 'Estou disponível para conversar sobre projetos, colaboração e oportunidades profissionais. Estes são os meus principais canais.',
-      availabilityLabel: 'Disponível para',
-      availabilityText: 'desenvolvimento de sistemas front-end e back-end, implementação de modelos de IA e soluções para a indústria automotiva, incluindo sistemas ADAS (Advanced Driver-Assistance Systems).',
-      emailLabel: 'Email',
-      emailDescription: 'Para propostas, dúvidas e oportunidades profissionais.',
-      linkedInLabel: 'LinkedIn',
-      linkedInDescription: 'Conheça minha trajetória profissional e experiência em desenvolvimento.',
-      githubLabel: 'GitHub',
-      githubDescription: 'Explore meus repositórios, projetos e estudos de programação.',
-      mediaLabel: 'Mídia do portfólio',
-      mediaLinkLabel: 'Ver apresentação visual do perfil',
-    },
-    en: {
-      eyebrow: 'Contact',
-      title: 'Get in touch',
-      intro: 'I am open to discussing projects, collaboration and professional opportunities. These are my main channels.',
-      availabilityLabel: 'Available for',
-      availabilityText: 'front-end and back-end development, AI model implementation and solutions for the automotive industry, including ADAS (Advanced Driver-Assistance Systems).',
-      emailLabel: 'Email',
-      emailDescription: 'For proposals, questions and professional opportunities.',
-      linkedInLabel: 'LinkedIn',
-      linkedInDescription: 'Explore my professional background and software development experience.',
-      githubLabel: 'GitHub',
-      githubDescription: 'Explore my repositories, projects and programming studies.',
-      mediaLabel: 'Portfolio media',
-      mediaLinkLabel: 'View the visual profile presentation',
-    },
-    de: {
-      eyebrow: 'Kontakt',
-      title: 'Kontakt aufnehmen',
-      intro: 'Ich freue mich über Gespräche zu Projekten, Zusammenarbeit und beruflichen Möglichkeiten. Hier finden Sie meine wichtigsten Kanäle.',
-      availabilityLabel: 'Verfügbar für',
-      availabilityText: 'Front-End- und Back-End-Entwicklung, Umsetzung von KI-Modellen sowie Lösungen für die Automobilindustrie, einschließlich ADAS (Advanced Driver-Assistance Systems).',
-      emailLabel: 'E-Mail',
-      emailDescription: 'Für Projektanfragen, Fragen und berufliche Möglichkeiten.',
-      linkedInLabel: 'LinkedIn',
-      linkedInDescription: 'Beruflicher Werdegang und Erfahrung in der Softwareentwicklung.',
-      githubLabel: 'GitHub',
-      githubDescription: 'Repositories, Projekte und aktuelle Programmierarbeiten.',
-      mediaLabel: 'Portfolio-Medien',
-      mediaLinkLabel: 'Visuelle Präsentation des Portfolios ansehen',
     },
   };
 
@@ -458,7 +643,7 @@ export class I18nService {
     return locale === 'en' || locale === 'de' ? locale : 'pt';
   }
 
-  getFlag(locale: Locale): string {
-    return this.locales.find((item) => item.locale === locale)?.flag ?? '🇧🇷';
+  option(locale: Locale): LocaleOption {
+    return this.locales.find((item) => item.locale === locale) ?? this.locales[0];
   }
 }
