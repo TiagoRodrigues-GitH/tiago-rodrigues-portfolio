@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Currículo — Tiago Horaguchi Rodrigues</title>
+  <meta name="author" content="Tiago Horaguchi Rodrigues">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap">
+  <!--
+    Source of public/curriculo.pdf. To regenerate after editing:
+      chrome --headless=new --no-pdf-header-footer --virtual-time-budget=10000 \
+        --print-to-pdf=public/curriculo.pdf cv/curriculo.html
+  -->
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    :root {
+      --sidebar: #14439a;
+      --accent: #1a55c2;
+      --ink: #0a1a36;
+      --muted: #3b4d6b;
+      --on-dark: #ffffff;
+      --on-dark-muted: #dce8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html,
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-size: 9.4pt;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    /* Repeats on every printed page so the sidebar colour runs full height. */
+    .sidebar-band {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 70mm;
+      background: var(--sidebar);
+    }
+
+    .page {
+      position: relative;
+      display: grid;
+      grid-template-columns: 70mm 1fr;
+      min-height: 297mm;
+    }
+
+    .sidebar {
+      padding: 12mm 8mm 10mm 9mm;
+      color: var(--on-dark);
+    }
+
+    .main {
+      padding: 12mm 13mm 10mm 11mm;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 30pt;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 11.5pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .main h2 {
+      margin: 7mm 0 2.5mm;
+      padding-top: 3mm;
+      border-top: 1.2pt solid var(--accent);
+      color: var(--accent);
+    }
+
+    .sidebar h2 {
+      margin: 5.5mm 0 2mm;
+      padding-top: 2.5mm;
+      border-top: 1.2pt solid #0a1a36;
+    }
+
+    .photo {
+      display: block;
+      width: 40mm;
+      height: 40mm;
+      margin: 0 auto;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 20%;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 4mm;
+    }
+
+    li + li {
+      margin-top: 0.8mm;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .sidebar a {
+      overflow-wrap: anywhere;
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .languages {
+      margin: 0;
+    }
+
+    .languages div {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      margin-bottom: 1.5mm;
+    }
+
+    .languages dt {
+      font-weight: 600;
+    }
+
+    .languages dd {
+      grid-column: 1;
+      margin: 0;
+      color: var(--on-dark-muted);
+    }
+
+    .languages .level {
+      grid-column: 2;
+      grid-row: 1;
+      color: var(--on-dark);
+      font-weight: 600;
+    }
+
+    .links p + p {
+      margin-top: 2.5mm;
+    }
+
+    .links span {
+      display: block;
+      color: var(--on-dark-muted);
+    }
+
+    .contact {
+      display: grid;
+      gap: 1mm;
+      margin: 6mm 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+    }
+
+    .contact li + li {
+      margin-top: 0;
+    }
+
+    .contact b {
+      display: inline-block;
+      width: 16mm;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .entry {
+      margin-bottom: 4mm;
+    }
+
+    .entry .period {
+      color: var(--muted);
+    }
+
+    .entry .place {
+      font-weight: 600;
+    }
+
+    .entry ul {
+      margin-top: 1mm;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .germany p + p,
+    .germany p + ul {
+      margin-top: 2mm;
+    }
+
+    .page-break {
+      break-before: page;
+      padding-top: 14mm;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-band" aria-hidden="true"></div>
+
+  <div class="page">
+    <aside class="sidebar">
+      <img class="photo" src="../src/assets/images/perfil_foto.jpeg" alt="Foto de Tiago Horaguchi Rodrigues">
+
+      <section>
+        <h2>Idiomas</h2>
+        <dl class="languages">
+          <div><dt>Português</dt><dd>Língua materna</dd></div>
+          <div><dt>Alemão</dt><dd>Intermediário</dd><dd class="level">B2</dd></div>
+          <div><dt>Inglês</dt><dd>Intermediário</dd><dd class="level">B2</dd></div>
+        </dl>
+      </section>
+
+      <section class="links">
+        <h2>Sites, portfólios e perfis</h2>
+        <p><span>Site pessoal</span><a href="https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/">https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/</a></p>
+        <p><span>LinkedIn</span><a href="https://www.linkedin.com/in/tiagorodriguesde/">https://www.linkedin.com/in/tiagorodriguesde/</a></p>
+        <p><span>Lattes</span><a href="http://lattes.cnpq.br/2528547933345822">http://lattes.cnpq.br/2528547933345822</a></p>
+      </section>
+
+      <section>
+        <h2>Habilidades e competências</h2>
+        <ul>
+          <li>Trabalho em equipe</li>
+          <li>Foco em qualidade e eficiência</li>
+          <li>Capacidade de aprendizado contínuo</li>
+          <li>Conhecimento em análise de dados</li>
+          <li>Empatia no relacionamento interpessoal</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Informações adicionais</h2>
+        <p>Cursando Residência em Inteligência Artificial com o prof. Everton Gomede, PhD. Início: nov/2025 · previsão de conclusão: nov/2026.</p>
+      </section>
+    </aside>
+
+    <main class="main">
+      <h1><span>Tiago</span>Horaguchi Rodrigues</h1>
+
+      <ul class="contact">
+        <li><b>Telefone</b><a href="tel:+5543999983634">+55 (43) 99998-3634</a></li>
+        <li><b>E-mail</b><a href="mailto:tiago-h-rodrigues@outlook.com">tiago-h-rodrigues@outlook.com</a></li>
+        <li><b>Local</b>Londrina, PR</li>
+      </ul>
+
+      <section>
+        <h2>Objetivo</h2>
+        <p>Em busca da minha primeira oportunidade profissional na indústria automotiva, especialmente em ambientes multinacionais, onde possa aplicar meus conhecimentos de alemão e inglês voltados ao desenvolvimento de software, sistemas embarcados e inteligência artificial. Tenho como objetivo desenvolver continuamente minhas competências técnicas e contribuir de forma ativa para o desenvolvimento de produtos e soluções para o setor automotivo, com foco em qualidade, inovação e excelência.</p>
+      </section>
+
+      <section>
+        <h2>Formação acadêmica</h2>
+
+        <div class="entry">
+          <p class="place">UTFPR</p>
+          <p>Aluno especial do Mestrado em Informática</p>
+          <p><b>Status</b> — Cursando</p>
+          <ul>
+            <li>Engenharia de Software (2026)</li>
+            <li>Mineração de Dados (2026)</li>
+            <li>Linguagens de Programação (2026)</li>
+            <li>Inteligência Computacional (2025)</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p class="period">01/2024 – 03/2026</p>
+          <p class="place">UTFPR</p>
+          <p>Pós-Graduação em Tecnologias Java: Informática</p>
+          <p><b>Status</b> — Formado</p>
+          <ul>
+            <li>Carga horária: 360 horas</li>
+            <li>Desenvolvimento de aplicativos desktop para gestão de veículos e de um app Android para controle de sensores IoT.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p class="period">01/2019</p>
+          <p class="place">LMU (Ludwig-Maximilians-Universität München) <span class="muted">| Munique</span></p>
+          <p>Diploma em Medicina Tropical e Saúde Internacional</p>
+          <ul>
+            <li>Pesquisa quantitativa e qualitativa</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p class="period">03/2013 – 12/2018</p>
+          <p class="place">Universidade Estadual do Oeste do Paraná</p>
+          <p>Graduação: Medicina</p>
+        </div>
+      </section>
+
+      <section class="germany page-break">
+        <h2>Vivência e cultura alemã</h2>
+        <p>Experiências que influenciaram profundamente a minha decisão de fazer a transição de carreira para a área automotiva.</p>
+        <p>Residi por 5 anos em Munique, principalmente no tradicional bairro de Schwabing.</p>
+        <p>Alemão nível B2 — curso realizado na DFKA, em parceria com a LMU (Ludwig-Maximilians-Universität München).</p>
+        <p>Imersão cultural e acompanhamento ativo de tradições locais: torcedor do Bayern de Munique (times masculino e feminino), com presença nas comemorações na Marienplatz, em frente ao Rathaus; participação anual na Oktoberfest.</p>
+        <p>Consumo regular de mídia alemã: leitura diária do jornal <i>Süddeutsche Zeitung</i>, acompanhamento de TV aberta (ARD, ZDF) e da série <i>Tatort</i>.</p>
+        <p>Museus e centros culturais de Munique:</p>
+        <ul>
+          <li>BMW Welt, onde acontecem lançamentos de novos modelos de carros.</li>
+          <li>Deutsches Verkehrszentrum, onde acontece o evento anual “Rollendes Museum”.</li>
+          <li>MotorWorld Munich, onde assistia às corridas de F1 e acompanhava as exposições de modelos antigos de automóveis.</li>
+          <li>Deutsches Museum, com exposições de protótipos e novas tecnologias.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

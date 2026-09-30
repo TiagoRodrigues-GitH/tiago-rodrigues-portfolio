@@ -160,7 +160,7 @@ Because the application runs without zone.js, any state that changes asynchronou
 | Interface texts, spec sheet, about page | `src/app/services/i18n.service.ts` |
 | Article chapters and references | `src/app/content/articles.ts` |
 | Projects (text, stack, images, status) | `src/app/shared/portfolio-projects.ts` |
-| CV (PDF) | `public/curriculo.pdf` |
+| CV | Source `cv/curriculo.html`, printed to `public/curriculo.pdf` (command in the file header) |
 
 Each entry exists in all three languages. A unit test checks that the languages stay in sync and that the content contains no vehicle-manufacturer names.
 
