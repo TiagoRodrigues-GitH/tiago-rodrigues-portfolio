@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/auth.model';
@@ -6,7 +7,8 @@ import { injectLocale } from '../../services/locale';
 
 @Component({
   selector: 'app-login',
-  standalone: false,
+  // Standalone and lazy-loaded: visitors never download the form code.
+  imports: [FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -54,8 +56,14 @@ export class LoginComponent implements OnInit {
       },
       error: (error: any) => {
         this.isLoading.set(false);
-        this.errorMessage.set(error.error?.message || this.t.loginError);
-        console.error('Erro de autenticação:', error);
+        // Generic messages only: the server's text is never echoed to the page.
+        this.errorMessage.set(
+          error?.error?.message === 'backend-not-configured'
+            ? this.t.noBackend
+            : error?.status === 429
+              ? this.t.tooMany
+              : this.t.loginError,
+        );
       },
     });
   }
@@ -74,6 +82,8 @@ export class LoginComponent implements OnInit {
       footer: locale === 'en' ? 'No access? Contact the administrator.' : locale === 'de' ? 'Kein Zugang? Wenden Sie sich an die Administration.' : 'Não tem acesso? Entre em contato com o administrador.',
       required: locale === 'en' ? 'Please fill in all fields.' : locale === 'de' ? 'Bitte füllen Sie alle Felder aus.' : 'Preencha todos os campos.',
       invalidEmail: locale === 'en' ? 'Please enter a valid email address.' : locale === 'de' ? 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' : 'Digite um endereço de e-mail válido.',
+      noBackend: locale === 'en' ? 'Sign-in is not available: the administration server is not configured for this site yet.' : locale === 'de' ? 'Die Anmeldung ist nicht verfügbar: Der Verwaltungsserver ist für diese Website noch nicht eingerichtet.' : 'Login indisponível: o servidor de administração ainda não está configurado para este site.',
+      tooMany: locale === 'en' ? 'Too many attempts. Please wait a few minutes and try again.' : locale === 'de' ? 'Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.' : 'Muitas tentativas. Aguarde alguns minutos e tente novamente.',
       loginError: locale === 'en' ? 'Sign-in failed. Check your credentials.' : locale === 'de' ? 'Die Anmeldung ist fehlgeschlagen. Bitte prüfen Sie Ihre Zugangsdaten.' : 'Não foi possível entrar. Verifique suas credenciais.',
     };
   }

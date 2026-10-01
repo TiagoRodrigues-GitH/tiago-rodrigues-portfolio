@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.updated {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.privacy-body {
+  display: grid;
+  gap: 2.5rem;
+  max-width: calc(48rem + 2 * var(--gutter));
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.privacy-section {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.privacy-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.privacy-section ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.privacy-status {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: var(--radius-lg);
+}

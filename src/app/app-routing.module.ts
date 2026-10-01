@@ -2,10 +2,9 @@ import { NgModule, inject } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { LoginComponent } from './pages/login/login.component';
 import { AboutComponent } from './pages/about/about.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -13,8 +12,18 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
   { path: 'about', component: AboutComponent, data: { page: 'about' } },
   { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
-  { path: 'login', component: LoginComponent, data: { page: 'login' } },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { page: 'admin' } },
+  { path: 'privacy', component: PrivacyComponent, data: { page: 'privacy' } },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent),
+    data: { page: 'login' },
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./pages/admin/admin.component').then((m) => m.AdminComponent),
+    canActivate: [AuthGuard],
+    data: { page: 'admin' },
+  },
   // Legacy URLs from earlier versions of the site
   { path: 'projects/:id', redirectTo: 'projects' },
   {

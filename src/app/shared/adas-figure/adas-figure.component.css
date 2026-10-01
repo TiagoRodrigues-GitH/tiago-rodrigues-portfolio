@@ -135,6 +135,41 @@ svg {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  transition: color 0.2s var(--ease);
+}
+
+/* Hover a part (list or callout): the rest of the sensor layer dims, the part lights up. */
+.part,
+.balloon g {
+  transition: opacity 0.25s var(--ease);
+}
+
+.has-active .part:not(.on),
+.has-active .balloon g:not(.on) {
+  opacity: 0.25;
+}
+
+.balloon g.on circle {
+  fill: var(--signal);
+  stroke: var(--signal);
+}
+
+.balloon g.on text {
+  fill: var(--blue-950);
+}
+
+.part-list li.on {
+  color: #ffffff;
+}
+
+.part-list li.on .part-no {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--blue-950);
+}
+
+.balloon g {
+  cursor: default;
 }
 
 .part-no {

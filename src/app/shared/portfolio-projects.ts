@@ -7,6 +7,8 @@ interface ProjectImageSource {
   width: number;
   height: number;
   alt: Record<Locale, string>;
+  /** Diagrams and screen flows: shown whole (letterboxed), never cropped. */
+  contain?: boolean;
 }
 
 interface ProjectText {
@@ -30,6 +32,7 @@ export interface ProjectImage {
   width: number;
   height: number;
   alt: string;
+  contain: boolean;
 }
 
 export interface PortfolioProject extends ProjectText {
@@ -45,9 +48,10 @@ const PROJECTS: ProjectSource[] = [
     id: 1,
     status: 'done',
     image: {
-      src: 'assets/images/image_vehicle_management_system_02.png',
+      src: 'assets/images/blueprints/vehicle_management_02.webp',
       width: 809,
       height: 465,
+      contain: true,
       alt: {
         pt: 'Fluxo de telas do sistema: o menu de gestão de veículos leva aos módulos de veículos de passeio e de carga, com telas de cadastro, consulta e listagem.',
         en: 'Screen flow of the system: the vehicle management menu leads to the passenger and cargo vehicle modules, with registration, lookup and listing screens.',
@@ -56,9 +60,10 @@ const PROJECTS: ProjectSource[] = [
     },
     gallery: [
       {
-        src: 'assets/images/image_vehicle_management_system_01.png',
+        src: 'assets/images/blueprints/vehicle_management_01.webp',
         width: 720,
         height: 651,
+        contain: true,
         alt: {
           pt: 'Diagrama de classes UML: classe abstrata Veiculo, especializações Passeio e Carga, interface Calcular, classe Motor e exceções personalizadas.',
           en: 'UML class diagram: abstract Veiculo (vehicle) class, Passeio (passenger) and Carga (cargo) subclasses, Calcular interface, Motor class and custom exceptions.',
@@ -169,7 +174,7 @@ const PROJECTS: ProjectSource[] = [
 ];
 
 function localizeImage(image: ProjectImageSource, locale: Locale): ProjectImage {
-  return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale] };
+  return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale], contain: !!image.contain };
 }
 
 export function getPortfolioProjects(locale: Locale): PortfolioProject[] {

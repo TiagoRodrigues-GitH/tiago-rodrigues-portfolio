@@ -1,0 +1,15 @@
+# Tiago Rodrigues
+
+> Portfolio of Tiago Rodrigues, software developer and artificial-intelligence researcher for the automotive industry (Java back end, deep learning, lane detection, embedded ADAS). Available in Portuguese (default), English (?lang=en) and German (?lang=de).
+
+## Pages
+
+- [Home](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/): profile, spec sheet, projects and short articles on ADAS, lane detection, technology readiness and automotive patents
+- [Projects](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/projects/): Java vehicle-management system, IoT sensor app and lane-detection research (TAC-UFLD)
+- [About](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/about/): background, education (UTFPR, LMU, UNIOESTE) and skills
+- [Contact](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/contact/): e-mail, LinkedIn and GitHub
+- [Privacy](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/privacy/): how visit data is handled (LGPD / GDPR)
+
+## Research
+
+- [TAC-UFLD lane detection](https://github.com/TiagoRodrigues-GitH/tac-ufld-lane-detection): temporal, lightweight lane detection for embedded ADAS (AI Residency, UTFPR)

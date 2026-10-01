@@ -59,6 +59,19 @@ svg {
   fill: var(--signal);
 }
 
+/* Hover: the selected cells light up row by row, bottom to top, as the classifier reads the anchors. */
+@media (prefers-reduced-motion: no-preference) {
+  svg:hover .cell {
+    animation: scan 0.9s var(--ease) calc(var(--i, 0) * 90ms) both;
+  }
+}
+
+@keyframes scan {
+  40% {
+    fill: var(--signal);
+  }
+}
+
 .leader {
   stroke: var(--blue-300);
 }

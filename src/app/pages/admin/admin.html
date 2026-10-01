@@ -1,5 +1,10 @@
 <section class="admin-page shell" aria-labelledby="admin-title">
-  <h1 id="admin-title">{{ t.panel }}</h1>
+  <div class="admin-head">
+    <h1 id="admin-title">{{ t.panel }}</h1>
+    @if (!isCheckingAuth()) {
+      <button type="button" class="btn btn-outline" (click)="logout()">{{ t.logout }}</button>
+    }
+  </div>
 
   @if (isCheckingAuth()) {
     <p class="loading" role="status">{{ t.verify }}</p>
@@ -9,6 +14,72 @@
         <p class="error-message" role="alert">{{ errorMessage() }}</p>
       }
       <p class="success-message" [class.visible]="successMessage()" role="status">{{ successMessage() }}</p>
+    </div>
+
+    <div class="projects-section visits-section">
+      <h2>{{ t.visits }}</h2>
+      <p class="hint">{{ t.visitsHint }}</p>
+      @if (visitsError()) {
+        <p class="error-message" role="alert">{{ visitsError() }}</p>
+      } @else if (summary(); as s) {
+        <ul class="visit-totals">
+          <li><span class="visit-number">{{ s.pageViews }}</span> {{ t.pageViews }}</li>
+          <li><span class="visit-number">{{ s.visitors }}</span> {{ t.visitors }}</li>
+          <li><span class="visit-number">{{ s.sessions }}</span> {{ t.sessions }}</li>
+        </ul>
+        <div class="visit-tables">
+          @for (block of [
+            { title: t.topPages, rows: s.topPages },
+            { title: t.topReferrers, rows: s.topReferrers },
+            { title: t.languages, rows: s.languages }
+          ]; track block.title) {
+            <div class="table-scroll">
+              <table class="projects-table">
+                <caption>{{ block.title }}</caption>
+                <thead><tr><th scope="col">{{ t.item }}</th><th scope="col">{{ t.count }}</th></tr></thead>
+                <tbody>
+                  @for (row of block.rows; track row.key) {
+                    <tr><th scope="row">{{ row.key || '—' }}</th><td>{{ row.count }}</td></tr>
+                  } @empty {
+                    <tr><td colspan="2">{{ t.noData }}</td></tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+        <div class="table-scroll">
+          <table class="projects-table">
+            <caption>{{ t.recent }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ t.when }}</th>
+                <th scope="col">IP</th>
+                <th scope="col">{{ t.page }}</th>
+                <th scope="col">{{ t.referrer }}</th>
+                <th scope="col">{{ t.language }}</th>
+                <th scope="col">{{ t.browser }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (v of visits(); track $index) {
+                <tr>
+                  <td>{{ v.at | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ v.ip }}</td>
+                  <td>{{ v.path }}</td>
+                  <td>{{ v.referrer || '—' }}</td>
+                  <td>{{ v.lang || '—' }}</td>
+                  <td>{{ (v.userAgent || '—') | slice: 0 : 60 }}</td>
+                </tr>
+              } @empty {
+                <tr><td colspan="6">{{ t.noData }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="loading" role="status">{{ t.loadingVisits }}</p>
+      }
     </div>
 
     <div class="form-section">

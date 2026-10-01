@@ -2,15 +2,61 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
+  <!--
+    Security policy as meta tags: GitHub Pages cannot send custom HTTP headers.
+    frame-ancestors, X-Frame-Options, X-Content-Type-Options and Permissions-Policy only work
+    as real headers; public/_headers sets all of them on hosts that read it (Cloudflare Pages, Netlify).
+    When the backend is deployed, add its origin to connect-src (see src/environments/environment.prod.ts).
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Tiago Rodrigues — Software para a indústria automotiva</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Portfólio de Tiago Rodrigues, desenvolvedor de software com foco em Java, inteligência artificial e soluções para a indústria automotiva, incluindo sistemas ADAS.">
+  <meta name="description" content="Tiago Rodrigues, desenvolvedor de software e pesquisador em IA para a indústria automotiva: Java, deep learning, detecção de faixas e sistemas ADAS embarcados.">
+  <meta name="author" content="Tiago Rodrigues">
   <meta name="theme-color" content="#061634">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Tiago Rodrigues">
+  <meta property="og:title" content="Tiago Rodrigues — Software para a indústria automotiva">
+  <meta property="og:description" content="Desenvolvedor de software e pesquisador em IA para a indústria automotiva: Java, deep learning e sistemas ADAS embarcados.">
+  <meta property="og:url" content="https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/">
+  <meta property="og:image" content="https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cartão em estilo blueprint com o nome Tiago Rodrigues e o texto: Software para veículos que enxergam a estrada — Java, deep learning e ADAS embarcado.">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tiago Rodrigues — Software para a indústria automotiva">
+  <meta name="twitter:description" content="Desenvolvedor de software e pesquisador em IA para a indústria automotiva: Java, deep learning e sistemas ADAS embarcados.">
+  <meta name="twitter:image" content="https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/assets/images/og-card.png">
+  <link rel="canonical" href="https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Tiago Rodrigues",
+    "url": "https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/",
+    "image": "https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/assets/images/perfil_foto.jpeg",
+    "jobTitle": "Software developer and AI researcher (automotive / ADAS)",
+    "description": "Software developer and artificial-intelligence researcher focused on the automotive industry: Java back-end development, deep learning, lane detection and embedded ADAS.",
+    "knowsAbout": ["Java", "Spring Boot", "Angular", "Python", "PyTorch", "Deep learning", "Computer vision", "Lane detection", "Advanced driver assistance systems (ADAS)", "Embedded AI", "Evolutionary algorithms"],
+    "knowsLanguage": ["pt-BR", "en", "de"],
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "Universidade Tecnológica Federal do Paraná (UTFPR)" },
+      { "@type": "CollegeOrUniversity", "name": "Ludwig-Maximilians-Universität München (LMU)" },
+      { "@type": "CollegeOrUniversity", "name": "Universidade Estadual do Oeste do Paraná (UNIOESTE)" }
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/tiagorodriguesde/",
+      "https://github.com/TiagoRodrigues-GitH"
+    ]
+  }
+  </script>
 </head>
 <body>
   <app-root></app-root>

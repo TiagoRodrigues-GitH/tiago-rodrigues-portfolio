@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+<rect width="960" height="540" fill="#061634"/>
+<g stroke="#8fb8ff" stroke-opacity="0.12"><path d="M0 0V540"/><path d="M32 0V540"/><path d="M64 0V540"/><path d="M96 0V540"/><path d="M128 0V540"/><path d="M160 0V540"/><path d="M192 0V540"/><path d="M224 0V540"/><path d="M256 0V540"/><path d="M288 0V540"/><path d="M320 0V540"/><path d="M352 0V540"/><path d="M384 0V540"/><path d="M416 0V540"/><path d="M448 0V540"/><path d="M480 0V540"/><path d="M512 0V540"/><path d="M544 0V540"/><path d="M576 0V540"/><path d="M608 0V540"/><path d="M640 0V540"/><path d="M672 0V540"/><path d="M704 0V540"/><path d="M736 0V540"/><path d="M768 0V540"/><path d="M800 0V540"/><path d="M832 0V540"/><path d="M864 0V540"/><path d="M896 0V540"/><path d="M928 0V540"/><path d="M0 0H960"/><path d="M0 32H960"/><path d="M0 64H960"/><path d="M0 96H960"/><path d="M0 128H960"/><path d="M0 160H960"/><path d="M0 192H960"/><path d="M0 224H960"/><path d="M0 256H960"/><path d="M0 288H960"/><path d="M0 320H960"/><path d="M0 352H960"/><path d="M0 384H960"/><path d="M0 416H960"/><path d="M0 448H960"/><path d="M0 480H960"/><path d="M0 512H960"/></g>
+<text x="70" y="48" fill="#e8f1ff" font-size="22" font-weight="600">Average time to a final decision on a patent application (months)</text>
+<path d="M70 430.0H930" stroke="#8fb8ff" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<text x="58" y="435.0" fill="#a9c2e8" font-size="14" text-anchor="end">0</text>
+<path d="M70 345.0H930" stroke="#8fb8ff" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<text x="58" y="350.0" fill="#a9c2e8" font-size="14" text-anchor="end">25</text>
+<path d="M70 260.0H930" stroke="#8fb8ff" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<text x="58" y="265.0" fill="#a9c2e8" font-size="14" text-anchor="end">50</text>
+<path d="M70 175.0H930" stroke="#8fb8ff" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<text x="58" y="180.0" fill="#a9c2e8" font-size="14" text-anchor="end">75</text>
+<path d="M70 90.0H930" stroke="#8fb8ff" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<text x="58" y="95.0" fill="#a9c2e8" font-size="14" text-anchor="end">100</text>
+<rect x="106.0" y="105.6" width="46" height="324.4" fill="none" fill-opacity="0" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="129.0" y="97.6" fill="#c0d6fb" font-size="15" font-weight="600" text-anchor="middle">95.4</text>
+<rect x="160.0" y="299.4" width="46" height="130.6" fill="#6fd6ff" fill-opacity="0.9" stroke="#6fd6ff" stroke-width="2" stroke-dasharray="0"/>
+<text x="183.0" y="291.4" fill="#ffffff" font-size="15" font-weight="600" text-anchor="middle">38.4</text>
+<text x="156.0" y="458" fill="#e8f1ff" font-size="16" text-anchor="middle">Brazil (INPI)</text>
+<rect x="278.0" y="353.2" width="46" height="76.8" fill="none" fill-opacity="0" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="301.0" y="345.2" fill="#c0d6fb" font-size="15" font-weight="600" text-anchor="middle">22.6</text>
+<rect x="332.0" y="329.7" width="46" height="100.3" fill="#6fd6ff" fill-opacity="0.9" stroke="#6fd6ff" stroke-width="2" stroke-dasharray="0"/>
+<text x="355.0" y="321.7" fill="#ffffff" font-size="15" font-weight="600" text-anchor="middle">29.5</text>
+<text x="328.0" y="458" fill="#e8f1ff" font-size="16" text-anchor="middle">US (USPTO)</text>
+<rect x="450.0" y="350.8" width="46" height="79.2" fill="none" fill-opacity="0" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="473.0" y="342.8" fill="#c0d6fb" font-size="15" font-weight="600" text-anchor="middle">23.3</text>
+<rect x="504.0" y="345.3" width="46" height="84.7" fill="#6fd6ff" fill-opacity="0.9" stroke="#6fd6ff" stroke-width="2" stroke-dasharray="0"/>
+<text x="527.0" y="337.3" fill="#ffffff" font-size="15" font-weight="600" text-anchor="middle">24.9</text>
+<text x="500.0" y="458" fill="#e8f1ff" font-size="16" text-anchor="middle">Europe (EPO)</text>
+<rect x="622.0" y="355.2" width="46" height="74.8" fill="none" fill-opacity="0" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="645.0" y="347.2" fill="#c0d6fb" font-size="15" font-weight="600" text-anchor="middle">22.0</text>
+<rect x="676.0" y="377.3" width="46" height="52.7" fill="#6fd6ff" fill-opacity="0.9" stroke="#6fd6ff" stroke-width="2" stroke-dasharray="0"/>
+<text x="699.0" y="369.3" fill="#ffffff" font-size="15" font-weight="600" text-anchor="middle">15.5</text>
+<text x="672.0" y="458" fill="#e8f1ff" font-size="16" text-anchor="middle">China (CNIPA)</text>
+<rect x="794.0" y="379.0" width="46" height="51.0" fill="none" fill-opacity="0" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="817.0" y="371.0" fill="#c0d6fb" font-size="15" font-weight="600" text-anchor="middle">15.0</text>
+<rect x="848.0" y="386.1" width="46" height="43.9" fill="#6fd6ff" fill-opacity="0.9" stroke="#6fd6ff" stroke-width="2" stroke-dasharray="0"/>
+<text x="871.0" y="378.1" fill="#ffffff" font-size="15" font-weight="600" text-anchor="middle">12.9</text>
+<text x="844.0" y="458" fill="#e8f1ff" font-size="16" text-anchor="middle">Japan (JPO)</text>
+<path d="M70 430H930" stroke="#c0d6fb" stroke-width="1.5"/>
+<rect x="670" y="70" width="22" height="14" fill="none" stroke="#8fb8ff" stroke-width="2" stroke-dasharray="6 4"/><text x="700" y="82" fill="#e8f1ff" font-size="15">2016</text>
+<rect x="770" y="70" width="22" height="14" fill="#6fd6ff"/><text x="800" y="82" fill="#e8f1ff" font-size="15">2024</text>
+<text x="70" y="516" fill="#a9c2e8" font-size="13">Source: WIPO, World Intellectual Property Indicators 2017 and 2025. Counted from the examination request (or filing).</text>
+</svg>

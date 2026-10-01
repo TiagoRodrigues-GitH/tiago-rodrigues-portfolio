@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export type Locale = 'pt' | 'en' | 'de';
 
-export type PageKey = 'home' | 'projects' | 'about' | 'contact' | 'login' | 'admin';
+export type PageKey = 'home' | 'projects' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
 
 export interface LocaleOption {
   locale: Locale;
@@ -35,8 +35,13 @@ export interface ShellTranslations {
     publicDomain: string;
     rights: string;
     backToTop: string;
+    privacy: string;
   };
+  /** Bottom bar on every page (WCAG 2.1 AA statement). */
+  a11y: { statement: string; guidelines: string; url: string };
   titles: Record<PageKey, string>;
+  /** Meta description per page (search engines and link previews). */
+  descriptions: Record<PageKey, string>;
 }
 
 export interface SpecItem {
@@ -127,6 +132,7 @@ export interface ContactTranslations {
   githubLabel: string;
   githubDescription: string;
   open: string;
+  photoAlt: string;
 }
 
 export interface AboutTranslations {
@@ -178,14 +184,30 @@ export class I18nService {
         publicDomain: 'Domínio público',
         rights: 'Todos os direitos reservados.',
         backToTop: 'Voltar ao topo',
+        privacy: 'Privacidade',
+      },
+      a11y: {
+        statement: 'Este site segue as recomendações de acessibilidade WCAG 2.1 AA.',
+        guidelines: 'Diretrizes oficiais do W3C (tradução autorizada)',
+        url: 'https://www.w3c.br/traducoes/wcag/wcag21-pt-BR/',
       },
       titles: {
         home: 'Tiago Rodrigues — Software para a indústria automotiva',
         projects: 'Projetos · Tiago Rodrigues',
         about: 'Sobre mim · Tiago Rodrigues',
         contact: 'Contato · Tiago Rodrigues',
+        privacy: 'Privacidade · Tiago Rodrigues',
         login: 'Acesso administrativo · Tiago Rodrigues',
         admin: 'Painel administrativo · Tiago Rodrigues',
+      },
+      descriptions: {
+        home: 'Tiago Rodrigues, desenvolvedor de software e pesquisador em IA para a indústria automotiva: Java, deep learning, detecção de faixas e sistemas ADAS embarcados.',
+        projects: 'Projetos de Tiago Rodrigues: sistemas Java, APIs e modelos de percepção para veículos, com diagramas e detalhes de implementação.',
+        about: 'Trajetória, formação e competências de Tiago Rodrigues: desenvolvimento de software, inteligência artificial e pesquisa em ADAS.',
+        contact: 'Fale com Tiago Rodrigues sobre desenvolvimento de software, IA e projetos para a indústria automotiva.',
+        privacy: 'Como este site trata dados de visita (LGPD): o que é registrado, por quanto tempo e como pedir a exclusão.',
+        login: 'Acesso administrativo do portfólio.',
+        admin: 'Painel administrativo do portfólio.',
       },
     },
     en: {
@@ -209,14 +231,30 @@ export class I18nService {
         publicDomain: 'Public domain',
         rights: 'All rights reserved.',
         backToTop: 'Back to top',
+        privacy: 'Privacy',
+      },
+      a11y: {
+        statement: 'This site follows the WCAG 2.1 AA accessibility recommendations.',
+        guidelines: 'Official W3C guidelines',
+        url: 'https://www.w3.org/TR/WCAG21/',
       },
       titles: {
         home: 'Tiago Rodrigues — Software for the automotive industry',
         projects: 'Projects · Tiago Rodrigues',
         about: 'About me · Tiago Rodrigues',
         contact: 'Contact · Tiago Rodrigues',
+        privacy: 'Privacy · Tiago Rodrigues',
         login: 'Administrative access · Tiago Rodrigues',
         admin: 'Admin panel · Tiago Rodrigues',
+      },
+      descriptions: {
+        home: 'Tiago Rodrigues, software developer and AI researcher for the automotive industry: Java, deep learning, lane detection and embedded ADAS.',
+        projects: 'Projects by Tiago Rodrigues: Java systems, APIs and perception models for vehicles, with diagrams and implementation details.',
+        about: 'Background, education and skills of Tiago Rodrigues: software development, artificial intelligence and ADAS research.',
+        contact: 'Contact Tiago Rodrigues about software development, AI and projects for the automotive industry.',
+        privacy: 'How this site handles visit data (LGPD): what is recorded, for how long and how to request deletion.',
+        login: 'Portfolio administrative access.',
+        admin: 'Portfolio admin panel.',
       },
     },
     de: {
@@ -240,14 +278,30 @@ export class I18nService {
         publicDomain: 'Gemeinfrei',
         rights: 'Alle Rechte vorbehalten.',
         backToTop: 'Nach oben',
+        privacy: 'Datenschutz',
+      },
+      a11y: {
+        statement: 'Diese Website folgt den Barrierefreiheitsempfehlungen der WCAG 2.1 AA.',
+        guidelines: 'Offizielle W3C-Richtlinien (Englisch)',
+        url: 'https://www.w3.org/TR/WCAG21/',
       },
       titles: {
         home: 'Tiago Rodrigues – Software für die Automobilindustrie',
         projects: 'Projekte · Tiago Rodrigues',
         about: 'Über mich · Tiago Rodrigues',
         contact: 'Kontakt · Tiago Rodrigues',
+        privacy: 'Datenschutz · Tiago Rodrigues',
         login: 'Administrativer Zugang · Tiago Rodrigues',
         admin: 'Admin-Bereich · Tiago Rodrigues',
+      },
+      descriptions: {
+        home: 'Tiago Rodrigues, Softwareentwickler und KI-Forscher für die Automobilindustrie: Java, Deep Learning, Fahrspurerkennung und eingebettete ADAS.',
+        projects: 'Projekte von Tiago Rodrigues: Java-Systeme, APIs und Wahrnehmungsmodelle für Fahrzeuge, mit Diagrammen und Umsetzungsdetails.',
+        about: 'Werdegang, Ausbildung und Kompetenzen von Tiago Rodrigues: Softwareentwicklung, künstliche Intelligenz und ADAS-Forschung.',
+        contact: 'Kontakt zu Tiago Rodrigues zu Softwareentwicklung, KI und Projekten für die Automobilindustrie.',
+        privacy: 'Wie diese Website Besuchsdaten verarbeitet (LGPD/DSGVO): was gespeichert wird, wie lange und wie man die Löschung verlangt.',
+        login: 'Administrativer Zugang zum Portfolio.',
+        admin: 'Admin-Bereich des Portfolios.',
       },
     },
   };
@@ -498,6 +552,7 @@ export class I18nService {
       githubLabel: 'GitHub',
       githubDescription: 'Repositórios, projetos e estudos de programação.',
       open: 'Abrir perfil',
+      photoAlt: 'Retrato de Tiago Rodrigues',
     },
     en: {
       eyebrow: 'Contact',
@@ -516,6 +571,7 @@ export class I18nService {
       githubLabel: 'GitHub',
       githubDescription: 'Repositories, projects and programming studies.',
       open: 'Open profile',
+      photoAlt: 'Portrait of Tiago Rodrigues',
     },
     de: {
       eyebrow: 'Kontakt',
@@ -534,6 +590,7 @@ export class I18nService {
       githubLabel: 'GitHub',
       githubDescription: 'Repositories, Projekte und Programmierstudien.',
       open: 'Profil öffnen',
+      photoAlt: 'Porträt von Tiago Rodrigues',
     },
   };
 

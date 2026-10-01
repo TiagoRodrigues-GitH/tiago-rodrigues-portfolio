@@ -37,18 +37,29 @@ jobs:
       - name: Build Angular
         run: npm run build -- --base-href "/${{ github.event.repository.name }}/"
 
+      # Public pages are prerendered (index.html, projects/index.html, ...). Routes rendered
+      # only in the browser (login, admin, unknown URLs) are served by 404.html = the CSR shell.
       - name: Prepare GitHub Pages
         run: |
-          cp "$DIST/index.csr.html" "$DIST/index.html"
-          cp "$DIST/index.html" "$DIST/404.html"
+          cp "$DIST/index.csr.html" "$DIST/404.html"
 
-      - name: Verify static assets
+      - name: Verify static assets and prerendered pages
         run: |
+          for page in index.html projects/index.html about/index.html contact/index.html privacy/index.html; do
+            test -f "$DIST/$page"
+            grep -q '<h1' "$DIST/$page"
+          done
+          test -f "$DIST/404.html"
+          test -f "$DIST/sitemap.xml"
+          test -f "$DIST/robots.txt"
           test -f "$DIST/curriculo.pdf"
           test -f "$DIST/assets/images/perfil_foto.jpeg"
+          test -f "$DIST/assets/images/og-card.png"
           test -f "$DIST/assets/images/blueprints/cutaway-1931.webp"
           test -f "$DIST/assets/images/blueprints/chassis.webp"
           test -f "$DIST/assets/images/blueprints/patent-1900.webp"
+          test -f "$DIST/assets/images/blueprints/vehicle_management_02.webp"
+          test -f "$DIST/assets/images/blueprints/patent-pendency-pt.svg"
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5

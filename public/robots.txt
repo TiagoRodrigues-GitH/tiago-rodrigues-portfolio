@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /tiago-rodrigues-portfolio/admin
+Disallow: /tiago-rodrigues-portfolio/login
+
+Sitemap: https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/sitemap.xml

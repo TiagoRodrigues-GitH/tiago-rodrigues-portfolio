@@ -28,22 +28,20 @@
         <p class="project-summary">{{ project.summary }}</p>
         <p class="project-details">{{ project.details }}</p>
 
-        <dl class="project-meta">
+        <div class="project-meta">
           <div>
-            <dt class="mono-label">{{ t.role }}</dt>
-            <dd>{{ project.role }}</dd>
+            <h3 class="mono-label">{{ t.role }}</h3>
+            <p class="meta-value">{{ project.role }}</p>
           </div>
           <div>
-            <dt class="mono-label">{{ t.stack }}</dt>
-            <dd>
-              <ul class="chips">
-                @for (item of project.stack; track item) {
-                  <li>{{ item }}</li>
-                }
-              </ul>
-            </dd>
+            <h3 class="mono-label">{{ t.stack }}</h3>
+            <ul class="chips meta-value">
+              @for (item of project.stack; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
           </div>
-        </dl>
+        </div>
       </div>
 
       <div class="project-media">
@@ -52,9 +50,9 @@
             type="button"
             class="frame zoom"
             (click)="openImage(i, j, $event.currentTarget)"
-            [attr.aria-label]="t.zoom + ': ' + image.alt"
           >
-            <img [src]="image.src" [width]="image.width" [height]="image.height" alt="" loading="lazy" decoding="async" />
+            <span class="visually-hidden">{{ t.zoom }}: </span>
+            <img [class.contain]="image.contain" [src]="image.src" [width]="image.width" [height]="image.height" [alt]="image.alt" loading="lazy" decoding="async" />
             <span class="zoom-icon" aria-hidden="true">+</span>
           </button>
         }

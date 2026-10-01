@@ -72,6 +72,31 @@ const DECREE_URL = 'https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/dec
 
 const CHAPTER_3_REFS = [REF_ZAKARIA, REF_TANG, REF_UFLD, REF_LANEATT, REF_DONG, REF_TSAI];
 
+/* ---------- Chapter 4: patents (figures checked against the WIPO reports, Oct 2026) ---------- */
+
+const REF_LPI: ArticleReference = {
+  text: 'BRASIL. Lei nº 9.279, de 14 de maio de 1996. Regula direitos e obrigações relativos à propriedade industrial. Brasília, DF, 1996.',
+  url: 'https://www.planalto.gov.br/ccivil_03/leis/l9279.htm',
+};
+const REF_EPC: ArticleReference = {
+  text: 'European Patent Office, “European Patent Convention,” 17th ed., Munich: EPO, 2020.',
+  url: 'https://www.epo.org/en/legal/epc',
+};
+const REF_WIPI_2025: ArticleReference = {
+  text: 'World Intellectual Property Organization, “World Intellectual Property Indicators 2025,” Geneva: WIPO, 2025 (figs. A29, A30, A48, A49).',
+  url: 'https://www.wipo.int/edocs/pubdocs/en/wipo-pub-941-17-2025-en-world-intellectual-property-indicators-2025.pdf',
+};
+const REF_WIPI_2017: ArticleReference = {
+  text: 'World Intellectual Property Organization, “World Intellectual Property Indicators 2017 — Special section: patent office operations,” Geneva: WIPO, 2017 (fig. S5, annex S2).',
+  url: 'https://www.wipo.int/edocs/pubdocs/en/wipo_pub_941_2017-chapter1.pdf',
+};
+const REF_UP: ArticleReference = {
+  text: 'European Patent Office, “Unitary Patent,” Munich: EPO (in force since 1 June 2023).',
+  url: 'https://www.epo.org/en/applying/european/unitary/unitary-patent',
+};
+const PATENT_REFS = [REF_LPI, REF_EPC, REF_WIPI_2025, REF_WIPI_2017, REF_UP];
+const PENDENCY = { width: 960, height: 540 };
+
 const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622 };
 const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382 };
 
@@ -142,6 +167,26 @@ export const ARTICLES: Record<Locale, Article[]> = {
       },
       references: CHAPTER_3_REFS,
     },
+    {
+      id: 'patentes',
+      tag: 'ADAS e patentes',
+      title: 'O relógio das patentes',
+      lede: 'Uma invenção automotiva pode levar anos para ser protegida. Quanto tempo, depende de onde o pedido é depositado — e essa diferença entra na estratégia de quem desenvolve tecnologia no Brasil.',
+      paragraphs: [
+        'Uma patente é um acordo: o inventor descreve publicamente a solução e, em troca, recebe o direito de impedir que outros a explorem por até 20 anos contados do depósito — no Brasil, pela Lei nº 9.279/1996 [1]; na Europa, pela Convenção sobre a Patente Europeia (EPC) [2]. Para quem trabalha com ADAS há um detalhe importante: nas duas legislações, o programa de computador “em si” não é invenção [1], [2]. O que se protege é a solução técnica — um método de percepção que reduz a latência em um processador embarcado, por exemplo —, e não o código.',
+        'O caminho é parecido nos dois lados do Atlântico. No INPI, o pedido fica em sigilo por 18 meses, é publicado e precisa ter o exame requerido em até 36 meses do depósito; segue-se o exame técnico, com exigências e respostas, até a decisão [1]. No Escritório Europeu de Patentes (EPO), o pedido recebe um relatório de busca com parecer, é publicado aos 18 meses e o exame deve ser requerido em até seis meses após a publicação desse relatório; concedida a patente, terceiros têm nove meses para apresentar oposição [2]. Desde 1º de junho de 2023, a patente europeia pode ainda ganhar efeito unitário em boa parte dos países da União Europeia [5].',
+        'A diferença está no relógio. Segundo a Organização Mundial da Propriedade Intelectual (OMPI), um pedido levava em média 95,4 meses até a decisão final no Brasil em 2016 — quase oito anos —, contra 23,3 meses no EPO [4]. Em 2024, o tempo brasileiro caiu para 38,4 meses, ainda acima dos 24,9 meses do EPO, dos 29,5 do escritório dos Estados Unidos, dos 15,5 da China e dos 12,9 do Japão [3]. Parte da explicação está na escala: em 2024, o INPI tinha 300 examinadores de patentes; o EPO, 4.005 [3]. A própria OMPI adverte que os procedimentos não são totalmente harmonizados e que a comparação entre escritórios exige cautela [3].',
+        'Enquanto isso, o setor acelerou. Os pedidos de patente publicados no mundo na área de transporte passaram de 90.961 em 2013 para 140.730 em 2023, crescimento médio de 4,5% ao ano [3]. Alemanha, França, Suécia e Itália são as origens mais especializadas no tema entre as 15 maiores do período 2021–2023; o Brasil não aparece nesse grupo [3]. Para quem desenvolve tecnologia automotiva aqui, a lição é dupla: depositar cedo no Brasil garante a prioridade, mas proteger os mercados onde o carro será fabricado e vendido costuma passar também pelo EPO e por outros escritórios.',
+        'É também por isso que a pesquisa precisa pensar em propriedade intelectual desde o início. Um algoritmo de detecção de faixas que roda em tempo real em hardware embarcado pode ser publicado, patenteado ou ambos — mas a ordem importa, porque a divulgação antes do depósito pode comprometer a novidade. No meu caso, essa é uma das etapas previstas: transformar resultados de pesquisa em um protótipo e, quando houver uma solução técnica nova, em um pedido de patente.',
+      ],
+      figure: {
+        src: 'assets/images/blueprints/patent-pendency-pt.svg',
+        ...PENDENCY,
+        alt: 'Gráfico de barras com o tempo médio até a decisão final de pedidos de patente em 2016 e 2024: Brasil 95,4 e 38,4 meses; Estados Unidos 22,6 e 29,5; Europa (EPO) 23,3 e 24,9; China 22,0 e 15,5; Japão 15,0 e 12,9.',
+        caption: 'Fig. 04 — Tempo médio até a decisão final, em meses, contado do pedido de exame (ou do depósito). Fonte: OMPI, WIPI 2017 e 2025 [3], [4].',
+      },
+      references: PATENT_REFS,
+    },
   ],
   en: [
     {
@@ -209,6 +254,26 @@ export const ARTICLES: Record<Locale, Article[]> = {
       },
       references: CHAPTER_3_REFS,
     },
+    {
+      id: 'patents',
+      tag: 'ADAS and patents',
+      title: 'The patent clock',
+      lede: 'Protecting an automotive invention can take years. How many depends on where the application is filed — and that difference shapes the strategy of anyone developing technology in Brazil.',
+      paragraphs: [
+        'A patent is a bargain: the inventor discloses the solution and, in return, may stop others from exploiting it for up to 20 years from filing — in Brazil under Law No. 9,279/1996 [1], in Europe under the European Patent Convention (EPC) [2]. For ADAS work one detail matters: under both laws a computer program “as such” is not an invention [1], [2]. What can be protected is the technical solution — a perception method that cuts latency on an embedded processor, for instance — not the code.',
+        'The route is similar on both sides of the Atlantic. At INPI, Brazil’s patent office, the application stays secret for 18 months, is published, and examination must be requested within 36 months of filing; technical examination, office actions and replies follow until a decision [1]. At the European Patent Office (EPO), the application receives a search report with an opinion, is published at 18 months, and examination must be requested within six months of that report’s publication; once a patent is granted, third parties have nine months to oppose it [2]. Since 1 June 2023 a European patent can also have unitary effect across most European Union countries [5].',
+        'The difference is the clock. According to the World Intellectual Property Organization (WIPO), an application took on average 95.4 months to reach a final decision in Brazil in 2016 — almost eight years — against 23.3 months at the EPO [4]. By 2024 Brazil was down to 38.4 months, still above the EPO’s 24.9, the US office’s 29.5, China’s 15.5 and Japan’s 12.9 [3]. Scale is part of the story: in 2024 INPI had 300 patent examiners, the EPO 4,005 [3]. WIPO itself warns that procedures are not fully harmonised, so comparisons between offices call for caution [3].',
+        'Meanwhile the field sped up. Published patent applications in transport worldwide rose from 90,961 in 2013 to 140,730 in 2023, 4.5% a year on average [3]. Germany, France, Sweden and Italy are the most specialised origins in this field among the top 15 of 2021–2023; Brazil is not in that group [3]. For anyone building automotive technology in Brazil the lesson is twofold: filing early at home secures priority, but protecting the markets where the car will be built and sold usually means the EPO and other offices as well.',
+        'That is also why research has to think about intellectual property from the start. A lane-detection algorithm that runs in real time on embedded hardware can be published, patented or both — but the order matters, because disclosure before filing can destroy novelty. In my own plans this is an explicit step: turning research results into a prototype and, where there is a new technical solution, into a patent application.',
+      ],
+      figure: {
+        src: 'assets/images/blueprints/patent-pendency-en.svg',
+        ...PENDENCY,
+        alt: 'Bar chart of the average time to a final decision on patent applications in 2016 and 2024: Brazil 95.4 and 38.4 months; United States 22.6 and 29.5; Europe (EPO) 23.3 and 24.9; China 22.0 and 15.5; Japan 15.0 and 12.9.',
+        caption: 'Fig. 04 — Average time to a final decision, in months, counted from the examination request (or filing). Source: WIPO, WIPI 2017 and 2025 [3], [4].',
+      },
+      references: PATENT_REFS,
+    },
   ],
   de: [
     {
@@ -275,6 +340,26 @@ export const ARTICLES: Record<Locale, Article[]> = {
         caption: 'Abb. 03 – Zeilenbasierte Auswahl: In jeder Referenzzeile (Row Anchor) wählt das Modell die Zelle, die am wahrscheinlichsten die Fahrspur enthält.',
       },
       references: CHAPTER_3_REFS,
+    },
+    {
+      id: 'patente',
+      tag: 'ADAS und Patente',
+      title: 'Die Uhr der Patente',
+      lede: 'Eine Erfindung im Automobilbereich zu schützen kann Jahre dauern. Wie viele, hängt davon ab, wo die Anmeldung eingereicht wird — und dieser Unterschied prägt die Strategie aller, die in Brasilien Technologie entwickeln.',
+      paragraphs: [
+        'Ein Patent ist ein Tausch: Der Erfinder legt die Lösung offen und darf dafür anderen bis zu 20 Jahre ab der Anmeldung die Nutzung untersagen — in Brasilien nach dem Gesetz Nr. 9.279/1996 [1], in Europa nach dem Europäischen Patentübereinkommen (EPÜ) [2]. Für ADAS ist ein Detail wichtig: In beiden Rechtsordnungen ist ein Computerprogramm „als solches“ keine Erfindung [1], [2]. Geschützt werden kann die technische Lösung — etwa ein Wahrnehmungsverfahren, das die Latenz auf einem eingebetteten Prozessor senkt —, nicht der Code.',
+        'Der Weg ist auf beiden Seiten des Atlantiks ähnlich. Beim brasilianischen Patentamt INPI bleibt die Anmeldung 18 Monate geheim, wird veröffentlicht, und die Prüfung muss innerhalb von 36 Monaten ab Anmeldung beantragt werden; es folgen technische Prüfung, Bescheide und Erwiderungen bis zur Entscheidung [1]. Beim Europäischen Patentamt (EPA) erhält die Anmeldung einen Recherchenbericht mit Stellungnahme, wird nach 18 Monaten veröffentlicht, und die Prüfung ist binnen sechs Monaten nach Veröffentlichung dieses Berichts zu beantragen; nach der Erteilung können Dritte neun Monate lang Einspruch einlegen [2]. Seit dem 1. Juni 2023 kann ein europäisches Patent zudem einheitliche Wirkung in den meisten EU-Staaten erhalten [5].',
+        'Der Unterschied liegt in der Uhr. Laut der Weltorganisation für geistiges Eigentum (WIPO) dauerte es 2016 in Brasilien im Mittel 95,4 Monate bis zur endgültigen Entscheidung — fast acht Jahre —, beim EPA 23,3 Monate [4]. 2024 lag Brasilien bei 38,4 Monaten, weiterhin über dem EPA (24,9), dem US-Amt (29,5), China (15,5) und Japan (12,9) [3]. Ein Teil der Erklärung ist die Größe: 2024 hatte das INPI 300 Patentprüfer, das EPA 4.005 [3]. Die WIPO weist selbst darauf hin, dass die Verfahren nicht vollständig harmonisiert sind und Vergleiche zwischen Ämtern Vorsicht erfordern [3].',
+        'Unterdessen hat das Feld beschleunigt. Die weltweit veröffentlichten Patentanmeldungen im Bereich Transport stiegen von 90.961 im Jahr 2013 auf 140.730 im Jahr 2023, im Mittel 4,5 % pro Jahr [3]. Deutschland, Frankreich, Schweden und Italien sind unter den 15 größten Herkunftsländern 2021–2023 am stärksten auf dieses Feld spezialisiert; Brasilien gehört nicht zu dieser Gruppe [3]. Wer in Brasilien Automobiltechnik entwickelt, lernt daraus zweierlei: Eine frühe Anmeldung im Inland sichert die Priorität, aber der Schutz in den Märkten, in denen das Auto gebaut und verkauft wird, führt meist auch über das EPA und weitere Ämter.',
+        'Deshalb muss die Forschung von Anfang an an geistiges Eigentum denken. Ein Algorithmus zur Fahrspurerkennung, der in Echtzeit auf eingebetteter Hardware läuft, kann veröffentlicht, patentiert oder beides werden — aber die Reihenfolge zählt, denn eine Offenlegung vor der Anmeldung kann die Neuheit zerstören. In meiner Planung ist das ein ausdrücklicher Schritt: Forschungsergebnisse in einen Prototyp zu überführen und, wo eine neue technische Lösung entsteht, in eine Patentanmeldung.',
+      ],
+      figure: {
+        src: 'assets/images/blueprints/patent-pendency-de.svg',
+        ...PENDENCY,
+        alt: 'Balkendiagramm der mittleren Dauer bis zur endgültigen Entscheidung über Patentanmeldungen 2016 und 2024: Brasilien 95,4 und 38,4 Monate; USA 22,6 und 29,5; Europa (EPA) 23,3 und 24,9; China 22,0 und 15,5; Japan 15,0 und 12,9.',
+        caption: 'Abb. 04 — Mittlere Dauer bis zur endgültigen Entscheidung in Monaten, gezählt ab Prüfungsantrag (oder Anmeldung). Quelle: WIPO, WIPI 2017 und 2025 [3], [4].',
+      },
+      references: PATENT_REFS,
     },
   ],
 };

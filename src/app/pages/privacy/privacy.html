@@ -1,0 +1,36 @@
+<section class="page-hero graph-paper" aria-labelledby="privacy-title">
+  <div class="shell">
+    <p class="mono-label">{{ t.eyebrow }}</p>
+    <h1 id="privacy-title" class="page-title">{{ t.title }}</h1>
+    <p class="section-lede">{{ t.intro }}</p>
+    <p class="updated">{{ t.updated }}</p>
+  </div>
+</section>
+
+<div class="shell privacy-body">
+  @for (section of t.sections; track section.heading) {
+    <section class="privacy-section">
+      <h2>{{ section.heading }}</h2>
+      @for (paragraph of section.paragraphs; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+      @if (section.items) {
+        <ul>
+          @for (item of section.items; track $index) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      }
+    </section>
+  }
+
+  <section class="privacy-status blueprint" aria-labelledby="privacy-status-title">
+    <h2 id="privacy-status-title" class="mono-label">{{ t.statusTitle }}</h2>
+    <p role="status">{{ status }}</p>
+    @if (canToggle) {
+      <button type="button" class="btn btn-outline" [attr.aria-pressed]="optedOut()" (click)="toggle()">
+        {{ optedOut() ? t.optIn : t.optOut }}
+      </button>
+    }
+  </section>
+</div>

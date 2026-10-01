@@ -67,7 +67,7 @@
   border-top: 1px solid var(--rule);
 }
 
-.project-meta dd {
+.project-meta .meta-value {
   margin: 0.4rem 0 0;
 }
 

@@ -14,9 +14,9 @@
   <polyline class="fit" [attr.points]="leftLane" />
   <polyline class="fit" [attr.points]="rightLane" />
 
-  @for (row of rows; track row.y) {
-    <rect class="cell" [attr.x]="row.left - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
-    <rect class="cell" [attr.x]="row.right - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
+  @for (row of rows; track row.y; let i = $index) {
+    <rect class="cell" [style.--i]="rows.length - i" [attr.x]="row.left - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
+    <rect class="cell" [style.--i]="rows.length - i" [attr.x]="row.right - 10" [attr.y]="row.y - 5" width="20" height="10" rx="2" />
     <circle class="point" [attr.cx]="row.left" [attr.cy]="row.y" r="3" />
     <circle class="point" [attr.cx]="row.right" [attr.cy]="row.y" r="3" />
   }

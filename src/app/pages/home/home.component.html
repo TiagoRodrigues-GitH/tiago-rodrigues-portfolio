@@ -26,22 +26,22 @@
       <p class="section-lede">{{ t.specLede }}</p>
     </header>
 
-    <dl class="bento">
+    <ul class="bento">
       @for (spec of t.specs; track spec.key; let first = $first) {
-        <div class="tile reveal" [class.tile-feature]="first" [class.blueprint]="first">
-          <dt class="mono-label">{{ spec.key }}</dt>
-          <dd>
+        <li class="tile reveal" [class.tile-feature]="first" [class.blueprint]="first">
+          <h3 class="tile-key mono-label">{{ spec.key }}</h3>
+          <div class="tile-body">
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <img class="tile-art" [src]="chassis" width="849" height="348" alt="" loading="lazy" decoding="async" />
+              <span class="tile-art" aria-hidden="true"></span>
             }
-          </dd>
-        </div>
+          </div>
+        </li>
       }
-      <div class="tile tile-stack reveal">
-        <dt class="mono-label">{{ t.stackTitle }}</dt>
-        <dd>
+      <li class="tile tile-stack reveal">
+        <h3 class="tile-key mono-label">{{ t.stackTitle }}</h3>
+        <div class="tile-body">
           @for (group of t.stack; track group.key) {
             <div class="stack-group">
               <p class="stack-key">{{ group.key }}</p>
@@ -52,9 +52,9 @@
               </ul>
             </div>
           }
-        </dd>
-      </div>
-    </dl>
+        </div>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -71,7 +71,7 @@
       @for (project of projects(); track project.id) {
         <li class="project-card reveal">
           <div class="frame card-media">
-            <img [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" alt="" loading="lazy" decoding="async" />
+            <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
           </div>
           <div class="card-body">
             <p class="card-meta">

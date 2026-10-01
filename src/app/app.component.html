@@ -90,11 +90,11 @@
       </ul>
     </div>
 
-    <dl class="title-block">
-      <div><dt>{{ t.footer.author }}</dt><dd>Tiago Rodrigues</dd></div>
-      <div><dt>{{ t.footer.revision }}</dt><dd>{{ year }}</dd></div>
-      <div><dt>{{ t.language }}</dt><dd>PT · EN · DE</dd></div>
-    </dl>
+    <ul class="title-block">
+      <li><span class="tb-key">{{ t.footer.author }}</span> <span class="tb-value">Tiago Rodrigues</span></li>
+      <li><span class="tb-key">{{ t.footer.revision }}</span> <span class="tb-value">{{ year }}</span></li>
+      <li><span class="tb-key">{{ t.language }}</span> <span class="tb-value">PT · EN · DE</span></li>
+    </ul>
   </div>
 
   <div class="shell footer-meta">
@@ -111,6 +111,15 @@
       </ul>
     </details>
     <p>&copy; {{ year }} Tiago Rodrigues. {{ t.footer.rights }}</p>
+    <p><a routerLink="/privacy" [queryParams]="{ lang: lang() }">{{ t.footer.privacy }}</a></p>
     <button type="button" class="to-top" (click)="backToTop()">{{ t.footer.backToTop }} <span aria-hidden="true">↑</span></button>
+  </div>
+
+  <div class="a11y-bar">
+    <p class="shell">
+      <span class="a11y-mark" aria-hidden="true">AA</span>
+      {{ t.a11y.statement }}
+      <a [href]="t.a11y.url" target="_blank" rel="noopener noreferrer" [attr.hreflang]="lang() === 'pt' ? 'pt-BR' : 'en'">{{ t.a11y.guidelines }}<span class="visually-hidden"> {{ t.newTab }}</span></a>
+    </p>
   </div>
 </footer>

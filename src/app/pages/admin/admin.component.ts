@@ -1,8 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { DatePipe, SlicePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
 import { AuthService } from '../../services/auth.service';
+import { AnalyticsService, VisitRow, VisitSummary } from '../../services/analytics.service';
 import { injectLocale } from '../../services/locale';
 
 const EMPTY_PROJECT: Project = {
@@ -18,7 +21,8 @@ const EMPTY_PROJECT: Project = {
 
 @Component({
   selector: 'app-admin',
-  standalone: false,
+  // Standalone and lazy-loaded: visitors never download the admin code.
+  imports: [FormsModule, DatePipe, SlicePipe],
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
 })
@@ -26,6 +30,7 @@ export class AdminComponent implements OnInit {
   private readonly projectService = inject(ProjectService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly analytics = inject(AnalyticsService);
 
   // Signals: HTTP callbacks do not trigger change detection in this zoneless app.
   readonly locale = injectLocale();
@@ -35,6 +40,9 @@ export class AdminComponent implements OnInit {
   readonly editingId = signal<number | null>(null);
   readonly successMessage = signal('');
   readonly errorMessage = signal('');
+  readonly summary = signal<VisitSummary | null>(null);
+  readonly visits = signal<VisitRow[]>([]);
+  readonly visitsError = signal('');
 
   newProject: Project = { ...EMPTY_PROJECT };
 
@@ -47,6 +55,7 @@ export class AdminComponent implements OnInit {
 
       this.isCheckingAuth.set(false);
       this.loadProjects();
+      this.loadVisits();
     });
   }
 
@@ -91,8 +100,45 @@ export class AdminComponent implements OnInit {
       updateError: locale === 'en' ? 'Could not update the project.' : locale === 'de' ? 'Das Projekt konnte nicht aktualisiert werden.' : 'Não foi possível atualizar o projeto.',
       deleteSuccess: locale === 'en' ? 'Project deleted successfully.' : locale === 'de' ? 'Projekt erfolgreich gelöscht.' : 'Projeto excluído com sucesso.',
       deleteError: locale === 'en' ? 'Could not delete the project.' : locale === 'de' ? 'Das Projekt konnte nicht gelöscht werden.' : 'Não foi possível excluir o projeto.',
+      logout: locale === 'en' ? 'Sign out' : locale === 'de' ? 'Abmelden' : 'Sair',
+      visits: locale === 'en' ? 'Visits (last 30 days)' : locale === 'de' ? 'Besuche (letzte 30 Tage)' : 'Visitas (últimos 30 dias)',
+      visitsHint: locale === 'en' ? 'Personal data (LGPD): records are deleted after 90 days. Use only for audience statistics and security.' : locale === 'de' ? 'Personenbezogene Daten (LGPD/DSGVO): Einträge werden nach 90 Tagen gelöscht. Nur für Reichweitenstatistik und Sicherheit verwenden.' : 'Dados pessoais (LGPD): os registros são apagados após 90 dias. Use apenas para estatística de audiência e segurança.',
+      pageViews: locale === 'en' ? 'page views' : locale === 'de' ? 'Seitenaufrufe' : 'páginas vistas',
+      visitors: locale === 'en' ? 'distinct IP addresses' : locale === 'de' ? 'verschiedene IP-Adressen' : 'endereços IP distintos',
+      sessions: locale === 'en' ? 'visits (browser tabs)' : locale === 'de' ? 'Besuche (Browser-Tabs)' : 'visitas (abas do navegador)',
+      topPages: locale === 'en' ? 'Most visited pages' : locale === 'de' ? 'Meistbesuchte Seiten' : 'Páginas mais visitadas',
+      topReferrers: locale === 'en' ? 'Where visitors came from' : locale === 'de' ? 'Herkunft der Besucher' : 'De onde vieram os visitantes',
+      languages: locale === 'en' ? 'Languages' : locale === 'de' ? 'Sprachen' : 'Idiomas',
+      recent: locale === 'en' ? 'Latest visits' : locale === 'de' ? 'Letzte Besuche' : 'Últimas visitas',
+      item: locale === 'en' ? 'Item' : locale === 'de' ? 'Eintrag' : 'Item',
+      count: locale === 'en' ? 'Count' : locale === 'de' ? 'Anzahl' : 'Quantidade',
+      when: locale === 'en' ? 'When' : locale === 'de' ? 'Zeitpunkt' : 'Quando',
+      page: locale === 'en' ? 'Page' : locale === 'de' ? 'Seite' : 'Página',
+      referrer: locale === 'en' ? 'Came from' : locale === 'de' ? 'Herkunft' : 'Origem',
+      language: locale === 'en' ? 'Language' : locale === 'de' ? 'Sprache' : 'Idioma',
+      browser: locale === 'en' ? 'Browser' : locale === 'de' ? 'Browser' : 'Navegador',
+      noData: locale === 'en' ? 'No data yet.' : locale === 'de' ? 'Noch keine Daten.' : 'Ainda sem dados.',
+      loadingVisits: locale === 'en' ? 'Loading visits…' : locale === 'de' ? 'Besuche werden geladen …' : 'Carregando visitas…',
+      visitsLoadError: locale === 'en' ? 'Visit statistics could not be loaded.' : locale === 'de' ? 'Die Besuchsstatistik konnte nicht geladen werden.' : 'Não foi possível carregar as estatísticas de visita.',
       deleteConfirm: locale === 'en' ? 'Delete this project? This cannot be undone.' : locale === 'de' ? 'Dieses Projekt löschen? Das kann nicht rückgängig gemacht werden.' : 'Excluir este projeto? Esta ação não pode ser desfeita.',
     };
+  }
+
+  loadVisits() {
+    this.visitsError.set('');
+    this.analytics.summary(30).subscribe({
+      next: (summary) => this.summary.set(summary),
+      error: () => this.visitsError.set(this.t.visitsLoadError),
+    });
+    this.analytics.recent(100).subscribe({
+      next: (rows) => this.visits.set(rows),
+      error: () => this.visitsError.set(this.t.visitsLoadError),
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login'], { queryParams: { lang: this.locale() } });
   }
 
   loadProjects() {

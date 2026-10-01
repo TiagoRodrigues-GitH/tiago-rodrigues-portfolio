@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, Inject, PLATFORM_ID, ViewChild, signal } from '@angular/core';
 import { DOCUMENT, ViewportScroller, isPlatformBrowser } from '@angular/common';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, Scroll } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { I18nService, Locale, PageKey, ShellTranslations } from './services/i18n.service';
 import { IMAGE_CREDITS } from './content/credits';
+import { SeoService } from './services/seo.service';
+import { AnalyticsService } from './services/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,8 @@ export class AppComponent {
   constructor(
     private router: Router,
     public i18n: I18nService,
-    private title: Title,
+    private seo: SeoService,
+    private analytics: AnalyticsService,
     private viewportScroller: ViewportScroller,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) platformId: object,
@@ -122,11 +124,21 @@ export class AppComponent {
     this.lang.set(locale);
     this.menuOpen.set(false);
     this.document.documentElement.lang = this.i18n.option(locale).htmlLang;
-    this.title.setTitle(this.t.titles[this.currentPage()]);
+    const page = this.currentPage();
+    const path = url.split(/[?#]/)[0];
+    this.seo.update({
+      path,
+      locale,
+      title: this.t.titles[page],
+      description: this.t.descriptions[page],
+      index: page !== 'login' && page !== 'admin',
+    });
 
     // Move focus to the new page for keyboard and screen-reader users (not on language switches).
-    const path = url.split(/[?#]/)[0];
     this.pathChanged = path !== this.lastPath;
+    if (this.pathChanged) {
+      this.analytics.trackPageView(path, locale);
+    }
     if (this.lastPath !== null && this.pathChanged && this.isBrowser) {
       setTimeout(() => this.mainContent?.nativeElement.focus({ preventScroll: true }));
     }

@@ -6,14 +6,14 @@
       <p class="section-lede">{{ t.intro }}</p>
     </div>
 
-    <aside class="availability blueprint" aria-labelledby="availability-title">
+    <section class="availability blueprint" aria-labelledby="availability-title">
       <div class="person">
-        <img [src]="profileImage" width="534" height="627" alt="" />
+        <img [src]="profileImage" width="534" height="627" [alt]="t.photoAlt" />
         <p class="person-name">Tiago Rodrigues</p>
       </div>
       <h2 id="availability-title" class="mono-label">{{ t.availabilityLabel }}</h2>
       <p>{{ t.availabilityText }}</p>
-    </aside>
+    </section>
   </div>
 </section>
 

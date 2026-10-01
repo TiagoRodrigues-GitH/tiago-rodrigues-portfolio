@@ -212,7 +212,8 @@ main {
   padding-top: var(--header-h);
 }
 
-main:focus {
+/* Focus is moved to <main> on page changes; no ring for that programmatic focus only. */
+main:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -266,27 +267,29 @@ main:focus {
 .title-block {
   align-self: start;
   margin: 0;
+  padding: 0;
+  list-style: none;
   border: 1px solid var(--rule-dark);
   font-family: var(--font-mono);
   font-size: 0.8rem;
 }
 
-.title-block div {
+.title-block li {
   display: grid;
   grid-template-columns: 6.5rem 1fr;
 }
 
-.title-block div + div {
+.title-block li + li {
   border-top: 1px solid var(--rule-dark);
 }
 
-.title-block dt,
-.title-block dd {
+.tb-key,
+.tb-value {
   margin: 0;
   padding: 0.55rem 0.75rem;
 }
 
-.title-block dt {
+.tb-key {
   color: var(--blue-300);
   text-transform: uppercase;
   letter-spacing: 0.08em;

@@ -9,7 +9,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class ProjectService {
-  private apiUrl = '/api';
+  private get apiUrl(): string {
+    return this.authService.apiUrl;
+  }
 
   constructor(
     private http: HttpClient,
