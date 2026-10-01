@@ -311,8 +311,12 @@ main:focus:not(:focus-visible) {
   flex: 1 1 100%;
 }
 
-.credits summary {
+.credits-toggle {
   width: fit-content;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
   color: var(--text-on-dark);
   font-family: var(--font-mono);

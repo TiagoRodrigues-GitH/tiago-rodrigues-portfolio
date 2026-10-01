@@ -6,10 +6,10 @@
       <h1 id="hero-title" class="hero-title">{{ t.titleLead }} <span class="accent">{{ t.titleAccent }}</span></h1>
       <p class="hero-intro">{{ t.intro }}</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" routerLink="/projects" [queryParams]="{ lang: locale() }">
+        <a class="btn btn-primary" routerLink="/projects" [queryParams]="langQuery()">
           {{ t.viewProjects }} <span aria-hidden="true">→</span>
         </a>
-        <a class="btn btn-outline" routerLink="/" [queryParams]="{ lang: locale() }" fragment="articles">{{ t.readArticles }}</a>
+        <a class="btn btn-outline" routerLink="/" [queryParams]="langQuery()" fragment="articles">{{ t.readArticles }}</a>
       </div>
       <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
     </div>
@@ -34,7 +34,7 @@
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <span class="tile-art" aria-hidden="true"></span>
+              <span class="tile-art" aria-hidden="true"><span class="scan" aria-hidden="true"></span></span>
             }
           </div>
         </li>
@@ -72,6 +72,7 @@
         <li class="project-card reveal">
           <div class="frame card-media">
             <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
+            <span class="scan" aria-hidden="true"></span>
           </div>
           <div class="card-body">
             <p class="card-meta">
@@ -82,7 +83,7 @@
             </p>
             <h3>{{ project.title }}</h3>
             <p>{{ project.summary }}</p>
-            <a class="arrow-link" routerLink="/projects" [queryParams]="{ lang: locale() }" [fragment]="'project-' + project.id">
+            <a class="arrow-link" routerLink="/projects" [queryParams]="langQuery()" [fragment]="'project-' + project.id">
               {{ t.projectLink }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span>
             </a>
           </div>
@@ -90,7 +91,7 @@
       }
     </ul>
 
-    <a class="btn btn-outline all-projects" routerLink="/projects" [queryParams]="{ lang: locale() }">{{ t.allProjects }}</a>
+    <a class="btn btn-outline all-projects" routerLink="/projects" [queryParams]="langQuery()">{{ t.allProjects }}</a>
   </div>
 </section>
 
@@ -119,6 +120,7 @@
 
               <figure class="figure">
                 <div class="frame">
+                  <span class="scan" aria-hidden="true"></span>
                   @if (article.figure.src === 'lane-diagram') {
                     <app-lane-diagram [labels]="t.laneDiagram" [description]="article.figure.alt" />
                   } @else {
@@ -135,30 +137,41 @@
                 <figcaption>{{ article.figure.caption }}</figcaption>
               </figure>
 
-              <details class="chapter-more">
-                <summary>
-                  <span class="when-closed">{{ t.readMore }}</span>
-                  <span class="when-open">{{ t.readLess }}</span>
-                </summary>
-                <div class="chapter-text">
-                  @for (paragraph of article.paragraphs; track $index) {
-                    <p>{{ paragraph }}</p>
-                  }
-                </div>
-                <details class="refs">
-                  <summary>{{ t.references }} ({{ article.references.length }})</summary>
-                  <ol>
-                    @for (reference of article.references; track $index) {
-                      <li>
-                        {{ reference.text }}
-                        @if (reference.url) {
-                          <a [href]="reference.url" target="_blank" rel="noopener noreferrer">{{ displayUrl(reference.url) }}<span class="visually-hidden"> {{ newTab }}</span></a>
-                        }
-                      </li>
+              <div class="chapter-more">
+                <button
+                  type="button"
+                  class="more-toggle"
+                  [attr.aria-expanded]="isOpen(article.id)"
+                  [attr.aria-controls]="'more-' + article.id"
+                  (click)="toggle(article.id)"
+                >{{ isOpen(article.id) ? t.readLess : t.readMore }}</button>
+                <div class="chapter-more-body" [id]="'more-' + article.id" [hidden]="!isOpen(article.id)">
+                  <div class="chapter-text">
+                    @for (paragraph of article.paragraphs; track $index) {
+                      <p>{{ paragraph }}</p>
                     }
-                  </ol>
-                </details>
-              </details>
+                  </div>
+                  <div class="refs">
+                    <button
+                      type="button"
+                      class="refs-toggle"
+                      [attr.aria-expanded]="isOpen('refs-' + article.id)"
+                      [attr.aria-controls]="'refs-' + article.id"
+                      (click)="toggle('refs-' + article.id)"
+                    >{{ t.references }} ({{ article.references.length }})</button>
+                    <ol [id]="'refs-' + article.id" [hidden]="!isOpen('refs-' + article.id)">
+                      @for (reference of article.references; track $index) {
+                        <li>
+                          {{ reference.text }}
+                          @if (reference.url) {
+                            <a [href]="reference.url" target="_blank" rel="noopener noreferrer">{{ displayUrl(reference.url) }}<span class="visually-hidden"> {{ newTab }}</span></a>
+                          }
+                        </li>
+                      }
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         </li>
@@ -172,7 +185,7 @@
   <div class="shell cta-inner reveal">
     <h2 id="cta-title" class="cta-title">{{ t.ctaTitle }}</h2>
     <p>{{ t.ctaText }}</p>
-    <a class="btn btn-primary" routerLink="/contact" [queryParams]="{ lang: locale() }">
+    <a class="btn btn-primary" routerLink="/contact" [queryParams]="langQuery()">
       {{ t.ctaButton }} <span aria-hidden="true">→</span>
     </a>
   </div>

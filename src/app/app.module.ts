@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,9 @@ import { LaneDiagramComponent } from './shared/lane-diagram/lane-diagram.compone
     LaneDiagramComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [provideHttpClient(withFetch())],
+  // Hydration reuses the prerendered DOM instead of re-creating it (less main-thread work, lower TBT/INP).
+  // No event replay: it would need an inline script, which the Content-Security-Policy forbids.
+  providers: [provideHttpClient(withFetch()), provideClientHydration()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

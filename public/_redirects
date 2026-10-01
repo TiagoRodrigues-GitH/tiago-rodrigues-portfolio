@@ -1,0 +1,7 @@
+# Cloudflare Pages (and Netlify) rewrites. GitHub Pages ignores this file.
+# Pages rendered only in the browser are served by the client-side shell (status 200).
+/login              /index.csr.html  200
+/admin              /index.csr.html  200
+# Legacy URLs from earlier versions of the site
+/projects/:id       /projects/       301
+/language/:lang     /?lang=:lang     301

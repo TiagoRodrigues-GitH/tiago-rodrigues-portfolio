@@ -167,6 +167,11 @@ button {
 	--focus: var(--signal);
 }
 
+/* Closed disclosures use the hidden attribute; component display rules must not override it. */
+[hidden] {
+	display: none !important;
+}
+
 .visually-hidden {
 	position: absolute !important;
 	width: 1px;
@@ -446,6 +451,57 @@ button {
 
 .blueprint .figure figcaption {
 	color: var(--text-on-dark-muted);
+}
+
+/* ---------- Sensor sweep over drawings (decorative) ---------- */
+
+.scan {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.scan::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -25%;
+	width: 22%;
+	background: linear-gradient(90deg, transparent, rgba(111, 214, 255, 0.22) 45%, rgba(111, 214, 255, 0.5) 50%, rgba(111, 214, 255, 0.22) 55%, transparent);
+	transform: translateX(0);
+	opacity: 0;
+}
+
+@keyframes scan-sweep {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateX(620%);
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	/* Follows the scroll while the drawing enters the viewport... */
+	@supports (animation-timeline: view()) {
+		.scan::before {
+			animation: scan-sweep linear both;
+			animation-timeline: view();
+			animation-range: entry 20% cover 55%;
+		}
+	}
+
+	/* ...and sweeps again when the reader points at it or focuses its link. */
+	:is(a, button, li, figure, .tile):is(:hover, :focus-visible) .scan::before {
+		animation: scan-sweep 1.2s var(--ease) both;
+		animation-timeline: auto;
+	}
 }
 
 /* ---------- Chips and status ---------- */

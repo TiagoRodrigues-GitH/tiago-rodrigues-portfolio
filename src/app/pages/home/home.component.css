@@ -114,6 +114,7 @@
 
 /* Decorative drawing: a CSS background, so it is not an <img> with an empty alt. */
 .tile-art {
+  position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 849 / 348;
@@ -254,36 +255,46 @@
   line-height: 1.55;
 }
 
-.chapter-more > summary,
-.refs > summary {
+.more-toggle,
+.refs-toggle {
   width: fit-content;
   cursor: pointer;
+  font: inherit;
   font-family: var(--font-display);
   font-weight: 600;
   color: var(--accent);
+  background: none;
 }
 
-.chapter-more > summary {
+.more-toggle {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
   padding: 0.5rem 1.2rem;
   border: 1.5px solid var(--accent);
   border-radius: 999px;
-  list-style: none;
 }
 
-.chapter-more > summary::-webkit-details-marker {
-  display: none;
-}
-
-.chapter-more > summary:hover {
+.more-toggle:hover {
   background: var(--blue-100);
 }
 
-.chapter-more[open] > summary .when-closed,
-.chapter-more:not([open]) > summary .when-open {
-  display: none;
+.refs-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+}
+
+.refs-toggle::before {
+  content: '▸';
+  transition: transform 0.2s var(--ease);
+}
+
+.refs-toggle[aria-expanded='true']::before {
+  transform: rotate(90deg);
 }
 
 .chapter-text {
@@ -292,7 +303,7 @@
   margin-block: 1.75rem;
 }
 
-.refs ol {
+.refs ol:not([hidden]) {
   display: grid;
   gap: 0.6rem;
   margin: 1rem 0 0;

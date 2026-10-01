@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Inject, PLATFORM_ID, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, PLATFORM_ID, ViewChild, computed, signal } from '@angular/core';
 import { DOCUMENT, ViewportScroller, isPlatformBrowser } from '@angular/common';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, Scroll } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -6,6 +6,9 @@ import { I18nService, Locale, PageKey, ShellTranslations } from './services/i18n
 import { IMAGE_CREDITS } from './content/credits';
 import { SeoService } from './services/seo.service';
 import { AnalyticsService } from './services/analytics.service';
+import { langQueryFor } from './services/locale';
+
+const LANG_KEY = 'preferred_lang';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +33,9 @@ export class AppComponent {
 
   readonly lang = signal<Locale>('pt');
   readonly menuOpen = signal(false);
+  readonly langQuery = computed(() => langQueryFor(this.lang()));
+  /** Footer image credits (disclosure; closed content is `hidden`, so its links are not focusable). */
+  readonly creditsOpen = signal(false);
 
   @ViewChild('mainContent') private mainContent?: ElementRef<HTMLElement>;
   @ViewChild('menuButton') private menuButton?: ElementRef<HTMLButtonElement>;
@@ -78,8 +84,10 @@ export class AppComponent {
   }
 
   setLanguage(language: Locale): void {
+    this.rememberLanguage(language);
     const tree = this.router.parseUrl(this.router.url);
-    tree.queryParams = { ...tree.queryParams, lang: language };
+    const { lang: _previous, ...rest } = tree.queryParams;
+    tree.queryParams = language === 'pt' ? rest : { ...rest, lang: language };
     this.router.navigateByUrl(tree);
   }
 
@@ -110,7 +118,15 @@ export class AppComponent {
     const tree = this.router.parseUrl(url);
     const requested = tree.queryParams['lang'] ?? null;
 
-    // First visit without ?lang: follow the browser language (e.g. a German or English reader).
+    // Old links with ?lang=pt: Portuguese is the default, so drop the parameter (one URL per page).
+    if (requested === 'pt' && this.isBrowser) {
+      const { lang: _pt, ...rest } = tree.queryParams;
+      tree.queryParams = rest;
+      this.router.navigateByUrl(tree, { replaceUrl: true });
+      return;
+    }
+
+    // First visit without ?lang: the visitor's earlier choice, else the browser language.
     if (this.lastPath === null && requested === null && this.isBrowser) {
       const preferred = this.preferredLocale();
       if (preferred !== 'pt') {
@@ -164,7 +180,23 @@ export class AppComponent {
     return (route?.data['page'] as PageKey | undefined) ?? 'home';
   }
 
+  private rememberLanguage(language: Locale): void {
+    try {
+      this.document.defaultView?.localStorage.setItem(LANG_KEY, language);
+    } catch {
+      // Storage blocked: the choice simply is not remembered.
+    }
+  }
+
   private preferredLocale(): Locale {
+    try {
+      const stored = this.document.defaultView?.localStorage.getItem(LANG_KEY);
+      if (stored === 'pt' || stored === 'en' || stored === 'de') {
+        return stored;
+      }
+    } catch {
+      // Storage blocked: fall back to the browser language.
+    }
     const languages = this.document.defaultView?.navigator.languages ?? [];
     for (const language of languages) {
       const code = language.slice(0, 2).toLowerCase();

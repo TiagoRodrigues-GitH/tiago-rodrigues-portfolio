@@ -8,6 +8,7 @@
     <figure class="figure">
       <div class="frame">
         <img [src]="chassis" width="849" height="348" [alt]="t.figureAlt" />
+        <span class="scan" aria-hidden="true"></span>
       </div>
       <figcaption>{{ t.figureCaption }}</figcaption>
     </figure>
@@ -53,6 +54,7 @@
           >
             <span class="visually-hidden">{{ t.zoom }}: </span>
             <img [class.contain]="image.contain" [src]="image.src" [width]="image.width" [height]="image.height" [alt]="image.alt" loading="lazy" decoding="async" />
+            <span class="scan" aria-hidden="true"></span>
             <span class="zoom-icon" aria-hidden="true">+</span>
           </button>
         }

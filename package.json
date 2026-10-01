@@ -12,7 +12,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:tiago-rodrigues-portfolio": "node dist/tiago-rodrigues-portfolio/server/server.mjs"
+    "serve:ssr:tiago-rodrigues-portfolio": "node dist/tiago-rodrigues-portfolio/server/server.mjs",
+    "build:cloudflare": "ng build --configuration production,cloudflare && node -e \"require('fs').copyFileSync('dist/tiago-rodrigues-portfolio/browser/index.csr.html','dist/tiago-rodrigues-portfolio/browser/404.html')\""
   },
   "dependencies": {
     "@angular/common": "^21.2.0",

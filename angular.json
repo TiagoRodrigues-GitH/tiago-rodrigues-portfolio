@@ -82,6 +82,9 @@
               ],
               "outputHashing": "all"
             },
+            "cloudflare": {
+              "baseHref": "/"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
