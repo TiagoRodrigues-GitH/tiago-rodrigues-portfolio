@@ -15,7 +15,10 @@ npx -y $wrangler whoami | Out-String | Tee-Object -Variable who | Out-Null
 if ($who -match 'not authenticated') {
   Write-Host 'Opening the Cloudflare login in your browser: click "Allow".'
   npx -y $wrangler login
-  if ($LASTEXITCODE -ne 0) { throw 'Cloudflare login failed or timed out; run the script again.' }
+  # wrangler login exits with 0 even when the authorisation times out: check again
+  if ((npx -y $wrangler whoami | Out-String) -match 'not authenticated') {
+    throw 'Cloudflare login failed or timed out; run the script again and click "Allow".'
+  }
 }
 
 # Create the project (fails harmlessly if it already exists) and read its address.
