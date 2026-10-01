@@ -17,6 +17,17 @@ Referrer-Policy, Permissions-Policy, HSTS) as real HTTP headers. GitHub Pages ca
 3. Save and deploy. The site appears at `https://<project-name>.pages.dev`
    (or add a custom domain under *Custom domains*).
 
+## Or: upload from this PC (no Git connection)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\deploy-cloudflare.ps1
+```
+
+The first run opens the Cloudflare login in the browser (click *Allow*), creates the Pages project
+`tiago-rodrigues-portfolio`, runs `set-site-url.mjs` with its `*.pages.dev` address, builds and
+uploads. Later runs rebuild and upload. A direct-upload project cannot be switched to the Git
+connection later; pick one of the two ways.
+
 ## Point the site's own links to the new address
 
 Canonical URLs, hreflang, Open Graph, JSON-LD, the sitemap and robots.txt contain the public
