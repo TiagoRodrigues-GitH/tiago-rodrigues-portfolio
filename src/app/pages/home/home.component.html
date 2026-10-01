@@ -73,7 +73,7 @@
         <li class="project-card reveal">
           <div class="frame card-media">
             @if (project.image.figure) {
-              <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
+              <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />
             } @else if (project.image.blueprint) {
               <app-blueprint-figure [src]="project.image.src" [width]="project.image.width" [height]="project.image.height"
                 [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" fit="cover-top" [framed]="false" />
@@ -128,12 +128,17 @@
 
               <figure class="figure">
                 <div class="frame">
-                  <span class="scan" aria-hidden="true"></span>
                   @if (article.figure.src === 'lane-diagram') {
-                    <app-lane-diagram [labels]="t.laneDiagram" [description]="article.figure.alt" />
+                    <span class="scan" aria-hidden="true"></span>
+                    <app-lane-diagram [labels]="t.laneDiagram" [locale]="locale()" [description]="article.figure.alt" />
                   } @else if (article.figure.src === 'patent-chart') {
+                    <span class="scan" aria-hidden="true"></span>
                     <app-pendency-chart [locale]="locale()" [description]="article.figure.alt" />
+                  } @else if (article.figure.blueprint) {
+                    <app-blueprint-figure [src]="article.figure.src" [width]="article.figure.width ?? 0" [height]="article.figure.height ?? 0"
+                      [alt]="article.figure.alt" [parts]="parts(article.figure.blueprint)" [framed]="false" />
                   } @else {
+                    <span class="scan" aria-hidden="true"></span>
                     <img
                       [src]="article.figure.src"
                       [alt]="article.figure.alt"

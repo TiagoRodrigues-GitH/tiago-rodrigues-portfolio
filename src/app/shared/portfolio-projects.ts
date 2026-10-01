@@ -72,6 +72,7 @@ const PROJECTS: ProjectSource[] = [
         width: 720,
         height: 651,
         contain: true,
+        blueprint: 'fleetUml',
         alt: {
           pt: 'Diagrama de classes UML: classe abstrata Veiculo, especializações Passeio e Carga, interface Calcular, classe Motor e exceções personalizadas.',
           en: 'UML class diagram: abstract Veiculo (vehicle) class, Passeio (passenger) and Carga (cargo) subclasses, Calcular interface, Motor class and custom exceptions.',

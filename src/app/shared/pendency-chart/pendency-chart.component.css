@@ -78,6 +78,29 @@ svg {
   font-size: 13px;
 }
 
+/* Pointing at an office lights its bars and dims the others; the floating label gives the change. */
+.pc {
+  position: relative;
+}
+
+.hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.group {
+  cursor: pointer;
+  transition: opacity 0.25s var(--ease);
+}
+
+.has-active .group:not(.on) {
+  opacity: 0.3;
+}
+
+.group.on .hit {
+  fill: rgba(111, 214, 255, 0.06);
+}
+
 /* Bars grow from the axis while the chart scrolls into view; values fade in after them. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (view-timeline-name: --pendency) {

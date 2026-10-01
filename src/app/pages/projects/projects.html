@@ -46,7 +46,7 @@
       <div class="project-media">
         @if (project.image.figure) {
           <div class="frame figure-cover">
-            <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
+            <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />
           </div>
         }
         @if (project.image.blueprint) {
@@ -54,6 +54,15 @@
             [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" [legend]="true" />
         }
         @for (image of project.gallery; track image.src; let j = $index) {
+          @if (image.blueprint) {
+            <div class="gallery-blueprint">
+              <app-blueprint-figure [src]="image.src" [width]="image.width" [height]="image.height"
+                [alt]="image.alt" [parts]="parts(image.blueprint)" [legend]="true" />
+              <button type="button" class="btn btn-outline zoom-text" (click)="openImage(i, j, $event.currentTarget)">
+                {{ t.zoom }} <span aria-hidden="true">+</span>
+              </button>
+            </div>
+          } @else {
           <button
             type="button"
             class="frame zoom"
@@ -64,6 +73,7 @@
             <span class="scan" aria-hidden="true"></span>
             <span class="zoom-icon" aria-hidden="true">+</span>
           </button>
+          }
         }
       </div>
     </article>

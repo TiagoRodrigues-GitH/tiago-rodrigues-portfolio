@@ -4,20 +4,25 @@
     @if (parts.length) {
       <svg class="overlay" [attr.viewBox]="'0 0 ' + width + ' ' + height" [attr.preserveAspectRatio]="aspect" aria-hidden="true">
         @for (part of parts; track $index) {
-          <g class="hotspot" [class.on]="active() === $index" (mouseenter)="active.set($index)">
+          <g class="hotspot" [class.on]="active() === $index" [style.--i]="$index" (mouseenter)="point($index)" (click)="point($index)">
             <circle class="ring" [attr.cx]="part.x * width" [attr.cy]="part.y * height" [attr.r]="radius" />
             <circle class="balloon" [attr.cx]="part.x * width + radius * 1.1" [attr.cy]="part.y * height - radius * 1.1" [attr.r]="radius * 0.55" />
             <text [attr.x]="part.x * width + radius * 1.1" [attr.y]="part.y * height - radius * 1.1" [attr.font-size]="radius * 0.6">{{ $index + 1 }}</text>
           </g>
         }
       </svg>
+      <p class="callout-tip" [class.show]="active() !== null" aria-hidden="true">
+        @if (parts[shown()]; as part) {
+          <b>{{ shown() + 1 }}</b>{{ part.label }}
+        }
+      </p>
     }
     <span class="scan" aria-hidden="true"></span>
   </div>
   @if (legend && parts.length) {
     <ol class="part-list">
       @for (part of parts; track $index) {
-        <li [class.on]="active() === $index" (mouseenter)="active.set($index)"><span class="part-no" aria-hidden="true">{{ $index + 1 }}</span>{{ part.label }}</li>
+        <li [class.on]="active() === $index" (mouseenter)="point($index)"><span class="part-no" aria-hidden="true">{{ $index + 1 }}</span>{{ part.label }}</li>
       }
     </ol>
   }

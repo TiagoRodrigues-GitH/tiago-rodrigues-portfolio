@@ -76,6 +76,53 @@ svg {
   stroke: var(--blue-300);
 }
 
+/* Pointing at a callout lights its layer and dims the others; the floating label explains it. */
+.ld {
+  position: relative;
+}
+
+.part,
+.balloon g {
+  transition: opacity 0.25s var(--ease);
+}
+
+.has-active .part:not(.on),
+.has-active .balloon g:not(.on) {
+  opacity: 0.25;
+}
+
+.horizon.on {
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.balloon g {
+  cursor: pointer;
+}
+
+.balloon circle {
+  fill: var(--blue-950);
+  stroke: var(--blue-300);
+  stroke-width: 1.4;
+}
+
+.balloon text {
+  fill: var(--blue-150);
+  stroke: none;
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.balloon g.on circle {
+  fill: var(--signal);
+  stroke: var(--signal);
+}
+
+.balloon g.on text {
+  fill: var(--blue-950);
+}
+
 text {
   fill: var(--blue-150);
   stroke: var(--blue-950);

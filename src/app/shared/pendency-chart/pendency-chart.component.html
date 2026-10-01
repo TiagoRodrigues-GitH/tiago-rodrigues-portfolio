@@ -1,3 +1,4 @@
+<div class="pc" [class.has-active]="active() !== null" (mouseleave)="active.set(null)">
 <svg viewBox="0 0 960 540" role="img" [attr.aria-label]="description">
   <title>{{ description }}</title>
   <text class="title" x="70" y="48">{{ t.title }}</text>
@@ -8,13 +9,14 @@
   }
 
   @for (b of bars; track b.name) {
-    <g class="group" [style.--i]="b.i">
+    <g class="group" [class.on]="active() === b.i" [style.--i]="b.i" (mouseenter)="point(b.i)" (click)="point(b.i)">
+      <rect class="hit" [attr.x]="b.cx - groupWidth / 2" [attr.y]="top - 30" [attr.width]="groupWidth" [attr.height]="base - top + 64" />
       <rect class="bar old" [attr.x]="b.old.x" [attr.y]="b.old.y" [attr.width]="barWidth" [attr.height]="b.old.h" />
       <rect class="bar now" [attr.x]="b.now.x" [attr.y]="b.now.y" [attr.width]="barWidth" [attr.height]="b.now.h" />
       <text class="value old" [attr.x]="b.old.x + barWidth / 2" [attr.y]="b.old.y - 8">{{ b.old.label }}</text>
       <text class="value now" [attr.x]="b.now.x + barWidth / 2" [attr.y]="b.now.y - 8">{{ b.now.label }}</text>
+      <text class="name" [attr.x]="b.cx" [attr.y]="base + 28">{{ b.name }}</text>
     </g>
-    <text class="name" [attr.x]="b.cx" [attr.y]="base + 28">{{ b.name }}</text>
   }
   <path class="axis" [attr.d]="'M' + x0 + ' ' + base + 'H' + x1" />
 
@@ -26,3 +28,7 @@
   </g>
   <text class="source" x="70" y="516">{{ t.source }}</text>
 </svg>
+<p class="callout-tip" [class.show]="active() !== null" aria-hidden="true">
+  <b>{{ bars[shown()].name }}</b>{{ change(shown()) }}
+</p>
+</div>

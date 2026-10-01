@@ -1,4 +1,5 @@
 import { Locale } from '../services/i18n.service';
+import { BlueprintKind } from '../shared/blueprint-figure/blueprint-parts';
 
 export interface ArticleReference {
   text: string;
@@ -12,6 +13,8 @@ export interface ArticleFigure {
   height?: number;
   alt: string;
   caption: string;
+  /** Numbered parts drawn over a raster drawing (interactive callouts). */
+  blueprint?: BlueprintKind;
 }
 
 export interface Article {
@@ -97,8 +100,8 @@ const REF_UP: ArticleReference = {
 const PATENT_REFS = [REF_LPI, REF_EPC, REF_WIPI_2025, REF_WIPI_2017, REF_UP];
 const PENDENCY = { width: 960, height: 540 };
 
-const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622 };
-const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382 };
+const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622, blueprint: 'cutaway1931' as const };
+const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382, blueprint: 'bodyFrame' as const };
 
 export const ARTICLES: Record<Locale, Article[]> = {
   pt: [

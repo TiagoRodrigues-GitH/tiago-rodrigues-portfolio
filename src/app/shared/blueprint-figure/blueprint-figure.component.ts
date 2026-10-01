@@ -4,7 +4,7 @@ import { BlueprintPart } from './blueprint-parts';
 /**
  * A raster blueprint drawing made interactive in the style of the ADAS figure: numbered
  * callouts over the drawing, an optional parts list, and pointing at a part (callout or
- * list item) highlights it while the rest dims. Visual only; the alt text carries the content.
+ * list item) highlights it while the rest dims and a floating callout names it. Visual only; the alt text carries the content.
  */
 @Component({
   selector: 'app-blueprint-figure',
@@ -25,6 +25,13 @@ export class BlueprintFigureComponent {
   @Input() framed = true;
 
   readonly active = signal<number | null>(null);
+  /** Last part pointed at: the callout keeps its text while it fades out. */
+  readonly shown = signal(0);
+
+  point(index: number): void {
+    this.active.set(index);
+    this.shown.set(index);
+  }
 
   get aspect(): string {
     return this.fit === 'contain' ? 'xMidYMid meet' : 'xMidYMin slice';

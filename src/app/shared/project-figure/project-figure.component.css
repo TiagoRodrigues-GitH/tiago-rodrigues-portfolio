@@ -132,6 +132,36 @@ svg {
   font-size: 13px;
 }
 
+/* Pointing at a callout lights its part and dims the rest; the floating label names it. */
+.pf {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.part,
+.balloon g {
+  transition: opacity 0.25s var(--ease);
+}
+
+.balloon g {
+  cursor: pointer;
+}
+
+.has-active .part:not(.on),
+.has-active .balloon g:not(.on) {
+  opacity: 0.3;
+}
+
+.balloon g.on circle {
+  fill: var(--signal);
+  stroke: var(--signal);
+}
+
+.balloon g.on text {
+  fill: var(--blue-950);
+}
+
 /* One run on load (< 3 s, WCAG 2.2.2); hovering the card restarts it with a twin keyframe set. */
 @media (prefers-reduced-motion: no-preference) {
   .draw {
