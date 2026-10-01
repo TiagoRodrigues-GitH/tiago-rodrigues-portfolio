@@ -1,0 +1,116 @@
+<svg viewBox="0 0 640 480" role="img" [attr.aria-label]="label" preserveAspectRatio="xMidYMid meet">
+  <title>{{ label }}</title>
+  <defs>
+    <pattern [attr.id]="'grid-' + kind" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" class="grid" />
+    </pattern>
+  </defs>
+  <rect width="640" height="480" [attr.fill]="'url(#grid-' + kind + ')'" />
+
+  @switch (kind) {
+    @case ('fleet') {
+      <!-- 1 Passenger car -->
+      <g class="part">
+        <path class="draw body" pathLength="1"
+          d="M60 186 L58 160 Q60 146 80 140 L124 132 Q154 104 196 100 L262 99 Q284 101 304 124 L314 134 Q340 138 352 148 Q358 154 358 168 L356 184 Q354 190 346 190 L322 190 A26 26 0 0 0 270 190 L146 190 A26 26 0 0 0 94 190 L64 190 Z" />
+        <path class="draw detail" pathLength="1" d="M136 134 Q162 112 198 108 L258 108 Q276 110 292 128 L298 136 Z M214 108 V136" />
+        <circle class="wheel" cx="120" cy="190" r="20" />
+        <circle class="wheel" cx="296" cy="190" r="20" />
+        <circle class="hub" cx="120" cy="190" r="6" />
+        <circle class="hub" cx="296" cy="190" r="6" />
+      </g>
+      <!-- 2 Cargo truck -->
+      <g class="part">
+        <path class="draw body" pathLength="1"
+          d="M60 370 V290 H222 V370 Z M222 370 V312 H270 L300 336 V370 Z" />
+        <path class="draw detail" pathLength="1" d="M234 322 H266 L286 340 H234 Z M60 330 H222" />
+        <circle class="wheel" cx="104" cy="374" r="18" />
+        <circle class="wheel" cx="178" cy="374" r="18" />
+        <circle class="wheel" cx="268" cy="374" r="18" />
+        <circle class="hub" cx="104" cy="374" r="5" />
+        <circle class="hub" cx="178" cy="374" r="5" />
+        <circle class="hub" cx="268" cy="374" r="5" />
+      </g>
+      <path class="ground" d="M40 212 H330 M40 394 H330" />
+
+      <!-- Data flow: vehicles -> registry card -> database -->
+      <path class="flow" d="M360 150 C392 150 392 150 420 150" />
+      <path class="flow" d="M304 330 C380 330 380 230 420 230" />
+      <path class="flow" d="M520 310 V350" />
+
+      <!-- 3 Registry card with a Mercosul plate -->
+      <g class="part">
+        <rect class="draw card" pathLength="1" x="420" y="70" width="190" height="240" rx="8" />
+        <rect class="plate" x="440" y="88" width="150" height="40" rx="5" />
+        <rect class="plate-band" x="440" y="88" width="150" height="10" rx="3" />
+        <text class="plate-text" x="515" y="120">BRA2E19</text>
+        @for (row of [0, 1, 2, 3, 4]; track row) {
+          <path class="field-label" [attr.d]="'M440 ' + (152 + row * 30) + ' H486'" />
+          <path class="field-value" [style.--i]="row" [attr.d]="'M498 ' + (152 + row * 30) + ' H' + (590 - (row % 3) * 22)" />
+        }
+      </g>
+
+      <!-- 4 Database -->
+      <g class="part">
+        <path class="draw card" pathLength="1"
+          d="M470 362 Q520 346 570 362 V440 Q520 456 470 440 Z M470 362 Q520 378 570 362" />
+        @for (row of dbRows; track row) {
+          <path class="db-row" [style.--i]="row" [attr.d]="'M482 ' + (388 + row * 14) + ' H558'" />
+        }
+      </g>
+
+      <!-- Callouts -->
+      <g class="balloon">
+        <circle cx="34" cy="120" r="13" /><text x="34" y="120">1</text>
+        <circle cx="34" cy="276" r="13" /><text x="34" y="276">2</text>
+        <circle cx="616" cy="56" r="13" /><text x="616" y="56">3</text>
+        <circle cx="600" cy="460" r="13" /><text x="600" y="460">4</text>
+      </g>
+    }
+
+    @case ('llm') {
+      <!-- 1 Technical documents (standards, diagnostics) -->
+      <g class="part">
+        @for (doc of [0, 1, 2]; track doc) {
+          <path class="draw card" pathLength="1"
+            [attr.d]="'M' + (48 + doc * 14) + ' ' + (110 + doc * 18) + ' h120 l22 22 v170 h-142 Z'" />
+        }
+        <path class="detail" d="M98 186 H200 M98 206 H200 M98 226 H184 M98 246 H200 M98 266 H170 M98 286 H196" />
+        <text class="tag" x="90" y="160">ISO 26262</text>
+        <text class="tag" x="90" y="330">SOTIF · UDS</text>
+      </g>
+
+      <!-- Token flow into the model and out to the answer -->
+      <path class="flow" d="M216 180 C250 180 250 220 268 220" />
+      <path class="flow" d="M216 240 H268" />
+      <path class="flow" d="M216 300 C250 300 250 260 268 260" />
+      <path class="flow" d="M432 240 H468" />
+
+      <!-- 2 Compact model on an embedded chip -->
+      <g class="part">
+        <rect class="draw chip" pathLength="1" x="270" y="160" width="160" height="160" rx="10" />
+        <rect class="die" x="304" y="194" width="92" height="92" rx="6" />
+        <text class="chip-text" x="350" y="236">LLM</text>
+        <text class="chip-sub" x="350" y="262">INT8</text>
+        @for (pin of pins; track pin) {
+          <path class="pin" [style.--i]="pin" [attr.d]="'M' + (288 + pin * 24) + ' 160 V142 M' + (288 + pin * 24) + ' 320 V338'" />
+        }
+      </g>
+
+      <!-- 3 Answer -->
+      <g class="part">
+        <path class="draw card" pathLength="1" d="M470 170 H600 Q612 170 612 182 V290 Q612 302 600 302 H520 L496 326 V302 H482 Q470 302 470 290 V182 Q470 170 482 170 Z" />
+        @for (row of [0, 1, 2, 3]; track row) {
+          <path class="answer" [style.--i]="row" [attr.d]="'M490 ' + (200 + row * 24) + ' H' + (592 - (row % 2) * 30)" />
+        }
+      </g>
+
+      <!-- Callouts -->
+      <g class="balloon">
+        <circle cx="60" cy="80" r="13" /><text x="60" y="80">1</text>
+        <circle cx="350" cy="110" r="13" /><text x="350" y="110">2</text>
+        <circle cx="612" cy="140" r="13" /><text x="612" y="140">3</text>
+      </g>
+    }
+  }
+</svg>

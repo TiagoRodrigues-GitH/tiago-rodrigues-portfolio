@@ -58,7 +58,7 @@ jobs:
           test -f "$DIST/assets/images/blueprints/cutaway-1931.webp"
           test -f "$DIST/assets/images/blueprints/chassis.webp"
           test -f "$DIST/assets/images/blueprints/patent-1900.webp"
-          test -f "$DIST/assets/images/blueprints/vehicle_management_02.webp"
+          test -f "$DIST/assets/images/blueprints/vehicle_management_01.webp"
           test -f "$DIST/assets/images/blueprints/patent-pendency-pt.svg"
 
       - name: Setup GitHub Pages

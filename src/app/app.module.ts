@@ -11,6 +11,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { AdasFigureComponent } from './shared/adas-figure/adas-figure.component';
 import { LaneDiagramComponent } from './shared/lane-diagram/lane-diagram.component';
+import { ProjectFigureComponent } from './shared/project-figure/project-figure.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LaneDiagramComponent } from './shared/lane-diagram/lane-diagram.compone
     PrivacyComponent,
     AdasFigureComponent,
     LaneDiagramComponent,
+    ProjectFigureComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   // Hydration reuses the prerendered DOM instead of re-creating it (less main-thread work, lower TBT/INP).

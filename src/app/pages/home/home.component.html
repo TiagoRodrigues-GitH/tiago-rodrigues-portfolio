@@ -71,8 +71,12 @@
       @for (project of projects(); track project.id) {
         <li class="project-card reveal">
           <div class="frame card-media">
-            <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
-            <span class="scan" aria-hidden="true"></span>
+            @if (project.image.figure) {
+              <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
+            } @else {
+              <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
+              <span class="scan" aria-hidden="true"></span>
+            }
           </div>
           <div class="card-body">
             <p class="card-meta">

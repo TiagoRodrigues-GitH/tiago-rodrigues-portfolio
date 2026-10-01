@@ -1,4 +1,5 @@
 import { Locale } from '../services/i18n.service';
+import { ProjectFigureKind } from './project-figure/project-figure.component';
 
 export type ProjectStatus = 'done' | 'soon';
 
@@ -9,6 +10,8 @@ interface ProjectImageSource {
   alt: Record<Locale, string>;
   /** Diagrams and screen flows: shown whole (letterboxed), never cropped. */
   contain?: boolean;
+  /** Animated inline schematic instead of a bitmap (src unused). */
+  figure?: ProjectFigureKind;
 }
 
 interface ProjectText {
@@ -33,6 +36,7 @@ export interface ProjectImage {
   height: number;
   alt: string;
   contain: boolean;
+  figure: ProjectFigureKind | null;
 }
 
 export interface PortfolioProject extends ProjectText {
@@ -48,14 +52,14 @@ const PROJECTS: ProjectSource[] = [
     id: 1,
     status: 'done',
     image: {
-      src: 'assets/images/blueprints/vehicle_management_02.webp',
-      width: 809,
-      height: 465,
-      contain: true,
+      src: '',
+      width: 640,
+      height: 480,
+      figure: 'fleet',
       alt: {
-        pt: 'Fluxo de telas do sistema: o menu de gestão de veículos leva aos módulos de veículos de passeio e de carga, com telas de cadastro, consulta e listagem.',
-        en: 'Screen flow of the system: the vehicle management menu leads to the passenger and cargo vehicle modules, with registration, lookup and listing screens.',
-        de: 'Bildschirmablauf des Systems: Das Menü der Fahrzeugverwaltung führt zu den Modulen für Personen- und Lastkraftwagen mit Erfassungs-, Such- und Listenansichten.',
+        pt: 'Esquema animado: um carro de passeio e um caminhão enviam seus dados para uma ficha de cadastro com placa Mercosul, que é gravada em um banco de dados.',
+        en: 'Animated schematic: a passenger car and a truck send their data to a registration form with a Mercosur licence plate, which is stored in a database.',
+        de: 'Animiertes Schema: Ein Pkw und ein Lkw übermitteln ihre Daten an ein Erfassungsformular mit Mercosur-Kennzeichen, das in einer Datenbank gespeichert wird.',
       },
     },
     gallery: [
@@ -99,13 +103,14 @@ const PROJECTS: ProjectSource[] = [
     id: 2,
     status: 'soon',
     image: {
-      src: 'assets/images/blueprints/circuit.webp',
-      width: 1400,
-      height: 1050,
+      src: '',
+      width: 640,
+      height: 480,
+      figure: 'llm',
       alt: {
-        pt: 'Trilhas de uma placa de circuito impresso em tons de azul.',
-        en: 'Printed circuit board traces in shades of blue.',
-        de: 'Leiterbahnen einer Platine in Blautönen.',
+        pt: 'Esquema animado: documentos técnicos (ISO 26262, SOTIF, UDS) alimentam um modelo de linguagem compacto em um chip embarcado, que produz a resposta.',
+        en: 'Animated schematic: technical documents (ISO 26262, SOTIF, UDS) feed a compact language model on an embedded chip, which produces the answer.',
+        de: 'Animiertes Schema: Technische Dokumente (ISO 26262, SOTIF, UDS) speisen ein kompaktes Sprachmodell auf einem eingebetteten Chip, das die Antwort erzeugt.',
       },
     },
     gallery: [],
@@ -174,7 +179,8 @@ const PROJECTS: ProjectSource[] = [
 ];
 
 function localizeImage(image: ProjectImageSource, locale: Locale): ProjectImage {
-  return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale], contain: !!image.contain };
+  return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale], contain: !!image.contain,
+           figure: image.figure ?? null };
 }
 
 export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
@@ -185,7 +191,8 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
       status: project.status,
       ...project.text[locale],
       image,
-      gallery: [image, ...project.gallery.map((item) => localizeImage(item, locale))],
+      // An animated cover is shown on its own; the gallery (zoomable images) holds bitmaps only.
+      gallery: [...(image.figure ? [] : [image]), ...project.gallery.map((item) => localizeImage(item, locale))],
     };
   });
 }

@@ -46,6 +46,11 @@
       </div>
 
       <div class="project-media">
+        @if (project.image.figure) {
+          <div class="frame figure-cover">
+            <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
+          </div>
+        }
         @for (image of project.gallery; track image.src; let j = $index) {
           <button
             type="button"

@@ -77,6 +77,10 @@
   align-content: start;
 }
 
+.figure-cover {
+  aspect-ratio: 4 / 3;
+}
+
 .zoom {
   display: block;
   width: 100%;
