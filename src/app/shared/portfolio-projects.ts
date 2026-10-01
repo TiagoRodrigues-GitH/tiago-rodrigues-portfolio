@@ -1,5 +1,6 @@
 import { Locale } from '../services/i18n.service';
 import { ProjectFigureKind } from './project-figure/project-figure.component';
+import { BlueprintKind } from './blueprint-figure/blueprint-parts';
 
 export type ProjectStatus = 'done' | 'soon';
 
@@ -12,6 +13,8 @@ interface ProjectImageSource {
   contain?: boolean;
   /** Animated inline schematic instead of a bitmap (src unused). */
   figure?: ProjectFigureKind;
+  /** Bitmap drawing with numbered, interactive parts. */
+  blueprint?: BlueprintKind;
 }
 
 interface ProjectText {
@@ -37,6 +40,7 @@ export interface ProjectImage {
   alt: string;
   contain: boolean;
   figure: ProjectFigureKind | null;
+  blueprint: BlueprintKind | null;
 }
 
 export interface PortfolioProject extends ProjectText {
@@ -145,6 +149,7 @@ const PROJECTS: ProjectSource[] = [
       src: 'assets/images/blueprints/patent-1900.webp',
       width: 1400,
       height: 995,
+      blueprint: 'patent1900',
       alt: {
         pt: 'Desenho de patente de 1900 de um automóvel com rodas raiadas, em estilo blueprint.',
         en: 'Patent drawing of an automobile with spoked wheels from 1900, in blueprint style.',
@@ -180,7 +185,7 @@ const PROJECTS: ProjectSource[] = [
 
 function localizeImage(image: ProjectImageSource, locale: Locale): ProjectImage {
   return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale], contain: !!image.contain,
-           figure: image.figure ?? null };
+           figure: image.figure ?? null, blueprint: image.blueprint ?? null };
 }
 
 export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
@@ -192,7 +197,7 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
       ...project.text[locale],
       image,
       // An animated cover is shown on its own; the gallery (zoomable images) holds bitmaps only.
-      gallery: [...(image.figure ? [] : [image]), ...project.gallery.map((item) => localizeImage(item, locale))],
+      gallery: [...(image.figure || image.blueprint ? [] : [image]), ...project.gallery.map((item) => localizeImage(item, locale))],
     };
   });
 }

@@ -6,10 +6,8 @@
       <p class="section-lede">{{ t.intro }}</p>
     </div>
     <figure class="figure">
-      <div class="frame">
-        <img [src]="chassis" width="849" height="348" [alt]="t.figureAlt" />
-        <span class="scan" aria-hidden="true"></span>
-      </div>
+      <app-blueprint-figure [src]="chassis" [width]="849" [height]="348" [alt]="t.figureAlt"
+        [parts]="parts('chassis')" [legend]="true" />
       <figcaption>{{ t.figureCaption }}</figcaption>
     </figure>
   </div>
@@ -50,6 +48,10 @@
           <div class="frame figure-cover">
             <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
           </div>
+        }
+        @if (project.image.blueprint) {
+          <app-blueprint-figure [src]="project.image.src" [width]="project.image.width" [height]="project.image.height"
+            [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" [legend]="true" />
         }
         @for (image of project.gallery; track image.src; let j = $index) {
           <button

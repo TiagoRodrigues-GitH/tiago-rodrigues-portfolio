@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { I18nService, HomeTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
+import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { ARTICLES, Article } from '../../content/articles';
 
@@ -24,6 +25,14 @@ export class HomeComponent {
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */
   private readonly open = signal<ReadonlySet<string>>(new Set());
+
+  get chassisAlt(): string {
+    return this.i18n.projects[this.locale()].figureAlt;
+  }
+
+  parts(kind: BlueprintKind): BlueprintPart[] {
+    return blueprintParts(kind, this.locale());
+  }
 
   isOpen(id: string): boolean {
     return this.open().has(id);

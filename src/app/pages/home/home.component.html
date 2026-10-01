@@ -34,7 +34,8 @@
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <span class="tile-art" aria-hidden="true"><span class="scan" aria-hidden="true"></span></span>
+              <app-blueprint-figure class="tile-art" [src]="chassis" [width]="849" [height]="348" [alt]="chassisAlt"
+                [parts]="parts('chassis')" [framed]="false" />
             }
           </div>
         </li>
@@ -73,6 +74,9 @@
           <div class="frame card-media">
             @if (project.image.figure) {
               <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" />
+            } @else if (project.image.blueprint) {
+              <app-blueprint-figure [src]="project.image.src" [width]="project.image.width" [height]="project.image.height"
+                [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" fit="cover-top" [framed]="false" />
             } @else {
               <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
               <span class="scan" aria-hidden="true"></span>
@@ -127,6 +131,8 @@
                   <span class="scan" aria-hidden="true"></span>
                   @if (article.figure.src === 'lane-diagram') {
                     <app-lane-diagram [labels]="t.laneDiagram" [description]="article.figure.alt" />
+                  } @else if (article.figure.src === 'patent-chart') {
+                    <app-pendency-chart [locale]="locale()" [description]="article.figure.alt" />
                   } @else {
                     <img
                       [src]="article.figure.src"

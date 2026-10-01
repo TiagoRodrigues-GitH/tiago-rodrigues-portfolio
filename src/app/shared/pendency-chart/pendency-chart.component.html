@@ -1,0 +1,28 @@
+<svg viewBox="0 0 960 540" role="img" [attr.aria-label]="description">
+  <title>{{ description }}</title>
+  <text class="title" x="70" y="48">{{ t.title }}</text>
+
+  @for (v of ticks; track v) {
+    <path class="tick" [attr.d]="'M' + x0 + ' ' + y(v) + 'H' + x1" />
+    <text class="tick-label" [attr.x]="x0 - 12" [attr.y]="y(v) + 5">{{ v }}</text>
+  }
+
+  @for (b of bars; track b.name) {
+    <g class="group" [style.--i]="b.i">
+      <rect class="bar old" [attr.x]="b.old.x" [attr.y]="b.old.y" [attr.width]="barWidth" [attr.height]="b.old.h" />
+      <rect class="bar now" [attr.x]="b.now.x" [attr.y]="b.now.y" [attr.width]="barWidth" [attr.height]="b.now.h" />
+      <text class="value old" [attr.x]="b.old.x + barWidth / 2" [attr.y]="b.old.y - 8">{{ b.old.label }}</text>
+      <text class="value now" [attr.x]="b.now.x + barWidth / 2" [attr.y]="b.now.y - 8">{{ b.now.label }}</text>
+    </g>
+    <text class="name" [attr.x]="b.cx" [attr.y]="base + 28">{{ b.name }}</text>
+  }
+  <path class="axis" [attr.d]="'M' + x0 + ' ' + base + 'H' + x1" />
+
+  <g class="legend">
+    <rect class="bar old" x="670" y="70" width="22" height="14" />
+    <text x="700" y="82">2016</text>
+    <rect class="bar now" x="770" y="70" width="22" height="14" />
+    <text x="800" y="82">2024</text>
+  </g>
+  <text class="source" x="70" y="516">{{ t.source }}</text>
+</svg>

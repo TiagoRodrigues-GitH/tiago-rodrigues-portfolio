@@ -119,8 +119,6 @@
   width: 100%;
   aspect-ratio: 849 / 348;
   margin-top: 1rem;
-  opacity: 0.85;
-  background: url('../../../assets/images/blueprints/chassis.webp') center / contain no-repeat;
 }
 
 .tile:nth-child(2),

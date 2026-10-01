@@ -6,7 +6,7 @@ export interface ArticleReference {
 }
 
 export interface ArticleFigure {
-  /** Image path, or `lane-diagram` for the inline row-anchor illustration. */
+  /** Image path, `lane-diagram` (row-anchor illustration) or `patent-chart` (animated pendency chart). */
   src: string;
   width?: number;
   height?: number;
@@ -180,7 +180,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
         'É também por isso que a pesquisa precisa pensar em propriedade intelectual desde o início. Um algoritmo de detecção de faixas que roda em tempo real em hardware embarcado pode ser publicado, patenteado ou ambos — mas a ordem importa, porque a divulgação antes do depósito pode comprometer a novidade. No meu caso, essa é uma das etapas previstas: transformar resultados de pesquisa em um protótipo e, quando houver uma solução técnica nova, em um pedido de patente.',
       ],
       figure: {
-        src: 'assets/images/blueprints/patent-pendency-pt.svg',
+        src: 'patent-chart',
         ...PENDENCY,
         alt: 'Gráfico de barras com o tempo médio até a decisão final de pedidos de patente em 2016 e 2024: Brasil 95,4 e 38,4 meses; Estados Unidos 22,6 e 29,5; Europa (EPO) 23,3 e 24,9; China 22,0 e 15,5; Japão 15,0 e 12,9.',
         caption: 'Fig. 04 — Tempo médio até a decisão final, em meses, contado do pedido de exame (ou do depósito). Fonte: OMPI, WIPI 2017 e 2025 [3], [4].',
@@ -267,7 +267,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
         'That is also why research has to think about intellectual property from the start. A lane-detection algorithm that runs in real time on embedded hardware can be published, patented or both — but the order matters, because disclosure before filing can destroy novelty. In my own plans this is an explicit step: turning research results into a prototype and, where there is a new technical solution, into a patent application.',
       ],
       figure: {
-        src: 'assets/images/blueprints/patent-pendency-en.svg',
+        src: 'patent-chart',
         ...PENDENCY,
         alt: 'Bar chart of the average time to a final decision on patent applications in 2016 and 2024: Brazil 95.4 and 38.4 months; United States 22.6 and 29.5; Europe (EPO) 23.3 and 24.9; China 22.0 and 15.5; Japan 15.0 and 12.9.',
         caption: 'Fig. 04 — Average time to a final decision, in months, counted from the examination request (or filing). Source: WIPO, WIPI 2017 and 2025 [3], [4].',
@@ -354,7 +354,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
         'Deshalb muss die Forschung von Anfang an an geistiges Eigentum denken. Ein Algorithmus zur Fahrspurerkennung, der in Echtzeit auf eingebetteter Hardware läuft, kann veröffentlicht, patentiert oder beides werden — aber die Reihenfolge zählt, denn eine Offenlegung vor der Anmeldung kann die Neuheit zerstören. In meiner Planung ist das ein ausdrücklicher Schritt: Forschungsergebnisse in einen Prototyp zu überführen und, wo eine neue technische Lösung entsteht, in eine Patentanmeldung.',
       ],
       figure: {
-        src: 'assets/images/blueprints/patent-pendency-de.svg',
+        src: 'patent-chart',
         ...PENDENCY,
         alt: 'Balkendiagramm der mittleren Dauer bis zur endgültigen Entscheidung über Patentanmeldungen 2016 und 2024: Brasilien 95,4 und 38,4 Monate; USA 22,6 und 29,5; Europa (EPA) 23,3 und 24,9; China 22,0 und 15,5; Japan 15,0 und 12,9.',
         caption: 'Abb. 04 — Mittlere Dauer bis zur endgültigen Entscheidung in Monaten, gezählt ab Prüfungsantrag (oder Anmeldung). Quelle: WIPO, WIPI 2017 und 2025 [3], [4].',

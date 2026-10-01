@@ -14,6 +14,7 @@ import { DOCUMENT } from '@angular/common';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
 import { injectLocale } from '../../services/locale';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
+import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 
 @Component({
   selector: 'app-projects',
@@ -46,6 +47,10 @@ export class ProjectsComponent implements OnDestroy {
 
   get t(): ProjectsTranslations {
     return this.i18n.projects[this.locale()];
+  }
+
+  parts(kind: BlueprintKind): BlueprintPart[] {
+    return blueprintParts(kind, this.locale());
   }
 
   get counter(): string {

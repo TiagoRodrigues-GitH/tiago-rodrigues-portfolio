@@ -504,6 +504,24 @@ button {
 	}
 }
 
+/* Every framed drawing is plotted in, left to right, as it scrolls into view (scroll-driven, no JS). */
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.frame img,
+		app-blueprint-figure img {
+			animation: plot-in linear both;
+			animation-timeline: view();
+			animation-range: entry 0% cover 35%;
+		}
+	}
+}
+
+@keyframes plot-in {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+}
+
 /* ---------- Chips and status ---------- */
 
 .chips {

@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  background: var(--blue-950);
+  /* One timeline for the whole chart, so every bar grows in step. */
+  view-timeline-name: --pendency;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-body);
+}
+
+.title {
+  fill: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tick {
+  stroke: var(--blue-300);
+  stroke-opacity: 0.35;
+  stroke-dasharray: 4 6;
+}
+
+.tick-label {
+  fill: var(--text-on-dark-muted);
+  font-size: 14px;
+  text-anchor: end;
+}
+
+.axis {
+  stroke: var(--blue-200);
+  stroke-width: 1.5;
+}
+
+.bar.old {
+  fill: transparent;
+  stroke: var(--blue-300);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.bar.now {
+  fill: var(--signal);
+  fill-opacity: 0.9;
+}
+
+.value {
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.value.old {
+  fill: var(--blue-200);
+}
+
+.value.now {
+  fill: #ffffff;
+}
+
+.name {
+  fill: var(--text-on-dark);
+  font-size: 16px;
+  text-anchor: middle;
+}
+
+.legend text {
+  fill: var(--text-on-dark);
+  font-size: 15px;
+}
+
+.source {
+  fill: var(--text-on-dark-muted);
+  font-size: 13px;
+}
+
+/* Bars grow from the axis while the chart scrolls into view; values fade in after them. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (view-timeline-name: --pendency) {
+    .group .bar {
+      transform-box: fill-box;
+      transform-origin: bottom;
+      animation: grow linear both;
+      animation-timeline: --pendency;
+      animation-range: entry 10% cover 45%;
+    }
+
+    .group .value {
+      animation: fade linear both;
+      animation-timeline: --pendency;
+      animation-range: cover 30% cover 50%;
+    }
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
