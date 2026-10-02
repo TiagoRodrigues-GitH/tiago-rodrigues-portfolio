@@ -1,12 +1,13 @@
 import { Component, ElementRef, Input, ViewChild, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { LabDataService, MODEL_NAMES, NhtsaData, NhtsaSample } from './lab-data';
-import { Classification, ComplaintClassifier } from './lab-engine';
+import { Classification, ClassifierData, ComplaintClassifier, SearchLanguage } from './lab-engine';
 import { LabTranslations } from './lab-i18n';
 
 /**
  * Defect complaint triage: a TF-IDF + logistic regression classifier that runs in the browser (loaded on first
- * use, 0.8 MB), and held-out complaints with every model's prediction.
+ * use, 1.1 MB; English plus machine-translated Portuguese and German training data), and held-out complaints with
+ * every model's prediction, shown in the page language (hand translations; the models classified the English original).
  */
 @Component({
   selector: 'app-defect-triage',
@@ -22,6 +23,7 @@ export class DefectTriageComponent {
   }
   @Input({ required: true }) t!: LabTranslations;
   @Input({ required: true }) lang = 'pt-BR';
+  @Input({ required: true }) locale: SearchLanguage = 'pt';
 
   @ViewChild('description') private description?: ElementRef<HTMLTextAreaElement>;
 
@@ -31,7 +33,9 @@ export class DefectTriageComponent {
   readonly result = signal<Classification | null>(null);
   readonly filter = signal('');
   private readonly classifier = signal<ComplaintClassifier | null>(null);
-  private readonly macroF1 = signal<number | null>(null);
+  private readonly metrics = signal<ClassifierData['metrics'] | null>(null);
+  /** Complaints shown in their English original instead of the translation. */
+  readonly originals = signal(new Set<string>());
 
   readonly labels = computed(() => this.dataSignal()?.labels ?? []);
   /** How many complaints are shown; the list grows on request instead of filling several screens. */
@@ -69,8 +73,29 @@ export class DefectTriageComponent {
   });
 
   get browserModelNote(): string {
-    const f1 = this.macroF1();
-    return f1 === null ? '' : this.t.browserModel.replace('{f1}', this.number(f1, 3));
+    const m = this.metrics();
+    if (!m) {
+      return '';
+    }
+    const f1 = (lang: string) => this.number(m.byLanguage?.[lang]?.macroF1 ?? (lang === 'en' ? m.macroF1Eval : NaN), 3);
+    return this.t.browserModel.replace('{en}', f1('en')).replace('{pt}', f1('pt')).replace('{de}', f1('de'));
+  }
+
+  /** A complaint in the page language, or its English original when the visitor asked for it. */
+  sampleText(sample: NhtsaSample): string {
+    return this.originals().has(sample.text.en) ? sample.text.en : sample.text[this.locale];
+  }
+
+  sampleLang(sample: NhtsaSample): string {
+    return this.originals().has(sample.text.en) || this.locale === 'en' ? 'en' : this.lang;
+  }
+
+  toggleOriginal(sample: NhtsaSample): void {
+    const next = new Set(this.originals());
+    if (!next.delete(sample.text.en)) {
+      next.add(sample.text.en);
+    }
+    this.originals.set(next);
   }
 
   async classify(event?: Event): Promise<void> {
@@ -91,7 +116,7 @@ export class DefectTriageComponent {
   }
 
   trySample(sample: NhtsaSample): void {
-    this.useText(sample.text);
+    this.useText(this.sampleText(sample));
     this.description?.nativeElement.scrollIntoView({ block: 'center' });
   }
 
@@ -128,7 +153,7 @@ export class DefectTriageComponent {
     try {
       const model = await firstValueFrom(this.lab.classifier());
       this.classifier.set(new ComplaintClassifier(model));
-      this.macroF1.set(model.metrics.macroF1Eval);
+      this.metrics.set(model.metrics);
       return this.classifier();
     } catch {
       this.failed.set(true);

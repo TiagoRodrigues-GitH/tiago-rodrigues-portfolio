@@ -16,6 +16,8 @@ export interface LabTranslations {
   askHint: string;
   askPlaceholder: string;
   tryLabel: string;
+  tryExamples: string[];
+  translatedNote: string;
   search: string;
   matches: string;
   noMatch: string;
@@ -57,6 +59,8 @@ export interface LabTranslations {
   wrong: string;
   trySample: string;
   showMore: string;
+  showOriginal: string;
+  showTranslation: string;
   classes: Record<string, string>;
 
   resultsTitle: string;
@@ -81,7 +85,7 @@ export interface LabTranslations {
 
 export const LAB_I18N: Record<Locale, LabTranslations> = {
   pt: {
-    eyebrow: 'Projeto 02 · Em andamento',
+    eyebrow: 'Projeto 01 · Em andamento',
     title: 'LLMs compactos para a indústria automotiva',
     subtitle: 'Triagem de reclamações de defeitos e assistente de patentes',
     intro:
@@ -96,9 +100,18 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     patentsLede:
       'Faça uma pergunta sobre patentes no Brasil. Ela é comparada às {n} perguntas de teste, que os modelos nunca viram no treino. Você vê os trechos oficiais que cada modelo recebeu, a resposta de referência e o que cada modelo respondeu antes e depois do ajuste fino.',
     askLabel: 'Sua pergunta',
-    askHint: 'Perguntas e respostas estão em português, pois tratam da lei brasileira.',
+    askHint: 'As respostas vêm de documentos oficiais brasileiros: a Lei 9.279/1996 e os manuais, diretrizes e estudos do INPI.',
     askPlaceholder: 'Ex.: posso patentear um algoritmo de detecção de faixas?',
     tryLabel: 'Experimente',
+    translatedNote: '',
+    tryExamples: [
+      'posso patentear um algoritmo de detecção de faixas?',
+      'qual o prazo para pedir o exame?',
+      'o que é o trâmite prioritário?',
+      'preciso pesquisar se o invento já existe?',
+      'como proteger uma invenção em outros países?',
+      'quais partes de veículos têm mais pedidos de patente?',
+    ],
     search: 'Buscar',
     matches: 'Perguntas de teste mais parecidas',
     noMatch: 'Nenhuma pergunta de teste parecida. Tente outras palavras ou escolha da lista.',
@@ -135,24 +148,25 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     },
 
     triageTitle: 'Triagem de reclamações de defeitos',
-    triageLede:
-      'Descreva um defeito em inglês, como faria um consumidor nos EUA. Um classificador TF-IDF com regressão logística indica o componente afetado. Ele roda no seu navegador (0,8 MB; nada é enviado) e é a referência que os LLMs do estudo precisam superar.',
-    describe: 'Descrição do defeito (em inglês)',
+    triageLede: 'Descreva um defeito em português, inglês ou alemão. Um classificador TF-IDF com regressão logística indica o componente afetado. Ele roda no seu navegador (1,1 MB; nada é enviado) e é a referência que os LLMs do estudo precisam superar.',
+    describe: 'Descrição do defeito',
     classify: 'Classificar',
     examples: 'Exemplos',
     exampleTexts: [
-      { label: 'Freios', text: 'The brakes failed and the pedal went to the floor while I was driving downhill.' },
-      { label: 'Airbag', text: 'The airbag warning light came on and the driver air bag did not deploy in the crash.' },
-      { label: 'Elétrica', text: 'The dashboard lights flicker, the radio shuts off and the battery drains overnight.' },
+      { label: 'Freios', text: 'Os freios falharam e o pedal foi até o fundo quando eu descia uma ladeira.' },
+      { label: 'Airbag', text: 'A luz de advertência do airbag acendeu e o airbag do motorista não abriu na colisão.' },
+      { label: 'Elétrica', text: 'As luzes do painel piscam, o rádio desliga sozinho e a bateria descarrega durante a noite.' },
+      { label: 'Estrutura', text: 'O chassi está todo enferrujado e apareceram rachaduras perto da suspensão traseira.' },
+      { label: 'Motor', text: 'O motor morreu na rodovia a 100 km/h e o carro perdeu a direção hidráulica.' },
+      { label: 'ABS', text: 'A luz do ABS acendeu e o carro demorou muito para parar na chuva.' },
     ],
-    loadingModel: 'Carregando o classificador (0,8 MB)…',
+    loadingModel: 'Carregando o classificador (1,1 MB)…',
     loadError: 'Não foi possível carregar os dados. Verifique a conexão e recarregue a página.',
     likely: 'Componente provável',
-    unknownWords: 'Nenhuma palavra do texto é conhecida pelo classificador; descreva o defeito em inglês.',
-    browserModel:
-      'Este classificador usa 15 mil termos e chega a F1 macro de {f1} nas reclamações de 2014–2024; a versão completa do estudo, com 52 mil termos, chega a 0,842.',
+    unknownWords: 'Nenhuma palavra do texto é conhecida pelo classificador; tente descrever o defeito com outras palavras.',
+    browserModel: 'Este classificador usa 20 mil termos. F1 macro: {en} em inglês (reclamações reais de 2014–2024), {pt} em português e {de} em alemão (traduções automáticas das mesmas reclamações). A versão do estudo, só em inglês, chega a 0,842.',
     samplesTitle: 'Reclamações reais e o que cada modelo previu',
-    samplesLede: 'Reclamações do conjunto de avaliação (2014–2024), no texto original em inglês.',
+    samplesLede: 'Reclamações reais do conjunto de avaliação (2014–2024). Os modelos classificaram o texto original em inglês; a tradução foi feita à mão para esta página.',
     filterLabel: 'Componente',
     all: 'Todos',
     truth: 'Rótulo verdadeiro',
@@ -160,6 +174,8 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     wrong: 'errou',
     trySample: 'Testar este texto',
     showMore: 'Mostrar mais reclamações ({n} restantes)',
+    showTranslation: 'Ver tradução',
+    showOriginal: 'Ver original',
     classes: {
       'AIR BAGS': 'Airbags',
       'ELECTRICAL SYSTEM': 'Sistema elétrico',
@@ -204,7 +220,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
   },
 
   en: {
-    eyebrow: 'Project 02 · In progress',
+    eyebrow: 'Project 01 · In progress',
     title: 'Compact LLMs for the automotive industry',
     subtitle: 'Defect complaint triage and patent assistant',
     intro:
@@ -219,9 +235,18 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     patentsLede:
       'Ask a question about patents in Brazil. It is matched against the {n} test questions, which the models never saw in training. You see the official passages each model received, the reference answer and what each model answered before and after fine-tuning.',
     askLabel: 'Your question',
-    askHint: 'Questions and answers are in Portuguese, since they concern Brazilian law; Portuguese keywords work best.',
-    askPlaceholder: 'e.g. posso patentear um algoritmo de detecção de faixas?',
+    askHint: 'Questions translated by hand; the official passages and the answers are machine translations from Portuguese, the language the models read and wrote. The original is one click away.',
+    askPlaceholder: 'e.g. can I patent a lane detection algorithm?',
     tryLabel: 'Try',
+    translatedNote: 'Passages and answers: machine translation from Portuguese.',
+    tryExamples: [
+      'can I patent a lane detection algorithm?',
+      'what is the deadline for requesting examination?',
+      'what is fast-track examination?',
+      'do I need to search whether my invention already exists?',
+      'how do I protect an invention in other countries?',
+      'which vehicle parts get the most patent applications?',
+    ],
     search: 'Search',
     matches: 'Closest test questions',
     noMatch: 'No similar test question. Try other words or pick one from the list.',
@@ -258,24 +283,25 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     },
 
     triageTitle: 'Defect complaint triage',
-    triageLede:
-      'Describe a defect in English, as a US vehicle owner would. A TF-IDF classifier with logistic regression names the component involved. It runs in your browser (0.8 MB; nothing is sent) and is the baseline the LLMs in the study have to beat.',
-    describe: 'Defect description (in English)',
+    triageLede: 'Describe a defect in English, Portuguese or German. A TF-IDF classifier with logistic regression names the component involved. It runs in your browser (1.1 MB; nothing is sent) and is the baseline the LLMs in the study have to beat.',
+    describe: 'Defect description',
     classify: 'Classify',
     examples: 'Examples',
     exampleTexts: [
       { label: 'Brakes', text: 'The brakes failed and the pedal went to the floor while I was driving downhill.' },
       { label: 'Air bag', text: 'The airbag warning light came on and the driver air bag did not deploy in the crash.' },
       { label: 'Electrical', text: 'The dashboard lights flicker, the radio shuts off and the battery drains overnight.' },
+      { label: 'Structure', text: 'The frame is badly rusted and cracks appeared near the rear suspension.' },
+      { label: 'Engine', text: 'The engine stalled on the highway at 60 mph and I lost power steering.' },
+      { label: 'ABS', text: 'The ABS light came on and the car took much longer to stop in the rain.' },
     ],
-    loadingModel: 'Loading the classifier (0.8 MB)…',
+    loadingModel: 'Loading the classifier (1.1 MB)…',
     loadError: 'The data could not be loaded. Check your connection and reload the page.',
     likely: 'Likely component',
-    unknownWords: 'None of these words is known to the classifier; describe the defect in English.',
-    browserModel:
-      'This classifier uses 15,000 terms and reaches a macro-F1 of {f1} on the 2014–2024 complaints; the full version in the study, with 52,000 terms, reaches 0.842.',
+    unknownWords: 'None of these words is known to the classifier; try describing the defect in other words.',
+    browserModel: 'This classifier uses 20,000 terms. Macro-F1: {en} in English (real 2014–2024 complaints), {pt} in Portuguese and {de} in German (machine translations of the same complaints). The study’s English-only version reaches 0.842.',
     samplesTitle: 'Real complaints and what each model predicted',
-    samplesLede: 'Complaints from the evaluation split (2014–2024), in the original wording.',
+    samplesLede: 'Real complaints from the evaluation split (2014–2024), in the original wording.',
     filterLabel: 'Component',
     all: 'All',
     truth: 'True label',
@@ -283,6 +309,8 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     wrong: 'wrong',
     trySample: 'Try this text',
     showMore: 'Show more complaints ({n} left)',
+    showTranslation: 'Show translation',
+    showOriginal: 'Show original',
     classes: {
       'AIR BAGS': 'Air bags',
       'ELECTRICAL SYSTEM': 'Electrical system',
@@ -327,7 +355,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
   },
 
   de: {
-    eyebrow: 'Projekt 02 · In Arbeit',
+    eyebrow: 'Projekt 01 · In Arbeit',
     title: 'Kompakte LLMs für die Automobilindustrie',
     subtitle: 'Triage von Mängelbeschwerden und Patentassistent',
     intro:
@@ -342,9 +370,18 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     patentsLede:
       'Stellen Sie eine Frage zu Patenten in Brasilien. Sie wird mit den {n} Testfragen abgeglichen, die die Modelle im Training nie gesehen haben. Sie sehen die offiziellen Textstellen, die jedes Modell erhielt, die Referenzantwort und die Antwort jedes Modells vor und nach dem Fine-Tuning.',
     askLabel: 'Ihre Frage',
-    askHint: 'Fragen und Antworten sind auf Portugiesisch, da es um brasilianisches Recht geht; portugiesische Stichwörter funktionieren am besten.',
-    askPlaceholder: 'z. B. posso patentear um algoritmo de detecção de faixas?',
+    askHint: 'Die Fragen wurden von Hand übersetzt; die offiziellen Textstellen und die Antworten sind maschinelle Übersetzungen aus dem Portugiesischen, der Sprache, in der die Modelle gelesen und geschrieben haben. Das Original ist einen Klick entfernt.',
+    askPlaceholder: 'z. B. kann ich einen Algorithmus zur Fahrspurerkennung patentieren?',
     tryLabel: 'Probieren Sie',
+    translatedNote: 'Textstellen und Antworten: maschinelle Übersetzung aus dem Portugiesischen.',
+    tryExamples: [
+      'kann ich einen Algorithmus zur Fahrspurerkennung patentieren?',
+      'welche Frist gilt für den Prüfungsantrag?',
+      'was ist die beschleunigte Prüfung?',
+      'muss ich recherchieren, ob meine Erfindung schon existiert?',
+      'wie schütze ich eine Erfindung in anderen Ländern?',
+      'welche Fahrzeugteile haben die meisten Patentanmeldungen?',
+    ],
     search: 'Suchen',
     matches: 'Ähnlichste Testfragen',
     noMatch: 'Keine ähnliche Testfrage. Versuchen Sie andere Wörter oder wählen Sie eine aus der Liste.',
@@ -381,24 +418,25 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     },
 
     triageTitle: 'Triage von Mängelbeschwerden',
-    triageLede:
-      'Beschreiben Sie einen Mangel auf Englisch, wie es ein Fahrzeughalter in den USA tun würde. Ein TF-IDF-Klassifikator mit logistischer Regression nennt die betroffene Komponente. Er läuft in Ihrem Browser (0,8 MB; es wird nichts übertragen) und ist die Referenz, die die LLMs der Studie übertreffen müssen.',
-    describe: 'Mängelbeschreibung (auf Englisch)',
+    triageLede: 'Beschreiben Sie einen Mangel auf Deutsch, Englisch oder Portugiesisch. Ein TF-IDF-Klassifikator mit logistischer Regression nennt die betroffene Komponente. Er läuft in Ihrem Browser (1,1 MB; es wird nichts übertragen) und ist die Referenz, die die LLMs der Studie übertreffen müssen.',
+    describe: 'Mängelbeschreibung',
     classify: 'Klassifizieren',
     examples: 'Beispiele',
     exampleTexts: [
-      { label: 'Bremsen', text: 'The brakes failed and the pedal went to the floor while I was driving downhill.' },
-      { label: 'Airbag', text: 'The airbag warning light came on and the driver air bag did not deploy in the crash.' },
-      { label: 'Elektrik', text: 'The dashboard lights flicker, the radio shuts off and the battery drains overnight.' },
+      { label: 'Bremsen', text: 'Die Bremsen versagten und das Pedal ging bei einer Bergabfahrt bis zum Boden durch.' },
+      { label: 'Airbag', text: 'Die Airbag-Warnleuchte ging an und der Fahrerairbag hat beim Unfall nicht ausgelöst.' },
+      { label: 'Elektrik', text: 'Die Armaturenbrettbeleuchtung flackert, das Radio schaltet sich ab und die Batterie entlädt sich über Nacht.' },
+      { label: 'Struktur', text: 'Der Rahmen ist stark verrostet und in der Nähe der Hinterachse sind Risse entstanden.' },
+      { label: 'Motor', text: 'Der Motor ging auf der Autobahn bei 100 km/h aus und die Servolenkung fiel aus.' },
+      { label: 'ABS', text: 'Die ABS-Leuchte ging an und das Auto brauchte bei Regen viel länger zum Anhalten.' },
     ],
-    loadingModel: 'Klassifikator wird geladen (0,8 MB) …',
+    loadingModel: 'Klassifikator wird geladen (1,1 MB) …',
     loadError: 'Die Daten konnten nicht geladen werden. Prüfen Sie die Verbindung und laden Sie die Seite neu.',
     likely: 'Wahrscheinliche Komponente',
-    unknownWords: 'Keines dieser Wörter ist dem Klassifikator bekannt; beschreiben Sie den Mangel auf Englisch.',
-    browserModel:
-      'Dieser Klassifikator nutzt 15.000 Terme und erreicht einen Makro-F1 von {f1} auf den Beschwerden von 2014–2024; die vollständige Version der Studie mit 52.000 Termen erreicht 0,842.',
+    unknownWords: 'Keines dieser Wörter ist dem Klassifikator bekannt; beschreiben Sie den Mangel mit anderen Worten.',
+    browserModel: 'Dieser Klassifikator nutzt 20.000 Terme. Makro-F1: {en} auf Englisch (echte Beschwerden von 2014–2024), {pt} auf Portugiesisch und {de} auf Deutsch (maschinelle Übersetzungen derselben Beschwerden). Die rein englische Version der Studie erreicht 0,842.',
     samplesTitle: 'Echte Beschwerden und die Vorhersage jedes Modells',
-    samplesLede: 'Beschwerden aus dem Evaluierungssplit (2014–2024), im englischen Original.',
+    samplesLede: 'Echte Beschwerden aus dem Evaluierungssplit (2014–2024). Die Modelle haben das englische Original klassifiziert; die Übersetzung wurde für diese Seite von Hand erstellt.',
     filterLabel: 'Komponente',
     all: 'Alle',
     truth: 'Tatsächliche Klasse',
@@ -406,6 +444,8 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     wrong: 'falsch',
     trySample: 'Diesen Text testen',
     showMore: 'Weitere Beschwerden anzeigen (noch {n})',
+    showTranslation: 'Übersetzung anzeigen',
+    showOriginal: 'Original anzeigen',
     classes: {
       'AIR BAGS': 'Airbags',
       'ELECTRICAL SYSTEM': 'Elektrik',

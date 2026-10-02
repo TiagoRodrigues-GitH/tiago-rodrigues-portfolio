@@ -17,26 +17,48 @@ describe('ComplaintClassifier', () => {
   });
 
   it('reports when no word of the text is known', () => {
-    expect(classifier.classify('Bremspedal fällt durch').knownTerms).toBe(0);
+    expect(classifier.classify('xyzzy plugh qwrtz').knownTerms).toBe(0);
     expect(classifier.classify('brake pedal went to the floor').knownTerms).toBeGreaterThan(0);
+  });
+
+  it('understands Portuguese and German descriptions too', () => {
+    const top = (text: string) => {
+      const { probabilities } = classifier.classify(text);
+      return model.labels[probabilities.indexOf(Math.max(...probabilities))];
+    };
+    expect(top('Os freios falharam e o pedal foi até o fundo.')).toBe('SERVICE BRAKES');
+    expect(top('Der Airbag hat beim Unfall nicht ausgelöst.')).toBe('AIR BAGS');
   });
 });
 
 describe('Bm25 question search', () => {
-  const questions = patentData.items.map((item) => item.question);
-  const index = new Bm25(questions);
+  const locales = ['pt', 'en', 'de'] as const;
 
-  it('ignores accents, case and function words', () => {
-    expect(terms('O que é a Patente de Invenção?')).toEqual(['patente', 'invencao']);
+  it('ignores accents, case, function words and plural endings', () => {
+    expect(terms('O que é a Patente de Invenção?', 'pt')).toEqual(['patente', 'invencao']);
+    expect(terms('Patentes e invenções', 'pt')).toEqual(['patente', 'invencao']);
+    expect(terms('Welche Fahrzeugteilen?', 'de')).toEqual(terms('Fahrzeugteile', 'de'));
+    expect(terms('außerdem', 'de')).toEqual(['ausserdem']);
   });
 
-  it('finds each test question from its own wording', () => {
-    const found = questions.filter((q, i) => index.search(q, 1)[0]?.index === i).length;
-    expect(found / questions.length).toBeGreaterThan(0.9);
-  });
+  for (const locale of locales) {
+    const questions = patentData.items.map((item) => item.question[locale]);
+    const index = new Bm25(questions, locale);
+
+    it(`finds each test question from its own wording (${locale})`, () => {
+      const found = questions.filter((q, i) => index.search(q, 1)[0]?.index === i).length;
+      expect(found / questions.length).toBeGreaterThan(0.9);
+    });
+
+    it(`answers every example button (${locale})`, () => {
+      for (const example of LAB_I18N[locale].tryExamples) {
+        expect(index.search(example, 1).length, example).toBe(1);
+      }
+    });
+  }
 
   it('returns nothing for unrelated words', () => {
-    expect(index.search('xyzzy plugh')).toEqual([]);
+    expect(new Bm25(patentData.items.map((item) => item.question.pt)).search('xyzzy plugh')).toEqual([]);
   });
 });
 

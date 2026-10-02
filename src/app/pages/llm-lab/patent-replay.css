@@ -102,6 +102,31 @@ select {
   background: var(--surface);
 }
 
+.qa-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.toggle {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--accent-strong);
+  background: transparent;
+  cursor: pointer;
+}
+
+.toggle[aria-pressed='true'] {
+  color: #ffffff;
+  background: var(--accent);
+}
+
 .qa-question {
   margin: 0.5rem 0 1rem;
   font-size: clamp(1.2rem, 2.2vw, 1.5rem);

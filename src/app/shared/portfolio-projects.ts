@@ -56,9 +56,53 @@ export interface PortfolioProject extends ProjectText {
   gallery: ProjectImage[];
 }
 
+// Shown in this order (projects page and home): the current project first.
 const PROJECTS: ProjectSource[] = [
   {
     id: 1,
+    status: 'progress',
+    demo: '/projects/compact-llm',
+    image: {
+      src: '',
+      width: 640,
+      height: 480,
+      figure: 'llm',
+      alt: {
+        pt: 'Esquema animado: documentos oficiais e reclamações de defeitos alimentam um modelo de linguagem compacto ajustado com LoRA, que produz uma resposta com a fonte citada.',
+        en: 'Animated schematic: official documents and defect complaints feed a compact language model fine-tuned with LoRA, which produces an answer that cites its source.',
+        de: 'Animiertes Schema: Offizielle Dokumente und Mängelbeschwerden speisen ein kompaktes, mit LoRA feinabgestimmtes Sprachmodell, das eine Antwort mit Quellenangabe erzeugt.',
+      },
+    },
+    gallery: [],
+    text: {
+      pt: {
+        title: 'LLMs compactos para a indústria automotiva',
+        subtitle: 'Triagem de reclamações de defeitos e assistente de patentes',
+        summary: 'Modelos de linguagem pequenos, ajustados com LoRA, que fazem a triagem de reclamações de defeitos veiculares e orientam sobre patentes com base em documentos do INPI.',
+        details: 'Dois estudos com modelos de até 4 bilhões de parâmetros, treinados em uma GPU de 6 GB: um benchmark de classificação de reclamações de defeitos registradas na NHTSA e um assistente que responde sobre patentes no Brasil a partir de trechos oficiais recuperados (RAG) e cita a fonte. Cada modelo é comparado, antes e depois do ajuste, com referências sem LLM; a demonstração mostra as respostas reais dos experimentos.',
+        role: 'Pesquisa e engenharia de IA',
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
+      },
+      en: {
+        title: 'Compact LLMs for the automotive industry',
+        subtitle: 'Defect complaint triage and patent assistant',
+        summary: 'Small language models, fine-tuned with LoRA, that triage vehicle defect complaints and give guidance on patents from INPI documents.',
+        details: 'Two studies with models of up to 4 billion parameters, trained on a 6 GB GPU: a benchmark for classifying defect complaints filed with NHTSA, and an assistant that answers questions on patents in Brazil from retrieved official passages (RAG) and cites the source. Each model is compared, before and after fine-tuning, with no-LLM baselines; the demo shows the real answers from the experiments.',
+        role: 'AI research and engineering',
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
+      },
+      de: {
+        title: 'Kompakte LLMs für die Automobilindustrie',
+        subtitle: 'Triage von Mängelbeschwerden und Patentassistent',
+        summary: 'Kleine, mit LoRA feinabgestimmte Sprachmodelle, die Fahrzeugmängel-Beschwerden klassifizieren und auf Basis von INPI-Dokumenten zu Patenten beraten.',
+        details: 'Zwei Studien mit Modellen bis 4 Milliarden Parameter, trainiert auf einer 6-GB-GPU: ein Benchmark zur Klassifikation von Mängelbeschwerden bei der NHTSA und ein Assistent, der Fragen zu Patenten in Brasilien anhand abgerufener offizieller Textstellen (RAG) beantwortet und die Quelle zitiert. Jedes Modell wird vor und nach dem Fine-Tuning mit Referenzen ohne LLM verglichen; die Demo zeigt die echten Antworten aus den Experimenten.',
+        role: 'KI-Forschung und -Entwicklung',
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
+      },
+    },
+  },
+  {
+    id: 2,
     status: 'done',
     image: {
       src: '',
@@ -106,49 +150,6 @@ const PROJECTS: ProjectSource[] = [
         details: 'Studienprojekt zur Anwendung der Grundprinzipien der objektorientierten Programmierung – abstrakte Klassen, Vererbung, Polymorphie, Kapselung, Schnittstellen und Ausnahmebehandlung. Über die ereignisgesteuerte Java-Swing-Oberfläche lassen sich Fahrzeuge erfassen, per Kennzeichen suchen oder löschen und der gesamte Bestand auflisten.',
         role: 'Objektorientierte Modellierung und Desktop-Oberfläche',
         stack: ['Java', 'Java Swing', 'OOP', 'UML'],
-      },
-    },
-  },
-  {
-    id: 2,
-    status: 'progress',
-    demo: '/projects/compact-llm',
-    image: {
-      src: '',
-      width: 640,
-      height: 480,
-      figure: 'llm',
-      alt: {
-        pt: 'Esquema animado: documentos oficiais e reclamações de defeitos alimentam um modelo de linguagem compacto ajustado com LoRA, que produz uma resposta com a fonte citada.',
-        en: 'Animated schematic: official documents and defect complaints feed a compact language model fine-tuned with LoRA, which produces an answer that cites its source.',
-        de: 'Animiertes Schema: Offizielle Dokumente und Mängelbeschwerden speisen ein kompaktes, mit LoRA feinabgestimmtes Sprachmodell, das eine Antwort mit Quellenangabe erzeugt.',
-      },
-    },
-    gallery: [],
-    text: {
-      pt: {
-        title: 'LLMs compactos para a indústria automotiva',
-        subtitle: 'Triagem de reclamações de defeitos e assistente de patentes',
-        summary: 'Modelos de linguagem pequenos, ajustados com LoRA, que fazem a triagem de reclamações de defeitos veiculares e orientam sobre patentes com base em documentos do INPI.',
-        details: 'Dois estudos com modelos de até 4 bilhões de parâmetros, treinados em uma GPU de 6 GB: um benchmark de classificação de reclamações de defeitos registradas na NHTSA e um assistente que responde sobre patentes no Brasil a partir de trechos oficiais recuperados (RAG) e cita a fonte. Cada modelo é comparado, antes e depois do ajuste, com referências sem LLM; a demonstração mostra as respostas reais dos experimentos.',
-        role: 'Pesquisa e engenharia de IA',
-        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
-      },
-      en: {
-        title: 'Compact LLMs for the automotive industry',
-        subtitle: 'Defect complaint triage and patent assistant',
-        summary: 'Small language models, fine-tuned with LoRA, that triage vehicle defect complaints and give guidance on patents from INPI documents.',
-        details: 'Two studies with models of up to 4 billion parameters, trained on a 6 GB GPU: a benchmark for classifying defect complaints filed with NHTSA, and an assistant that answers questions on patents in Brazil from retrieved official passages (RAG) and cites the source. Each model is compared, before and after fine-tuning, with no-LLM baselines; the demo shows the real answers from the experiments.',
-        role: 'AI research and engineering',
-        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
-      },
-      de: {
-        title: 'Kompakte LLMs für die Automobilindustrie',
-        subtitle: 'Triage von Mängelbeschwerden und Patentassistent',
-        summary: 'Kleine, mit LoRA feinabgestimmte Sprachmodelle, die Fahrzeugmängel-Beschwerden klassifizieren und auf Basis von INPI-Dokumenten zu Patenten beraten.',
-        details: 'Zwei Studien mit Modellen bis 4 Milliarden Parameter, trainiert auf einer 6-GB-GPU: ein Benchmark zur Klassifikation von Mängelbeschwerden bei der NHTSA und ein Assistent, der Fragen zu Patenten in Brasilien anhand abgerufener offizieller Textstellen (RAG) beantwortet und die Quelle zitiert. Jedes Modell wird vor und nach dem Fine-Tuning mit Referenzen ohne LLM verglichen; die Demo zeigt die echten Antworten aus den Experimenten.',
-        role: 'KI-Forschung und -Entwicklung',
-        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
     },
   },

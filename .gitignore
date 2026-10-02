@@ -43,3 +43,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 src/app/models/angular_json.code-search
+
+# Python
+__pycache__/

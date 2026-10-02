@@ -5,7 +5,6 @@
     <input
       id="patent-question"
       type="search"
-      lang="pt-BR"
       autocomplete="off"
       [value]="query()"
       (input)="query.set($any($event.target).value)"
@@ -16,8 +15,8 @@
   </div>
   <div class="examples">
     <span class="mono-label">{{ t.tryLabel }}:</span>
-    @for (example of examples; track example) {
-      <button class="example" type="button" lang="pt-BR" [disabled]="!items().length" (click)="ask(example)">{{ example }}</button>
+    @for (example of t.tryExamples; track example) {
+      <button class="example" type="button" [disabled]="!items().length" (click)="ask(example)">{{ example }}</button>
     }
   </div>
 </form>
@@ -29,9 +28,9 @@
       <ul class="hits">
         @for (hit of hits; track hit.index) {
           <li>
-            <button type="button" lang="pt-BR" [attr.aria-pressed]="selectedId() === items()[hit.index].id"
+            <button type="button" [attr.aria-pressed]="selectedId() === items()[hit.index].id"
               (click)="select(items()[hit.index].id)">
-              {{ items()[hit.index].question }}
+              {{ question(items()[hit.index]) }}
             </button>
           </li>
         }
@@ -44,12 +43,12 @@
 
 <div class="pick">
   <label class="field-label" for="patent-pick">{{ t.pickLabel }}</label>
-  <select id="patent-pick" lang="pt-BR" (change)="select($any($event.target).value)" [disabled]="!items().length">
+  <select id="patent-pick" (change)="select($any($event.target).value)" [disabled]="!items().length">
     <option value="" [selected]="!selectedId()">{{ t.pickPrompt }}</option>
     @for (group of groups(); track group.category) {
       <optgroup [label]="category(group.category)">
         @for (item of group.items; track item.id) {
-          <option [value]="item.id" [selected]="item.id === selectedId()">{{ item.question }}</option>
+          <option [value]="item.id" [selected]="item.id === selectedId()">{{ question(item) }}</option>
         }
       </optgroup>
     }
@@ -62,14 +61,24 @@
 
 @if (selected(); as item) {
   <article class="qa" aria-labelledby="qa-question">
-    <p class="mono-label">{{ category(item.category) }}</p>
-    <h3 id="qa-question" class="qa-question" lang="pt-BR">{{ item.question }}</h3>
+    <div class="qa-head">
+      <p class="mono-label">{{ category(item.category) }}</p>
+      @if (translated()) {
+        <button class="toggle" type="button" [attr.aria-pressed]="showOriginal()" (click)="showOriginal.set(!showOriginal())">
+          {{ showOriginal() ? t.showTranslation : t.showOriginal }}
+        </button>
+      }
+    </div>
+    <h3 id="qa-question" class="qa-question" [attr.lang]="textLang()">{{ text(item.question) }}</h3>
+    @if (translated() && !showOriginal()) {
+      <p class="hint">{{ t.translatedNote }}</p>
+    }
 
     <details class="passages">
       <summary>{{ t.passages }} ({{ item.passages.length }})</summary>
-      <ol lang="pt-BR">
+      <ol [attr.lang]="textLang()">
         @for (passage of item.passages; track $index) {
-          <li><cite>{{ passage.citation }}</cite> {{ passage.text }}</li>
+          <li><cite>{{ passage.citation }}</cite> {{ text(passage.text) }}</li>
         }
       </ol>
     </details>
@@ -77,7 +86,7 @@
     <div class="answers">
       <section class="answer reference" aria-labelledby="qa-reference">
         <h4 id="qa-reference">{{ t.reference }}</h4>
-        <p lang="pt-BR">{{ item.reference }}</p>
+        <p [attr.lang]="textLang()">{{ text(item.reference) }}</p>
       </section>
 
       @if (model(); as model) {
@@ -108,7 +117,7 @@
   @if (a) {
     <section class="answer">
       <h4>{{ title }}</h4>
-      <p lang="pt-BR">{{ a.text }}</p>
+      <p [attr.lang]="textLang()">{{ text(a.text) }}</p>
       <dl class="scores">
         <div><dt>ROUGE-L</dt><dd>{{ score(a.rougeL) }}</dd></div>
         <div><dt>F1</dt><dd>{{ score(a.f1) }}</dd></div>

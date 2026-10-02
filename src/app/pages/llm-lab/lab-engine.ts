@@ -12,7 +12,13 @@ export interface ClassifierData {
   weights: number[];
   bias: number[];
   maxChars: number;
-  metrics: { accuracyEval: number; macroF1Eval: number; macroF1Test: number };
+  metrics: {
+    accuracyEval: number;
+    macroF1Eval: number;
+    macroF1Test: number;
+    /** English: the real 2014-2024 split; Portuguese and German: machine translations of part of it. */
+    byLanguage?: Record<string, { accuracy: number; macroF1: number; n: number }>;
+  };
   /** Texts with the probabilities scikit-learn gave them: the port must reproduce these. */
   check: Array<{ text: string; probs: number[] }>;
 }
@@ -71,19 +77,40 @@ export class ComplaintClassifier {
   }
 }
 
-/** Portuguese function words, accents removed (the questions are compared without accents). */
-const STOPWORDS = new Set(
-  ('a o e de da do das dos em no na nos nas um uma uns umas para por com que se ao aos as os ou e sao como mais sua ' +
-    'seu suas seus pelo pela pelos pelas este esta isso essa esse isto aquele qual quais quando onde ser foi ter tem ' +
-    'ha sobre entre sem tambem ja nao sim n art arts').split(' '),
-);
+export type SearchLanguage = 'pt' | 'en' | 'de';
 
 export function normalize(text: string): string {
-  return text.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
+  return text.toLowerCase().replace(/ß/g, 'ss').normalize('NFKD').replace(/[̀-ͯ]/g, '');
 }
 
-export function terms(text: string): string[] {
-  return (normalize(text).match(/[a-z0-9]+/g) ?? []).filter((t) => t.length > 1 && !STOPWORDS.has(t));
+/** Function words per language, compared without accents like the text. */
+const STOPWORD_LISTS: Record<SearchLanguage, string> = {
+  pt: 'a o e de da do das dos em no na nos nas um uma uns umas para por com que se ao aos as os ou sao como mais sua seu suas seus pelo pela pelos pelas este esta isso essa esse isto aquele qual quais quando onde ser foi ter tem ha sobre entre sem tambem ja nao sim n art arts',
+  en: 'a an the of to in on for and or is are was were be been do does did can could should would will i my me we our you your it its this that these those what which who how when where why with from by as at about into than then there their they not no if so also any some more most other such only same over under up out just very',
+  de: 'der die das den dem des ein eine einer eines einem einen und oder ist sind war waren sein bin wird werden wurde wurden kann konnen muss mussen soll sollen ich du er sie es wir ihr mein meine unser zu zum zur im in am an auf aus bei mit nach von vor fur uber unter um durch gegen ohne als wie was wer wo wann warum welche welcher welches welchen nicht kein keine auch noch nur schon sehr so dass ob wenn dann denn aber doch',
+};
+const STOPWORDS = Object.fromEntries(
+  Object.entries(STOPWORD_LISTS).map(([lang, words]) => [lang, new Set(normalize(words).split(' '))]),
+) as Record<SearchLanguage, Set<string>>;
+
+/** Light plural/inflection folding, so "patentes"/"patente" or "Fahrzeugteilen"/"Fahrzeugteile" match. */
+function fold(token: string, lang: SearchLanguage): string {
+  if (token.length <= 4) {
+    return token;
+  }
+  if (lang === 'pt') {
+    return token.replace(/(oes|aes)$/, 'ao').replace(/ais$/, 'al').replace(/s$/, '');
+  }
+  if (lang === 'de') {
+    return token.replace(/(en|er|es|e|n|s)$/, '');
+  }
+  return token.replace(/ies$/, 'y').replace(/(?<!s)s$/, '');
+}
+
+export function terms(text: string, lang: SearchLanguage = 'pt'): string[] {
+  return (normalize(text).match(/[a-z0-9]+/g) ?? [])
+    .filter((t) => t.length > 1 && !STOPWORDS[lang].has(t))
+    .map((t) => fold(t, lang));
 }
 
 export interface SearchHit {
@@ -91,17 +118,18 @@ export interface SearchHit {
   score: number;
 }
 
-/** Okapi BM25 over short documents (the test questions), k1 = 1.5 and b = 0.75 as in the research code. */
+/** Okapi BM25 over short documents (the test questions, in one language), k1 = 1.5 and b = 0.75 as in the research code. */
 export class Bm25 {
   private readonly docs: Map<string, number>[];
   private readonly lengths: number[];
   private readonly mean: number;
   private readonly idf = new Map<string, number>();
 
-  constructor(texts: string[], private readonly k1 = 1.5, private readonly b = 0.75) {
+  constructor(texts: string[], private readonly lang: SearchLanguage = 'pt', private readonly k1 = 1.5,
+              private readonly b = 0.75) {
     this.docs = texts.map((text) => {
       const counts = new Map<string, number>();
-      for (const t of terms(text)) {
+      for (const t of terms(text, lang)) {
         counts.set(t, (counts.get(t) ?? 0) + 1);
       }
       return counts;
@@ -121,7 +149,7 @@ export class Bm25 {
 
   search(query: string, k = 3): SearchHit[] {
     const scores = new Map<number, number>();
-    for (const t of new Set(terms(query))) {
+    for (const t of new Set(terms(query, this.lang))) {
       const idf = this.idf.get(t);
       if (idf === undefined) {
         continue;

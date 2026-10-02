@@ -7,8 +7,12 @@ import { ClassifierData } from './lab-engine';
 
 export type RowStatus = 'done' | 'pending' | 'needsLargerGpu';
 
+/** One text in the three page languages. */
+export type Localized = Record<'pt' | 'en' | 'de', string>;
+
 export interface PatentAnswer {
-  text: string;
+  /** Original Portuguese plus machine translations. */
+  text: Localized;
   rougeL: number | null;
   f1: number | null;
   cites: boolean;
@@ -18,9 +22,10 @@ export interface PatentAnswer {
 export interface PatentItem {
   id: string;
   category: string;
-  question: string;
-  reference: string;
-  passages: Array<{ citation: string; text: string }>;
+  /** Original Portuguese plus hand translations. */
+  question: Localized;
+  reference: Localized;
+  passages: Array<{ citation: string; text: Localized }>;
   /** 'bm25' plus '<model>/base' and '<model>/fineTuned' once evaluated. */
   answers: Record<string, PatentAnswer>;
 }
@@ -55,9 +60,11 @@ export interface NhtsaRow {
 }
 
 export interface NhtsaSample {
-  text: string;
+  /** English original plus hand translations (or machine ones, flagged in `translation`). */
+  text: Localized;
+  translation: Record<'pt' | 'en' | 'de', 'original' | 'manual' | 'machine'>;
   label: string;
-  /** 'tfidf' plus '<model>/<stage>' for every evaluated model. */
+  /** 'tfidf' plus '<model>/<stage>' for every evaluated model, all made on the English original. */
   predictions: Record<string, string>;
 }
 

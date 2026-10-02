@@ -5,7 +5,7 @@
       #description
       id="defect-text"
       rows="4"
-      lang="en"
+      [attr.lang]="lang"
       [value]="text()"
       (input)="text.set($any($event.target).value)"
     ></textarea>
@@ -58,9 +58,14 @@
 </div>
 
 <ul class="samples">
-  @for (sample of samples(); track sample.text) {
+  @for (sample of samples(); track sample.text.en) {
     <li class="sample">
-      <blockquote lang="en">{{ sample.text }}</blockquote>
+      <blockquote [attr.lang]="sampleLang(sample)">{{ sampleText(sample) }}</blockquote>
+      @if (locale !== 'en') {
+        <button class="toggle" type="button" [attr.aria-pressed]="originals().has(sample.text.en)" (click)="toggleOriginal(sample)">
+          {{ originals().has(sample.text.en) ? t.showTranslation : t.showOriginal }}
+        </button>
+      }
       <p class="truth">{{ t.truth }}: <strong>{{ className(sample.label) }}</strong></p>
       <ul class="predictions">
         @for (p of predictors(sample); track p.key) {

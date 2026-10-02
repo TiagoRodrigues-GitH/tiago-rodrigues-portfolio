@@ -1,6 +1,6 @@
 <section class="page-hero graph-paper" aria-labelledby="lab-title">
   <div class="shell">
-    <a class="arrow-link back" routerLink="/projects" [queryParams]="langQuery()" fragment="project-2">
+    <a class="arrow-link back" routerLink="/projects" [queryParams]="langQuery()" fragment="project-1">
       <span aria-hidden="true">←</span> {{ t().back }}
     </a>
     <p class="mono-label">{{ t().eyebrow }}</p>
@@ -39,7 +39,7 @@
       <h2 id="triage-title" class="section-title">{{ t().triageTitle }}</h2>
       <p class="section-lede">{{ t().triageLede }}</p>
     </header>
-    <app-defect-triage [data]="nhtsa()" [t]="t()" [lang]="lang()" />
+    <app-defect-triage [data]="nhtsa()" [t]="t()" [lang]="lang()" [locale]="locale()" />
   </div>
 </section>
 
@@ -50,7 +50,7 @@
       <h2 id="patents-title" class="section-title">{{ t().patentsTitle }}</h2>
       <p class="section-lede">{{ t().patentsLede.replace('{n}', (patents()?.testQuestions ?? 52).toString()) }}</p>
     </header>
-    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" />
+    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" [locale]="locale()" />
   </div>
 </section>
 
