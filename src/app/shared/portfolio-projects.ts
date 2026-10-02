@@ -19,6 +19,8 @@ interface ProjectImageSource {
 
 interface ProjectText {
   title: string;
+  /** Second line of the title (what the project consists of), when the title alone is broad. */
+  subtitle?: string;
   summary: string;
   details: string;
   role: string;
@@ -126,22 +128,25 @@ const PROJECTS: ProjectSource[] = [
     text: {
       pt: {
         title: 'LLMs compactos para a indústria automotiva',
-        summary: 'Modelos de linguagem pequenos, ajustados com LoRA, que orientam sobre patentes com base em documentos do INPI e fazem a triagem de reclamações de defeitos veiculares.',
-        details: 'Dois estudos com modelos de até 4 bilhões de parâmetros, treinados em uma GPU de 6 GB: um assistente que responde sobre patentes no Brasil a partir de trechos oficiais recuperados (RAG) e cita a fonte, e um benchmark de classificação de reclamações de defeitos registradas na NHTSA. Cada modelo é comparado, antes e depois do ajuste, com referências sem LLM; a demonstração mostra as respostas reais dos experimentos.',
+        subtitle: 'Triagem de reclamações de defeitos e assistente de patentes',
+        summary: 'Modelos de linguagem pequenos, ajustados com LoRA, que fazem a triagem de reclamações de defeitos veiculares e orientam sobre patentes com base em documentos do INPI.',
+        details: 'Dois estudos com modelos de até 4 bilhões de parâmetros, treinados em uma GPU de 6 GB: um benchmark de classificação de reclamações de defeitos registradas na NHTSA e um assistente que responde sobre patentes no Brasil a partir de trechos oficiais recuperados (RAG) e cita a fonte. Cada modelo é comparado, antes e depois do ajuste, com referências sem LLM; a demonstração mostra as respostas reais dos experimentos.',
         role: 'Pesquisa e engenharia de IA',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       en: {
         title: 'Compact LLMs for the automotive industry',
-        summary: 'Small language models, fine-tuned with LoRA, that give guidance on patents from INPI documents and triage vehicle defect complaints.',
-        details: 'Two studies with models of up to 4 billion parameters, trained on a 6 GB GPU: an assistant that answers questions on patents in Brazil from retrieved official passages (RAG) and cites the source, and a benchmark for classifying defect complaints filed with NHTSA. Each model is compared, before and after fine-tuning, with no-LLM baselines; the demo shows the real answers from the experiments.',
+        subtitle: 'Defect complaint triage and patent assistant',
+        summary: 'Small language models, fine-tuned with LoRA, that triage vehicle defect complaints and give guidance on patents from INPI documents.',
+        details: 'Two studies with models of up to 4 billion parameters, trained on a 6 GB GPU: a benchmark for classifying defect complaints filed with NHTSA, and an assistant that answers questions on patents in Brazil from retrieved official passages (RAG) and cites the source. Each model is compared, before and after fine-tuning, with no-LLM baselines; the demo shows the real answers from the experiments.',
         role: 'AI research and engineering',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       de: {
         title: 'Kompakte LLMs für die Automobilindustrie',
-        summary: 'Kleine, mit LoRA feinabgestimmte Sprachmodelle, die auf Basis von INPI-Dokumenten zu Patenten beraten und Fahrzeugmängel-Beschwerden klassifizieren.',
-        details: 'Zwei Studien mit Modellen bis 4 Milliarden Parameter, trainiert auf einer 6-GB-GPU: ein Assistent, der Fragen zu Patenten in Brasilien anhand abgerufener offizieller Textstellen (RAG) beantwortet und die Quelle zitiert, und ein Benchmark zur Klassifikation von Mängelbeschwerden bei der NHTSA. Jedes Modell wird vor und nach dem Fine-Tuning mit Referenzen ohne LLM verglichen; die Demo zeigt die echten Antworten aus den Experimenten.',
+        subtitle: 'Triage von Mängelbeschwerden und Patentassistent',
+        summary: 'Kleine, mit LoRA feinabgestimmte Sprachmodelle, die Fahrzeugmängel-Beschwerden klassifizieren und auf Basis von INPI-Dokumenten zu Patenten beraten.',
+        details: 'Zwei Studien mit Modellen bis 4 Milliarden Parameter, trainiert auf einer 6-GB-GPU: ein Benchmark zur Klassifikation von Mängelbeschwerden bei der NHTSA und ein Assistent, der Fragen zu Patenten in Brasilien anhand abgerufener offizieller Textstellen (RAG) beantwortet und die Quelle zitiert. Jedes Modell wird vor und nach dem Fine-Tuning mit Referenzen ohne LLM verglichen; die Demo zeigt die echten Antworten aus den Experimenten.',
         role: 'KI-Forschung und -Entwicklung',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },

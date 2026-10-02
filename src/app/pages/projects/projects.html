@@ -23,7 +23,12 @@
             <span class="visually-hidden">{{ t.status }}: </span>{{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
           </p>
         </div>
-        <h2 [id]="'project-title-' + project.id" class="project-title">{{ project.title }}</h2>
+        <h2 [id]="'project-title-' + project.id" class="project-title">
+          {{ project.title }}
+          @if (project.subtitle) {
+            <span class="project-subtitle">{{ project.subtitle }}</span>
+          }
+        </h2>
         <p class="project-summary">{{ project.summary }}</p>
         <p class="project-details">{{ project.details }}</p>
 

@@ -3,6 +3,16 @@
   margin-bottom: 1.5rem;
 }
 
+.subtitle {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--accent);
+}
+
 .honesty {
   max-width: 44rem;
   margin-top: 1rem;

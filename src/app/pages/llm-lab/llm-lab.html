@@ -4,7 +4,9 @@
       <span aria-hidden="true">←</span> {{ t().back }}
     </a>
     <p class="mono-label">{{ t().eyebrow }}</p>
-    <h1 id="lab-title" class="page-title">{{ t().title }}</h1>
+    <h1 id="lab-title" class="page-title">
+      {{ t().title }}<span class="subtitle">{{ t().subtitle }}</span>
+    </h1>
     <p class="section-lede">{{ t().intro }}</p>
     <p class="honesty">{{ t().honesty }}</p>
     @if (updated()) {
@@ -30,25 +32,25 @@
   </div>
 }
 
-<section id="patents" class="section lab-section" aria-labelledby="patents-title">
+<section id="triage" class="section lab-section" aria-labelledby="triage-title">
   <div class="shell">
     <header class="section-head">
       <p class="section-index">01</p>
-      <h2 id="patents-title" class="section-title">{{ t().patentsTitle }}</h2>
-      <p class="section-lede">{{ t().patentsLede.replace('{n}', (patents()?.testQuestions ?? 52).toString()) }}</p>
-    </header>
-    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" />
-  </div>
-</section>
-
-<section id="triage" class="section lab-section graph-paper" aria-labelledby="triage-title">
-  <div class="shell">
-    <header class="section-head">
-      <p class="section-index">02</p>
       <h2 id="triage-title" class="section-title">{{ t().triageTitle }}</h2>
       <p class="section-lede">{{ t().triageLede }}</p>
     </header>
     <app-defect-triage [data]="nhtsa()" [t]="t()" [lang]="lang()" />
+  </div>
+</section>
+
+<section id="patents" class="section lab-section graph-paper" aria-labelledby="patents-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="section-index">02</p>
+      <h2 id="patents-title" class="section-title">{{ t().patentsTitle }}</h2>
+      <p class="section-lede">{{ t().patentsLede.replace('{n}', (patents()?.testQuestions ?? 52).toString()) }}</p>
+    </header>
+    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" />
   </div>
 </section>
 

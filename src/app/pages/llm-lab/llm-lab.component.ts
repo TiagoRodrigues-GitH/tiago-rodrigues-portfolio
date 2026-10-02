@@ -43,8 +43,8 @@ export class LlmLabComponent {
   });
 
   readonly sections = computed(() => [
-    { id: 'patents', label: this.t().patentsTitle },
     { id: 'triage', label: this.t().triageTitle },
+    { id: 'patents', label: this.t().patentsTitle },
     { id: 'results', label: this.t().resultsTitle },
     { id: 'method', label: this.t().methodTitle },
   ]);

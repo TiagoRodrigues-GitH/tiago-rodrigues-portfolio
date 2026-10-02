@@ -210,3 +210,12 @@
   width: fit-content;
   margin-top: 1.75rem;
 }
+
+.project-subtitle {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.55em;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--accent);
+}

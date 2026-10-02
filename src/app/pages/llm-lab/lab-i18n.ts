@@ -3,6 +3,7 @@ import { Locale } from '../../services/i18n.service';
 export interface LabTranslations {
   eyebrow: string;
   title: string;
+  subtitle: string;
   intro: string;
   honesty: string;
   updated: string;
@@ -82,8 +83,9 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
   pt: {
     eyebrow: 'Projeto 02 · Em andamento',
     title: 'LLMs compactos para a indústria automotiva',
+    subtitle: 'Triagem de reclamações de defeitos e assistente de patentes',
     intro:
-      'Modelos de linguagem com menos de 7 bilhões de parâmetros, ajustados com LoRA em uma GPU de 6 GB e aplicados a duas tarefas reais: orientar sobre patentes no Brasil com base em documentos oficiais do INPI e classificar reclamações de defeitos veiculares registradas na NHTSA, a agência de segurança viária dos EUA.',
+      'Modelos de linguagem com menos de 7 bilhões de parâmetros, ajustados com LoRA em uma GPU de 6 GB e aplicados a duas tarefas reais: classificar reclamações de defeitos veiculares registradas na NHTSA, a agência de segurança viária dos EUA, e orientar sobre patentes no Brasil com base em documentos oficiais do INPI.',
     honesty:
       'Nada aqui é simulado: respostas e previsões vêm dos experimentos. Os LLMs não rodam neste site; o classificador de reclamações, sim, roda no seu navegador.',
     updated: 'Experimentos em andamento: modelos marcados como “na fila” ainda estão sendo treinados. Dados de {date}.',
@@ -187,14 +189,14 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
       tfidf: 'TF-IDF + regressão logística',
     },
     notes: [
+      'As reclamações de 1994–2013 usam a nomenclatura antiga de componentes da NHTSA; ali, a queda de desempenho mede o efeito do deslocamento temporal.',
       'O teste de perguntas e respostas tem 52 itens: diferenças de poucos pontos não são conclusivas.',
       'ROUGE-L e F1 favorecem respostas extrativas e não medem a correção jurídica; uma amostra será avaliada por especialista em propriedade intelectual.',
-      'As reclamações de 1994–2013 usam a nomenclatura antiga de componentes da NHTSA; ali, a queda de desempenho mede o efeito do deslocamento temporal.',
     ],
 
     methodTitle: 'Como foi feito',
     method: [
-      'Dados reais e verificáveis: 490 perguntas e respostas extraídas da Lei 9.279/1996 e de manuais, diretrizes e estudos do INPI, com cada trecho conferido literalmente com a fonte; 694 pedidos de patente reais; 12.534 reclamações públicas da NHTSA.',
+      'Dados reais e verificáveis: 12.534 reclamações públicas da NHTSA; 490 perguntas e respostas extraídas da Lei 9.279/1996 e de manuais, diretrizes e estudos do INPI, com cada trecho conferido literalmente com a fonte; e 694 pedidos de patente reais.',
       'RAG e ajuste fino: o modelo recebe os três trechos oficiais mais relevantes, recuperados por BM25, e aprende a responder com base neles e a citar a fonte.',
       'LoRA em uma GPU de 6 GB; modelos acima de 3 bilhões de parâmetros em QLoRA de 4 bits. A taxa de aprendizado é escolhida na validação, e o número de épocas, por parada antecipada.',
       'Cada tarefa tem uma referência sem LLM, para medir se o modelo de linguagem compensa o custo.',
@@ -204,8 +206,9 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
   en: {
     eyebrow: 'Project 02 · In progress',
     title: 'Compact LLMs for the automotive industry',
+    subtitle: 'Defect complaint triage and patent assistant',
     intro:
-      'Language models with fewer than 7 billion parameters, fine-tuned with LoRA on a 6 GB GPU and applied to two real tasks: guidance on patents in Brazil grounded in official INPI documents, and classification of vehicle defect complaints filed with NHTSA, the US road safety agency.',
+      'Language models with fewer than 7 billion parameters, fine-tuned with LoRA on a 6 GB GPU and applied to two real tasks: classifying vehicle defect complaints filed with NHTSA, the US road safety agency, and giving guidance on patents in Brazil grounded in official INPI documents.',
     honesty:
       'Nothing here is simulated: answers and predictions come from the experiments. The LLMs do not run on this site; the complaint classifier does, in your browser.',
     updated: 'Experiments in progress: models marked “queued” are still training. Data from {date}.',
@@ -309,14 +312,14 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
       tfidf: 'TF-IDF + logistic regression',
     },
     notes: [
+      'The 1994–2013 complaints use NHTSA’s older component names; the drop in performance there measures the effect of temporal shift.',
       'The question-answering test has 52 items: differences of a few points are not conclusive.',
       'ROUGE-L and F1 favour extractive answers and do not measure legal correctness; an intellectual-property expert will review a sample.',
-      'The 1994–2013 complaints use NHTSA’s older component names; the drop in performance there measures the effect of temporal shift.',
     ],
 
     methodTitle: 'How it was done',
     method: [
-      'Real, verifiable data: 490 question–answer pairs drawn from Brazil’s Patent Law 9,279/1996 and from INPI manuals, guidelines and studies, every passage checked word for word against its source; 694 real patent applications; 12,534 public NHTSA complaints.',
+      'Real, verifiable data: 12,534 public NHTSA complaints; 490 question–answer pairs drawn from Brazil’s Patent Law 9,279/1996 and from INPI manuals, guidelines and studies, every passage checked word for word against its source; and 694 real patent applications.',
       'RAG and fine-tuning: the model receives the three most relevant official passages, retrieved with BM25, and learns to answer from them and cite the source.',
       'LoRA on a 6 GB GPU; models above 3 billion parameters use 4-bit QLoRA. The learning rate is chosen on the validation set, the number of epochs by early stopping.',
       'Every task has a no-LLM baseline, to measure whether the language model is worth its cost.',
@@ -326,8 +329,9 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
   de: {
     eyebrow: 'Projekt 02 · In Arbeit',
     title: 'Kompakte LLMs für die Automobilindustrie',
+    subtitle: 'Triage von Mängelbeschwerden und Patentassistent',
     intro:
-      'Sprachmodelle mit weniger als 7 Milliarden Parametern, mit LoRA auf einer 6-GB-GPU feinabgestimmt und auf zwei reale Aufgaben angewendet: Orientierung zu Patenten in Brasilien auf Grundlage offizieller Dokumente des brasilianischen Patentamts INPI und Klassifikation von Fahrzeugmängel-Beschwerden bei der NHTSA, der US-Behörde für Straßenverkehrssicherheit.',
+      'Sprachmodelle mit weniger als 7 Milliarden Parametern, mit LoRA auf einer 6-GB-GPU feinabgestimmt und auf zwei reale Aufgaben angewendet: Klassifikation von Fahrzeugmängel-Beschwerden bei der NHTSA, der US-Behörde für Straßenverkehrssicherheit, und Orientierung zu Patenten in Brasilien auf Grundlage offizieller Dokumente des brasilianischen Patentamts INPI.',
     honesty:
       'Nichts hier ist simuliert: Antworten und Vorhersagen stammen aus den Experimenten. Die LLMs laufen nicht auf dieser Website; der Beschwerde-Klassifikator dagegen läuft in Ihrem Browser.',
     updated: 'Experimente laufen: Modelle mit dem Vermerk „in Warteschlange“ werden noch trainiert. Stand: {date}.',
@@ -431,14 +435,14 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
       tfidf: 'TF-IDF + logistische Regression',
     },
     notes: [
+      'Die Beschwerden von 1994–2013 verwenden die älteren Komponentenbezeichnungen der NHTSA; der Leistungsabfall dort misst den Effekt der zeitlichen Verschiebung.',
       'Der Frage-Antwort-Test umfasst 52 Fragen: Unterschiede von wenigen Punkten sind nicht aussagekräftig.',
       'ROUGE-L und F1 bevorzugen extraktive Antworten und messen keine juristische Korrektheit; eine Stichprobe wird von einer Fachperson für geistiges Eigentum geprüft.',
-      'Die Beschwerden von 1994–2013 verwenden die älteren Komponentenbezeichnungen der NHTSA; der Leistungsabfall dort misst den Effekt der zeitlichen Verschiebung.',
     ],
 
     methodTitle: 'Vorgehen',
     method: [
-      'Echte, überprüfbare Daten: 490 Frage-Antwort-Paare aus dem brasilianischen Patentgesetz 9.279/1996 sowie aus Handbüchern, Richtlinien und Studien des INPI, jede Textstelle wörtlich mit der Quelle abgeglichen; 694 echte Patentanmeldungen; 12.534 öffentliche NHTSA-Beschwerden.',
+      'Echte, überprüfbare Daten: 12.534 öffentliche NHTSA-Beschwerden; 490 Frage-Antwort-Paare aus dem brasilianischen Patentgesetz 9.279/1996 sowie aus Handbüchern, Richtlinien und Studien des INPI, jede Textstelle wörtlich mit der Quelle abgeglichen; und 694 echte Patentanmeldungen.',
       'RAG und Fine-Tuning: Das Modell erhält die drei relevantesten offiziellen Textstellen, per BM25 abgerufen, und lernt, auf dieser Grundlage zu antworten und die Quelle zu zitieren.',
       'LoRA auf einer 6-GB-GPU; Modelle über 3 Milliarden Parameter mit 4-Bit-QLoRA. Die Lernrate wird auf dem Validierungsset gewählt, die Zahl der Epochen per Early Stopping.',
       'Jede Aufgabe hat eine Referenz ohne LLM, um zu messen, ob sich das Sprachmodell lohnt.',

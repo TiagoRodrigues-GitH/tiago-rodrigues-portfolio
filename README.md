@@ -35,7 +35,7 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 | --- | --- |
 | `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
 | `/projects` | Project case studies with an accessible image viewer |
-| `/projects/compact-llm` | Demo of project 02: replay of the patent assistant's real test answers, an NHTSA complaint classifier that runs in the browser, and the benchmark tables |
+| `/projects/compact-llm` | Demo of project 02: an NHTSA defect-complaint classifier that runs in the browser, a replay of the patent assistant's real test answers, and the benchmark tables |
 | `/about` | Timeline, education, languages, time in Germany, technical skills and CV download |
 | `/contact` | E-mail (with copy-to-clipboard), LinkedIn and GitHub |
 | `/login`, `/admin` | Authenticated project administration (requires the backend API) |
@@ -47,7 +47,7 @@ The language is selected with the `?lang=pt|en|de` query parameter, which every 
 | # | Project | Status |
 | --- | --- | --- |
 | 01 | **Vehicle management system** — Java Swing desktop application applying object-oriented design (abstract classes, inheritance, polymorphism, interfaces, exception handling) | Completed |
-| 02 | **Compact LLMs for the automotive industry** — small language models fine-tuned with LoRA: a patent assistant grounded in official INPI documents (RAG) and NHTSA defect-complaint triage, each compared with no-LLM baselines | In progress |
+| 02 | **Compact LLMs for the automotive industry: defect complaint triage and patent assistant** — small language models fine-tuned with LoRA: NHTSA defect-complaint triage and a patent assistant grounded in official INPI documents (RAG), each compared with no-LLM baselines | In progress |
 | 03 | **Web app for car collectors** — catalogue, restoration history and documentation for classic-vehicle collections | Coming soon |
 
 ## Design system

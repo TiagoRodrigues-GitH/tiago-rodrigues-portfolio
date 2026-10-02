@@ -1,3 +1,35 @@
+<div class="table-wrap" role="region" aria-labelledby="nhtsa-caption" tabindex="0">
+  <table>
+    <caption id="nhtsa-caption">{{ t.nhtsaCaption }}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.colModel }}</th>
+        <th scope="col">{{ t.colStage }}</th>
+        <th scope="col">{{ t.colAccuracy }}</th>
+        <th scope="col">{{ t.colF1 }}</th>
+        <th scope="col">{{ t.colF1Old }}</th>
+        <th scope="col">{{ t.colSpeed }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of nhtsa?.rows ?? []; track row.model + row.stage) {
+        <tr [class.baseline]="row.stage === 'baseline'">
+          <th scope="row">{{ name(row) }}</th>
+          <td>{{ stage(row) }}</td>
+          @if (row.status === 'done') {
+            <td>{{ percent(row.accuracyEval) }}</td>
+            <td>{{ score(row.macroF1Eval) }}</td>
+            <td>{{ score(row.macroF1Test) }}</td>
+            <td>{{ speed(row.examplesPerSecond) }}</td>
+          } @else {
+            <td colspan="4" class="pending">{{ status(row) }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
 <div class="table-wrap" role="region" aria-labelledby="patent-caption" tabindex="0">
   <table>
     <caption id="patent-caption">{{ t.patentCaption }}</caption>
@@ -25,38 +57,6 @@
             <td>{{ percent(row.ipcAccuracy) }}</td>
           } @else {
             <td colspan="5" class="pending">{{ status(row) }}</td>
-          }
-        </tr>
-      }
-    </tbody>
-  </table>
-</div>
-
-<div class="table-wrap" role="region" aria-labelledby="nhtsa-caption" tabindex="0">
-  <table>
-    <caption id="nhtsa-caption">{{ t.nhtsaCaption }}</caption>
-    <thead>
-      <tr>
-        <th scope="col">{{ t.colModel }}</th>
-        <th scope="col">{{ t.colStage }}</th>
-        <th scope="col">{{ t.colAccuracy }}</th>
-        <th scope="col">{{ t.colF1 }}</th>
-        <th scope="col">{{ t.colF1Old }}</th>
-        <th scope="col">{{ t.colSpeed }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of nhtsa?.rows ?? []; track row.model + row.stage) {
-        <tr [class.baseline]="row.stage === 'baseline'">
-          <th scope="row">{{ name(row) }}</th>
-          <td>{{ stage(row) }}</td>
-          @if (row.status === 'done') {
-            <td>{{ percent(row.accuracyEval) }}</td>
-            <td>{{ score(row.macroF1Eval) }}</td>
-            <td>{{ score(row.macroF1Test) }}</td>
-            <td>{{ speed(row.examplesPerSecond) }}</td>
-          } @else {
-            <td colspan="4" class="pending">{{ status(row) }}</td>
           }
         </tr>
       }
