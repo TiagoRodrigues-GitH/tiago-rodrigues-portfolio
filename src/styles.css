@@ -602,6 +602,11 @@ button {
 	border: 1.5px dashed var(--accent);
 }
 
+.status-progress::before {
+	background: linear-gradient(90deg, var(--accent) 50%, transparent 50%);
+	border: 1.5px solid var(--accent);
+}
+
 /* ---------- Page hero shared by inner pages ---------- */
 
 .page-hero {

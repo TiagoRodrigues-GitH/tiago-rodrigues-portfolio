@@ -6,6 +6,7 @@
 
 - [Home](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/): profile, spec sheet, projects and short articles on ADAS, lane detection, technology readiness and automotive patents
 - [Projects](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/projects/): Java vehicle-management system, IoT sensor app and lane-detection research (TAC-UFLD)
+- [Compact LLMs](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/projects/compact-llm/): demo and results of small language models fine-tuned with LoRA: a patent assistant grounded in official INPI documents and NHTSA defect-complaint triage
 - [About](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/about/): background, education (UTFPR, LMU, UNIOESTE) and skills
 - [Contact](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/contact/): e-mail, LinkedIn and GitHub
 - [Privacy](https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/privacy/): how visit data is handled (LGPD / GDPR)

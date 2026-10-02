@@ -11,9 +11,9 @@ const CALLOUTS: Record<ProjectFigureKind, Record<Locale, string[]>> = {
     de: ['Pkw (Klasse Passeio)', 'Lastfahrzeug (Klasse Carga)', 'Fahrzeugdatenblatt: Mercosur-Kennzeichen und Attribute', 'Fahrzeug-Repository (BDVeiculos)'],
   },
   llm: {
-    pt: ['Documentos técnicos: normas e diagnóstico', 'Modelo compacto quantizado (INT8) em hardware embarcado', 'Resposta para o técnico ou engenheiro'],
-    en: ['Technical documents: standards and diagnostics', 'Compact quantised model (INT8) on embedded hardware', 'Answer for the technician or engineer'],
-    de: ['Technische Dokumente: Normen und Diagnose', 'Kompaktes quantisiertes Modell (INT8) auf Embedded-Hardware', 'Antwort für Techniker oder Ingenieur'],
+    pt: ['Fontes: documentos do INPI e reclamações da NHTSA', 'Modelo compacto ajustado com LoRA (até 4 bilhões de parâmetros)', 'Resposta com a fonte citada'],
+    en: ['Sources: INPI documents and NHTSA complaints', 'Compact model fine-tuned with LoRA (up to 4 billion parameters)', 'Answer that cites its source'],
+    de: ['Quellen: INPI-Dokumente und NHTSA-Beschwerden', 'Kompaktes, mit LoRA feinabgestimmtes Modell (bis 4 Milliarden Parameter)', 'Antwort mit Quellenangabe'],
   },
 };
 

@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
-import { injectLocale } from '../../services/locale';
+import { injectLangQuery, injectLocale } from '../../services/locale';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 
@@ -28,6 +28,7 @@ export class ProjectsComponent implements OnDestroy {
   private readonly injector = inject(Injector);
 
   readonly locale = injectLocale();
+  readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
   readonly chassis = 'assets/images/blueprints/chassis.webp';
 

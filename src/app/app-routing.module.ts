@@ -10,6 +10,11 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { page: 'home' } },
   { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
+  {
+    path: 'projects/compact-llm',
+    loadComponent: () => import('./pages/llm-lab/llm-lab.component').then((m) => m.LlmLabComponent),
+    data: { page: 'llmLab' },
+  },
   { path: 'about', component: AboutComponent, data: { page: 'about' } },
   { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
   { path: 'privacy', component: PrivacyComponent, data: { page: 'privacy' } },

@@ -2,7 +2,7 @@ import { Locale } from '../services/i18n.service';
 import { ProjectFigureKind } from './project-figure/project-figure.component';
 import { BlueprintKind } from './blueprint-figure/blueprint-parts';
 
-export type ProjectStatus = 'done' | 'soon';
+export type ProjectStatus = 'done' | 'progress' | 'soon';
 
 interface ProjectImageSource {
   src: string;
@@ -28,6 +28,8 @@ interface ProjectText {
 interface ProjectSource {
   id: number;
   status: ProjectStatus;
+  /** Route of the project's demo page, if it has one. */
+  demo?: string;
   image: ProjectImageSource;
   gallery: ProjectImageSource[];
   text: Record<Locale, ProjectText>;
@@ -46,6 +48,7 @@ export interface ProjectImage {
 export interface PortfolioProject extends ProjectText {
   id: number;
   status: ProjectStatus;
+  demo: string | null;
   image: ProjectImage;
   /** Every image of the project, cover first — used by the lightbox. */
   gallery: ProjectImage[];
@@ -106,40 +109,41 @@ const PROJECTS: ProjectSource[] = [
   },
   {
     id: 2,
-    status: 'soon',
+    status: 'progress',
+    demo: '/projects/compact-llm',
     image: {
       src: '',
       width: 640,
       height: 480,
       figure: 'llm',
       alt: {
-        pt: 'Esquema animado: documentos técnicos (ISO 26262, SOTIF, UDS) alimentam um modelo de linguagem compacto em um chip embarcado, que produz a resposta.',
-        en: 'Animated schematic: technical documents (ISO 26262, SOTIF, UDS) feed a compact language model on an embedded chip, which produces the answer.',
-        de: 'Animiertes Schema: Technische Dokumente (ISO 26262, SOTIF, UDS) speisen ein kompaktes Sprachmodell auf einem eingebetteten Chip, das die Antwort erzeugt.',
+        pt: 'Esquema animado: documentos oficiais e reclamações de defeitos alimentam um modelo de linguagem compacto ajustado com LoRA, que produz uma resposta com a fonte citada.',
+        en: 'Animated schematic: official documents and defect complaints feed a compact language model fine-tuned with LoRA, which produces an answer that cites its source.',
+        de: 'Animiertes Schema: Offizielle Dokumente und Mängelbeschwerden speisen ein kompaktes, mit LoRA feinabgestimmtes Sprachmodell, das eine Antwort mit Quellenangabe erzeugt.',
       },
     },
     gallery: [],
     text: {
       pt: {
-        title: 'LLM compacto para a indústria automotiva',
-        summary: 'Um modelo de linguagem pequeno, ajustado com fine-tuning para o vocabulário e os processos da indústria automotiva.',
-        details: 'Espaço reservado para o próximo projeto: um tiny LLM treinado para responder sobre normas, requisitos e documentação técnica automotiva — como ISO 26262, SOTIF e diagnóstico — e leve o suficiente para rodar localmente, sem depender da nuvem.',
+        title: 'LLMs compactos para a indústria automotiva',
+        summary: 'Modelos de linguagem pequenos, ajustados com LoRA, que orientam sobre patentes com base em documentos do INPI e fazem a triagem de reclamações de defeitos veiculares.',
+        details: 'Dois estudos com modelos de até 4 bilhões de parâmetros, treinados em uma GPU de 6 GB: um assistente que responde sobre patentes no Brasil a partir de trechos oficiais recuperados (RAG) e cita a fonte, e um benchmark de classificação de reclamações de defeitos registradas na NHTSA. Cada modelo é comparado, antes e depois do ajuste, com referências sem LLM; a demonstração mostra as respostas reais dos experimentos.',
         role: 'Pesquisa e engenharia de IA',
-        stack: ['Python', 'PyTorch', 'Fine-tuning (LoRA)', 'Quantização'],
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       en: {
-        title: 'Compact LLM for the automotive industry',
-        summary: 'A small language model fine-tuned for the vocabulary and processes of the automotive industry.',
-        details: 'Reserved for the next project: a tiny LLM trained to answer questions about automotive standards, requirements and technical documentation — such as ISO 26262, SOTIF and diagnostics — and light enough to run locally, without depending on the cloud.',
+        title: 'Compact LLMs for the automotive industry',
+        summary: 'Small language models, fine-tuned with LoRA, that give guidance on patents from INPI documents and triage vehicle defect complaints.',
+        details: 'Two studies with models of up to 4 billion parameters, trained on a 6 GB GPU: an assistant that answers questions on patents in Brazil from retrieved official passages (RAG) and cites the source, and a benchmark for classifying defect complaints filed with NHTSA. Each model is compared, before and after fine-tuning, with no-LLM baselines; the demo shows the real answers from the experiments.',
         role: 'AI research and engineering',
-        stack: ['Python', 'PyTorch', 'Fine-tuning (LoRA)', 'Quantization'],
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       de: {
-        title: 'Kompaktes LLM für die Automobilindustrie',
-        summary: 'Ein kleines Sprachmodell, per Fine-Tuning auf Fachsprache und Prozesse der Automobilindustrie zugeschnitten.',
-        details: 'Platzhalter für das nächste Projekt: ein Tiny LLM, das Fragen zu Normen, Anforderungen und technischer Dokumentation der Automobilbranche beantwortet – etwa zu ISO 26262, SOTIF und Diagnose – und schlank genug ist, um lokal ohne Cloud zu laufen.',
+        title: 'Kompakte LLMs für die Automobilindustrie',
+        summary: 'Kleine, mit LoRA feinabgestimmte Sprachmodelle, die auf Basis von INPI-Dokumenten zu Patenten beraten und Fahrzeugmängel-Beschwerden klassifizieren.',
+        details: 'Zwei Studien mit Modellen bis 4 Milliarden Parameter, trainiert auf einer 6-GB-GPU: ein Assistent, der Fragen zu Patenten in Brasilien anhand abgerufener offizieller Textstellen (RAG) beantwortet und die Quelle zitiert, und ein Benchmark zur Klassifikation von Mängelbeschwerden bei der NHTSA. Jedes Modell wird vor und nach dem Fine-Tuning mit Referenzen ohne LLM verglichen; die Demo zeigt die echten Antworten aus den Experimenten.',
         role: 'KI-Forschung und -Entwicklung',
-        stack: ['Python', 'PyTorch', 'Fine-Tuning (LoRA)', 'Quantisierung'],
+        stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
     },
   },
@@ -195,6 +199,7 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
     return {
       id: project.id,
       status: project.status,
+      demo: project.demo ?? null,
       ...project.text[locale],
       image,
       // An animated cover is shown on its own; the gallery (zoomable images) holds bitmaps only.

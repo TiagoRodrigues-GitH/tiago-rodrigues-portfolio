@@ -1,0 +1,120 @@
+<form class="ask" role="search" (submit)="search($event)">
+  <label class="field-label" for="patent-question">{{ t.askLabel }}</label>
+  <p id="patent-question-hint" class="hint">{{ t.askHint }}</p>
+  <div class="ask-row">
+    <input
+      id="patent-question"
+      type="search"
+      lang="pt-BR"
+      autocomplete="off"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+      [attr.placeholder]="t.askPlaceholder"
+      aria-describedby="patent-question-hint"
+    />
+    <button class="btn btn-primary" type="submit" [disabled]="!items().length">{{ t.search }}</button>
+  </div>
+  <div class="examples">
+    <span class="mono-label">{{ t.tryLabel }}:</span>
+    @for (example of examples; track example) {
+      <button class="example" type="button" lang="pt-BR" [disabled]="!items().length" (click)="ask(example)">{{ example }}</button>
+    }
+  </div>
+</form>
+
+<div class="matches" aria-live="polite">
+  @if (hits(); as hits) {
+    @if (hits.length) {
+      <p class="mono-label">{{ t.matches }}</p>
+      <ul class="hits">
+        @for (hit of hits; track hit.index) {
+          <li>
+            <button type="button" lang="pt-BR" [attr.aria-pressed]="selectedId() === items()[hit.index].id"
+              (click)="select(items()[hit.index].id)">
+              {{ items()[hit.index].question }}
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="hint">{{ t.noMatch }}</p>
+    }
+  }
+</div>
+
+<div class="pick">
+  <label class="field-label" for="patent-pick">{{ t.pickLabel }}</label>
+  <select id="patent-pick" lang="pt-BR" (change)="select($any($event.target).value)" [disabled]="!items().length">
+    <option value="" [selected]="!selectedId()">{{ t.pickPrompt }}</option>
+    @for (group of groups(); track group.category) {
+      <optgroup [label]="category(group.category)">
+        @for (item of group.items; track item.id) {
+          <option [value]="item.id" [selected]="item.id === selectedId()">{{ item.question }}</option>
+        }
+      </optgroup>
+    }
+  </select>
+</div>
+
+@if (!items().length) {
+  <p class="hint loading">…</p>
+}
+
+@if (selected(); as item) {
+  <article class="qa" aria-labelledby="qa-question">
+    <p class="mono-label">{{ category(item.category) }}</p>
+    <h3 id="qa-question" class="qa-question" lang="pt-BR">{{ item.question }}</h3>
+
+    <details class="passages">
+      <summary>{{ t.passages }} ({{ item.passages.length }})</summary>
+      <ol lang="pt-BR">
+        @for (passage of item.passages; track $index) {
+          <li><cite>{{ passage.citation }}</cite> {{ passage.text }}</li>
+        }
+      </ol>
+    </details>
+
+    <div class="answers">
+      <section class="answer reference" aria-labelledby="qa-reference">
+        <h4 id="qa-reference">{{ t.reference }}</h4>
+        <p lang="pt-BR">{{ item.reference }}</p>
+      </section>
+
+      @if (model(); as model) {
+        <div class="model-pick">
+          <label class="field-label" for="patent-model">{{ t.modelLabel }}</label>
+          <select id="patent-model" (change)="chooseModel($any($event.target).value)">
+            @for (key of models(); track key) {
+              <option [value]="key" [selected]="key === model">{{ modelName(key) }}</option>
+            }
+          </select>
+        </div>
+        <ng-container *ngTemplateOutlet="answerBlock; context: { $implicit: answer(item, model + '/base'), title: t.before }"></ng-container>
+        <ng-container *ngTemplateOutlet="answerBlock; context: { $implicit: answer(item, model + '/fineTuned'), title: t.after }"></ng-container>
+      } @else {
+        <p class="pending">{{ t.pendingAnswers }}</p>
+      }
+
+      <ng-container *ngTemplateOutlet="answerBlock; context: { $implicit: answer(item, 'bm25'), title: t.baselineAnswer }"></ng-container>
+    </div>
+
+    <p class="hint">{{ t.scoresHint }}</p>
+  </article>
+}
+
+<p class="disclaimer">{{ t.disclaimer }}</p>
+
+<ng-template #answerBlock let-a let-title="title">
+  @if (a) {
+    <section class="answer">
+      <h4>{{ title }}</h4>
+      <p lang="pt-BR">{{ a.text }}</p>
+      <dl class="scores">
+        <div><dt>ROUGE-L</dt><dd>{{ score(a.rougeL) }}</dd></div>
+        <div><dt>F1</dt><dd>{{ score(a.f1) }}</dd></div>
+        <div><dt>{{ t.cites }}</dt><dd>{{ a.cites ? t.yes : t.no }}</dd></div>
+        <div><dt>{{ t.support }}</dt><dd>{{ percent(a.support) }}</dd></div>
+      </dl>
+    </section>
+  }
+</ng-template>

@@ -19,8 +19,8 @@
       <div class="project-copy">
         <div class="project-head">
           <p class="project-index" aria-hidden="true">0{{ project.id }}</p>
-          <p class="status" [class.status-soon]="project.status === 'soon'">
-            <span class="visually-hidden">{{ t.status }}: </span>{{ project.status === 'done' ? t.statusDone : t.statusSoon }}
+          <p class="status" [class.status-soon]="project.status === 'soon'" [class.status-progress]="project.status === 'progress'">
+            <span class="visually-hidden">{{ t.status }}: </span>{{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
           </p>
         </div>
         <h2 [id]="'project-title-' + project.id" class="project-title">{{ project.title }}</h2>
@@ -41,6 +41,12 @@
             </ul>
           </div>
         </div>
+
+        @if (project.demo) {
+          <a class="btn btn-primary demo-link" [routerLink]="project.demo" [queryParams]="langQuery()">
+            {{ t.demo }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span>
+          </a>
+        }
       </div>
 
       <div class="project-media">

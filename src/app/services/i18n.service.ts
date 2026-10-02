@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export type Locale = 'pt' | 'en' | 'de';
 
-export type PageKey = 'home' | 'projects' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
+export type PageKey = 'home' | 'projects' | 'llmLab' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
 
 export interface LocaleOption {
   locale: Locale;
@@ -82,6 +82,7 @@ export interface HomeTranslations {
   allProjects: string;
   statusDone: string;
   statusSoon: string;
+  statusProgress: string;
   articlesIndex: string;
   articlesTitle: string;
   articlesLede: string;
@@ -107,12 +108,14 @@ export interface ProjectsTranslations {
   status: string;
   statusDone: string;
   statusSoon: string;
+  statusProgress: string;
   zoom: string;
   dialogLabel: string;
   previous: string;
   next: string;
   close: string;
   counter: string;
+  demo: string;
 }
 
 export interface ContactTranslations {
@@ -197,6 +200,7 @@ export class I18nService {
         about: 'Sobre mim · Tiago Rodrigues',
         contact: 'Contato · Tiago Rodrigues',
         privacy: 'Privacidade · Tiago Rodrigues',
+        llmLab: 'LLMs compactos · Tiago Rodrigues',
         login: 'Acesso administrativo · Tiago Rodrigues',
         admin: 'Painel administrativo · Tiago Rodrigues',
       },
@@ -208,6 +212,7 @@ export class I18nService {
         privacy: 'Como este site trata dados de visita (LGPD): o que é registrado, por quanto tempo e como pedir a exclusão.',
         login: 'Acesso administrativo do portfólio.',
         admin: 'Painel administrativo do portfólio.',
+        llmLab: 'LLMs compactos ajustados com LoRA: assistente de patentes com documentos do INPI e triagem de reclamações de defeitos da NHTSA, com resultados reais.',
       },
     },
     en: {
@@ -244,6 +249,7 @@ export class I18nService {
         about: 'About me · Tiago Rodrigues',
         contact: 'Contact · Tiago Rodrigues',
         privacy: 'Privacy · Tiago Rodrigues',
+        llmLab: 'Compact LLMs · Tiago Rodrigues',
         login: 'Administrative access · Tiago Rodrigues',
         admin: 'Admin panel · Tiago Rodrigues',
       },
@@ -255,6 +261,7 @@ export class I18nService {
         privacy: 'How this site handles visit data (LGPD/GDPR): what is recorded, for how long and how to request deletion.',
         login: 'Portfolio administrative access.',
         admin: 'Portfolio admin panel.',
+        llmLab: 'Compact LLMs fine-tuned with LoRA: a patent assistant grounded in INPI documents and NHTSA defect complaint triage, with real results.',
       },
     },
     de: {
@@ -291,6 +298,7 @@ export class I18nService {
         about: 'Über mich · Tiago Rodrigues',
         contact: 'Kontakt · Tiago Rodrigues',
         privacy: 'Datenschutz · Tiago Rodrigues',
+        llmLab: 'Kompakte LLMs · Tiago Rodrigues',
         login: 'Administrativer Zugang · Tiago Rodrigues',
         admin: 'Admin-Bereich · Tiago Rodrigues',
       },
@@ -302,6 +310,7 @@ export class I18nService {
         privacy: 'Wie diese Website Besuchsdaten verarbeitet (LGPD/DSGVO): was gespeichert wird und wie man die Löschung verlangt.',
         login: 'Administrativer Zugang zum Portfolio.',
         admin: 'Admin-Bereich des Portfolios.',
+        llmLab: 'Kompakte, mit LoRA feinabgestimmte LLMs: ein Patentassistent auf Basis von INPI-Dokumenten und die Triage von NHTSA-Mängelbeschwerden, mit echten Ergebnissen.',
       },
     },
   };
@@ -350,6 +359,7 @@ export class I18nService {
       allProjects: 'Ver todos os projetos',
       statusDone: 'Concluído',
       statusSoon: 'Em breve',
+      statusProgress: 'Em andamento',
       articlesIndex: '03 — Artigos',
       articlesTitle: 'Da percepção à estrada',
       articlesLede: 'Uma história em três capítulos sobre como os carros aprenderam a perceber o ambiente — e o que é preciso para que essa percepção seja segura.',
@@ -406,6 +416,7 @@ export class I18nService {
       allProjects: 'View all projects',
       statusDone: 'Completed',
       statusSoon: 'Coming soon',
+      statusProgress: 'In progress',
       articlesIndex: '03 — Articles',
       articlesTitle: 'From perception to the road',
       articlesLede: 'A story in three chapters about how cars learned to perceive their surroundings — and what it takes to make that perception safe.',
@@ -462,6 +473,7 @@ export class I18nService {
       allProjects: 'Alle Projekte ansehen',
       statusDone: 'Abgeschlossen',
       statusSoon: 'Demnächst',
+      statusProgress: 'In Arbeit',
       articlesIndex: '03 — Artikel',
       articlesTitle: 'Von der Wahrnehmung auf die Straße',
       articlesLede: 'Eine Geschichte in drei Kapiteln darüber, wie Autos lernten, ihre Umgebung wahrzunehmen – und was nötig ist, damit diese Wahrnehmung sicher ist.',
@@ -489,12 +501,14 @@ export class I18nService {
       status: 'Status',
       statusDone: 'Concluído',
       statusSoon: 'Em breve',
+      statusProgress: 'Em andamento',
       zoom: 'Ampliar imagem',
       dialogLabel: 'Visualização de imagem',
       previous: 'Imagem anterior',
       next: 'Próxima imagem',
       close: 'Fechar',
       counter: 'Imagem {current} de {total}',
+      demo: 'Abrir a demonstração',
     },
     en: {
       eyebrow: 'Portfolio',
@@ -507,12 +521,14 @@ export class I18nService {
       status: 'Status',
       statusDone: 'Completed',
       statusSoon: 'Coming soon',
+      statusProgress: 'In progress',
       zoom: 'Enlarge image',
       dialogLabel: 'Image viewer',
       previous: 'Previous image',
       next: 'Next image',
       close: 'Close',
       counter: 'Image {current} of {total}',
+      demo: 'Open the demo',
     },
     de: {
       eyebrow: 'Portfolio',
@@ -525,12 +541,14 @@ export class I18nService {
       status: 'Status',
       statusDone: 'Abgeschlossen',
       statusSoon: 'Demnächst',
+      statusProgress: 'In Arbeit',
       zoom: 'Bild vergrößern',
       dialogLabel: 'Bildansicht',
       previous: 'Vorheriges Bild',
       next: 'Nächstes Bild',
       close: 'Schließen',
       counter: 'Bild {current} von {total}',
+      demo: 'Demo öffnen',
     },
   };
 

@@ -35,6 +35,7 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 | --- | --- |
 | `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
 | `/projects` | Project case studies with an accessible image viewer |
+| `/projects/compact-llm` | Demo of project 02: replay of the patent assistant's real test answers, an NHTSA complaint classifier that runs in the browser, and the benchmark tables |
 | `/about` | Timeline, education, languages, time in Germany, technical skills and CV download |
 | `/contact` | E-mail (with copy-to-clipboard), LinkedIn and GitHub |
 | `/login`, `/admin` | Authenticated project administration (requires the backend API) |
@@ -46,7 +47,7 @@ The language is selected with the `?lang=pt|en|de` query parameter, which every 
 | # | Project | Status |
 | --- | --- | --- |
 | 01 | **Vehicle management system** — Java Swing desktop application applying object-oriented design (abstract classes, inheritance, polymorphism, interfaces, exception handling) | Completed |
-| 02 | **Compact LLM for the automotive industry** — a small language model fine-tuned on automotive standards, requirements and technical documentation, able to run locally | Coming soon |
+| 02 | **Compact LLMs for the automotive industry** — small language models fine-tuned with LoRA: a patent assistant grounded in official INPI documents (RAG) and NHTSA defect-complaint triage, each compared with no-LLM baselines | In progress |
 | 03 | **Web app for car collectors** — catalogue, restoration history and documentation for classic-vehicle collections | Coming soon |
 
 ## Design system
@@ -161,6 +162,8 @@ Because the application runs without zone.js, any state that changes asynchronou
 | Article chapters and references | `src/app/content/articles.ts` |
 | Projects (text, stack, images, status) | `src/app/shared/portfolio-projects.ts` |
 | CV | Source `cv/curriculo.html`, printed to `public/curriculo.pdf` (command in the file header) |
+| Compact-LLM demo texts | `src/app/pages/llm-lab/lab-i18n.ts` |
+| Compact-LLM demo data | `src/assets/llm-lab/*.json`, written by `scripts/llm-lab/export_llm_lab.py` from the research folders; run it again whenever the GPU queue finishes a model (research Python environment) |
 
 Each entry exists in all three languages. A unit test checks that the languages stay in sync and that the content contains no vehicle-manufacturer names.
 

@@ -1,0 +1,78 @@
+<section class="page-hero graph-paper" aria-labelledby="lab-title">
+  <div class="shell">
+    <a class="arrow-link back" routerLink="/projects" [queryParams]="langQuery()" fragment="project-2">
+      <span aria-hidden="true">←</span> {{ t().back }}
+    </a>
+    <p class="mono-label">{{ t().eyebrow }}</p>
+    <h1 id="lab-title" class="page-title">{{ t().title }}</h1>
+    <p class="section-lede">{{ t().intro }}</p>
+    <p class="honesty">{{ t().honesty }}</p>
+    @if (updated()) {
+      <p class="updated">{{ updated() }}</p>
+    }
+    <nav class="toc" [attr.aria-label]="t().onThisPage">
+      <ol>
+        @for (section of sections(); track section.id; let i = $index) {
+          <li>
+            <a routerLink="/projects/compact-llm" [queryParams]="langQuery()" [fragment]="section.id">
+              <span class="toc-index" aria-hidden="true">0{{ i + 1 }}</span>{{ section.label }}
+            </a>
+          </li>
+        }
+      </ol>
+    </nav>
+  </div>
+</section>
+
+@if (failed()) {
+  <div class="shell">
+    <p class="load-error" role="alert">{{ t().loadError }}</p>
+  </div>
+}
+
+<section id="patents" class="section lab-section" aria-labelledby="patents-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="section-index">01</p>
+      <h2 id="patents-title" class="section-title">{{ t().patentsTitle }}</h2>
+      <p class="section-lede">{{ t().patentsLede.replace('{n}', (patents()?.testQuestions ?? 52).toString()) }}</p>
+    </header>
+    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" />
+  </div>
+</section>
+
+<section id="triage" class="section lab-section graph-paper" aria-labelledby="triage-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="section-index">02</p>
+      <h2 id="triage-title" class="section-title">{{ t().triageTitle }}</h2>
+      <p class="section-lede">{{ t().triageLede }}</p>
+    </header>
+    <app-defect-triage [data]="nhtsa()" [t]="t()" [lang]="lang()" />
+  </div>
+</section>
+
+<section id="results" class="section lab-section" aria-labelledby="results-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="section-index">03</p>
+      <h2 id="results-title" class="section-title">{{ t().resultsTitle }}</h2>
+      <p class="section-lede">{{ t().resultsLede }}</p>
+    </header>
+    <app-lab-results [patents]="patents()" [nhtsa]="nhtsa()" [t]="t()" [lang]="lang()" />
+  </div>
+</section>
+
+<section id="method" class="section lab-section graph-paper" aria-labelledby="method-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="section-index">04</p>
+      <h2 id="method-title" class="section-title">{{ t().methodTitle }}</h2>
+    </header>
+    <ul class="method">
+      @for (item of t().method; track $index) {
+        <li>{{ item }}</li>
+      }
+    </ul>
+  </div>
+</section>

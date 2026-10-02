@@ -1,0 +1,80 @@
+.back {
+  display: inline-flex;
+  margin-bottom: 1.5rem;
+}
+
+.honesty {
+  max-width: 44rem;
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text);
+}
+
+.updated {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.toc ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding-block: 0.6rem;
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+.toc-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.lab-section {
+  scroll-margin-top: var(--header-h);
+  border-bottom: 1px solid var(--rule);
+}
+
+.lab-section .section-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.load-error {
+  margin-block: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid #a1261b;
+  border-radius: var(--radius-sm);
+  color: #8a1f16;
+  background: #fff4f2;
+}
+
+.method {
+  display: grid;
+  gap: 1rem;
+  max-width: 52rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.method li {
+  padding-left: 0.25rem;
+  line-height: 1.6;
+}

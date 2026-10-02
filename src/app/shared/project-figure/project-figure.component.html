@@ -70,15 +70,15 @@
     }
 
     @case ('llm') {
-      <!-- 1 Technical documents (standards, diagnostics) -->
+      <!-- 1 Sources: official documents and defect complaints -->
       <g class="part" [class.on]="active() === 0">
         @for (doc of [0, 1, 2]; track doc) {
           <path class="draw card" pathLength="1"
             [attr.d]="'M' + (48 + doc * 14) + ' ' + (110 + doc * 18) + ' h120 l22 22 v170 h-142 Z'" />
         }
         <path class="detail" d="M98 186 H200 M98 206 H200 M98 226 H184 M98 246 H200 M98 266 H170 M98 286 H196" />
-        <text class="tag" x="90" y="160">ISO 26262</text>
-        <text class="tag" x="90" y="330">SOTIF · UDS</text>
+        <text class="tag" x="90" y="160">INPI · LPI</text>
+        <text class="tag" x="90" y="330">NHTSA</text>
       </g>
 
       <!-- Token flow into the model and out to the answer -->
@@ -92,7 +92,7 @@
         <rect class="draw chip" pathLength="1" x="270" y="160" width="160" height="160" rx="10" />
         <rect class="die" x="304" y="194" width="92" height="92" rx="6" />
         <text class="chip-text" x="350" y="236">LLM</text>
-        <text class="chip-sub" x="350" y="262">INT8</text>
+        <text class="chip-sub" x="350" y="262">LoRA</text>
         @for (pin of pins; track pin) {
           <path class="pin" [style.--i]="pin" [attr.d]="'M' + (288 + pin * 24) + ' 160 V142 M' + (288 + pin * 24) + ' 320 V338'" />
         }

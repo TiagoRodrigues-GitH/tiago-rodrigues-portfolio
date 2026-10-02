@@ -85,8 +85,8 @@
           <div class="card-body">
             <p class="card-meta">
               <span class="mono-label">P-0{{ project.id }}</span>
-              <span class="status" [class.status-soon]="project.status === 'soon'">
-                {{ project.status === 'done' ? t.statusDone : t.statusSoon }}
+              <span class="status" [class.status-soon]="project.status === 'soon'" [class.status-progress]="project.status === 'progress'">
+                {{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
               </span>
             </p>
             <h3>{{ project.title }}</h3>

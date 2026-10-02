@@ -1,0 +1,176 @@
+.triage {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 60rem) {
+  .triage {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+textarea,
+select {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+}
+
+textarea {
+  resize: vertical;
+}
+
+select {
+  min-height: 3rem;
+  max-width: 20rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.small {
+  min-height: 2.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+}
+
+.result {
+  min-height: 6rem;
+  padding: 1.25rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.verdict {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+}
+
+.bars {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bars li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.bar {
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--blue-100);
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.bar-value {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.samples-title {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+}
+
+.filter {
+  margin-block: 1rem 1.5rem;
+}
+
+.samples {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sample {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+blockquote {
+  margin: 0;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.truth {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.predictions {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.predictions li {
+  display: flex;
+  gap: 0.5rem;
+  color: #8a1f16;
+}
+
+.predictions li.ok {
+  color: #11643a;
+}
+
+.mark {
+  font-weight: 700;
+}
+
+.sample .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.more {
+  margin-top: 1.5rem;
+}

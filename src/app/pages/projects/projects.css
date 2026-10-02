@@ -205,3 +205,8 @@
     order: -1;
   }
 }
+
+.demo-link {
+  width: fit-content;
+  margin-top: 1.75rem;
+}
