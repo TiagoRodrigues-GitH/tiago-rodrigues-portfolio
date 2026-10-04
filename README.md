@@ -2,6 +2,15 @@
 
 Personal portfolio of **Tiago Rodrigues**, a software developer focused on Java, artificial intelligence and software for the automotive industry — in particular Advanced Driver Assistance Systems (ADAS) and perception for embedded platforms.
 
+| | |
+|---|---|
+| **Author** | Tiago Rodrigues · Universidade Tecnológica Federal do Paraná (UTFPR) |
+| **Date** | 2026-06-11 |
+| **Context** | Personal portfolio |
+| **Stack** | Angular 21 · TypeScript · GitHub Pages |
+
+> **Resumo (PT).** Portfólio pessoal de Tiago Rodrigues em português, inglês e alemão: projetos de software automotivo, ADAS e inteligência artificial, com acessibilidade WCAG 2.2 AA.
+
 The site is available in **Portuguese, English and German**, follows **WCAG 2.2 level AA**, and was designed against **Nielsen's 10 usability heuristics**, **Shneiderman's Eight Golden Rules** and the usability definition of **ISO 9241-11**.
 
 **Live site:** https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/
