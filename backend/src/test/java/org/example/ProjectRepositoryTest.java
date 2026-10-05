@@ -1,3 +1,5 @@
+package org.example;
+
 // src/test/java/org/example/portfolio/repository/ProjectRepositoryTest.java
 
 

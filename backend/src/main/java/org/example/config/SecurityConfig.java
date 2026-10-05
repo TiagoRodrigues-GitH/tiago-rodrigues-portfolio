@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Stateless API security.
  * <ul>
- *   <li>Public: health, published projects, login, visit recording.</li>
+ *   <li>Public: health, published projects, login, visit recording, approved reviews, review submission.</li>
  *   <li>ADMIN (JWT signed with HS256, scope "ADMIN"): everything under /api/admin and project changes.</li>
  *   <li>CORS limited to the site origins (CORS_ALLOWED_ORIGINS), security headers on every response.</li>
  * </ul>
@@ -55,7 +55,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/api/health", "/error").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/analytics/visit").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/analytics/visit", "/api/reviews").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/projects", "/api/projects/{id}").permitAll()
                         .requestMatchers("/api/admin/**", "/api/projects/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().denyAll())

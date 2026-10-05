@@ -2,6 +2,10 @@ package org.example.exception;
 
 
 
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.example.dto.response.MessageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +53,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<MessageResponse> handleResponseStatus(ResponseStatusException ex) {
         return ResponseEntity.status(ex.getStatusCode()).body(new MessageResponse(ex.getReason()));
+    }
+
+    /** Invalid or missing query and path parameters (validated @RequestParam, wrong enum value, absent parameter). */
+    @ExceptionHandler({HandlerMethodValidationException.class, ConstraintViolationException.class,
+            MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class})
+    public ResponseEntity<MessageResponse> handleBadParameter(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid request parameter"));
     }
 
     /** Malformed JSON body. */

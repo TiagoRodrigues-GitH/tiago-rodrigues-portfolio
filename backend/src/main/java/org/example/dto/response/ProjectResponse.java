@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.entity.Project;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -25,5 +24,4 @@ public class ProjectResponse {
     private Integer displayOrder;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<CommentResponse> comments; // Será implementado depois
 }
