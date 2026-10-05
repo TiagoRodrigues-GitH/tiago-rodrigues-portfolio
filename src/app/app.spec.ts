@@ -60,7 +60,7 @@ describe('Portfolio content', () => {
         expect(article.paragraphs.length).toBe(ARTICLES.pt[index].paragraphs.length);
         expect(article.references.length).toBe(ARTICLES.pt[index].references.length);
       });
-      expect(getPortfolioProjects(locale).length).toBe(3);
+      expect(getPortfolioProjects(locale).map((p) => p.id)).toEqual(getPortfolioProjects('pt').map((p) => p.id));
     }
   });
 

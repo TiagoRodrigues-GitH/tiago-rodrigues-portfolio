@@ -15,6 +15,11 @@ const routes: Routes = [
     loadComponent: () => import('./pages/llm-lab/llm-lab.component').then((m) => m.LlmLabComponent),
     data: { page: 'llmLab' },
   },
+  {
+    path: 'projects/street-routing',
+    loadComponent: () => import('./pages/street-routing/street-routing.component').then((m) => m.StreetRoutingComponent),
+    data: { page: 'streetRouting' },
+  },
   { path: 'about', component: AboutComponent, data: { page: 'about' } },
   { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
   { path: 'privacy', component: PrivacyComponent, data: { page: 'privacy' } },

@@ -1,0 +1,239 @@
+<div class="street-page">
+  <section class="page-hero graph-paper" aria-labelledby="street-title">
+    <div class="shell">
+      <a class="arrow-link back" routerLink="/projects" [queryParams]="langQuery()" fragment="project-4">
+        <span aria-hidden="true">←</span> {{ t().back }}
+      </a>
+      <p class="mono-label">{{ t().eyebrow }}</p>
+      <h1 id="street-title" class="page-title">
+        {{ t().title }}<span class="subtitle">{{ t().subtitle }}</span>
+      </h1>
+      <p class="section-lede">{{ t().intro }}</p>
+      <p class="honesty">{{ t().honesty }}</p>
+      <nav class="toc" [attr.aria-label]="t().onThisPage">
+        <ol>
+          @for (section of sections(); track section.id; let i = $index) {
+            <li>
+              <a routerLink="/projects/street-routing" [queryParams]="langQuery()" [fragment]="section.id">
+                <span class="toc-index" aria-hidden="true">0{{ i + 1 }}</span>{{ section.label }}
+              </a>
+            </li>
+          }
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  @if (failed()) {
+    <div class="shell">
+      <p class="load-error" role="alert">{{ t().loadError }}</p>
+    </div>
+  }
+
+  <section id="map" class="section" aria-labelledby="map-title">
+    <div class="shell">
+      <header class="section-head">
+        <p class="section-index">01</p>
+        <h2 id="map-title" class="section-title">{{ t().mapTitle }}</h2>
+        <p class="section-lede">{{ t().mapLede }}</p>
+      </header>
+
+      <div class="sr-layout">
+        <div class="sr-panel">
+          <div class="sr-search">
+            <label for="sr-search-input" class="mono-label">{{ t().searchLabel }}</label>
+            <input
+              id="sr-search-input"
+              type="search"
+              role="combobox"
+              autocomplete="off"
+              aria-autocomplete="list"
+              aria-controls="sr-search-list"
+              [attr.aria-expanded]="matches().length > 0"
+              [attr.aria-activedescendant]="matches().length ? 'sr-match-' + active() : null"
+              [attr.aria-describedby]="'sr-search-hint'"
+              [placeholder]="t().searchPlaceholder"
+              [value]="query()"
+              (input)="onQuery($any($event.target).value)"
+              (keydown)="onSearchKey($event)"
+            />
+            <p id="sr-search-hint" class="sr-hint">{{ t().searchHint }}</p>
+            @if (matches().length) {
+              <ul id="sr-search-list" role="listbox" class="sr-matches">
+                @for (m of matches(); track m.kind + m.place.code; let i = $index) {
+                  <li
+                    [id]="'sr-match-' + i"
+                    role="option"
+                    [attr.aria-selected]="i === active()"
+                    [class.active]="i === active()"
+                    (mousedown)="$event.preventDefault()"
+                    (click)="choose(m)"
+                  >{{ m.label }}</li>
+                }
+              </ul>
+            } @else if (query().length >= 2 && places()) {
+              <p class="sr-hint" role="status">{{ t().noMatch }}</p>
+            }
+          </div>
+
+          <p class="sr-crumb" aria-live="polite">
+            {{ t().brazil }}@if (selection(); as s) { <span aria-hidden="true">›</span> {{ s.place.name }} }
+          </p>
+          @if (status()) {
+            <p class="sr-status" role="status">{{ status() }}</p>
+          }
+
+          @if (graphStats()) {
+            <fieldset class="sr-layers">
+              <legend class="mono-label">{{ t().layers }}</legend>
+              <label><input type="checkbox" [checked]="showBairros()" (change)="toggleBairros()" /> {{ t().showBairros }}</label>
+            </fieldset>
+
+            <div class="sr-route">
+              <h3 class="sr-subtitle">{{ t().routeTitle }}</h3>
+              <p class="sr-hint" aria-live="polite">{{ routeHint() }}</p>
+
+              <label for="sr-algorithm" class="mono-label">{{ t().algorithm }}</label>
+              <select id="sr-algorithm" [value]="algorithm()" (change)="setAlgorithm($any($event.target).value)">
+                @for (key of order; track key) {
+                  <option [value]="key">{{ t().algorithms[key].name }} · {{ t().algorithms[key].family }}</option>
+                }
+              </select>
+              <p class="sr-how">{{ t().algorithms[algorithm()].how }}</p>
+
+              @for (spec of paramSpecs(); track spec.key) {
+                <div class="sr-param">
+                  <label [for]="'sr-p-' + spec.key">{{ t().params[spec.key].label }} <output>{{ params()[spec.key] }}</output></label>
+                  <input
+                    type="range"
+                    [id]="'sr-p-' + spec.key"
+                    [min]="spec.min"
+                    [max]="spec.max"
+                    [step]="spec.step"
+                    [value]="params()[spec.key]"
+                    [attr.aria-describedby]="'sr-ph-' + spec.key"
+                    (input)="setParam(spec.key, $any($event.target).value)"
+                  />
+                  <p [id]="'sr-ph-' + spec.key" class="sr-hint">{{ t().params[spec.key].hint }}</p>
+                </div>
+              }
+
+              <div class="sr-param">
+                <label for="sr-speed">{{ t().speed }} <output>{{ speed() }}</output></label>
+                <input id="sr-speed" type="range" min="1" max="6" step="1" [value]="speed()" (input)="speed.set(+$any($event.target).value)" />
+              </div>
+
+              <div class="sr-actions">
+                <button type="button" class="btn btn-primary" [disabled]="destination() === null || running()" (click)="run()">
+                  {{ running() ? t().running : t().run }}
+                </button>
+                <button type="button" class="btn btn-outline" [disabled]="destination() === null || running()" (click)="runAll()">{{ t().runAll }}</button>
+                <button type="button" class="btn btn-outline" [disabled]="origin() === null" (click)="clearRoute()">{{ t().clear }}</button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="sr-map-wrap">
+          <div #mapEl class="sr-map" role="region" [attr.aria-label]="t().mapTitle"></div>
+          <ul class="sr-legend" aria-hidden="true">
+            <li><span class="sw sw-origin"></span>A</li>
+            <li><span class="sw sw-destination"></span>B</li>
+            <li><span class="sw sw-visit"></span>{{ t().colWork }}</li>
+            <li><span class="sw sw-route"></span>{{ t().routeTitle }}</li>
+            <li><span class="sw sw-link"></span>{{ t().estimatedLink }}</li>
+          </ul>
+        </div>
+      </div>
+
+      @if (rows().length) {
+        <div class="sr-results">
+          <table>
+            <caption>{{ t().resultsCaption }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ t().colAlgorithm }}</th>
+                <th scope="col">{{ t().colLength }}</th>
+                <th scope="col">{{ t().colGap }}</th>
+                <th scope="col">{{ t().colWork }}</th>
+                <th scope="col">{{ t().colTime }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows(); track row.key) {
+                <tr [class.current]="row.key === algorithm()">
+                  <th scope="row">{{ row.name }} <span class="sr-family">{{ row.family }}</span></th>
+                  <td>{{ formatKm(row.cost) }}</td>
+                  <td>{{ formatGap(row.gap) }}</td>
+                  <td>{{ row.work.toLocaleString(locale()) }}</td>
+                  <td>{{ formatMs(row.ms) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+          @if (via().length) {
+            <p class="sr-hint">{{ t().via }}: {{ via().join(' · ') }}</p>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section id="method" class="section graph-paper" aria-labelledby="method-title">
+    <div class="shell">
+      <header class="section-head">
+        <p class="section-index">02</p>
+        <h2 id="method-title" class="section-title">{{ t().methodTitle }}</h2>
+      </header>
+      <ol class="sr-steps">
+        @for (step of t().methodSteps; track step.title; let i = $index) {
+          <li>
+            <span class="sr-step-index" aria-hidden="true">{{ i + 1 }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </li>
+        }
+      </ol>
+      <h3 class="sr-subtitle">{{ t().limitsTitle }}</h3>
+      <ul class="sr-limits">
+        @for (limit of t().limits; track limit) {
+          <li>{{ limit }}</li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="algorithms" class="section" aria-labelledby="algorithms-title">
+    <div class="shell">
+      <header class="section-head">
+        <p class="section-index">03</p>
+        <h2 id="algorithms-title" class="section-title">{{ t().algorithmsTitle }}</h2>
+        <p class="section-lede">{{ t().algorithmsLede }}</p>
+      </header>
+      <ul class="sr-cards">
+        @for (key of order; track key) {
+          <li>
+            <p class="mono-label">{{ t().algorithms[key].family }}</p>
+            <h3>{{ t().algorithms[key].name }}</h3>
+            <p>{{ t().algorithms[key].how }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="references" class="section graph-paper" aria-labelledby="references-title">
+    <div class="shell">
+      <header class="section-head">
+        <p class="section-index">04</p>
+        <h2 id="references-title" class="section-title">{{ t().referencesTitle }}</h2>
+      </header>
+      <p>{{ t().sourcesNote }}</p>
+      <ol class="sr-refs">
+        @for (ref of references; track ref) {
+          <li>{{ ref }}</li>
+        }
+      </ol>
+    </div>
+  </section>
+</div>

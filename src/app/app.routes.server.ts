@@ -8,6 +8,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'projects', renderMode: RenderMode.Prerender },
   { path: 'projects/compact-llm', renderMode: RenderMode.Prerender },
+  { path: 'projects/street-routing', renderMode: RenderMode.Prerender },
   { path: 'about', renderMode: RenderMode.Prerender },
   { path: 'contact', renderMode: RenderMode.Prerender },
   { path: 'privacy', renderMode: RenderMode.Prerender },

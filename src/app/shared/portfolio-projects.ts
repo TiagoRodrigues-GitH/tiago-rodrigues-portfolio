@@ -102,6 +102,49 @@ const PROJECTS: ProjectSource[] = [
     },
   },
   {
+    id: 4,
+    status: 'progress',
+    demo: '/projects/street-routing',
+    image: {
+      src: 'assets/images/street-routing-cover.svg',
+      width: 640,
+      height: 480,
+      contain: true,
+      alt: {
+        pt: 'Grade de ruas de uma cidade com uma área explorada em laranja ao redor da origem e a rota mais curta em vermelho até o destino.',
+        en: 'A city street grid with the area explored around the origin in orange and the shortest route to the destination in red.',
+        de: 'Ein städtisches Straßenraster mit dem um den Start erkundeten Bereich in Orange und der kürzesten Route zum Ziel in Rot.',
+      },
+    },
+    gallery: [],
+    text: {
+      pt: {
+        title: 'Ruas de uma cidade brasileira e algoritmos de rota',
+        subtitle: 'Georreferenciamento com dados públicos do IBGE e do INPE',
+        summary: 'Do mapa do Brasil à rua: o grafo de ruas de Londrina reconstruído a partir das faces de quadra do Censo 2022 e algoritmos de caminho comparados ao vivo no navegador.',
+        details: 'As faces de quadra do IBGE viram corredores de rua, o corredor é afinado até o eixo e o eixo vira um grafo com nomes de rua. Sobre ele rodam Dijkstra, A*, busca bidirecional e gulosa, colônia de formigas, algoritmo genético e recozimento simulado, com animação e parâmetros ajustáveis. Próxima etapa: detectar as ruas em imagens do satélite CBERS-4A (INPE) com segmentação semântica e comparar o grafo extraído com o do IBGE (métrica APLS).',
+        role: 'Pesquisa, dados geoespaciais e desenvolvimento web',
+        stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],
+      },
+      en: {
+        title: 'Streets of a Brazilian city and routing algorithms',
+        subtitle: 'Georeferencing with public data from IBGE and INPE',
+        summary: 'From the map of Brazil down to a street: the Londrina street graph rebuilt from 2022 Census block faces, and path-finding algorithms compared live in the browser.',
+        details: 'IBGE block faces become street corridors, the corridors are thinned to centre lines and the centre lines become a graph with street names. Dijkstra, A*, bidirectional and greedy search, ant colony optimisation, a genetic algorithm and simulated annealing run on it, animated and with adjustable parameters. Next step: detect the streets in CBERS-4A satellite images (INPE) with semantic segmentation and compare the extracted graph with IBGE’s (APLS metric).',
+        role: 'Research, geospatial data and web development',
+        stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],
+      },
+      de: {
+        title: 'Straßen einer brasilianischen Stadt und Routing-Algorithmen',
+        subtitle: 'Georeferenzierung mit offenen Daten von IBGE und INPE',
+        summary: 'Von der Karte Brasiliens bis zur Straße: der Straßengraph von Londrina, rekonstruiert aus den Blockseiten des Zensus 2022, und Wegfindungsalgorithmen live im Browser verglichen.',
+        details: 'Die Blockseiten des IBGE werden zu Straßenkorridoren, die Korridore zu Achsen ausgedünnt und die Achsen zu einem Graphen mit Straßennamen. Darauf laufen Dijkstra, A*, bidirektionale und gierige Suche, Ameisenkolonie, ein genetischer Algorithmus und simulierte Abkühlung, animiert und mit einstellbaren Parametern. Nächster Schritt: die Straßen in CBERS-4A-Satellitenbildern (INPE) mit semantischer Segmentierung erkennen und den extrahierten Graphen mit dem des IBGE vergleichen (APLS-Metrik).',
+        role: 'Forschung, Geodaten und Webentwicklung',
+        stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],
+      },
+    },
+  },
+  {
     id: 2,
     status: 'done',
     image: {

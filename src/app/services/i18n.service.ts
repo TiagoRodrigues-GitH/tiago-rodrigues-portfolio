@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 export type Locale = 'pt' | 'en' | 'de';
 
-export type PageKey = 'home' | 'projects' | 'llmLab' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
+export type PageKey =
+  | 'home' | 'projects' | 'llmLab' | 'streetRouting' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
 
 export interface LocaleOption {
   locale: Locale;
@@ -201,6 +202,7 @@ export class I18nService {
         contact: 'Contato · Tiago Rodrigues',
         privacy: 'Privacidade · Tiago Rodrigues',
         llmLab: 'LLMs compactos: triagem de defeitos e patentes · Tiago Rodrigues',
+        streetRouting: 'Ruas de Londrina e algoritmos de rota · Tiago Rodrigues',
         login: 'Acesso administrativo · Tiago Rodrigues',
         admin: 'Painel administrativo · Tiago Rodrigues',
       },
@@ -213,6 +215,7 @@ export class I18nService {
         login: 'Acesso administrativo do portfólio.',
         admin: 'Painel administrativo do portfólio.',
         llmLab: 'LLMs compactos ajustados com LoRA: triagem de reclamações de defeitos da NHTSA e assistente de patentes com documentos do INPI, com resultados reais.',
+        streetRouting: 'Do mapa do Brasil à rua com dados do IBGE: grafo de ruas de Londrina reconstruído das faces de quadra do Censo 2022 e algoritmos de rota exatos, heurísticos e evolutivos animados no navegador.',
       },
     },
     en: {
@@ -250,6 +253,7 @@ export class I18nService {
         contact: 'Contact · Tiago Rodrigues',
         privacy: 'Privacy · Tiago Rodrigues',
         llmLab: 'Compact LLMs: defect triage and patents · Tiago Rodrigues',
+        streetRouting: 'Streets of Londrina and routing algorithms · Tiago Rodrigues',
         login: 'Administrative access · Tiago Rodrigues',
         admin: 'Admin panel · Tiago Rodrigues',
       },
@@ -262,6 +266,7 @@ export class I18nService {
         login: 'Portfolio administrative access.',
         admin: 'Portfolio admin panel.',
         llmLab: 'Compact LLMs fine-tuned with LoRA: NHTSA defect complaint triage and a patent assistant grounded in INPI documents, with real results.',
+        streetRouting: 'From the map of Brazil down to a street with IBGE data: the Londrina street graph rebuilt from 2022 Census block faces, and exact, heuristic and evolutionary routing algorithms animated in the browser.',
       },
     },
     de: {
@@ -299,6 +304,7 @@ export class I18nService {
         contact: 'Kontakt · Tiago Rodrigues',
         privacy: 'Datenschutz · Tiago Rodrigues',
         llmLab: 'Kompakte LLMs: Mängeltriage und Patente · Tiago Rodrigues',
+        streetRouting: 'Straßen von Londrina und Routing-Algorithmen · Tiago Rodrigues',
         login: 'Administrativer Zugang · Tiago Rodrigues',
         admin: 'Admin-Bereich · Tiago Rodrigues',
       },
@@ -311,6 +317,7 @@ export class I18nService {
         login: 'Administrativer Zugang zum Portfolio.',
         admin: 'Admin-Bereich des Portfolios.',
         llmLab: 'Kompakte, mit LoRA feinabgestimmte LLMs: Triage von NHTSA-Mängelbeschwerden und ein Patentassistent auf Basis von INPI-Dokumenten, mit echten Ergebnissen.',
+        streetRouting: 'Von der Karte Brasiliens bis zur Straße mit IBGE-Daten: der Straßengraph von Londrina aus den Blockseiten des Zensus 2022 und exakte, heuristische und evolutionäre Routing-Algorithmen, animiert im Browser.',
       },
     },
   };
