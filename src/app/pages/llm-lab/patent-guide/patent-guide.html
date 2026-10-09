@@ -1,0 +1,160 @@
+<div class="pg">
+  <div class="pg-tabs" role="tablist" [attr.aria-label]="t.tabsLabel">
+    @for (tab of tabs; track tab; let i = $index) {
+      <button #tabButton type="button" role="tab" class="pg-tab" [id]="'pg-tab-' + tab" [attr.aria-selected]="active() === tab"
+        [attr.aria-controls]="'pg-panel-' + tab" [attr.tabindex]="active() === tab ? 0 : -1" (click)="select(tab)" (keydown)="onKey($event, i)">
+        {{ t.tabs[tab] }}
+      </button>
+    }
+  </div>
+
+  <div class="pg-panel" role="tabpanel" id="pg-panel-assistant" aria-labelledby="pg-tab-assistant" [hidden]="active() !== 'assistant'">
+    <ng-content />
+  </div>
+
+  @switch (active()) {
+    @case ('intro') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-intro" aria-labelledby="pg-tab-intro" tabindex="0">
+        <h3>{{ t.intro.what }}</h3>
+        @for (p of t.intro.whatText; track $index) {
+          <p>{{ p }}</p>
+        }
+        <h3>{{ t.intro.kindsTitle }}</h3>
+        <dl class="pg-cards">
+          @for (k of t.intro.kinds; track k.name) {
+            <div><dt>{{ k.name }}</dt><dd>{{ k.text }}</dd></div>
+          }
+        </dl>
+        <h3>{{ t.intro.compareTitle }}</h3>
+        <div class="pg-table" role="region" [attr.aria-label]="t.intro.compareTitle" tabindex="0">
+          <table>
+            <thead><tr>@for (h of t.intro.compareHead; track h) { <th scope="col">{{ h }}</th> }</tr></thead>
+            <tbody>
+              @for (row of t.intro.compare; track row[0]) {
+                <tr><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td><td>{{ row[2] }}</td><td>{{ row[3] }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <h3>{{ t.intro.filedVsGrantedTitle }}</h3>
+        <p>{{ t.intro.filedVsGranted }}</p>
+      </div>
+    }
+    @case ('eligibility') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-eligibility" aria-labelledby="pg-tab-eligibility" tabindex="0">
+        <h3>{{ t.eligibility.requirementsTitle }}</h3>
+        <dl class="pg-cards">
+          @for (r of t.eligibility.requirements; track r.name) {
+            <div><dt>{{ r.name }}</dt><dd>{{ r.text }}</dd></div>
+          }
+        </dl>
+        <h3>{{ t.eligibility.priorArtTitle }}</h3>
+        <p>{{ t.eligibility.priorArt }}</p>
+        <h3>{{ t.eligibility.graceTitle }}</h3>
+        <p class="pg-callout">{{ t.eligibility.grace }}</p>
+        <h3>{{ t.eligibility.softwareTitle }}</h3>
+        @for (p of t.eligibility.software; track $index) {
+          <p>{{ p }}</p>
+        }
+        <div class="pg-columns">
+          <div>
+            <h3>{{ t.eligibility.notInventionsTitle }}</h3>
+            <ul>@for (item of t.eligibility.notInventions; track item) { <li>{{ item }}</li> }</ul>
+          </div>
+          <div>
+            <h3>{{ t.eligibility.notPatentableTitle }}</h3>
+            <ul>@for (item of t.eligibility.notPatentable; track item) { <li>{{ item }}</li> }</ul>
+          </div>
+        </div>
+      </div>
+    }
+    @case ('search') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-search" aria-labelledby="pg-tab-search" tabindex="0">
+        <p>{{ t.search.why }}</p>
+        <h3>{{ t.search.whereTitle }}</h3>
+        <ul class="pg-links">
+          @for (w of t.search.where; track w.link) {
+            <li><a [href]="links[w.link]" target="_blank" rel="noopener noreferrer">{{ w.label }}</a>: {{ w.text }}</li>
+          }
+        </ul>
+        <h3>{{ t.search.howTitle }}</h3>
+        <ol>@for (h of t.search.how; track h) { <li>{{ h }}</li> }</ol>
+      </div>
+    }
+    @case ('steps') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-steps" aria-labelledby="pg-tab-steps" tabindex="0">
+        <p>{{ t.steps.lede }}</p>
+        <ol class="pg-steps">
+          @for (s of t.steps.items; track s.title; let i = $index) {
+            <li>
+              <details [open]="i === 0">
+                <summary><span class="pg-step-n" aria-hidden="true">{{ i + 1 }}</span>{{ s.title }}</summary>
+                <dl>
+                  <div><dt>{{ t.steps.labels.goal }}</dt><dd>{{ s.goal }}</dd></div>
+                  <div><dt>{{ t.steps.labels.prepare }}</dt><dd>{{ s.prepare }}</dd></div>
+                  <div><dt>{{ t.steps.labels.actions }}</dt><dd>{{ s.actions }}</dd></div>
+                  <div><dt>{{ t.steps.labels.mistakes }}</dt><dd>{{ s.mistakes }}</dd></div>
+                  @if (s.fee) {
+                    <div><dt>{{ t.steps.labels.fee }}</dt><dd>{{ s.fee }}</dd></div>
+                  }
+                  <div>
+                    <dt>{{ t.steps.labels.sources }}</dt>
+                    <dd>
+                      @for (l of s.links; track l.label; let last = $last) {
+                        <a [href]="links[l.link]" target="_blank" rel="noopener noreferrer">{{ l.label }}</a>{{ last ? '' : ' · ' }}
+                      }
+                    </dd>
+                  </div>
+                </dl>
+              </details>
+            </li>
+          }
+        </ol>
+      </div>
+    }
+    @case ('costs') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-costs" aria-labelledby="pg-tab-costs" tabindex="0">
+        <p>{{ t.costs.lede }}</p>
+        <h3>{{ t.costs.feesTitle }}</h3>
+        <div class="pg-table" role="region" [attr.aria-label]="t.costs.feesTitle" tabindex="0">
+          <table>
+            <thead><tr>@for (h of t.costs.feesHead; track h) { <th scope="col">{{ h }}</th> }</tr></thead>
+            <tbody>
+              @for (row of t.costs.fees; track row[0]) {
+                <tr><td>{{ row[0] }}</td><th scope="row">{{ row[1] }}</th><td class="num">{{ row[2] }}</td><td class="num">{{ row[3] }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="pg-note">{{ t.costs.feesNote }} <a [href]="links.patentFees" target="_blank" rel="noopener noreferrer">{{ t.costs.feesLink }}</a></p>
+        <h3>{{ t.costs.deadlinesTitle }}</h3>
+        <ul>@for (d of t.costs.deadlines; track d) { <li>{{ d }}</li> }</ul>
+        <p class="pg-callout">{{ t.costs.professional }}</p>
+      </div>
+    }
+    @case ('stats') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-stats" aria-labelledby="pg-tab-stats" tabindex="0">
+        <app-patent-stats [t]="t.stats" [lang]="lang" />
+      </div>
+    }
+    @case ('sources') {
+      <div class="pg-panel" role="tabpanel" id="pg-panel-sources" aria-labelledby="pg-tab-sources" tabindex="0">
+        <h3>{{ t.sources.title }}</h3>
+        <ul class="pg-links">
+          @for (s of t.sources.items; track s.label) {
+            <li><a [href]="links[s.link]" target="_blank" rel="noopener noreferrer">{{ s.label }}</a></li>
+          }
+        </ul>
+        <h3>{{ t.sources.faqTitle }}</h3>
+        @for (f of t.sources.faq; track f.q) {
+          <details class="pg-faq"><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details>
+        }
+      </div>
+    }
+  }
+
+  @if (active() !== 'assistant') {
+    <p class="pg-checked">{{ t.checked }}</p>
+    <p class="pg-disclaimer">{{ t.disclaimer }}</p>
+  }
+</div>

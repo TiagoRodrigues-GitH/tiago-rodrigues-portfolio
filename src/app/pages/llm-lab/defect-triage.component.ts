@@ -3,6 +3,8 @@ import { firstValueFrom } from 'rxjs';
 import { LabDataService, MODEL_NAMES, NhtsaData, NhtsaSample } from './lab-data';
 import { Classification, ClassifierData, ComplaintClassifier, SearchLanguage } from './lab-engine';
 import { LabTranslations } from './lab-i18n';
+import { TRIAGE_I18N, TriageText } from './triage/triage-content';
+import { Suggest, TriageWizardComponent } from './triage/triage-wizard.component';
 
 /**
  * Defect complaint triage: a TF-IDF + logistic regression classifier that runs in the browser (loaded on first
@@ -11,6 +13,7 @@ import { LabTranslations } from './lab-i18n';
  */
 @Component({
   selector: 'app-defect-triage',
+  imports: [TriageWizardComponent],
   templateUrl: './defect-triage.html',
   styleUrls: ['./defect-triage.css'],
 })
@@ -26,6 +29,22 @@ export class DefectTriageComponent {
   @Input({ required: true }) locale: SearchLanguage = 'pt';
 
   @ViewChild('description') private description?: ElementRef<HTMLTextAreaElement>;
+
+  get triage(): TriageText {
+    return TRIAGE_I18N[this.locale];
+  }
+
+  /** The guided triage asks the same browser classifier for the most likely class of a description. */
+  readonly suggest: Suggest = async (text) => {
+    const classifier = await this.ensureClassifier();
+    if (!classifier) return null;
+    const { probabilities, knownTerms } = classifier.classify(text);
+    if (!knownTerms) return null;
+    const best = probabilities.indexOf(Math.max(...probabilities));
+    return { label: classifier.labels[best], p: probabilities[best] };
+  };
+
+  readonly classNameOf = (label: string): string => this.className(label);
 
   readonly text = signal('');
   readonly loading = signal(false);

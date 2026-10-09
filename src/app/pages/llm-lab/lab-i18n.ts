@@ -269,7 +269,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
       'ROUGE-L and F1 measure word overlap with the reference (0 to 1). “Grounded in passages” is the share of the answer’s words found in the passages it received; a low value points to hallucination.',
     disclaimer: 'General guidance based on public documents, not legal advice.',
     categories: {
-      lei: 'Patent Law 9,279/1996',
+      lei: 'Industrial Property Law 9,279/1996',
       manual: 'INPI manual',
       diretrizes: 'Examination guidelines',
       portal: 'INPI website',
@@ -347,7 +347,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
 
     methodTitle: 'How it was done',
     method: [
-      'Real, verifiable data: 12,534 public NHTSA complaints; 490 question–answer pairs drawn from Brazil’s Patent Law 9,279/1996 and from INPI manuals, guidelines and studies, every passage checked word for word against its source; and 694 real patent applications.',
+      'Real, verifiable data: 12,534 public NHTSA complaints; 490 question–answer pairs drawn from Brazil’s Industrial Property Law (Law 9,279/1996) and from INPI manuals, guidelines and studies, every passage checked word for word against its source; and 694 real patent applications.',
       'RAG and fine-tuning: the model receives the three most relevant official passages, retrieved with BM25, and learns to answer from them and cite the source.',
       'LoRA on a 6 GB GPU; models above 3 billion parameters use 4-bit QLoRA. The learning rate is chosen on the validation set, the number of epochs by early stopping.',
       'Every task has a no-LLM baseline, to measure whether the language model is worth its cost.',
@@ -372,7 +372,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     askLabel: 'Ihre Frage',
     askHint: 'Die Fragen wurden von Hand übersetzt; die offiziellen Textstellen und die Antworten sind maschinelle Übersetzungen aus dem Portugiesischen, der Sprache, in der die Modelle gelesen und geschrieben haben. Das Original ist einen Klick entfernt.',
     askPlaceholder: 'z. B. kann ich einen Algorithmus zur Fahrspurerkennung patentieren?',
-    tryLabel: 'Probieren Sie',
+    tryLabel: 'Zum Ausprobieren',
     translatedNote: 'Textstellen und Antworten: maschinelle Übersetzung aus dem Portugiesischen.',
     tryExamples: [
       'kann ich einen Algorithmus zur Fahrspurerkennung patentieren?',
@@ -404,7 +404,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
       'ROUGE-L und F1 messen die Wortüberlappung mit der Referenz (0 bis 1). „Durch Textstellen gestützt“ ist der Anteil der Antwortwörter, die in den erhaltenen Textstellen vorkommen; ein niedriger Wert deutet auf Halluzination hin.',
     disclaimer: 'Allgemeine Orientierung auf Grundlage öffentlicher Dokumente, keine Rechtsberatung.',
     categories: {
-      lei: 'Patentgesetz 9.279/1996',
+      lei: 'Gesetz über gewerbliches Eigentum 9.279/1996',
       manual: 'INPI-Handbuch',
       diretrizes: 'Prüfungsrichtlinien',
       portal: 'INPI-Website',
@@ -436,7 +436,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
     unknownWords: 'Keines dieser Wörter ist dem Klassifikator bekannt; beschreiben Sie den Mangel mit anderen Worten.',
     browserModel: 'Dieser Klassifikator nutzt 20.000 Terme. Makro-F1: {en} auf Englisch (echte Beschwerden von 2014–2024), {pt} auf Portugiesisch und {de} auf Deutsch (maschinelle Übersetzungen derselben Beschwerden). Die rein englische Version der Studie erreicht 0,842.',
     samplesTitle: 'Echte Beschwerden und die Vorhersage jedes Modells',
-    samplesLede: 'Echte Beschwerden aus dem Evaluierungssplit (2014–2024). Die Modelle haben das englische Original klassifiziert; die Übersetzung wurde für diese Seite von Hand erstellt.',
+    samplesLede: 'Echte Beschwerden aus den Evaluierungsdaten (2014–2024). Die Modelle haben das englische Original klassifiziert; die Übersetzung wurde für diese Seite von Hand erstellt.',
     filterLabel: 'Komponente',
     all: 'Alle',
     truth: 'Tatsächliche Klasse',
@@ -482,7 +482,7 @@ export const LAB_I18N: Record<Locale, LabTranslations> = {
 
     methodTitle: 'Vorgehen',
     method: [
-      'Echte, überprüfbare Daten: 12.534 öffentliche NHTSA-Beschwerden; 490 Frage-Antwort-Paare aus dem brasilianischen Patentgesetz 9.279/1996 sowie aus Handbüchern, Richtlinien und Studien des INPI, jede Textstelle wörtlich mit der Quelle abgeglichen; und 694 echte Patentanmeldungen.',
+      'Echte, überprüfbare Daten: 12.534 öffentliche NHTSA-Beschwerden; 490 Frage-Antwort-Paare aus dem brasilianischen Gesetz über gewerbliches Eigentum (Gesetz 9.279/1996) sowie aus Handbüchern, Richtlinien und Studien des INPI, jede Textstelle wörtlich mit der Quelle abgeglichen; und 694 echte Patentanmeldungen.',
       'RAG und Fine-Tuning: Das Modell erhält die drei relevantesten offiziellen Textstellen, per BM25 abgerufen, und lernt, auf dieser Grundlage zu antworten und die Quelle zu zitieren.',
       'LoRA auf einer 6-GB-GPU; Modelle über 3 Milliarden Parameter mit 4-Bit-QLoRA. Die Lernrate wird auf dem Validierungsset gewählt, die Zahl der Epochen per Early Stopping.',
       'Jede Aufgabe hat eine Referenz ohne LLM, um zu messen, ob sich das Sprachmodell lohnt.',

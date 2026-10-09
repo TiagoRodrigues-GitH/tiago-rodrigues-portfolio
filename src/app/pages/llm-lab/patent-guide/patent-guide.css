@@ -1,0 +1,56 @@
+.pg { display: grid; gap: 1rem; }
+
+.pg-tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--rule-strong);
+  scrollbar-width: thin;
+}
+.pg-tab {
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+.pg-tab[aria-selected='true'] { border-bottom-color: var(--accent); color: var(--text); font-weight: 600; }
+.pg-tab:hover { color: var(--text); }
+
+.pg-panel { display: grid; gap: 0.6rem; max-width: 78ch; }
+.pg-panel h3 { margin: 0.8rem 0 0; font-family: var(--font-display); font-size: 1.08rem; }
+.pg-panel p { margin: 0; }
+.pg-panel ul, .pg-panel ol { display: grid; gap: 0.35rem; margin: 0; padding-left: 1.25rem; }
+.pg-panel:has(app-patent-stats) { max-width: none; }
+
+.pg-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.75rem; margin: 0; }
+.pg-cards div { padding: 0.85rem; border: 1px solid var(--rule); border-radius: var(--radius-sm); background: var(--surface); }
+.pg-cards dt { font-weight: 700; }
+.pg-cards dd { margin: 0.3rem 0 0; color: var(--text-muted); }
+
+.pg-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
+.pg-callout { padding: 0.65rem 0.85rem; border-left: 3px solid var(--accent); background: var(--surface-muted); }
+.pg-note { color: var(--text-muted); font-size: 0.88rem; }
+
+.pg-table { overflow-x: auto; }
+.pg-table table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.pg-table th, .pg-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+.pg-table th[scope='row'] { font-weight: 600; }
+.pg-table .num { font-family: var(--font-mono); white-space: nowrap; text-align: right; }
+
+.pg-steps { gap: 0.45rem; padding: 0 !important; list-style: none; }
+.pg-steps details, .pg-faq { border: 1px solid var(--rule); border-radius: var(--radius-sm); background: var(--surface); }
+.pg-steps summary, .pg-faq summary { min-height: 2.75rem; padding: 0.65rem 0.8rem; cursor: pointer; font-weight: 600; }
+.pg-step-n { display: inline-block; min-width: 1.6rem; color: var(--accent); font-family: var(--font-mono); }
+.pg-steps dl { display: grid; gap: 0.5rem; margin: 0; padding: 0 0.85rem 0.85rem 2.4rem; }
+.pg-steps dt { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+.pg-steps dd { margin: 0.1rem 0 0; }
+.pg-faq p { padding: 0 0.85rem 0.85rem; }
+
+.pg-checked, .pg-disclaimer { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+.pg-disclaimer { font-style: italic; }

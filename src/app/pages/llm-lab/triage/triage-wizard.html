@@ -1,0 +1,167 @@
+<section class="tw" aria-labelledby="tw-title">
+  <h3 id="tw-title" class="tw-title">{{ t.title }}</h3>
+  <p class="tw-lede">{{ t.lede }}</p>
+  <p class="tw-privacy">{{ t.privacy }}</p>
+
+  <ol class="tw-steps" [attr.aria-label]="progress()">
+    @for (s of steps(); track s; let i = $index) {
+      <li [class.done]="i < index()" [class.current]="i === index()" [attr.aria-current]="i === index() ? 'step' : null">{{ t.stepNames[s] }}</li>
+    }
+  </ol>
+
+  <form class="tw-body" (submit)="$event.preventDefault(); next()" novalidate>
+    <h4 #stepHeading tabindex="-1" class="tw-progress">{{ progress() }}</h4>
+
+    @if (errors().length) {
+      <div class="tw-errors" role="alert">
+        @for (e of errors(); track e) {
+          <p>{{ t.errors[e] }}</p>
+        }
+      </div>
+    }
+
+    @switch (step()) {
+      @case ('category') {
+        <fieldset>
+          <legend>{{ t.categoryQuestion }}</legend>
+          <div class="tw-options">
+            @for (c of categories; track c) {
+              <label class="tw-option" [class.on]="category() === c">
+                <input type="radio" name="tw-category" [checked]="category() === c" (change)="chooseCategory(c)" />
+                <span class="tw-option-title">{{ t.categories[c].label }}</span>
+                <span class="tw-option-text"><strong>{{ t.includesLabel }}:</strong> {{ t.categories[c].includes }}</span>
+                @if (t.categories[c].excludes) {
+                  <span class="tw-option-text"><strong>{{ t.excludesLabel }}:</strong> {{ t.categories[c].excludes }}</span>
+                }
+              </label>
+            }
+          </div>
+        </fieldset>
+      }
+      @case ('detail') {
+        @if (category(); as c) {
+          <fieldset>
+            <legend>{{ t.detailQuestion }}</legend>
+            <p class="tw-hint">{{ t.illustrative }}</p>
+            <div class="tw-options">
+              @for (d of t.categories[c].details; track d.key) {
+                <label class="tw-option" [class.on]="state().detail === d.key">
+                  <input type="radio" name="tw-detail" [checked]="state().detail === d.key" (change)="chooseDetail(d.key)" />
+                  <span class="tw-option-title">{{ d.label }}</span>
+                  <span class="tw-option-text"><strong>{{ t.fitsLabel }}:</strong> {{ d.fits }}</span>
+                  <span class="tw-option-text"><strong>{{ t.notFitsLabel }}:</strong> {{ d.notFits }}</span>
+                </label>
+              }
+            </div>
+          </fieldset>
+        }
+      }
+      @case ('questions') {
+        <p class="tw-hint">{{ t.questionsIntro }}</p>
+        @for (q of questions(); track q) {
+          <fieldset class="tw-question">
+            <legend>{{ t.questions[q].text }}</legend>
+            <p class="tw-why" [id]="'tw-why-' + q">{{ t.questions[q].why }}</p>
+            <div class="tw-answers">
+              @for (a of answers; track a) {
+                <label class="tw-answer" [class.on]="state().answers[q] === a">
+                  <input type="radio" [name]="'tw-q-' + q" [checked]="state().answers[q] === a" [attr.aria-describedby]="'tw-why-' + q" (change)="answer(q, a)" />
+                  {{ t.answers[a] }}
+                </label>
+              }
+            </div>
+          </fieldset>
+        }
+        @if (urgent()) {
+          <p class="tw-urgent" role="alert">{{ t.urgent }}</p>
+        }
+      }
+      @case ('describe') {
+        <label class="tw-label" for="tw-description">{{ t.describeLabel }}</label>
+        <p class="tw-hint" id="tw-describe-hint">{{ category() === 'unknown' ? t.describeRequired : t.describeOptional }}</p>
+        <ul class="tw-tips">
+          @for (tip of t.describeTips; track tip) {
+            <li>{{ tip }}</li>
+          }
+        </ul>
+        <textarea id="tw-description" rows="4" [attr.lang]="lang" aria-describedby="tw-describe-hint" [value]="state().description"
+          [attr.aria-invalid]="errors().includes('describeUnknown')" (input)="describe($any($event.target).value)"></textarea>
+        @if (category() !== 'unknown') {
+          <button type="button" class="btn btn-outline small" [disabled]="!state().description.trim() || suggesting()" (click)="askSuggestion()">{{ t.askSuggestion }}</button>
+        }
+        @if (suggestion() && category() !== 'unknown') {
+          <div class="tw-suggestion" aria-live="polite">
+            <p>{{ suggestionText() }} {{ agrees() ? t.suggestionAgrees : t.suggestionDiffers }}</p>
+            @if (!agrees()) {
+              <button type="button" class="btn btn-outline small" (click)="useSuggestion(); edit('detail')">{{ t.useSuggestion }}</button>
+            }
+          </div>
+        }
+      }
+      @case ('review') {
+        <h4 class="tw-subtitle">{{ t.reviewTitle }}</h4>
+        @if (urgent()) {
+          <p class="tw-urgent" role="alert">{{ t.urgent }}</p>
+        }
+        <dl class="tw-review">
+          <div>
+            <dt>{{ t.reviewCategory }}</dt>
+            <dd>
+              {{ category() ? t.categories[category()!].label : '' }}
+              @if (category() === 'unknown' && suggestion()) { · {{ suggestionText() }} }
+            </dd>
+            <dd><button type="button" class="tw-link" (click)="edit('category')">{{ t.change }}</button></dd>
+          </div>
+          @if (detailText(); as d) {
+            <div>
+              <dt>{{ t.reviewDetail }}</dt>
+              <dd>{{ d.label }}</dd>
+              <dd><button type="button" class="tw-link" (click)="edit('detail')">{{ t.change }}</button></dd>
+            </div>
+          }
+          @for (q of questions(); track q) {
+            <div>
+              <dt>{{ t.questions[q].text }}</dt>
+              <dd>{{ state().answers[q] ? t.answers[state().answers[q]!] : '' }}</dd>
+              <dd><button type="button" class="tw-link" (click)="edit('questions')">{{ t.change }}</button></dd>
+            </div>
+          }
+          <div>
+            <dt>{{ t.reviewDescription }}</dt>
+            <dd [attr.lang]="lang">{{ state().description || t.none }}</dd>
+            <dd><button type="button" class="tw-link" (click)="edit('describe')">{{ t.change }}</button></dd>
+          </div>
+          <div>
+            <dt>{{ t.modelClass }}</dt>
+            <dd>{{ modelClass() }}</dd>
+          </div>
+        </dl>
+        @if (effective(); as e) {
+          <h4 class="tw-subtitle">{{ t.evidenceTitle }}</h4>
+          <ul class="tw-tips">
+            @for (ev of t.categories[e].evidence; track ev) {
+              <li>{{ ev }}</li>
+            }
+          </ul>
+        }
+        <h4 class="tw-subtitle">{{ t.nextTitle }}</h4>
+        <ol class="tw-next">
+          @for (n of t.nextSteps; track n.text) {
+            <li>{{ n.text }} @if (n.link) { <a [href]="n.link" target="_blank" rel="noopener noreferrer">{{ n.label }}</a> }</li>
+          }
+        </ol>
+      }
+    }
+
+    <div class="tw-nav">
+      @if (index() > 0) {
+        <button type="button" class="btn btn-outline" (click)="back()">{{ t.back }}</button>
+      }
+      @if (step() !== 'review') {
+        <button type="submit" class="btn btn-primary" [disabled]="suggesting()">{{ t.next }}</button>
+      } @else {
+        <button type="button" class="btn btn-outline" (click)="restart()">{{ t.restart }}</button>
+      }
+    </div>
+  </form>
+</section>

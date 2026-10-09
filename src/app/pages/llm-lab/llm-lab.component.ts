@@ -8,6 +8,8 @@ import { LabDataService, NhtsaData, PatentData } from './lab-data';
 import { LAB_I18N } from './lab-i18n';
 import { LabResultsComponent } from './lab-results.component';
 import { PatentReplayComponent } from './patent-replay.component';
+import { GUIDE_I18N } from './patent-guide/guide-content';
+import { PatentGuideComponent } from './patent-guide/patent-guide.component';
 
 /**
  * Demo of project 02 (compact LLMs): replays the real test answers of the patent assistant, classifies defect
@@ -16,7 +18,7 @@ import { PatentReplayComponent } from './patent-replay.component';
  */
 @Component({
   selector: 'app-llm-lab',
-  imports: [RouterLink, PatentReplayComponent, DefectTriageComponent, LabResultsComponent],
+  imports: [RouterLink, PatentReplayComponent, PatentGuideComponent, DefectTriageComponent, LabResultsComponent],
   templateUrl: './llm-lab.html',
   styleUrls: ['./llm-lab.css'],
 })
@@ -27,6 +29,7 @@ export class LlmLabComponent {
   readonly locale = injectLocale();
   readonly langQuery = injectLangQuery(this.locale);
   readonly t = computed(() => LAB_I18N[this.locale()]);
+  readonly guide = computed(() => GUIDE_I18N[this.locale()]);
   readonly lang = computed(() => this.i18n.option(this.locale()).htmlLang);
 
   readonly patents = signal<PatentData | null>(null);

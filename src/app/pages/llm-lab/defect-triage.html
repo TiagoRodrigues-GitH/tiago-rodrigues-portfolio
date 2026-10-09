@@ -1,3 +1,5 @@
+<app-triage-wizard [t]="triage" [lang]="lang" [suggest]="suggest" [className]="classNameOf" />
+
 <div class="triage">
   <form class="describe" (submit)="classify($event)">
     <label class="field-label" for="defect-text">{{ t.describe }}</label>

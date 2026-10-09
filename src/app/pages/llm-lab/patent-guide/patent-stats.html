@@ -1,0 +1,121 @@
+<div class="ps">
+  <h3 class="ps-title">{{ t.title }}</h3>
+  <p class="ps-lede">{{ t.lede }}</p>
+
+  <div class="ps-views" role="group" [attr.aria-label]="t.viewLabel">
+    @for (id of viewOrder; track id) {
+      <button type="button" class="ps-view" [attr.aria-pressed]="viewId() === id" (click)="chooseView(id)">{{ t.views[id].label }}</button>
+    }
+  </div>
+
+  @if (viewId() === 'us' || viewId() === 'cn') {
+    @let u = t.unavailable[viewId() === 'us' ? 'us' : 'cn'];
+    <div class="ps-unavailable" role="status">
+      <p>{{ u.text }}</p>
+      <ul>
+        @for (l of u.links; track l.link) {
+          <li><a [href]="links[l.link]" target="_blank" rel="noopener noreferrer">{{ l.label }}</a></li>
+        }
+      </ul>
+    </div>
+  } @else if (failed()) {
+    <p class="ps-error" role="alert">{{ t.loadError }}</p>
+  } @else if (!view()) {
+    <p class="ps-hint">{{ t.loading }}</p>
+  } @else {
+    @let current = view()!;
+    <p class="ps-indicator">{{ t.views[current.id].indicator }}</p>
+
+    <fieldset class="ps-companies">
+      <legend>{{ t.companiesLabel }} <span class="ps-hint">· {{ t.companiesHint }}</span></legend>
+      @for (c of current.companies; track c.name) {
+        <label class="ps-chip" [class.on]="isShown(c)">
+          <input type="checkbox" [checked]="isShown(c)" [disabled]="!isShown(c) && !canAdd()" (change)="toggle(c)" />
+          <span class="ps-swatch" aria-hidden="true" [style.background]="isShown(c) ? colour(c.name) : 'transparent'"></span>
+          {{ c.name }}
+        </label>
+      }
+    </fieldset>
+
+    <figure class="ps-figure">
+      <div class="ps-plot">
+        <svg #svg [attr.viewBox]="'0 0 ' + frame.width + ' ' + frame.height" role="group" [attr.aria-label]="t.chartLabel + ' · ' + t.views[current.id].label"
+          (pointermove)="onPointer($event, svg)" (pointerleave)="hoverYear.set(null)">
+          @for (year of unpublished(); track year) {
+            <rect class="ps-unpub" [attr.x]="x()(year) - step() / 2" [attr.y]="frame.top" [attr.width]="step() / 2 + frame.right" [attr.height]="frame.height - frame.top - frame.bottom" />
+          }
+          @for (tick of yTicks(); track tick) {
+            <line class="ps-grid" [attr.x1]="frame.left" [attr.x2]="frame.width - frame.right" [attr.y1]="y()(tick)" [attr.y2]="y()(tick)" />
+            <text class="ps-axis" [attr.x]="frame.left - 8" [attr.y]="y()(tick) + 4" text-anchor="end">{{ number(tick) }}</text>
+          }
+          @for (year of years(); track year) {
+            <text class="ps-axis" [attr.x]="x()(year)" [attr.y]="frame.height - 12" text-anchor="middle">{{ year }}{{ unpublished().includes(year) ? '*' : '' }}</text>
+          }
+          @if (hoverYear(); as hy) {
+            <line class="ps-cross" [attr.x1]="x()(hy)" [attr.x2]="x()(hy)" [attr.y1]="frame.top" [attr.y2]="frame.height - frame.bottom" />
+          }
+          @for (line of lines(); track line.name) {
+            @for (d of line.paths; track $index) {
+              <path class="ps-line" [attr.d]="d" [attr.stroke]="line.colour" />
+            }
+            @for (p of line.points; track p.year) {
+              <circle class="ps-dot" [attr.cx]="p.cx" [attr.cy]="p.cy" r="4" [attr.fill]="line.colour" />
+            }
+          }
+          @for (year of years(); track year) {
+            <rect class="ps-hit" tabindex="0" [attr.x]="x()(year) - step() / 2" [attr.y]="frame.top" [attr.width]="step()" [attr.height]="frame.height - frame.top - frame.bottom"
+              [attr.aria-label]="yearLabel(year)" (focus)="hoverYear.set(year)" (blur)="hoverYear.set(null)" />
+          }
+        </svg>
+        @if (hoverYear(); as hy) {
+          <div class="ps-tip" [style.left.%]="tipLeft(hy)" aria-hidden="true">
+            <p class="ps-tip-year">{{ hy }}</p>
+            @for (c of selected(); track c.name) {
+              @let v = cell(c, hy);
+              <p><span class="ps-swatch" [style.background]="colour(c.name)"></span>{{ c.name }}: <strong [class.missing]="v.missing">{{ v.text }}</strong></p>
+            }
+          </div>
+        }
+      </div>
+      <figcaption class="ps-hint">{{ t.yAxis }} · * {{ t.partialYear }}</figcaption>
+    </figure>
+
+    <div class="ps-table" role="region" [attr.aria-label]="t.tableCaption" tabindex="0">
+      <table>
+        <caption>{{ t.tableCaption }} · {{ t.views[current.id].label }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ t.colCompany }}</th>
+            @for (year of years(); track year) {
+              <th scope="col">{{ year }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of current.companies; track c.name) {
+            <tr>
+              <th scope="row" [attr.title]="c.publishedNames.join(' · ')">{{ c.name }}</th>
+              @for (year of years(); track year) {
+                @let v = cell(c, year);
+                <td [class.missing]="v.missing" [attr.title]="v.title">{{ v.text }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="ps-hint">≤ N: {{ t.notListed.replace('{n}', 'N') }} · —: {{ t.notPublished }}</p>
+
+    <ul class="ps-method">
+      @for (m of t.method; track $index) {
+        <li>{{ m }}</li>
+      }
+    </ul>
+    <p class="ps-sources">
+      {{ t.sourcesLabel }}:
+      @for (s of sources(); track s.year; let last = $last) {
+        <a [href]="s.url" target="_blank" rel="noopener noreferrer">{{ t.sourceYear.replace('{year}', s.year) }}</a>{{ last ? '' : ' · ' }}
+      }
+    </p>
+  }
+</div>

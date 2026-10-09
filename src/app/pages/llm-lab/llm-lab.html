@@ -50,7 +50,9 @@
       <h2 id="patents-title" class="section-title">{{ t().patentsTitle }}</h2>
       <p class="section-lede">{{ t().patentsLede.replace('{n}', (patents()?.testQuestions ?? 52).toString()) }}</p>
     </header>
-    <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" [locale]="locale()" />
+    <app-patent-guide [t]="guide()" [lang]="lang()">
+      <app-patent-replay [data]="patents()" [t]="t()" [lang]="lang()" [locale]="locale()" />
+    </app-patent-guide>
   </div>
 </section>
 
