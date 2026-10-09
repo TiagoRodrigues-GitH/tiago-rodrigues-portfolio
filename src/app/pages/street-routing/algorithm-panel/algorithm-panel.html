@@ -1,0 +1,46 @@
+<div class="ap">
+  <label [for]="idPrefix + '-algorithm'" class="mono-label">{{ t.algorithm }}</label>
+  <select [id]="idPrefix + '-algorithm'" [disabled]="disabled" [attr.aria-describedby]="idPrefix + '-about-how'" (change)="choose($any($event.target).value)">
+    @for (key of order; track key) {
+      <option [value]="key" [selected]="key === algorithm">{{ t.algorithms[key].name }} · {{ t.algorithms[key].family }}</option>
+    }
+  </select>
+
+  <details class="ap-about" [open]="aboutOpen">
+    <summary>{{ t.aboutAlgorithm }}: <strong>{{ text.name }}</strong></summary>
+    <p class="ap-badge" [class.exact]="exact">
+      <span aria-hidden="true">{{ exact ? '✓' : '≈' }}</span> {{ exact ? t.exactBadge : t.heuristicBadge }}
+    </p>
+    <dl>
+      <div><dt>{{ t.labels.how }}</dt><dd [id]="idPrefix + '-about-how'">{{ text.how }}</dd></div>
+      <div><dt>{{ t.labels.trait }}</dt><dd>{{ text.trait }}</dd></div>
+      <div><dt>{{ t.labels.when }}</dt><dd>{{ text.when }}</dd></div>
+      <div>
+        <dt>{{ t.labels.complexity }}</dt>
+        <dd>
+          <span class="ap-cx">{{ t.labels.time }}: {{ text.time }}</span>
+          <span class="ap-cx">{{ t.labels.space }}: {{ text.space }}</span>
+        </dd>
+      </div>
+      <div><dt>{{ t.labels.limits }}</dt><dd>{{ text.limits }}</dd></div>
+    </dl>
+  </details>
+
+  @for (spec of specs; track spec.key) {
+    <div class="ap-param">
+      <label [for]="idPrefix + '-p-' + spec.key">{{ t.params[spec.key].label }} <output>{{ params[spec.key] }}</output></label>
+      <input
+        type="range"
+        [id]="idPrefix + '-p-' + spec.key"
+        [min]="spec.min"
+        [max]="spec.max"
+        [step]="spec.step"
+        [value]="params[spec.key]"
+        [disabled]="disabled"
+        [attr.aria-describedby]="idPrefix + '-ph-' + spec.key"
+        (input)="setParam(spec.key, $any($event.target).value)"
+      />
+      <p [id]="idPrefix + '-ph-' + spec.key" class="ap-hint">{{ t.params[spec.key].hint }}</p>
+    </div>
+  }
+</div>

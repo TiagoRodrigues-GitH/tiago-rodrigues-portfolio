@@ -74,7 +74,10 @@ describe('Portfolio content', () => {
       i18n.contact,
       i18n.about,
     ]);
-    const brands = /\b(bmw|volkswagen|vw|audi|porsche|mercedes|daimler|honda|toyota|ford|fiat|stellantis|renault|hyundai|kia|nissan|tesla|volvo|chevrolet|gm|nash|briggs)\b/i;
+    // "Bellman-Ford" (the shortest-path algorithm, after L. R. Ford Jr.) is not the brand
+    const brands = /\b(bmw|volkswagen|vw|audi|porsche|mercedes|daimler|honda|toyota|(?<!bellman-)ford|fiat|stellantis|renault|hyundai|kia|nissan|tesla|volvo|chevrolet|gm|nash|briggs)\b/i;
     expect(content).not.toMatch(brands);
+    expect('Bellman-Ford').not.toMatch(brands);
+    expect('a Ford car').toMatch(brands);
   });
 });

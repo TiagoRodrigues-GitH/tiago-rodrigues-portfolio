@@ -1,0 +1,110 @@
+.pb {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.pb-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pb-run {
+  min-height: 2.75rem;
+}
+
+.pb-btn {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pb-btn:hover:not(:disabled) {
+  background: var(--blue-50);
+}
+
+.pb-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pb-speed {
+  display: grid;
+  grid-template-columns: auto minmax(6rem, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.pb-speed input {
+  width: 100%;
+  min-height: 2.75rem;
+  accent-color: var(--accent);
+}
+
+.pb-speed output {
+  min-width: 7.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.pb-progress progress {
+  width: 100%;
+  height: 0.5rem;
+  accent-color: var(--accent);
+}
+
+.pb-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0.3rem 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 520px) {
+  /* icons only; the accessible name stays on the button */
+  .pb-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .pb-run {
+    flex: 1 1 100%;
+  }
+
+  .pb-btn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+
+  .pb-speed output {
+    min-width: 0;
+  }
+
+  .pb { gap: 0.35rem; padding: 0.5rem; }
+  .pb-run, .pb-btn, .pb-speed input { min-height: 2.5rem; }
+  .pb-stats { gap: 0 0.75rem; font-size: 0.7rem; }
+}

@@ -26,7 +26,9 @@
 
   @if (failed()) {
     <div class="shell">
-      <p class="load-error" role="alert">{{ t().loadError }}</p>
+      <p class="load-error" role="alert">
+        {{ t().loadError }} <button type="button" class="btn btn-outline small" (click)="init()">{{ t().retry }}</button>
+      </p>
     </div>
   }
 
@@ -39,7 +41,33 @@
       </header>
 
       <div class="sr-layout">
+        <div class="sr-stage">
+          <div class="sr-map-wrap">
+            <div #mapEl class="sr-map" role="region" [attr.aria-label]="t().mapTitle"></div>
+            @if (area()) {
+              <span class="sr-crosshair" aria-hidden="true"></span>
+            }
+          </div>
+          <app-playback-bar
+            [t]="t()"
+            [locale]="locale()"
+            [status]="playback.status()"
+            [progress]="playback.progress()"
+            [speed]="playback.speed()"
+            [computing]="computing()"
+            [canRun]="canRun()"
+            (run)="run()"
+            (toggle)="playback.toggle()"
+            (step)="playback.stepOnce()"
+            (restart)="playback.restart()"
+            (skip)="playback.skipToEnd()"
+            (speedChange)="playback.setSpeed($event)"
+          />
+          <p class="sr-outcome" role="status" [class.sr-none]="outcome()?.kind === 'none' || outcome()?.kind === 'error'">{{ outcomeText() }}</p>
+        </div>
+
         <div class="sr-panel">
+
           <div class="sr-search">
             <label for="sr-search-input" class="mono-label">{{ t().searchLabel }}</label>
             <input
@@ -51,7 +79,7 @@
               aria-controls="sr-search-list"
               [attr.aria-expanded]="matches().length > 0"
               [attr.aria-activedescendant]="matches().length ? 'sr-match-' + active() : null"
-              [attr.aria-describedby]="'sr-search-hint'"
+              aria-describedby="sr-search-hint"
               [placeholder]="t().searchPlaceholder"
               [value]="query()"
               (input)="onQuery($any($event.target).value)"
@@ -76,80 +104,67 @@
             }
           </div>
 
-          <p class="sr-crumb" aria-live="polite">
+          <div class="sr-field">
+            <p id="sr-cities-label" class="mono-label">{{ t().citiesLabel }}</p>
+            <div class="sr-cities" role="group" aria-labelledby="sr-cities-label" aria-describedby="sr-cities-hint">
+              @for (a of places()?.routed ?? []; track a.id) {
+                <button type="button" class="sr-city" [attr.data-area]="a.id" [attr.aria-pressed]="a.id === area()?.id" (click)="chooseArea(a.id)">{{ a.name }}</button>
+              }
+            </div>
+            <p id="sr-cities-hint" class="sr-hint">{{ t().citiesHint }}</p>
+          </div>
+          <p class="sr-crumb">
             {{ t().brazil }}@if (selection(); as s) { <span aria-hidden="true">›</span> {{ s.place.name }} }
           </p>
           @if (status()) {
-            <p class="sr-status" role="status">{{ status() }}</p>
+            <p class="sr-status" [class.sr-error]="statusError()" role="status">{{ status() }}</p>
           }
 
-          @if (graphStats()) {
-            <fieldset class="sr-layers">
-              <legend class="mono-label">{{ t().layers }}</legend>
-              <label><input type="checkbox" [checked]="showBairros()" (change)="toggleBairros()" /> {{ t().showBairros }}</label>
-            </fieldset>
+          @if (area()) {
+            @if (hasBairros()) {
+              <label class="sr-check"><input type="checkbox" [checked]="showBairros()" (change)="toggleBairros()" /> {{ t().showBairros }}</label>
+            }
 
             <div class="sr-route">
               <h3 class="sr-subtitle">{{ t().routeTitle }}</h3>
               <p class="sr-hint" aria-live="polite">{{ routeHint() }}</p>
-
-              <label for="sr-algorithm" class="mono-label">{{ t().algorithm }}</label>
-              <select id="sr-algorithm" [value]="algorithm()" (change)="setAlgorithm($any($event.target).value)">
-                @for (key of order; track key) {
-                  <option [value]="key">{{ t().algorithms[key].name }} · {{ t().algorithms[key].family }}</option>
-                }
-              </select>
-              <p class="sr-how">{{ t().algorithms[algorithm()].how }}</p>
-
-              @for (spec of paramSpecs(); track spec.key) {
-                <div class="sr-param">
-                  <label [for]="'sr-p-' + spec.key">{{ t().params[spec.key].label }} <output>{{ params()[spec.key] }}</output></label>
-                  <input
-                    type="range"
-                    [id]="'sr-p-' + spec.key"
-                    [min]="spec.min"
-                    [max]="spec.max"
-                    [step]="spec.step"
-                    [value]="params()[spec.key]"
-                    [attr.aria-describedby]="'sr-ph-' + spec.key"
-                    (input)="setParam(spec.key, $any($event.target).value)"
-                  />
-                  <p [id]="'sr-ph-' + spec.key" class="sr-hint">{{ t().params[spec.key].hint }}</p>
-                </div>
-              }
-
-              <div class="sr-param">
-                <label for="sr-speed">{{ t().speed }} <output>{{ speed() }}</output></label>
-                <input id="sr-speed" type="range" min="1" max="6" step="1" [value]="speed()" (input)="speed.set(+$any($event.target).value)" />
-              </div>
-
+              <fieldset class="sr-pick">
+                <legend>{{ t().nextClick }}</legend>
+                <label><input type="radio" name="sr-next" [checked]="nextPick() === 'origin'" (change)="nextPick.set('origin')" /> <span class="sr-dot sr-dot-a" aria-hidden="true"></span>{{ t().originOption }}</label>
+                <label><input type="radio" name="sr-next" [checked]="nextPick() === 'destination'" (change)="nextPick.set('destination')" /> <span class="sr-dot sr-dot-b" aria-hidden="true"></span>{{ t().destinationOption }}</label>
+              </fieldset>
               <div class="sr-actions">
-                <button type="button" class="btn btn-primary" [disabled]="destination() === null || running()" (click)="run()">
-                  {{ running() ? t().running : t().run }}
-                </button>
-                <button type="button" class="btn btn-outline" [disabled]="destination() === null || running()" (click)="runAll()">{{ t().runAll }}</button>
-                <button type="button" class="btn btn-outline" [disabled]="origin() === null" (click)="clearRoute()">{{ t().clear }}</button>
+                <button type="button" class="btn btn-outline small" (click)="pickAtCentre()" aria-describedby="sr-centre-hint">{{ t().atCentre }}</button>
+                <button type="button" class="btn btn-outline small" [disabled]="origin() === null || destination() === null" (click)="swap()">{{ t().swap }}</button>
+                <button type="button" class="btn btn-outline small" [disabled]="origin() === null && destination() === null" (click)="clearRoute()">{{ t().clear }}</button>
               </div>
+              <p id="sr-centre-hint" class="sr-hint">{{ t().centreHint }}</p>
+              @if (pairNote()) {
+                <p class="sr-warning" role="status">{{ pairNote() }}</p>
+              }
             </div>
           }
-        </div>
 
-        <div class="sr-map-wrap">
-          <div #mapEl class="sr-map" role="region" [attr.aria-label]="t().mapTitle"></div>
-          <ul class="sr-legend" aria-hidden="true">
-            <li><span class="sw sw-origin"></span>A</li>
-            <li><span class="sw sw-destination"></span>B</li>
-            <li><span class="sw sw-visit"></span>{{ t().colWork }}</li>
-            <li><span class="sw sw-route"></span>{{ t().routeTitle }}</li>
-            <li><span class="sw sw-link"></span>{{ t().estimatedLink }}</li>
-          </ul>
+          <app-algorithm-panel
+            [t]="t()"
+            [algorithm]="algorithm()"
+            [params]="params()"
+            [aboutOpen]="aboutOpen()"
+            [disabled]="computing()"
+            (algorithmChange)="setAlgorithm($event)"
+            (paramChange)="setParam($event)"
+          />
+
+          <button type="button" class="btn btn-outline" [disabled]="!canRun() || computing()" (click)="runAll()">{{ t().runAll }}</button>
         </div>
       </div>
 
+      <app-map-legend class="sr-legend" [text]="t().legend" [title]="t().legendTitle" />
+
       @if (rows().length) {
-        <div class="sr-results">
+        <div class="sr-results" role="region" aria-labelledby="sr-results-caption" tabindex="0">
           <table>
-            <caption>{{ t().resultsCaption }}</caption>
+            <caption id="sr-results-caption">{{ t().resultsCaption }}</caption>
             <thead>
               <tr>
                 <th scope="col">{{ t().colAlgorithm }}</th>
@@ -162,7 +177,7 @@
             <tbody>
               @for (row of rows(); track row.key) {
                 <tr [class.current]="row.key === algorithm()">
-                  <th scope="row">{{ row.name }} <span class="sr-family">{{ row.family }}</span></th>
+                  <th scope="row">{{ t().algorithms[row.key].name }} <span class="sr-family">{{ t().algorithms[row.key].family }}</span></th>
                   <td>{{ formatKm(row.cost) }}</td>
                   <td>{{ formatGap(row.gap) }}</td>
                   <td>{{ row.work.toLocaleString(locale()) }}</td>
@@ -171,18 +186,29 @@
               }
             </tbody>
           </table>
-          @if (via().length) {
-            <p class="sr-hint">{{ t().via }}: {{ via().join(' · ') }}</p>
-          }
         </div>
+      }
+      @if (via().length) {
+        <p class="sr-hint">{{ t().via }}: {{ via().join(' · ') }}</p>
       }
     </div>
   </section>
 
-  <section id="method" class="section graph-paper" aria-labelledby="method-title">
+  <section id="oneway" class="section graph-paper" aria-labelledby="oneway-title">
     <div class="shell">
       <header class="section-head">
         <p class="section-index">02</p>
+        <h2 id="oneway-title" class="section-title">{{ t().onewayTitle }}</h2>
+        <p class="section-lede">{{ t().onewayLede }}</p>
+      </header>
+      <app-oneway-demo [t]="t()" [locale]="locale()" />
+    </div>
+  </section>
+
+  <section id="method" class="section" aria-labelledby="method-title">
+    <div class="shell">
+      <header class="section-head">
+        <p class="section-index">03</p>
         <h2 id="method-title" class="section-title">{{ t().methodTitle }}</h2>
       </header>
       <ol class="sr-steps">
@@ -194,6 +220,8 @@
           </li>
         }
       </ol>
+      <h3 class="sr-subtitle">{{ t().citiesTitle }}</h3>
+      <p class="sr-prose">{{ t().citiesText }}</p>
       <h3 class="sr-subtitle">{{ t().limitsTitle }}</h3>
       <ul class="sr-limits">
         @for (limit of t().limits; track limit) {
@@ -203,10 +231,10 @@
     </div>
   </section>
 
-  <section id="algorithms" class="section" aria-labelledby="algorithms-title">
+  <section id="algorithms" class="section graph-paper" aria-labelledby="algorithms-title">
     <div class="shell">
       <header class="section-head">
-        <p class="section-index">03</p>
+        <p class="section-index">04</p>
         <h2 id="algorithms-title" class="section-title">{{ t().algorithmsTitle }}</h2>
         <p class="section-lede">{{ t().algorithmsLede }}</p>
       </header>
@@ -216,16 +244,17 @@
             <p class="mono-label">{{ t().algorithms[key].family }}</p>
             <h3>{{ t().algorithms[key].name }}</h3>
             <p>{{ t().algorithms[key].how }}</p>
+            <p class="sr-cx">{{ t().labels.time }}: {{ t().algorithms[key].time }} · {{ t().labels.space }}: {{ t().algorithms[key].space }}</p>
           </li>
         }
       </ul>
     </div>
   </section>
 
-  <section id="references" class="section graph-paper" aria-labelledby="references-title">
+  <section id="references" class="section" aria-labelledby="references-title">
     <div class="shell">
       <header class="section-head">
-        <p class="section-index">04</p>
+        <p class="section-index">05</p>
         <h2 id="references-title" class="section-title">{{ t().referencesTitle }}</h2>
       </header>
       <p>{{ t().sourcesNote }}</p>

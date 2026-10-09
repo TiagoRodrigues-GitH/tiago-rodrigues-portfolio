@@ -1,0 +1,51 @@
+<div class="pb" role="group" [attr.aria-label]="t.playback">
+  <div class="pb-buttons">
+    <button type="button" class="btn btn-primary pb-run" [disabled]="!canRun || computing" (click)="run.emit()">
+      {{ computing ? t.computing : t.run }}
+    </button>
+    <button type="button" class="pb-btn" [disabled]="!loaded || computing" (click)="toggle.emit()" [attr.aria-label]="toggleLabel">
+      <span aria-hidden="true">{{ toggleIcon }}</span><span class="pb-text">{{ toggleLabel }}</span>
+    </button>
+    <button type="button" class="pb-btn" [disabled]="!loaded || computing || status === 'done'" (click)="step.emit()" [attr.aria-label]="t.step">
+      <span aria-hidden="true">⏵|</span><span class="pb-text">{{ t.step }}</span>
+    </button>
+    <button type="button" class="pb-btn" [disabled]="!loaded || computing" (click)="restart.emit()" [attr.aria-label]="t.restart">
+      <span aria-hidden="true">⟲</span><span class="pb-text">{{ t.restart }}</span>
+    </button>
+    <button type="button" class="pb-btn" [disabled]="!loaded || computing || status === 'done'" (click)="skip.emit()" [attr.aria-label]="t.skipToEnd">
+      <span aria-hidden="true">⏭</span><span class="pb-text">{{ t.skipToEnd }}</span>
+    </button>
+  </div>
+
+  <div class="pb-speed">
+    <label [for]="idPrefix + '-speed'">{{ t.speed }}</label>
+    <input
+      type="range"
+      [id]="idPrefix + '-speed'"
+      min="0"
+      [max]="maxLevel"
+      step="1"
+      [value]="speed"
+      [attr.aria-valuetext]="speedText(speed)"
+      (input)="speedChange.emit(+$any($event.target).value)"
+    />
+    <output [attr.for]="idPrefix + '-speed'">{{ speedText(speed) }}</output>
+  </div>
+
+  @if (loaded) {
+    <div class="pb-progress">
+      <progress [max]="progress.total || 1" [value]="progress.step" [attr.aria-label]="progressText"></progress>
+      <p class="pb-stats">
+        <span>{{ progressText }}</span>
+        @if (progress.kind === 'search') {
+          <span>{{ t.visited }}: {{ number(progress.visited) }}</span>
+          <span>{{ t.frontier }}: {{ number(progress.frontier) }}</span>
+        }
+        <span>{{ t.evaluated }}: {{ number(progress.edges) }}</span>
+        @if (labelText) {
+          <span>{{ labelText }}</span>
+        }
+      </p>
+    </div>
+  }
+</div>
