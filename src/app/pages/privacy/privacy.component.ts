@@ -128,7 +128,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   de: {
     eyebrow: 'Datenschutz · LGPD / DSGVO',
     title: 'Wie diese Website Besuchsdaten verarbeitet',
-    intro: 'Dieses Portfolio kann einfache Besuchsstatistiken erfassen, um zu sehen, welche Seiten die Leser interessieren, und um die Website vor Missbrauch zu schützen. Es gibt keine Cookies, keine Werbung und keine Tracker von Drittanbietern.',
+    intro: 'Dieses Portfolio kann einfache Besuchsstatistiken erfassen, um zu sehen, welche Seiten für Lesende interessant sind, und um die Website vor Missbrauch zu schützen. Es gibt keine Cookies, keine Werbung und keine Tracker von Drittanbietern.',
     updated: 'Stand: 1. Oktober 2026.',
     sections: [
       {
