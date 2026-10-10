@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CATEGORY_OF_CLASS, CLASS_OF, EMPTY_STATE, TriageState, prune, steps, urgent, validate, visibleQuestions } from './triage-flow';
+import { TRIAGE_I18N, TriageText } from './triage-content';
+import { CATEGORIES, CATEGORY_OF_CLASS, CLASS_OF, EMPTY_STATE, TriageState, prune, steps, urgent, validate, visibleQuestions } from './triage-flow';
 
 const state = (s: Partial<TriageState>): TriageState => ({ ...EMPTY_STATE, ...s });
 
@@ -37,5 +38,22 @@ describe('triage flow', () => {
     expect(urgent(state({ category: 'electrical', answers: { fire: 'yes' } }))).toBe(true);
     expect(urgent(state({ category: 'brakes', detail: 'pedal', answers: { moving: 'yes' } }))).toBe(true);
     expect(urgent(state({ category: 'brakes', detail: 'noise', answers: { moving: 'yes' } }))).toBe(false);
+  });
+});
+
+describe('triage texts', () => {
+  it('have the same keys, details and evidence in every language', () => {
+    const shape = (t: TriageText) =>
+      JSON.stringify(Object.keys(t).sort()) +
+      CATEGORIES.map((c) => `${c}:${t.categories[c].details.map((d) => d.key).join(',')}:${t.categories[c].evidence.length}`).join('|') +
+      t.nextSteps.length;
+    for (const t of [TRIAGE_I18N.en, TRIAGE_I18N.de]) expect(shape(t)).toBe(shape(TRIAGE_I18N.pt));
+  });
+
+  it('offers short labels for every detail and question', () => {
+    for (const t of Object.values(TRIAGE_I18N)) {
+      for (const c of CATEGORIES) for (const d of t.categories[c].details) expect(d.short.length).toBeLessThanOrEqual(36);
+      for (const q of Object.values(t.questions)) expect(q.short.length).toBeLessThanOrEqual(26);
+    }
   });
 });

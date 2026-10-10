@@ -1,167 +1,202 @@
-<section class="tw" aria-labelledby="tw-title">
-  <h3 id="tw-title" class="tw-title">{{ t.title }}</h3>
-  <p class="tw-lede">{{ t.lede }}</p>
-  <p class="tw-privacy">{{ t.privacy }}</p>
-
-  <ol class="tw-steps" [attr.aria-label]="progress()">
-    @for (s of steps(); track s; let i = $index) {
-      <li [class.done]="i < index()" [class.current]="i === index()" [attr.aria-current]="i === index() ? 'step' : null">{{ t.stepNames[s] }}</li>
+<section class="tw" [attr.aria-label]="t.categoryQuestion">
+  <div class="tw-top">
+    <span class="tw-count">{{ progress() }}</span>
+    @if (index() > 0) {
+      <button type="button" class="tw-ghost" (click)="restart()">{{ t.restart }}</button>
     }
-  </ol>
+  </div>
+  <div class="tw-bar" role="progressbar" [attr.aria-label]="progress()" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="donePct()">
+    <span [style.transform]="'scaleX(' + done() + ')'"></span>
+  </div>
 
-  <form class="tw-body" (submit)="$event.preventDefault(); next()" novalidate>
-    <h4 #stepHeading tabindex="-1" class="tw-progress">{{ progress() }}</h4>
+  @if (urgent() && step() !== 'category') {
+    <p class="tw-urgent" role="alert"><strong>{{ t.urgentBadge }}</strong> {{ t.urgent }}</p>
+  }
 
-    @if (errors().length) {
-      <div class="tw-errors" role="alert">
-        @for (e of errors(); track e) {
-          <p>{{ t.errors[e] }}</p>
+  @switch (step()) {
+    @case ('category') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q">{{ t.categoryQuestion }}</h3>
+        <div class="tw-cards">
+          @for (c of categories; track c) {
+            <button type="button" class="tw-card" [class.on]="category() === c" [class.alt]="c === 'unknown'"
+              [attr.aria-pressed]="category() === c" [attr.title]="t.categories[c].info" (click)="chooseCategory(c)">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[c]" /></svg>
+              <span>{{ t.categories[c].label }}</span>
+            </button>
+          }
+        </div>
+        <p class="tw-note">{{ t.privacy }}</p>
+      </div>
+    }
+
+    @case ('detail') {
+      @if (category(); as c) {
+        <div class="tw-screen">
+          <h3 #stepHeading tabindex="-1" class="tw-q">
+            <svg class="tw-q-icon" viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[c]" /></svg>
+            {{ t.detailQuestion }}
+          </h3>
+          <div class="tw-list">
+            @for (d of t.categories[c].details; track d.key) {
+              <button type="button" class="tw-row" [class.on]="state().detail === d.key" [attr.aria-pressed]="state().detail === d.key" (click)="chooseDetail(d.key)">
+                <span class="tw-row-main">{{ d.short }}</span>
+                @if (showExamples()) {
+                  <span class="tw-row-ex"><b class="ok">✓</b> {{ d.fits }}</span>
+                  <span class="tw-row-ex"><b class="no">✗</b> {{ d.notFits }}</span>
+                }
+              </button>
+            }
+          </div>
+          <button type="button" class="tw-ghost" [attr.aria-expanded]="showExamples()" (click)="showExamples.set(!showExamples())">
+            {{ showExamples() ? t.hideExamples : t.examples }}
+          </button>
+          @if (showExamples()) {
+            <p class="tw-note">{{ t.illustrative }} {{ t.categories[c].info }}</p>
+          }
+        </div>
+      }
+    }
+
+    @case ('questions') {
+      @for (q of question() ? [question()!] : []; track q) {
+        <div class="tw-screen">
+          <ol class="tw-dots" [attr.aria-label]="t.questionsTitle">
+            @for (k of questions(); track k; let i = $index) {
+              <li [class.done]="!!state().answers[k]" [class.current]="i === qIndex()"><span class="visually-hidden">{{ t.questions[k].short }}</span></li>
+            }
+          </ol>
+          <h3 #stepHeading tabindex="-1" class="tw-q" [id]="'tw-q-' + q">{{ t.questions[q].text }}</h3>
+          <div class="tw-answers" role="group" [attr.aria-labelledby]="'tw-q-' + q">
+            @for (a of answers; track a) {
+              <button type="button" [class]="'tw-answer ' + a" [class.on]="state().answers[q] === a"
+                [attr.aria-pressed]="state().answers[q] === a" (click)="answer(q, a)">{{ t.answers[a] }}</button>
+            }
+          </div>
+          <button type="button" class="tw-ghost" [attr.aria-expanded]="showWhy()" (click)="showWhy.set(!showWhy())">ⓘ {{ t.info }}</button>
+          @if (showWhy()) {
+            <p class="tw-note">{{ t.questions[q].why }}</p>
+          }
+        </div>
+      }
+    }
+
+    @case ('describe') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q"><label for="tw-description">{{ t.describeLabel }}</label></h3>
+        <textarea id="tw-description" rows="4" [attr.lang]="lang" [placeholder]="t.describePlaceholder" aria-describedby="tw-describe-hint"
+          [value]="state().description" [attr.aria-invalid]="errors().includes('describeUnknown')" (input)="describe($any($event.target).value)"></textarea>
+        <p class="tw-note" id="tw-describe-hint">{{ t.describeHint }}</p>
+        @if (noWords()) {
+          <p class="tw-error" role="alert">{{ t.noKnownWords }}</p>
+        }
+        @if (failed()) {
+          <p class="tw-error" role="alert">{{ t.loadError }}</p>
         }
       </div>
     }
 
-    @switch (step()) {
-      @case ('category') {
-        <fieldset>
-          <legend>{{ t.categoryQuestion }}</legend>
-          <div class="tw-options">
-            @for (c of categories; track c) {
-              <label class="tw-option" [class.on]="category() === c">
-                <input type="radio" name="tw-category" [checked]="category() === c" (change)="chooseCategory(c)" />
-                <span class="tw-option-title">{{ t.categories[c].label }}</span>
-                <span class="tw-option-text"><strong>{{ t.includesLabel }}:</strong> {{ t.categories[c].includes }}</span>
-                @if (t.categories[c].excludes) {
-                  <span class="tw-option-text"><strong>{{ t.excludesLabel }}:</strong> {{ t.categories[c].excludes }}</span>
+    @case ('review') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q">{{ t.resultTitle }}</h3>
+
+        <div class="tw-result">
+          @if (effective(); as e) {
+            <div class="tw-verdict">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[e]" /></svg>
+              <div>
+                <span class="tw-kicker">{{ top() ? t.likely : t.yourChoice }}</span>
+                <strong>{{ top() ? className(top()!.label) : t.categories[e].label }}</strong>
+                @if (top() && category() !== 'unknown') {
+                  <span class="tw-agree" [class.differs]="!agrees()">{{ agrees() ? t.agrees : t.differs }}</span>
                 }
-              </label>
-            }
-          </div>
-        </fieldset>
-      }
-      @case ('detail') {
-        @if (category(); as c) {
-          <fieldset>
-            <legend>{{ t.detailQuestion }}</legend>
-            <p class="tw-hint">{{ t.illustrative }}</p>
-            <div class="tw-options">
-              @for (d of t.categories[c].details; track d.key) {
-                <label class="tw-option" [class.on]="state().detail === d.key">
-                  <input type="radio" name="tw-detail" [checked]="state().detail === d.key" (change)="chooseDetail(d.key)" />
-                  <span class="tw-option-title">{{ d.label }}</span>
-                  <span class="tw-option-text"><strong>{{ t.fitsLabel }}:</strong> {{ d.fits }}</span>
-                  <span class="tw-option-text"><strong>{{ t.notFitsLabel }}:</strong> {{ d.notFits }}</span>
-                </label>
-              }
+              </div>
             </div>
-          </fieldset>
-        }
-      }
-      @case ('questions') {
-        <p class="tw-hint">{{ t.questionsIntro }}</p>
-        @for (q of questions(); track q) {
-          <fieldset class="tw-question">
-            <legend>{{ t.questions[q].text }}</legend>
-            <p class="tw-why" [id]="'tw-why-' + q">{{ t.questions[q].why }}</p>
-            <div class="tw-answers">
-              @for (a of answers; track a) {
-                <label class="tw-answer" [class.on]="state().answers[q] === a">
-                  <input type="radio" [name]="'tw-q-' + q" [checked]="state().answers[q] === a" [attr.aria-describedby]="'tw-why-' + q" (change)="answer(q, a)" />
-                  {{ t.answers[a] }}
-                </label>
-              }
-            </div>
-          </fieldset>
-        }
-        @if (urgent()) {
-          <p class="tw-urgent" role="alert">{{ t.urgent }}</p>
-        }
-      }
-      @case ('describe') {
-        <label class="tw-label" for="tw-description">{{ t.describeLabel }}</label>
-        <p class="tw-hint" id="tw-describe-hint">{{ category() === 'unknown' ? t.describeRequired : t.describeOptional }}</p>
-        <ul class="tw-tips">
-          @for (tip of t.describeTips; track tip) {
-            <li>{{ tip }}</li>
           }
-        </ul>
-        <textarea id="tw-description" rows="4" [attr.lang]="lang" aria-describedby="tw-describe-hint" [value]="state().description"
-          [attr.aria-invalid]="errors().includes('describeUnknown')" (input)="describe($any($event.target).value)"></textarea>
-        @if (category() !== 'unknown') {
-          <button type="button" class="btn btn-outline small" [disabled]="!state().description.trim() || suggesting()" (click)="askSuggestion()">{{ t.askSuggestion }}</button>
-        }
-        @if (suggestion() && category() !== 'unknown') {
-          <div class="tw-suggestion" aria-live="polite">
-            <p>{{ suggestionText() }} {{ agrees() ? t.suggestionAgrees : t.suggestionDiffers }}</p>
-            @if (!agrees()) {
-              <button type="button" class="btn btn-outline small" (click)="useSuggestion(); edit('detail')">{{ t.useSuggestion }}</button>
+          @if (ranking(); as r) {
+            <ul class="tw-bars">
+              @for (row of r; track row.label; let i = $index) {
+                <li [class.top]="i === 0">
+                  <span class="tw-bar-label">{{ className(row.label) }}</span>
+                  <span class="tw-bar-track" aria-hidden="true"><span [style.width.%]="grown() ? row.p * 100 : 0" [style.--i]="i"></span></span>
+                  <span class="tw-bar-value">{{ percent(row.p) }}</span>
+                </li>
+              }
+            </ul>
+            @if (modelNote) {
+              <p class="tw-note">{{ modelNote }}</p>
             }
-          </div>
-        }
-      }
-      @case ('review') {
-        <h4 class="tw-subtitle">{{ t.reviewTitle }}</h4>
-        @if (urgent()) {
-          <p class="tw-urgent" role="alert">{{ t.urgent }}</p>
-        }
-        <dl class="tw-review">
-          <div>
-            <dt>{{ t.reviewCategory }}</dt>
-            <dd>
-              {{ category() ? t.categories[category()!].label : '' }}
-              @if (category() === 'unknown' && suggestion()) { · {{ suggestionText() }} }
-            </dd>
-            <dd><button type="button" class="tw-link" (click)="edit('category')">{{ t.change }}</button></dd>
-          </div>
+            @if (category() !== 'unknown' && !agrees()) {
+              <button type="button" class="btn btn-outline small" (click)="useSuggestion()">{{ t.useSuggestion }}</button>
+            }
+          }
+        </div>
+
+        <h4 class="tw-sub">{{ t.answersTitle }}</h4>
+        <ul class="tw-chips" [attr.aria-describedby]="'tw-edit-hint'">
+          <li><button type="button" (click)="edit('category')">{{ category() ? t.categories[category()!].label : '' }}</button></li>
           @if (detailText(); as d) {
-            <div>
-              <dt>{{ t.reviewDetail }}</dt>
-              <dd>{{ d.label }}</dd>
-              <dd><button type="button" class="tw-link" (click)="edit('detail')">{{ t.change }}</button></dd>
-            </div>
+            <li><button type="button" (click)="edit('detail')">{{ d.short }}</button></li>
           }
           @for (q of questions(); track q) {
+            <li>
+              <button type="button" (click)="edit('questions', q)">
+                {{ t.questions[q].short }} <b>{{ state().answers[q] ? t.answers[state().answers[q]!] : '' }}</b>
+              </button>
+            </li>
+          }
+          @if (state().description.trim()) {
+            <li><button type="button" class="text" [attr.lang]="lang" (click)="edit('describe')">“{{ state().description }}”</button></li>
+          }
+        </ul>
+        <p class="tw-note" id="tw-edit-hint">{{ t.editHint }}</p>
+
+        <div class="tw-columns">
+          @if (effective(); as e) {
             <div>
-              <dt>{{ t.questions[q].text }}</dt>
-              <dd>{{ state().answers[q] ? t.answers[state().answers[q]!] : '' }}</dd>
-              <dd><button type="button" class="tw-link" (click)="edit('questions')">{{ t.change }}</button></dd>
+              <h4 class="tw-sub">{{ t.evidenceTitle }}</h4>
+              <ul class="tw-check">
+                @for (ev of t.categories[e].evidence; track ev) {
+                  <li>{{ ev }}</li>
+                }
+              </ul>
             </div>
           }
           <div>
-            <dt>{{ t.reviewDescription }}</dt>
-            <dd [attr.lang]="lang">{{ state().description || t.none }}</dd>
-            <dd><button type="button" class="tw-link" (click)="edit('describe')">{{ t.change }}</button></dd>
+            <h4 class="tw-sub">{{ t.nextTitle }}</h4>
+            <ul class="tw-links">
+              @for (n of t.nextSteps; track n.label) {
+                <li><a [href]="n.link" target="_blank" rel="noopener noreferrer">{{ n.label }} <span aria-hidden="true">↗</span></a></li>
+              }
+            </ul>
           </div>
-          <div>
-            <dt>{{ t.modelClass }}</dt>
-            <dd>{{ modelClass() }}</dd>
-          </div>
-        </dl>
-        @if (effective(); as e) {
-          <h4 class="tw-subtitle">{{ t.evidenceTitle }}</h4>
-          <ul class="tw-tips">
-            @for (ev of t.categories[e].evidence; track ev) {
-              <li>{{ ev }}</li>
-            }
-          </ul>
-        }
-        <h4 class="tw-subtitle">{{ t.nextTitle }}</h4>
-        <ol class="tw-next">
-          @for (n of t.nextSteps; track n.text) {
-            <li>{{ n.text }} @if (n.link) { <a [href]="n.link" target="_blank" rel="noopener noreferrer">{{ n.label }}</a> }</li>
-          }
-        </ol>
-      }
+        </div>
+      </div>
     }
+  }
 
-    <div class="tw-nav">
-      @if (index() > 0) {
-        <button type="button" class="btn btn-outline" (click)="back()">{{ t.back }}</button>
-      }
-      @if (step() !== 'review') {
-        <button type="submit" class="btn btn-primary" [disabled]="suggesting()">{{ t.next }}</button>
-      } @else {
-        <button type="button" class="btn btn-outline" (click)="restart()">{{ t.restart }}</button>
+  @if (errors().length) {
+    <div class="tw-error" role="alert">
+      @for (e of errors(); track e) {
+        <p>{{ t.errors[e] }}</p>
       }
     </div>
-  </form>
+  }
+
+  <div class="tw-nav">
+    @if (index() > 0) {
+      <button type="button" class="btn btn-outline" (click)="back()">← {{ t.back }}</button>
+    }
+    @if (step() === 'describe') {
+      @if (category() !== 'unknown') {
+        <button type="button" class="btn btn-outline" (click)="skip()">{{ t.skip }}</button>
+      }
+      <button type="button" class="btn btn-primary" [disabled]="analysing() || !state().description.trim()" (click)="analyse()">
+        {{ analysing() ? t.classifying : t.classify }}
+      </button>
+    }
+    @if (step() === 'review') {
+      <button type="button" class="btn btn-primary" (click)="restart()">{{ t.restart }}</button>
+    }
+  </div>
 </section>

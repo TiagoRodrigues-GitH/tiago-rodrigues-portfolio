@@ -135,7 +135,7 @@ export interface StreetTranslations {
   sourcesNote: string;
 }
 
-const REFERENCES_NOTE = 'IBGE (2024). Base de Faces de Logradouros do Brasil, Censo Demográfico 2022; IBGE (2024). Bairros, Censo 2022; IBGE, API de malhas territoriais v3 e API de localidades v1.';
+const REFERENCES_NOTE = 'IBGE (2024). Base de Faces de Logradouros do Brasil, Censo Demográfico 2022; IBGE (2024). Bairros, Censo 2022; IBGE, API de malhas territoriais v3 e API de localidades v1; mão única: © contribuidores do OpenStreetMap (ODbL 1.0), via Overpass API.';
 
 export const STREET_I18N: Record<Locale, StreetTranslations> = {
   pt: {
@@ -145,7 +145,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     intro:
       'Navegue do Brasil ao estado, ao município e ao bairro com as malhas oficiais do IBGE. Em seis áreas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo e o ABC Paulista), as ruas foram reconstruídas a partir das faces de quadra do Censo 2022 e transformadas em um grafo: escolha origem e destino e acompanhe, passo a passo, como dez algoritmos exatos, heurísticos e estocásticos constroem a rota.',
     honesty:
-      'Tudo roda no seu navegador, sem servidor. As distâncias são em metros pelo eixo das ruas; os dados do IBGE não trazem sentido de circulação nem velocidade, então a rota é a mais curta, não a mais rápida, e todas as ruas são tratadas como de mão dupla.',
+      'Tudo roda no seu navegador, sem servidor. As distâncias são em metros pelo eixo das ruas; o sentido das ruas de mão única vem do OpenStreetMap (setas a partir do zoom 14). Sem dados de velocidade, a rota é a mais curta, não a mais rápida.',
     back: 'Todos os projetos',
     onThisPage: 'Nesta página',
     loadError: 'Não foi possível carregar os dados do mapa.',
@@ -334,7 +334,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     via: 'Principais vias',
 
     onewayTitle: 'Mão única: um grafo direcionado didático',
-    onewayLede: 'Nas ruas reais desta página todas as vias são de mão dupla, porque os dados do IBGE não informam o sentido. Este exemplo pequeno mostra o que muda quando há ruas de mão única: cada uma vira uma aresta que só pode ser percorrida no sentido da seta.',
+    onewayLede: 'No mapa, as ruas de mão única vêm do OpenStreetMap. Este exemplo pequeno mostra o que muda: cada uma vira uma aresta que só pode ser percorrida no sentido da seta.',
     onewayNote: 'Exemplo ilustrativo, com ruas fictícias; não representa nenhuma cidade.',
     onewayRespect: 'Respeitar a mão única',
     onewayFigure: 'Grade de 6 por 5 cruzamentos com ruas de mão única (setas) e de mão dupla (sem seta).',
@@ -354,7 +354,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     algorithmsLede: 'Exatos garantem a rota mais curta; heurísticos e estocásticos trocam essa garantia por flexibilidade (vários objetivos, restrições). Aqui todos resolvem o mesmo problema, para que a diferença apareça. V é o número de cruzamentos e E o de trechos de rua.',
     limitsTitle: 'Limitações',
     limits: [
-      'Sem sentido de circulação, velocidades ou restrições de conversão: a rota é a mais curta, não a mais rápida. Dados de mão única existem no OpenStreetMap (licença ODbL, com atribuição), mas exigiriam casar cada via do OSM com os eixos derivados do IBGE; o motor já aceita arestas direcionadas, como mostra o exemplo didático.',
+      'Mão única vem do OpenStreetMap (ODbL), casada aos eixos do IBGE por proximidade e ângulo; onde o casamento falha (avenidas largas, como em Brasília), a rua fica de mão dupla. Sem velocidades nem restrições de conversão: a rota é a mais curta, não a mais rápida.',
       'Avenidas largas podem virar dois eixos paralelos; vias sem face de quadra (rodovias, pontes, avenidas junto a parques) ficam de fora, o que divide algumas cidades em partes.',
       'As metaheurísticas são estocásticas: uma comparação justa usa várias sementes e muitos pares de origem e destino (no estudo, não nesta demonstração).',
       'São Paulo tem cerca de 20 MB de ruas: em celulares, o carregamento e a memória podem pesar.',
@@ -369,7 +369,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     intro:
       'Navigate from Brazil to a state, a municipality and a neighbourhood using the official IBGE boundaries. In six areas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo and the ABC Paulista region), the streets were rebuilt from the 2022 Census block faces and turned into a graph: pick an origin and a destination and watch, step by step, how ten exact, heuristic and stochastic algorithms build the route.',
     honesty:
-      'Everything runs in your browser, with no server. Distances are metres along the street centre lines; the IBGE data contain neither one-way streets nor speeds, so the route is the shortest, not the fastest, and every street is treated as two-way.',
+      'Everything runs in your browser, with no server. Distances are metres along the street centre lines; the direction of one-way streets comes from OpenStreetMap (arrows from zoom 14). Without speed data, the route is the shortest, not the fastest.',
     back: 'All projects',
     onThisPage: 'On this page',
     loadError: 'The map data could not be loaded.',
@@ -558,7 +558,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     via: 'Main streets',
 
     onewayTitle: 'One-way streets: a small directed graph',
-    onewayLede: 'On the real streets of this page every street is two-way, because the IBGE data do not record the direction of traffic. This small example shows what changes with one-way streets: each becomes an edge that can only be travelled in the direction of its arrow.',
+    onewayLede: 'On the map, one-way streets come from OpenStreetMap. This small example shows what changes: each becomes an edge that can only be travelled in the direction of its arrow.',
     onewayNote: 'Illustrative example with fictitious streets; it does not represent any city.',
     onewayRespect: 'Respect one-way streets',
     onewayFigure: 'Grid of 6 by 5 intersections with one-way streets (arrows) and two-way streets (no arrow).',
@@ -578,7 +578,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     algorithmsLede: 'Exact algorithms guarantee the shortest route; heuristic and stochastic ones trade that guarantee for flexibility (several objectives, constraints). Here they all solve the same problem, so the difference shows. V is the number of intersections and E the number of street segments.',
     limitsTitle: 'Limitations',
     limits: [
-      'No one-way streets, speeds or turn restrictions: the route is the shortest, not the fastest. One-way data exist in OpenStreetMap (ODbL licence, attribution required), but each OSM way would have to be matched to the centre lines derived from IBGE; the engine already accepts directed edges, as the small example shows.',
+      'One-way streets come from OpenStreetMap (ODbL), matched to the IBGE centre lines by distance and angle; where matching fails (wide avenues, as in Brasília), the street stays two-way. No speeds or turn restrictions: the route is the shortest, not the fastest.',
       'Wide avenues may become two parallel centre lines; roads without block faces (highways, bridges, avenues along parks) are missing, which splits some cities into parts.',
       'Metaheuristics are stochastic: a fair comparison uses several seeds and many origin-destination pairs (in the study, not in this demo).',
       'São Paulo has about 20 MB of streets: on phones, loading time and memory use can be noticeable.',
@@ -593,7 +593,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     intro:
       'Navigieren Sie mit den amtlichen Grenzen des IBGE von Brasilien zum Bundesstaat, zur Gemeinde und zum Stadtviertel. In sechs Gebieten (Londrina, Curitiba, Florianópolis, Brasília, São Paulo und die Region ABC Paulista) wurden die Straßen aus den Blockseiten des Zensus 2022 rekonstruiert und in einen Graphen überführt: Wählen Sie Start und Ziel und verfolgen Sie Schritt für Schritt, wie zehn exakte, heuristische und stochastische Algorithmen die Route aufbauen.',
     honesty:
-      'Alles läuft in Ihrem Browser, ohne Server. Entfernungen sind Meter entlang der Straßenachsen; die IBGE-Daten enthalten weder Einbahnstraßen noch Geschwindigkeiten, die Route ist also die kürzeste, nicht die schnellste, und jede Straße gilt als in beide Richtungen befahrbar.',
+      'Alles läuft in Ihrem Browser, ohne Server. Entfernungen sind Meter entlang der Straßenachsen; die Richtung der Einbahnstraßen stammt aus OpenStreetMap (Pfeile ab Zoomstufe 14). Ohne Geschwindigkeitsdaten ist die Route die kürzeste, nicht die schnellste.',
     back: 'Alle Projekte',
     onThisPage: 'Auf dieser Seite',
     loadError: 'Die Kartendaten konnten nicht geladen werden.',
@@ -782,7 +782,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     via: 'Hauptstraßen',
 
     onewayTitle: 'Einbahnstraßen: ein kleiner gerichteter Graph',
-    onewayLede: 'Auf den echten Straßen dieser Seite sind alle Straßen in beide Richtungen befahrbar, weil die IBGE-Daten die Fahrtrichtung nicht erfassen. Dieses kleine Beispiel zeigt, was sich mit Einbahnstraßen ändert: Jede wird zu einer Kante, die nur in Pfeilrichtung befahren werden darf.',
+    onewayLede: 'Auf der Karte stammen die Einbahnstraßen aus OpenStreetMap. Dieses kleine Beispiel zeigt, was sich ändert: Jede wird zu einer Kante, die nur in Pfeilrichtung befahren werden darf.',
     onewayNote: 'Anschauliches Beispiel mit erfundenen Straßen; es stellt keine Stadt dar.',
     onewayRespect: 'Einbahnstraßen beachten',
     onewayFigure: 'Raster aus 6 mal 5 Kreuzungen mit Einbahnstraßen (Pfeile) und Straßen in beide Richtungen (ohne Pfeil).',
@@ -802,7 +802,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     algorithmsLede: 'Exakte Algorithmen garantieren die kürzeste Route; heuristische und stochastische tauschen diese Garantie gegen Flexibilität (mehrere Ziele, Nebenbedingungen). Hier lösen alle dasselbe Problem, damit der Unterschied sichtbar wird. V ist die Zahl der Kreuzungen, E die Zahl der Straßenabschnitte.',
     limitsTitle: 'Grenzen',
     limits: [
-      'Keine Einbahnstraßen, Geschwindigkeiten oder Abbiegeverbote: Die Route ist die kürzeste, nicht die schnellste. Einbahndaten gibt es in OpenStreetMap (Lizenz ODbL, mit Namensnennung), aber jeder OSM-Weg müsste den aus IBGE-Daten abgeleiteten Achsen zugeordnet werden; die Engine unterstützt gerichtete Kanten bereits, wie das kleine Beispiel zeigt.',
+      'Einbahnstraßen stammen aus OpenStreetMap (ODbL), den IBGE-Achsen nach Abstand und Winkel zugeordnet; wo die Zuordnung scheitert (breite Alleen, etwa in Brasília), bleibt die Straße in beide Richtungen befahrbar. Keine Geschwindigkeiten oder Abbiegeverbote: Die Route ist die kürzeste, nicht die schnellste.',
       'Breite Alleen können zu zwei parallelen Achsen werden; Straßen ohne Blockseiten (Fernstraßen, Brücken, Alleen an Parks) fehlen, wodurch manche Städte in Teile zerfallen.',
       'Metaheuristiken sind stochastisch: Ein fairer Vergleich nutzt mehrere Startwerte und viele Start-Ziel-Paare (in der Studie, nicht in dieser Demo).',
       'São Paulo umfasst etwa 20 MB Straßendaten: Auf Smartphones können Ladezeit und Speicherbedarf spürbar sein.',

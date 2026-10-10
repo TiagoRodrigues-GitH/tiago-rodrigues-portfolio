@@ -1,15 +1,15 @@
 import { Component, ElementRef, Input, ViewChild, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { LabDataService, MODEL_NAMES, NhtsaData, NhtsaSample } from './lab-data';
-import { Classification, ClassifierData, ComplaintClassifier, SearchLanguage } from './lab-engine';
+import { ClassifierData, ComplaintClassifier, SearchLanguage } from './lab-engine';
 import { LabTranslations } from './lab-i18n';
 import { TRIAGE_I18N, TriageText } from './triage/triage-content';
 import { Suggest, TriageWizardComponent } from './triage/triage-wizard.component';
 
 /**
- * Defect complaint triage: a TF-IDF + logistic regression classifier that runs in the browser (loaded on first
+ * Defect complaint triage: the guided wizard, backed by a TF-IDF + logistic regression classifier that runs in the browser (loaded on first
  * use, 1.1 MB; English plus machine-translated Portuguese and German training data), and held-out complaints with
- * every model's prediction, shown in the page language (hand translations; the models classified the English original).
+ * every model's prediction (collapsed; any of them can be sent to the wizard), shown in the page language (hand translations; the models classified the English original).
  */
 @Component({
   selector: 'app-defect-triage',
@@ -28,28 +28,24 @@ export class DefectTriageComponent {
   @Input({ required: true }) lang = 'pt-BR';
   @Input({ required: true }) locale: SearchLanguage = 'pt';
 
-  @ViewChild('description') private description?: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(TriageWizardComponent) private wizard?: TriageWizardComponent;
+  @ViewChild(TriageWizardComponent, { read: ElementRef }) private wizardHost?: ElementRef<HTMLElement>;
 
   get triage(): TriageText {
     return TRIAGE_I18N[this.locale];
   }
 
-  /** The guided triage asks the same browser classifier for the most likely class of a description. */
+  /** The guided triage asks the browser classifier to rank the classes of a description. */
   readonly suggest: Suggest = async (text) => {
     const classifier = await this.ensureClassifier();
     if (!classifier) return null;
     const { probabilities, knownTerms } = classifier.classify(text);
-    if (!knownTerms) return null;
-    const best = probabilities.indexOf(Math.max(...probabilities));
-    return { label: classifier.labels[best], p: probabilities[best] };
+    if (!knownTerms) return [];
+    return classifier.labels.map((label, i) => ({ label, p: probabilities[i] })).sort((a, b) => b.p - a.p);
   };
 
   readonly classNameOf = (label: string): string => this.className(label);
 
-  readonly text = signal('');
-  readonly loading = signal(false);
-  readonly failed = signal(false);
-  readonly result = signal<Classification | null>(null);
   readonly filter = signal('');
   private readonly classifier = signal<ComplaintClassifier | null>(null);
   private readonly metrics = signal<ClassifierData['metrics'] | null>(null);
@@ -79,18 +75,6 @@ export class DefectTriageComponent {
     this.shown.set(6);
   }
 
-  /** Classes sorted by probability, for the bar chart. */
-  readonly ranking = computed(() => {
-    const result = this.result();
-    const classifier = this.classifier();
-    if (!result || !classifier) {
-      return [];
-    }
-    return classifier.labels
-      .map((label, i) => ({ label, p: result.probabilities[i] }))
-      .sort((a, b) => b.p - a.p);
-  });
-
   get browserModelNote(): string {
     const m = this.metrics();
     if (!m) {
@@ -117,26 +101,10 @@ export class DefectTriageComponent {
     this.originals.set(next);
   }
 
-  async classify(event?: Event): Promise<void> {
-    event?.preventDefault();
-    if (!this.text().trim()) {
-      return;
-    }
-    const classifier = await this.ensureClassifier();
-    if (classifier) {
-      this.result.set(classifier.classify(this.text()));
-    }
-  }
-
-  useText(text: string): void {
-    this.text.set(text);
-    this.description?.nativeElement.focus();
-    void this.classify();
-  }
-
+  /** A sample complaint goes into the triage as a description to analyse. */
   trySample(sample: NhtsaSample): void {
-    this.useText(this.sampleText(sample));
-    this.description?.nativeElement.scrollIntoView({ block: 'center' });
+    this.wizard?.prefill(this.sampleText(sample));
+    this.wizardHost?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   className(label: string): string {
@@ -155,10 +123,6 @@ export class DefectTriageComponent {
     return Object.entries(sample.predictions).map(([key, label]) => ({ key, label }));
   }
 
-  percent(p: number): string {
-    return new Intl.NumberFormat(this.lang, { style: 'percent', maximumFractionDigits: 0 }).format(p);
-  }
-
   private number(value: number, digits: number): string {
     return new Intl.NumberFormat(this.lang, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
   }
@@ -167,18 +131,13 @@ export class DefectTriageComponent {
     if (this.classifier()) {
       return this.classifier();
     }
-    this.loading.set(true);
-    this.failed.set(false);
     try {
       const model = await firstValueFrom(this.lab.classifier());
       this.classifier.set(new ComplaintClassifier(model));
       this.metrics.set(model.metrics);
       return this.classifier();
     } catch {
-      this.failed.set(true);
       return null;
-    } finally {
-      this.loading.set(false);
     }
   }
 }

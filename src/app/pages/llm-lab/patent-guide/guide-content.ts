@@ -38,6 +38,7 @@ export interface StatsText {
   notListed: string;
   notPublished: string;
   partialYear: string;
+  dataUntil: string;
   rank: string;
   method: string[];
   sourcesLabel: string;
@@ -248,11 +249,11 @@ const PT: GuideText = {
       'br-nonresidents': { label: 'Brasil · empresas estrangeiras', indicator: 'Depósitos de pedidos de patente de invenção no INPI por depositantes não residentes, por ano de depósito.' },
       'br-residents': { label: 'Brasil · empresas residentes', indicator: 'Depósitos de pedidos de patente de invenção no INPI por depositantes residentes, por ano de depósito. Só empresas: universidades, institutos, fundações e pessoas físicas ficam de fora.' },
       epo: { label: 'Europa · EPO', indicator: 'Pedidos de patente europeia no Instituto Europeu de Patentes (EPO): depósitos diretos e pedidos PCT que entraram na fase europeia, contados pelo primeiro requerente, com grupos consolidados pelo EPO. O EPO atende 39 países, não só a União Europeia.' },
-      us: { label: 'Estados Unidos · USPTO', indicator: '' },
+      us: { label: 'Estados Unidos · USPTO', indicator: 'Patentes de utilidade concedidas pelo USPTO, por ano de concessão, contadas pelo primeiro titular (assignee) que é empresa, com nomes desambiguados pelo PatentsView. São concessões, não pedidos: não compare com INPI ou EPO.' },
       cn: { label: 'China · CNIPA', indicator: '' },
     },
     unavailable: {
-      us: { text: 'Não encontramos ranking oficial de empresas para 2020 a 2026: a edição mais recente do relatório "Patenting by Organizations" do USPTO que localizamos cobre até 2005, e os rankings recentes divulgados na imprensa são de terceiros. Os dados abertos do USPTO (PatentsView) permitiriam calcular o indicador; isso fica como próximo passo.', links: [{ label: 'USPTO: conjuntos de dados para pesquisa', link: 'usptoDatasets' }, { label: 'PatentsView (dados do USPTO)', link: 'patentsView' }] },
+      us: { text: 'O USPTO não publica ranking oficial de empresas para 2020 a 2026 (o relatório “Patenting by Organizations” mais recente que localizamos cobre até 2005). O indicador é calculado a partir dos dados abertos do USPTO (PatentsView, concessões até 31/12/2025), cujo download exige uma chave de API gratuita do USPTO; esta versão do site ainda não inclui esses dados.', links: [{ label: 'USPTO: conjuntos de dados para pesquisa', link: 'usptoDatasets' }, { label: 'PatentsView (dados do USPTO)', link: 'patentsView' }] },
       cn: { text: 'Não encontramos ranking de requerentes publicado pela CNIPA em fonte oficial verificável para 2020 a 2026; por isso não há gráfico.', links: [{ label: 'CNIPA', link: 'cnipa' }] },
     },
     companiesLabel: 'Empresas no gráfico',
@@ -264,6 +265,7 @@ const PT: GuideText = {
     notListed: 'fora da lista publicada (no máximo {n})',
     notPublished: 'sem dados publicados',
     partialYear: '2026: ano em curso; os escritórios publicam o ranking no ano seguinte.',
+    dataUntil: 'Dados até {date}.',
     rank: 'posição',
     method: [
       'Fontes: rankings anuais do INPI (os 50 maiores depositantes de cada ano; os empates no fim da lista são todos listados) e Patent Index/Technology Dashboard do EPO (50 maiores requerentes).',
@@ -444,11 +446,11 @@ const EN: GuideText = {
       'br-nonresidents': { label: 'Brazil · foreign companies', indicator: 'Invention patent applications filed at INPI by non-resident applicants, by filing year.' },
       'br-residents': { label: 'Brazil · resident companies', indicator: 'Invention patent applications filed at INPI by resident applicants, by filing year. Companies only: universities, institutes, foundations and individuals are left out.' },
       epo: { label: 'Europe · EPO', indicator: 'European patent applications at the European Patent Office (EPO): direct filings and PCT applications that entered the European phase, counted by first-named applicant, with groups consolidated by the EPO. The EPO serves 39 countries, not only the European Union.' },
-      us: { label: 'United States · USPTO', indicator: '' },
+      us: { label: 'United States · USPTO', indicator: 'Utility patents granted by the USPTO, by grant year, counted by the first assignee that is a company, with names disambiguated by PatentsView. These are grants, not applications: do not compare them with INPI or the EPO.' },
       cn: { label: 'China · CNIPA', indicator: '' },
     },
     unavailable: {
-      us: { text: 'We found no official company ranking for 2020 to 2026: the latest edition of the USPTO’s “Patenting by Organizations” report we could locate covers up to 2005, and the recent rankings in the press come from third parties. The USPTO’s open data (PatentsView) would allow the indicator to be computed; that is a next step.', links: [{ label: 'USPTO: research datasets', link: 'usptoDatasets' }, { label: 'PatentsView (USPTO data)', link: 'patentsView' }] },
+      us: { text: 'The USPTO publishes no official company ranking for 2020 to 2026 (the latest “Patenting by Organizations” report we could locate covers up to 2005). The indicator is computed from the USPTO’s open data (PatentsView, grants up to 31 December 2025), whose download needs a free USPTO API key; this version of the site does not include those data yet.', links: [{ label: 'USPTO: research datasets', link: 'usptoDatasets' }, { label: 'PatentsView (USPTO data)', link: 'patentsView' }] },
       cn: { text: 'We found no applicant ranking published by CNIPA in a verifiable official source for 2020 to 2026, so there is no chart.', links: [{ label: 'CNIPA', link: 'cnipa' }] },
     },
     companiesLabel: 'Companies in the chart',
@@ -460,6 +462,7 @@ const EN: GuideText = {
     notListed: 'not in the published list (at most {n})',
     notPublished: 'no data published',
     partialYear: '2026: current year; the offices publish the ranking in the following year.',
+    dataUntil: 'Data up to {date}.',
     rank: 'rank',
     method: [
       'Sources: INPI’s annual rankings (the 50 largest applicants of each year; ties at the end of the list are all included) and the EPO Patent Index/Technology Dashboard (top 50 applicants).',
@@ -640,11 +643,11 @@ const DE: GuideText = {
       'br-nonresidents': { label: 'Brasilien · ausländische Unternehmen', indicator: 'Anmeldungen von Erfindungspatenten beim INPI durch nicht ansässige Anmelder, nach Anmeldejahr.' },
       'br-residents': { label: 'Brasilien · ansässige Unternehmen', indicator: 'Anmeldungen von Erfindungspatenten beim INPI durch ansässige Anmelder, nach Anmeldejahr. Nur Unternehmen: Hochschulen, Institute, Stiftungen und natürliche Personen sind ausgenommen.' },
       epo: { label: 'Europa · EPA', indicator: 'Europäische Patentanmeldungen beim Europäischen Patentamt (EPA): Direktanmeldungen und PCT-Anmeldungen in der europäischen Phase, gezählt nach dem erstgenannten Anmelder, mit vom EPA konsolidierten Konzernen. Das EPA ist für 39 Staaten zuständig, nicht nur für die Europäische Union.' },
-      us: { label: 'USA · USPTO', indicator: '' },
+      us: { label: 'USA · USPTO', indicator: 'Vom USPTO erteilte Utility-Patente, nach Erteilungsjahr, gezählt nach dem ersten Inhaber (Assignee), der ein Unternehmen ist, mit von PatentsView bereinigten Namen. Es sind Erteilungen, keine Anmeldungen: nicht mit INPI oder EPA vergleichen.' },
       cn: { label: 'China · CNIPA', indicator: '' },
     },
     unavailable: {
-      us: { text: 'Für 2020 bis 2026 haben wir keine amtliche Rangliste der Unternehmen gefunden: Die neueste auffindbare Ausgabe des USPTO-Berichts „Patenting by Organizations“ reicht bis 2005, und die neueren Ranglisten in der Presse stammen von Dritten. Mit den offenen Daten des USPTO (PatentsView) ließe sich die Kennzahl berechnen; das ist ein nächster Schritt.', links: [{ label: 'USPTO: Forschungsdatensätze', link: 'usptoDatasets' }, { label: 'PatentsView (Daten des USPTO)', link: 'patentsView' }] },
+      us: { text: 'Das USPTO veröffentlicht für 2020 bis 2026 keine amtliche Rangliste der Unternehmen (der neueste auffindbare Bericht „Patenting by Organizations“ reicht bis 2005). Die Kennzahl wird aus den offenen Daten des USPTO berechnet (PatentsView, Erteilungen bis 31.12.2025), deren Download einen kostenlosen API-Schlüssel des USPTO erfordert; diese Version der Website enthält diese Daten noch nicht.', links: [{ label: 'USPTO: Forschungsdatensätze', link: 'usptoDatasets' }, { label: 'PatentsView (Daten des USPTO)', link: 'patentsView' }] },
       cn: { text: 'Für 2020 bis 2026 haben wir keine von der CNIPA in einer überprüfbaren amtlichen Quelle veröffentlichte Anmelderrangliste gefunden; daher gibt es kein Diagramm.', links: [{ label: 'CNIPA', link: 'cnipa' }] },
     },
     companiesLabel: 'Unternehmen im Diagramm',
@@ -656,6 +659,7 @@ const DE: GuideText = {
     notListed: 'nicht in der veröffentlichten Liste (höchstens {n})',
     notPublished: 'keine Daten veröffentlicht',
     partialYear: '2026: laufendes Jahr; die Ämter veröffentlichen die Rangliste im Folgejahr.',
+    dataUntil: 'Daten bis {date}.',
     rank: 'Rang',
     method: [
       'Quellen: die jährlichen Ranglisten des INPI (die 50 größten Anmelder jedes Jahres; Gleichstände am Listenende sind alle enthalten) und der Patent Index/Technology Dashboard des EPA (50 größte Anmelder).',

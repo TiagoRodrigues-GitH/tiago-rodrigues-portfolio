@@ -1,53 +1,7 @@
-<app-triage-wizard [t]="triage" [lang]="lang" [suggest]="suggest" [className]="classNameOf" />
+<app-triage-wizard [t]="triage" [lang]="lang" [suggest]="suggest" [className]="classNameOf" [modelNote]="browserModelNote" />
 
-<div class="triage">
-  <form class="describe" (submit)="classify($event)">
-    <label class="field-label" for="defect-text">{{ t.describe }}</label>
-    <textarea
-      #description
-      id="defect-text"
-      rows="4"
-      [attr.lang]="lang"
-      [value]="text()"
-      (input)="text.set($any($event.target).value)"
-    ></textarea>
-    <div class="actions">
-      <button class="btn btn-primary" type="submit" [disabled]="!text().trim() || loading()">{{ t.classify }}</button>
-      <span class="mono-label">{{ t.examples }}:</span>
-      @for (example of t.exampleTexts; track example.label) {
-        <button class="btn btn-outline small" type="button" (click)="useText(example.text)">{{ example.label }}</button>
-      }
-    </div>
-  </form>
-
-  <div class="result" aria-live="polite">
-    @if (loading()) {
-      <p class="hint">{{ t.loadingModel }}</p>
-    } @else if (failed()) {
-      <p class="hint" role="alert">{{ t.loadError }}</p>
-    } @else if (result(); as result) {
-      @if (result.knownTerms === 0) {
-        <p class="hint">{{ t.unknownWords }}</p>
-      } @else {
-        <p class="verdict">
-          {{ t.likely }}: <strong>{{ className(ranking()[0].label) }}</strong> ({{ percent(ranking()[0].p) }})
-        </p>
-        <ul class="bars">
-          @for (row of ranking(); track row.label) {
-            <li>
-              <span class="bar-label">{{ className(row.label) }}</span>
-              <span class="bar" aria-hidden="true"><span [style.width.%]="row.p * 100"></span></span>
-              <span class="bar-value">{{ percent(row.p) }}</span>
-            </li>
-          }
-        </ul>
-        <p class="hint">{{ browserModelNote }}</p>
-      }
-    }
-  </div>
-</div>
-
-<h3 class="samples-title">{{ t.samplesTitle }}</h3>
+<details class="samples-box">
+<summary class="samples-title">{{ t.samplesTitle }}</summary>
 <p class="hint">{{ t.samplesLede }}</p>
 <div class="filter">
   <label class="field-label" for="sample-filter">{{ t.filterLabel }}</label>
@@ -88,3 +42,4 @@
     {{ t.showMore.replace('{n}', remaining().toString()) }}
   </button>
 }
+</details>

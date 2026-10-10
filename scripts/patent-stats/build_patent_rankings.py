@@ -98,8 +98,8 @@ def pdf_text(path: Path) -> str:
     from pypdf import PdfReader
 
     text = "\n".join(page.extract_text() or "" for page in PdfReader(str(path)).pages)
-    digits = "zero one two three four five six seven eight nine".split()
-    return re.sub(r"/(%s)\.fitted" % "|".join(digits), lambda m: str(digits.index(m.group(1))), text)  # EPO 2024 glyphs
+    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+    return re.sub(r"/(" + "|".join(digits) + r")\.fitted", lambda m: str(digits.index(m.group(1))), text)  # EPO 2024 glyphs
 
 
 def key(name: str) -> str:
@@ -249,20 +249,23 @@ def display(k: str, name: str) -> str:
     if k in DISPLAY:
         return DISPLAY[k]
     cleaned = re.sub(r"\s*\((?:PUBL|publ)\)", "", name)
-    cleaned = re.sub(r"[\s,.-]*\b(LTDA|LIMITADA|S\.?\s?A\.?|S/A|INC(ORPORATED)?|CO\.,? LTD\.?|CORPORATION|LLC|GMBH|SE|B\.V\.|AG)\.?\s*$", "", cleaned, flags=re.I)
-    cleaned = re.sub(r"[\s,.-]*\b(LTDA|LIMITADA|S\.?\s?A\.?|S/A|INC|CO\.?,? LTD\.?|LLC|GMBH|SE|B\.V\.|AG)\.?\s*$", "", cleaned, flags=re.I).strip(" ,.-")
+    cleaned = re.sub(r"[\s,.-]*\b(LTDA|LIMITADA|S\.?\s?A\.?|S/A|INC(ORPORATED)?|CO\.,? LTD\.?|CORPORATION|LLC|GMBH|SE|B\.V\.|AG)\.?\s*$", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"[\s,.-]*\b(LTDA|LIMITADA|S\.?\s?A\.?|S/A|INC|CO\.?,? LTD\.?|LLC|GMBH|SE|B\.V\.|AG)\.?\s*$", "", cleaned, flags=re.IGNORECASE).strip(" ,.-")
     if cleaned != cleaned.upper():
         return cleaned
     return " ".join(w if w in ACRONYMS else w.capitalize() for w in cleaned.split())
 
 
-def view(view_id: str, office: str, lists: dict[int, YearList], residents: bool, top: int = 10) -> dict:
+def view(view_id: str, office: str, lists: dict[int, YearList], residents: bool, top: int = 10,
+         partial: int | None = None) -> dict:
+    """`partial`: a year whose data stop before 31 December (shown as such)."""
     ents = entities(lists, residents)[:top]
     return {
         "id": view_id,
         "office": office,
         "years": {str(y): ({"published": True, "listSize": len(lists[y].rows), "cutoff": lists[y].cutoff, "total": lists[y].total,
-                            "source": lists[y].source, "page": lists[y].page} if y in lists else {"published": False}) for y in YEARS},
+                            "source": lists[y].source, "page": lists[y].page, "partial": y == partial}
+                           if y in lists else {"published": False}) for y in YEARS},
         "companies": [
             {
                 "name": display(e.key, e.names[max(e.names)]),
@@ -275,22 +278,45 @@ def view(view_id: str, office: str, lists: dict[int, YearList], residents: bool,
     }
 
 
+def uspto_view(cache: Path, folder: Path | None) -> dict | None:
+    """US view from the PatentsView tables (uspto_grants.py), or None when the tables are not available."""
+    import uspto_grants
+
+    found = uspto_grants.locate(cache, folder)
+    if not found:
+        return None
+    lists, last_date = uspto_grants.top_assignees(found, YEARS)
+    last_year = int(last_date[:4])
+    partial = last_year if last_date[5:] < "12-31" else None
+    year_lists = {y: YearList(rows, None, uspto_grants.PAGE, uspto_grants.PAGE) for y, rows in lists.items()}
+    result = view("us", "USPTO", year_lists, residents=False, partial=partial)
+    result["dataUntil"] = last_date
+    return result
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--cache", type=Path, default=Path(__file__).with_name("cache"))
     ap.add_argument("--show-excluded", action="store_true", help="list the applicants left out as non-companies")
+    ap.add_argument("--uspto-dir", type=Path, help="folder with g_patent.tsv.zip and g_assignee_disambiguated.tsv.zip")
     ap.add_argument("--out", type=Path, default=Path(__file__).parents[2] / "src/assets/patent-stats/rankings.json")
     a = ap.parse_args()
     logging.getLogger("pypdf").setLevel(logging.ERROR)  # font-encoding notices of the INPI PDFs
     a.cache.mkdir(parents=True, exist_ok=True)
+    views = [
+        view("br-nonresidents", "INPI", inpi_lists(a.cache, resident=False), residents=False),
+        view("br-residents", "INPI", inpi_lists(a.cache, resident=True), residents=True),
+        view("epo", "EPO", epo_lists(a.cache), residents=False),
+    ]
+    us = uspto_view(a.cache, a.uspto_dir)
+    if us:
+        views.append(us)
+    else:
+        print("USPTO tables not available (set USPTO_API_KEY or pass --uspto-dir): the US view stays unavailable")
     data = {
         "generated": date.today().isoformat(),
         "years": YEARS,
-        "views": [
-            view("br-nonresidents", "INPI", inpi_lists(a.cache, resident=False), residents=False),
-            view("br-residents", "INPI", inpi_lists(a.cache, resident=True), residents=True),
-            view("epo", "EPO", epo_lists(a.cache), residents=False),
-        ],
+        "views": views,
         "aliases": [{"from": old, "to": new, "note": note, "source": src} for old, (new, note, src) in ALIASES.items()],
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)

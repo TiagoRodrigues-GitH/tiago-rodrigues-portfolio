@@ -97,7 +97,7 @@ export class MapView {
       container,
       bounds,
       fitBoundsOptions: { padding: 24 },
-      attributionControl: { compact: true, customAttribution: 'IBGE (Censo 2022, malhas territoriais)' },
+      attributionControl: { compact: true, customAttribution: ['IBGE (Censo 2022, malhas territoriais)', '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>'] },
       style: {
         version: 8,
         sources: {},

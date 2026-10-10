@@ -44,8 +44,9 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 | --- | --- |
 | `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
 | `/projects` | Project case studies with an accessible image viewer |
-| `/projects/compact-llm` | Demo of project 01: guided triage of vehicle defect complaints with an NHTSA classifier that runs in the browser; the patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO) and sources; benchmark tables |
-| `/projects/street-routing` | Project 04: IBGE boundaries from Brazil down to a neighbourhood, street graphs of six areas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo, ABC Paulista) and ten routing algorithms computed in a Web Worker and replayed step by step (play, pause, single step, speed), plus a small directed graph with one-way streets |
+| `/projects/defect-triage` | Project 01: guided triage of vehicle defect complaints — one decision per screen, an NHTSA classifier that runs in the browser with an animated ranking, real test complaints with every model's prediction, benchmark bars and table (`/projects/compact-llm` redirects here) |
+| `/projects/patent-assistant` | Project 05: patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO; USPTO grants once built from PatentsView) and sources; benchmark bars and table |
+| `/projects/street-routing` | Project 04: IBGE boundaries from Brazil down to a neighbourhood, street graphs of six areas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo, ABC Paulista) and ten routing algorithms computed in a Web Worker and replayed step by step (play, pause, single step, speed), with one-way streets from OpenStreetMap (arrows from zoom 14), plus a small directed graph that explains them |
 | `/about` | Timeline, education, languages, time in Germany, technical skills and CV download |
 | `/contact` | E-mail (with copy-to-clipboard), LinkedIn and GitHub |
 | `/login`, `/admin` | Authenticated project administration (requires the backend API) |
@@ -56,8 +57,9 @@ The language is selected with the `?lang=pt|en|de` query parameter, which every 
 
 | # | Project | Status |
 | --- | --- | --- |
-| 01 | **Compact LLMs for the automotive industry: defect complaint triage and patent assistant** — small language models fine-tuned with LoRA: NHTSA defect-complaint triage and a patent assistant grounded in official INPI documents (RAG), each compared with no-LLM baselines | In progress |
-| 04 | **Streets of Brazilian cities and routing algorithms** — street graphs rebuilt from IBGE block faces (2022 Census) and path-finding algorithms animated in the browser | In progress |
+| 01 | **Vehicle defect complaint triage** — small language models fine-tuned with LoRA classify NHTSA complaints, compared with a TF-IDF baseline that also runs in the browser | In progress |
+| 05 | **Patent assistant** — a compact LLM answers questions on Brazilian patents grounded in official INPI documents (RAG with BM25), plus a filing guide and applicant statistics | In progress |
+| 04 | **Streets of Brazilian cities and routing algorithms** — street graphs rebuilt from IBGE block faces (2022 Census), one-way streets from OpenStreetMap, and path-finding algorithms animated in the browser | In progress |
 | 02 | **Vehicle management system** — Java Swing desktop application applying object-oriented design (abstract classes, inheritance, polymorphism, interfaces, exception handling) | Completed |
 | 03 | **Web app for car collectors** — catalogue, restoration history and documentation for classic-vehicle collections | Coming soon |
 
@@ -149,7 +151,7 @@ src/
 │   │   ├── articles.ts          Article series (PT/EN/DE) and references
 │   │   └── credits.ts           Image sources and licences
 │   ├── pages/                   home, projects, about, contact, privacy, login, admin
-│   │   ├── llm-lab/             Project 01: triage (triage/), patent guide and statistics (patent-guide/)
+│   │   ├── llm-lab/             Projects 01 and 05: triage page (triage/), patent page (patent-guide/), shared results
 │   │   └── street-routing/      Project 04: engine/ (graph, searches, traces, player), playback/, worker, map
 │   ├── services/
 │   │   ├── i18n.service.ts      Interface texts in three languages
@@ -177,7 +179,7 @@ Design decisions of the street-routing engine, the patent guide and statistics, 
 | Article chapters and references | `src/app/content/articles.ts` |
 | Projects (text, stack, images, status) | `src/app/shared/portfolio-projects.ts` |
 | CV | Source `cv/curriculo.html`, printed to `public/curriculo.pdf` (command in the file header) |
-| Compact-LLM demo texts | `src/app/pages/llm-lab/lab-i18n.ts` |
+| Project page texts (triage, patents) | `src/app/pages/llm-lab/project-pages-i18n.ts`; shared demo texts in `lab-i18n.ts` |
 | Patent guide (texts, fees, official links) | `src/app/pages/llm-lab/patent-guide/guide-content.ts` and `guide-links.ts` (legal texts and fees checked on the date in `GUIDE_DATE`) |
 | Patent statistics data | `src/assets/patent-stats/rankings.json`, written by `scripts/patent-stats/build_patent_rankings.py` (`pip install pypdf openpyxl`) from INPI's and the EPO's official files; run it again when a new year is published |
 | Guided triage texts | `src/app/pages/llm-lab/triage/triage-content.ts` |

@@ -2,17 +2,19 @@ import { Component, Input } from '@angular/core';
 import { MODEL_NAMES, NhtsaData, NhtsaRow, PatentData, PatentRow } from './lab-data';
 import { LabTranslations } from './lab-i18n';
 
-/** Benchmark tables of both studies; models still in the GPU queue are listed as such. */
+/** Benchmark table of one study (triage or patents); models still in the GPU queue are listed as such. */
 @Component({
   selector: 'app-lab-results',
   templateUrl: './lab-results.html',
   styleUrls: ['./lab-results.css'],
 })
 export class LabResultsComponent {
-  @Input({ required: true }) patents: PatentData | null = null;
-  @Input({ required: true }) nhtsa: NhtsaData | null = null;
+  @Input({ required: true }) show: 'nhtsa' | 'patents' = 'nhtsa';
+  @Input() patents: PatentData | null = null;
+  @Input() nhtsa: NhtsaData | null = null;
   @Input({ required: true }) t!: LabTranslations;
   @Input({ required: true }) lang = 'pt-BR';
+  @Input() notes: string[] = [];
 
   name(row: PatentRow | NhtsaRow): string {
     return row.stage === 'baseline' ? (this.t.baselines[row.model] ?? row.model) : (MODEL_NAMES[row.model] ?? row.model);

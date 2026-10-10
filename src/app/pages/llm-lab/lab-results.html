@@ -1,3 +1,4 @@
+@if (show === 'nhtsa') {
 <div class="table-wrap" role="region" aria-labelledby="nhtsa-caption" tabindex="0">
   <table>
     <caption id="nhtsa-caption">{{ t.nhtsaCaption }}</caption>
@@ -29,7 +30,7 @@
     </tbody>
   </table>
 </div>
-
+} @else {
 <div class="table-wrap" role="region" aria-labelledby="patent-caption" tabindex="0">
   <table>
     <caption id="patent-caption">{{ t.patentCaption }}</caption>
@@ -63,9 +64,10 @@
     </tbody>
   </table>
 </div>
+}
 
 <ul class="notes">
-  @for (note of t.notes; track $index) {
+  @for (note of notes; track $index) {
     <li>{{ note }}</li>
   }
 </ul>

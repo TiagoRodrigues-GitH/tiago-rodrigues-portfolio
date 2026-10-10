@@ -69,9 +69,6 @@ describe('Lab translations', () => {
       expect(Object.keys(t).sort()).toEqual(Object.keys(pt).sort());
       expect(Object.keys(t.categories).sort()).toEqual(Object.keys(pt.categories).sort());
       expect(Object.keys(t.classes).sort()).toEqual(Object.keys(pt.classes).sort());
-      expect(t.method.length).toBe(pt.method.length);
-      expect(t.notes.length).toBe(pt.notes.length);
-      expect(t.exampleTexts.length).toBe(pt.exampleTexts.length);
     }
   });
 

@@ -8,8 +8,8 @@
     }
   </div>
 
-  @if (viewId() === 'us' || viewId() === 'cn') {
-    @let u = t.unavailable[viewId() === 'us' ? 'us' : 'cn'];
+  @if (unavailable(); as which) {
+    @let u = t.unavailable[which];
     <div class="ps-unavailable" role="status">
       <p>{{ u.text }}</p>
       <ul>
@@ -24,7 +24,10 @@
     <p class="ps-hint">{{ t.loading }}</p>
   } @else {
     @let current = view()!;
-    <p class="ps-indicator">{{ t.views[current.id].indicator }}</p>
+    <p class="ps-indicator">
+      {{ t.views[current.id].indicator }}
+      @if (current.dataUntil) { {{ t.dataUntil.replace('{date}', dataUntil(current.dataUntil)) }} }
+    </p>
 
     <fieldset class="ps-companies">
       <legend>{{ t.companiesLabel }} <span class="ps-hint">· {{ t.companiesHint }}</span></legend>
@@ -49,7 +52,7 @@
             <text class="ps-axis" [attr.x]="frame.left - 8" [attr.y]="y()(tick) + 4" text-anchor="end">{{ number(tick) }}</text>
           }
           @for (year of years(); track year) {
-            <text class="ps-axis" [attr.x]="x()(year)" [attr.y]="frame.height - 12" text-anchor="middle">{{ year }}{{ unpublished().includes(year) ? '*' : '' }}</text>
+            <text class="ps-axis" [attr.x]="x()(year)" [attr.y]="frame.height - 12" text-anchor="middle">{{ year }}{{ starred().includes(year) ? '*' : '' }}</text>
           }
           @if (hoverYear(); as hy) {
             <line class="ps-cross" [attr.x1]="x()(hy)" [attr.x2]="x()(hy)" [attr.y1]="frame.top" [attr.y2]="frame.height - frame.bottom" />

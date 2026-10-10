@@ -11,10 +11,17 @@ const routes: Routes = [
   { path: '', component: HomeComponent, data: { page: 'home' } },
   { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
   {
-    path: 'projects/compact-llm',
-    loadComponent: () => import('./pages/llm-lab/llm-lab.component').then((m) => m.LlmLabComponent),
-    data: { page: 'llmLab' },
+    path: 'projects/defect-triage',
+    loadComponent: () => import('./pages/llm-lab/triage-page.component').then((m) => m.TriagePageComponent),
+    data: { page: 'defectTriage' },
   },
+  {
+    path: 'projects/patent-assistant',
+    loadComponent: () => import('./pages/llm-lab/patent-page.component').then((m) => m.PatentPageComponent),
+    data: { page: 'patentAssistant' },
+  },
+  // the two projects shared one page until October 2026
+  { path: 'projects/compact-llm', redirectTo: '/projects/defect-triage' },
   {
     path: 'projects/street-routing',
     loadComponent: () => import('./pages/street-routing/street-routing.component').then((m) => m.StreetRoutingComponent),

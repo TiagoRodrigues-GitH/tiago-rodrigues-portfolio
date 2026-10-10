@@ -1,8 +1,8 @@
 # Architecture of the interactive project pages
 
 Scope: the three interactive modules added to the portfolio in October 2026 — the street-routing page
-(`/projects/street-routing`), the patent guide with applicant statistics and the guided defect triage
-(`/projects/compact-llm`). Structure follows arc42 (Starke & Hruschka) with C4-style views (Brown); quality goals
+(`/projects/street-routing`), the patent guide with applicant statistics (`/projects/patent-assistant`) and the guided defect
+triage (`/projects/defect-triage`; the former `/projects/compact-llm` redirects to it). Structure follows arc42 (Starke & Hruschka) with C4-style views (Brown); quality goals
 follow ISO/IEC 25010.
 
 ## 1. Quality goals
@@ -50,7 +50,7 @@ city map and the SVG demo share it.
 | R3 | The map shows search states with MapLibre **feature-state** on streets and nodes (ids = edge/node index) | Each frame updates only the features that changed, instead of re-uploading GeoJSON with thousands of points |
 | R4 | **Registry** of algorithms (`ALGORITHMS`, Strategy pattern, Gamma et al.) | Adding an algorithm touches one file (open/closed principle); the selector, parameters and tests iterate over the registry |
 | R5 | Graph stores **out- and in-edges** (CSR) and an optional `oneway` list in the payload | Directed edges are enforced by construction; the backward half of bidirectional search and ALT's reverse distances need in-edges |
-| R6 | Real one-way data are **not** used; a fictitious directed grid demonstrates them | IBGE block faces carry no direction; OpenStreetMap does (ODbL, attribution required) but matching OSM ways to IBGE-derived centre lines is a project of its own, and the research uses Brazilian public data only |
+| R6 | One-way streets come from **OpenStreetMap**, matched offline to the IBGE edges; the map credits OSM (ODbL) | IBGE block faces carry no direction. The pipeline matches OSM `oneway` ways by distance and angle and repairs dead ends (its ADR 13-14); unmatched streets stay two-way, so the route may be shorter than the legal one there (notably Brasília's wide avenues, 2 % of edges matched) |
 | R7 | Colours: Okabe & Ito palette; **blue only for the final route**; every state also has a shape (line, dash, ring, dot) | Colour-blind safety and WCAG 1.4.1 (use of colour); intermediate search states can never be taken for the result |
 | R8 | Phones: the map and playback bar are **sticky** above the scrolling controls; landscape phones place them side by side | The map stays visible while configuring and running, without shrinking the controls below touch size |
 | R9 | Clicks inside the loaded area always mark a point; cities are offered as buttons and as clickable boxes on the map | A small screen fits the city at a low zoom; the earlier zoom threshold silently ignored the first clicks |
@@ -67,8 +67,11 @@ the tiled rasterisation, the UTM zone per city and the multi-municipality areas)
 - **Statistics pipeline**: `scripts/patent-stats/build_patent_rankings.py` downloads INPI's annual rankings and the
   EPO's Patent Index/Technology Dashboard files, parses them, and writes `rankings.json` with the source URL of every
   year. Companies missing from a year's list are `null` with the list's cut-off, never zero; 2026 is "not
-  published". Renames are merged only when documented (`ALIASES`). USPTO and CNIPA are shown as unavailable, with the
-  reason, because no official, verifiable company ranking for 2020–2026 was found.
+  published". Renames are merged only when documented (`ALIASES`). CNIPA is shown as unavailable, with the reason, because
+  no official, verifiable ranking was found. The USPTO publishes no ranking either, so `uspto_grants.py` computes one
+  from PatentsView (utility grants by grant year, first company assignee, ties at the cut kept): a different
+  indicator (grants, not applications), labelled as such. The files need a free USPTO API key; the view is drawn
+  only when `rankings.json` contains it, otherwise the page says what is missing.
 - **Chart**: `stats-chart.ts` (pure geometry, tested) + `patent-stats` component. Line chart for evolution, colour
   slots that follow the company (a removed company never repaints the others), crosshair tooltip on hover and on
   keyboard focus, and the full table always visible as the text alternative.
@@ -76,6 +79,13 @@ the tiled rasterisation, the UTM zone per city and the multi-municipality areas)
   projected into the first tab, so it is preserved unchanged.
 
 ## 5. Guided triage
+
+Interaction design: one decision per screen (Hick's law; Nielsen's "recognition rather than recall"), icon cards
+and three large answer buttons (touch targets ≥ 44 px, WCAG 2.5.5) that advance on tap, a progress bar, examples
+and explanations behind toggles (progressive disclosure), and a result screen where a bar chart replaces prose and
+every answer is a chip that reopens its question. Animations are transforms/opacity only and stop under
+`prefers-reduced-motion`. The free-text classifier became the "Not sure" path; dataset complaints can be sent
+into it.
 
 `triage-flow.ts` is a small state machine without Angular: categories mapped to the classifier's five classes,
 follow-up questions per category, the rule that hides the injury question unless a crash or fire was reported (no
@@ -90,8 +100,8 @@ personal data are asked (data minimisation, LGPD art. 6, III).
 | `engine/*.spec.ts` | Exact algorithms agree with Dijkstra; A*/ALT expand no more; BFS minimises segments; one-way edges respected by all ten algorithms; no route; origin = destination; traces; replay equivalence (one jump vs. many steps); clock |
 | `oneway-demo/demo-graph.spec.ts` | One-way grid forces the expected detour |
 | `patent-guide/stats-chart.spec.ts` | Nice axis maximum, scales, no line across missing years, stable colour slots |
-| `triage/triage-flow.spec.ts` | Steps per path, conditional questions, validation, pruning of answers, urgency |
-| End-to-end (Playwright, headless Chrome) | Six cities load and route; pause/step/speed/restart; no-route and same-point cases; 1440×900, 390×844 and 844×390 without horizontal overflow; guide tabs by keyboard; chart tooltip; triage validation and review |
+| `triage/triage-flow.spec.ts` | Steps per path, conditional questions, validation, pruning of answers, urgency; texts with the same shape in PT/EN/DE and short labels |
+| End-to-end (Playwright, headless Chrome) | Six cities load and route; pause/step/speed/restart; no-route and same-point cases; 1440×900, 390×844 and 844×390 without horizontal overflow; one-way arrows and OSM credit; guide tabs by keyboard; chart tooltip; triage: auto-advance, focus on each new screen, back, urgent notice, result bars, edit from a chip, sample to wizard, reduced motion; legacy redirect |
 
 ## References
 
@@ -106,3 +116,6 @@ personal data are asked (data minimisation, LGPD art. 6, III).
 - Starke, G.; Hruschka, P. *arc42* template, arc42.org.
 - W3C. *Web Content Accessibility Guidelines (WCAG) 2.2*, 2023; *WAI-ARIA Authoring Practices Guide: Tabs pattern*.
 - Goldberg, A. V.; Harrelson, C. Computing the shortest path: A* search meets graph theory. *SODA*, 2005.
+- Hick, W. E. On the rate of gain of information. *Quarterly Journal of Experimental Psychology*, 4(1), 11-26, 1952.
+- Nielsen, J. *10 Usability Heuristics for User Interface Design*. Nielsen Norman Group, 1994 (updated 2024).
+- OpenStreetMap Foundation. *Copyright and License* (ODbL 1.0), openstreetmap.org/copyright.
