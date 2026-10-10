@@ -5,7 +5,7 @@ import { LINKS } from './guide-links';
 import { ColourSlots, Frame, MAX_SERIES, RankedCompany, RankingView, RankingsData, niceMax, runs, ticks, xOf, yOf } from './stats-chart';
 
 type ViewId = RankingView['id'] | 'cn';
-const VIEW_ORDER: ViewId[] = ['br-nonresidents', 'br-residents', 'epo', 'us', 'cn'];
+const VIEW_ORDER: ViewId[] = ['br-nonresidents', 'br-residents', 'epo', 'cn'];
 const DEFAULT_SHOWN = 5;
 const FRAME: Frame = { width: 720, height: 340, left: 58, right: 24, top: 16, bottom: 34 };
 
@@ -50,17 +50,6 @@ export class PatentStatsComponent {
   readonly x = computed(() => xOf(FRAME, this.years()));
   readonly y = computed(() => yOf(FRAME, this.yMax()));
   readonly unpublished = computed(() => this.years().filter((year) => !this.view()?.years[String(year)]?.published));
-  /** Years marked with an asterisk: no list yet, or data that stop before the end of the year. */
-  readonly starred = computed(() => this.years().filter((year) => {
-    const meta = this.view()?.years[String(year)];
-    return !meta?.published || meta.partial;
-  }));
-  /** CNIPA never has data; the USPTO view exists only once rankings.json was built with the PatentsView tables. */
-  readonly unavailable = computed<'us' | 'cn' | null>(() => {
-    const id = this.viewId();
-    if (id === 'cn') return 'cn';
-    return id === 'us' && this.data() && !this.view() ? 'us' : null;
-  });
   readonly step = computed(() => (FRAME.width - FRAME.left - FRAME.right) / Math.max(1, this.years().length - 1));
 
   readonly lines = computed(() => {
@@ -116,10 +105,6 @@ export class PatentStatsComponent {
   private slotsOf(id: string): ColourSlots {
     if (!this.slots.has(id)) this.slots.set(id, new ColourSlots());
     return this.slots.get(id)!;
-  }
-
-  dataUntil(iso: string): string {
-    return new Date(`${iso}T00:00:00`).toLocaleDateString(this.lang, { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   number(n: number): string {

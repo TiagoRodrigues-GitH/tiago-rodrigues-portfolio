@@ -25,8 +25,6 @@ export const LINKS = {
   pct: 'https://www.wipo.int/pct/en/',
   inpiRankings: 'https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes',
   epoStatistics: 'https://www.epo.org/en/about-us/statistics',
-  usptoDatasets: 'https://www.uspto.gov/ip-policy/economic-research/research-datasets',
-  patentsView: 'https://patentsview.org/',
   cnipa: 'https://english.cnipa.gov.cn/',
 } as const;
 

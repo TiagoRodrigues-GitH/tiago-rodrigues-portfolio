@@ -11,8 +11,6 @@ export interface YearMeta {
   total?: number | null;
   source?: string;
   page?: string;
-  /** The data stop before 31 December of this year. */
-  partial?: boolean;
 }
 
 export interface RankedCompany {
@@ -23,10 +21,8 @@ export interface RankedCompany {
 }
 
 export interface RankingView {
-  id: 'br-nonresidents' | 'br-residents' | 'epo' | 'us';
+  id: 'br-nonresidents' | 'br-residents' | 'epo';
   office: string;
-  /** Last date covered (USPTO grants), ISO. */
-  dataUntil?: string;
   years: Record<string, YearMeta>;
   companies: RankedCompany[];
 }

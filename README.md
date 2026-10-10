@@ -45,7 +45,7 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 | `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
 | `/projects` | Project case studies with an accessible image viewer |
 | `/projects/defect-triage` | Project 01: guided triage of vehicle defect complaints — one decision per screen, an NHTSA classifier that runs in the browser with an animated ranking, real test complaints with every model's prediction, benchmark bars and table (`/projects/compact-llm` redirects here) |
-| `/projects/patent-assistant` | Project 05: patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO; USPTO grants once built from PatentsView) and sources; benchmark bars and table |
+| `/projects/patent-assistant` | Project 05: patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO) and sources; benchmark bars and table |
 | `/projects/street-routing` | Project 04: IBGE boundaries from Brazil down to a neighbourhood, street graphs of six areas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo, ABC Paulista) and ten routing algorithms computed in a Web Worker and replayed step by step (play, pause, single step, speed), with one-way streets from OpenStreetMap (arrows from zoom 14), plus a small directed graph that explains them |
 | `/about` | Timeline, education, languages, time in Germany, technical skills and CV download |
 | `/contact` | E-mail (with copy-to-clipboard), LinkedIn and GitHub |

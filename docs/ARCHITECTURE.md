@@ -68,10 +68,8 @@ the tiled rasterisation, the UTM zone per city and the multi-municipality areas)
   EPO's Patent Index/Technology Dashboard files, parses them, and writes `rankings.json` with the source URL of every
   year. Companies missing from a year's list are `null` with the list's cut-off, never zero; 2026 is "not
   published". Renames are merged only when documented (`ALIASES`). CNIPA is shown as unavailable, with the reason, because
-  no official, verifiable ranking was found. The USPTO publishes no ranking either, so `uspto_grants.py` computes one
-  from PatentsView (utility grants by grant year, first company assignee, ties at the cut kept): a different
-  indicator (grants, not applications), labelled as such. The files need a free USPTO API key; the view is drawn
-  only when `rankings.json` contains it, otherwise the page says what is missing.
+  no official, verifiable ranking was found. The USPTO is left out: it publishes no company ranking for 2020-2026
+  (author's decision, 2026-10-10).
 - **Chart**: `stats-chart.ts` (pure geometry, tested) + `patent-stats` component. Line chart for evolution, colour
   slots that follow the company (a removed company never repaints the others), crosshair tooltip on hover and on
   keyboard focus, and the full table always visible as the text alternative.
