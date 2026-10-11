@@ -51,18 +51,21 @@ before relying on it.
 ```bash
 mvn test                      # integration tests: login, rate limit, admin access, visits, CORS, headers
 mvn spring-boot:run           # http://localhost:8080 (H2 in memory)
+mvn spring-boot:run -Dspring-boot.run.profiles=dev   # local PostgreSQL (application-dev.properties)
 ```
 
+The `dev` profile reads `PORTFOLIO_DB_URL`, `PORTFOLIO_DB_USER` and `PORTFOLIO_DB_PASSWORD` from the
+environment (defaults: `jdbc:postgresql://localhost:5432/portfolio`, user `portfolio`).
 The frontend's `npm run start:proxy` forwards `/api` to this server on port 8080.
 
-## Deploy (example: Render + a free PostgreSQL)
+`scripts/bcrypt-hash.ps1` prints the BCrypt hash for `ADMIN_PASSWORD_HASH` (password typed hidden).
 
-1. Create a PostgreSQL database (Render, Neon or Supabase) and note its JDBC URL, user and password.
-2. On Render: *New → Web Service → this repository*; it builds the `Dockerfile`.
-3. Set the environment variables above (never commit them).
-4. Check `https://<service>.onrender.com/api/health` returns `OK`.
-5. In the frontend, set `apiUrl` in `src/environments/environment.prod.ts` to the service origin and add
-   the same origin to `connect-src` in the CSP meta tag of `src/index.html`; push to `main`.
+## Deploy (Render + Neon)
 
-Free instances sleep when idle, so the first request after a pause can take a while; visits sent during
-that time are simply lost, which is acceptable for statistics.
+Step by step, with the free-tier limits: [`../docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md).
+The repository root has a Render Blueprint (`render.yaml`).
+
+The `Dockerfile` is tuned for the free plan (0.1 CPU, 512 MB): C1 compiler only, serial GC and a CDS
+archive recorded at build time. Measured locally with those limits: start-up 216 s → 56 s, ~170 MB RAM.
+Free instances sleep when idle, so the first request after a pause waits about a minute; visits sent
+during that time are simply lost, which is acceptable for statistics.
