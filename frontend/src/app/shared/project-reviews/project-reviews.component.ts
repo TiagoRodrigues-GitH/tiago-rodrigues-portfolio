@@ -1,10 +1,13 @@
-import { Component, Injector, OnInit, afterNextRender, computed, inject, input, signal } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, afterNextRender, computed, inject, input, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Locale } from '../../services/i18n.service';
 import { PublicReview, REVIEW_LIMITS, ReviewService } from '../../services/review.service';
 import { REVIEW_TEXT } from './review-text';
 
 type SendState = 'idle' | 'sending' | 'sent' | 'error';
+
+/** After this long without an answer the free server is probably waking up: say so instead of looking stuck. */
+const SLOW_MS = 3000;
 
 /**
  * Comments under a project: approved comments, and a form whose submissions wait for the owner's approval.
@@ -15,9 +18,10 @@ type SendState = 'idle' | 'sending' | 'sent' | 'error';
   templateUrl: './project-reviews.component.html',
   styleUrls: ['./project-reviews.component.css'],
 })
-export class ProjectReviewsComponent implements OnInit {
+export class ProjectReviewsComponent implements OnInit, OnDestroy {
   private readonly reviews = inject(ReviewService);
   private readonly injector = inject(Injector);
+  private slowTimer?: ReturnType<typeof setTimeout>;
 
   readonly projectKey = input.required<string>();
   readonly projectTitle = input.required<string>();
@@ -29,6 +33,9 @@ export class ProjectReviewsComponent implements OnInit {
   readonly t = computed(() => REVIEW_TEXT[this.locale()]);
 
   readonly items = signal<PublicReview[]>([]);
+  /** True until the first answer: avoids showing "no comments yet" while the server is still waking up. */
+  readonly loading = signal(this.reviews.available);
+  readonly slow = signal(false);
   readonly loadFailed = signal(false);
   readonly formOpen = signal(false);
   readonly name = signal('');
@@ -72,6 +79,7 @@ export class ProjectReviewsComponent implements OnInit {
       return;
     }
     this.state.set('sending');
+    this.startSlowTimer();
     this.reviews
       .submit({
         project: this.projectKey(),
@@ -82,21 +90,47 @@ export class ProjectReviewsComponent implements OnInit {
       })
       .subscribe({
         next: () => {
+          this.settle();
           this.state.set('sent');
           this.formOpen.set(false);
           this.name.set('');
           this.text.set('');
           this.rating.set(null);
         },
-        error: (error: HttpErrorResponse) => this.fail(this.messageFor(error)),
+        error: (error: HttpErrorResponse) => {
+          this.settle();
+          this.fail(this.messageFor(error));
+        },
       });
   }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.slowTimer);
+  }
+
   private load(): void {
+    this.startSlowTimer();
     this.reviews.approved(this.projectKey()).subscribe({
-      next: (items) => this.items.set(items),
-      error: () => this.loadFailed.set(true),
+      next: (items) => {
+        this.settle();
+        this.items.set(items);
+      },
+      error: () => {
+        this.settle();
+        this.loadFailed.set(true);
+      },
     });
+  }
+
+  private startSlowTimer(): void {
+    clearTimeout(this.slowTimer);
+    this.slowTimer = setTimeout(() => this.slow.set(true), SLOW_MS);
+  }
+
+  private settle(): void {
+    clearTimeout(this.slowTimer);
+    this.slow.set(false);
+    this.loading.set(false);
   }
 
   private messageFor(error: HttpErrorResponse): string {

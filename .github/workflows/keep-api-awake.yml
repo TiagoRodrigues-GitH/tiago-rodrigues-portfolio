@@ -1,0 +1,21 @@
+name: Keep API awake
+
+# Render's free web service sleeps after ~15 minutes without requests; the next visitor then waits about a
+# minute. Pinging /api/health every 14 minutes during the day (07:00-24:00 Brasilia, UTC-3) keeps it warm and
+# uses ~530 of the 750 free instance hours a month. /api/health does not touch the database, so Neon still sleeps.
+# Note: GitHub pauses scheduled workflows after 60 days without commits in the repository (re-enable in Actions).
+on:
+  schedule:
+    - cron: '*/14 10-23 * * *'
+    - cron: '*/14 0-2 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping /api/health
+        run: curl --fail --silent --show-error --max-time 120 --retry 2 https://website-tiago-rodrigues-api.onrender.com/api/health

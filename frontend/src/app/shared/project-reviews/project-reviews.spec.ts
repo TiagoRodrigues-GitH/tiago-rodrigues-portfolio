@@ -103,6 +103,14 @@ describe('ProjectReviewsComponent', () => {
 
   afterEach(() => http.verify());
 
+  it('says it is loading, not "no comments yet", while the server has not answered', async () => {
+    expect(element.querySelector('.reviews-note')?.textContent).toBe(text.loading);
+    http.expectOne((r) => r.url === '/api/reviews').flush([]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(element.querySelector('.reviews-note')?.textContent).toBe(text.empty);
+  });
+
   it('lists the approved comments once rendered in the browser', async () => {
     http.expectOne((r) => r.url === '/api/reviews' && r.params.get('project') === 'compact-llm').flush([APPROVED]);
     fixture.detectChanges();

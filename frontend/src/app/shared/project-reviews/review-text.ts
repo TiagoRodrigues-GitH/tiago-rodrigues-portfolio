@@ -4,6 +4,9 @@ import { Locale } from '../../services/i18n.service';
 export interface ReviewText {
   heading: string;
   empty: string;
+  loading: string;
+  /** Shown when the free server takes a while to answer (it sleeps after ~15 idle minutes). */
+  waking: string;
   unavailable: string;
   loadError: string;
   write: string;
@@ -27,6 +30,8 @@ export const REVIEW_TEXT: Record<Locale, ReviewText> = {
   pt: {
     heading: 'Comentários',
     empty: 'Ainda não há comentários. Seja o primeiro.',
+    loading: 'Carregando comentários…',
+    waking: 'Acordando o servidor (hospedagem gratuita): os comentários podem levar até um minuto…',
     unavailable: 'Os comentários estarão disponíveis em breve.',
     loadError: 'Não foi possível carregar os comentários.',
     write: 'Escrever um comentário',
@@ -48,6 +53,8 @@ export const REVIEW_TEXT: Record<Locale, ReviewText> = {
   en: {
     heading: 'Comments',
     empty: 'No comments yet. Be the first.',
+    loading: 'Loading comments…',
+    waking: 'Waking up the server (free hosting): comments can take up to a minute…',
     unavailable: 'Comments will be available soon.',
     loadError: 'The comments could not be loaded.',
     write: 'Write a comment',
@@ -69,6 +76,8 @@ export const REVIEW_TEXT: Record<Locale, ReviewText> = {
   de: {
     heading: 'Kommentare',
     empty: 'Noch keine Kommentare. Schreiben Sie den ersten.',
+    loading: 'Kommentare werden geladen …',
+    waking: 'Der Server wird geweckt (kostenloses Hosting), die Kommentare können bis zu einer Minute dauern …',
     unavailable: 'Kommentare sind bald verfügbar.',
     loadError: 'Die Kommentare konnten nicht geladen werden.',
     write: 'Kommentar schreiben',

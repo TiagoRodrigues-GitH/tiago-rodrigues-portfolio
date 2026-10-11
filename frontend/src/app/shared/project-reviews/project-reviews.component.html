@@ -6,6 +6,8 @@
   } @else {
     @if (loadFailed()) {
       <p class="reviews-note">{{ t().loadError }}</p>
+    } @else if (loading()) {
+      <p class="reviews-note" role="status">{{ slow() ? t().waking : t().loading }}</p>
     } @else if (items().length === 0) {
       <p class="reviews-note">{{ t().empty }}</p>
     } @else {
@@ -62,6 +64,9 @@
         <p class="review-hint">{{ t().privacy }}</p>
         @if (state() === 'error') {
           <p class="reviews-error" role="alert">{{ errorMessage() }}</p>
+        }
+        @if (state() === 'sending' && slow()) {
+          <p class="review-hint" role="status">{{ t().waking }}</p>
         }
         <div class="review-actions">
           <button type="submit" class="btn btn-primary" [disabled]="!canSend()">
