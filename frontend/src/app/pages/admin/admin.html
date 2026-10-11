@@ -16,6 +16,8 @@
       <p class="success-message" [class.visible]="successMessage()" role="status">{{ successMessage() }}</p>
     </div>
 
+    <app-review-moderation [locale]="locale()" />
+
     <div class="projects-section visits-section">
       <h2>{{ t.visits }}</h2>
       <p class="hint">{{ t.visitsHint }}</p>

@@ -7,6 +7,7 @@ import { Project } from '../../models/project.model';
 import { AuthService } from '../../services/auth.service';
 import { AnalyticsService, VisitRow, VisitSummary } from '../../services/analytics.service';
 import { injectLocale } from '../../services/locale';
+import { ReviewModerationComponent } from './review-moderation/review-moderation.component';
 
 const EMPTY_PROJECT: Project = {
   title: '',
@@ -22,7 +23,7 @@ const EMPTY_PROJECT: Project = {
 @Component({
   selector: 'app-admin',
   // Standalone and lazy-loaded: visitors never download the admin code.
-  imports: [FormsModule, DatePipe, SlicePipe],
+  imports: [FormsModule, DatePipe, SlicePipe, ReviewModerationComponent],
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
 })

@@ -1,19 +1,19 @@
-# Tiago Rodrigues — Automotive Software Portfolio
+# Frontend — Tiago Rodrigues, automotive software portfolio
 
-Personal portfolio of **Tiago Rodrigues**, a software developer focused on Java, artificial intelligence and software for the automotive industry — in particular Advanced Driver Assistance Systems (ADAS) and perception for embedded platforms.
+The Angular site of [website-tiago-rodrigues](../README.md): the personal portfolio of **Tiago Rodrigues**, a software developer focused on Java, artificial intelligence and software for the automotive industry — in particular Advanced Driver Assistance Systems (ADAS) and perception for embedded platforms. The optional API lives in [`../backend`](../backend/README.md).
 
 | | |
 |---|---|
 | **Author** | Tiago Rodrigues · Universidade Tecnológica Federal do Paraná (UTFPR) |
-| **Date** | 2026-06-11 |
+| **Date** | 2026-06-11 (comments and GoatCounter statistics: 2026-10-05) |
 | **Context** | Personal portfolio |
 | **Stack** | Angular 21 · TypeScript · GitHub Pages |
 
-> **Resumo (PT).** Portfólio pessoal de Tiago Rodrigues em português, inglês e alemão: projetos de software automotivo, ADAS e inteligência artificial, com acessibilidade WCAG 2.2 AA.
+> **Resumo (PT).** Portfólio pessoal de Tiago Rodrigues em português, inglês e alemão: projetos de software automotivo, ADAS e inteligência artificial, com acessibilidade WCAG 2.2 AA e comentários moderados nos projetos.
 
 The site is available in **Portuguese, English and German**, follows **WCAG 2.2 level AA**, and was designed against **Nielsen's 10 usability heuristics**, **Shneiderman's Eight Golden Rules** and the usability definition of **ISO 9241-11**.
 
-**Live site:** https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/
+**Live site:** https://tiagorodrigues-gith.github.io/website-tiago-rodrigues/
 
 ---
 
@@ -43,11 +43,12 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 | Route | Content |
 | --- | --- |
 | `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
-| `/projects` | Project case studies with an accessible image viewer |
+| `/projects` | Project case studies with an accessible image viewer, and visitor comments under each project (shown after approval) |
 | `/projects/compact-llm` | Demo of project 01: an NHTSA defect-complaint classifier that runs in the browser, a replay of the patent assistant's real test answers, and the benchmark tables |
 | `/about` | Timeline, education, languages, time in Germany, technical skills and CV download |
 | `/contact` | E-mail (with copy-to-clipboard), LinkedIn and GitHub |
-| `/login`, `/admin` | Authenticated project administration (requires the backend API) |
+| `/privacy` | What is counted or stored (GoatCounter, the server's visit log, comments), legal basis, retention, and an opt-out button |
+| `/login`, `/admin` | Comment moderation, visit statistics and project administration (requires the backend API) |
 
 The language is selected with the `?lang=pt|en|de` query parameter, which every internal link preserves.
 
@@ -146,16 +147,21 @@ src/
 │   ├── content/
 │   │   ├── articles.ts          Article series (PT/EN/DE) and references
 │   │   └── credits.ts           Image sources and licences
-│   ├── pages/                   home, projects, about, contact, login, admin
+│   ├── pages/                   home, projects, about, contact, privacy, llm-lab, login,
+│   │                            admin (with admin/review-moderation)
 │   ├── services/
 │   │   ├── i18n.service.ts      Interface texts in three languages
 │   │   ├── locale.ts            `injectLocale()` — ?lang= as a signal
 │   │   ├── auth.service.ts      JWT authentication for the admin area
+│   │   ├── analytics.service.ts Consent checks (GPC, Do Not Track, opt-out), then GoatCounter and the API
+│   │   ├── goatcounter.service.ts  Loads GoatCounter only when configured; one count per navigation
+│   │   ├── review.service.ts    REST client for comments (public) and moderation (admin)
 │   │   └── project.service.ts   REST client for the admin area
 │   ├── shared/
 │   │   ├── adas-figure/         SVG: ADAS sensor layout (hero)
 │   │   ├── lane-diagram/        SVG: lane detection by row anchors
-│   │   └── portfolio-projects.ts  Localized project data
+│   │   ├── project-reviews/     Comment list and form under each project
+│   │   └── portfolio-projects.ts  Localized project data (`slug` = comment key)
 │   └── guards/auth.guard.ts
 ├── assets/images/blueprints/    Processed public-domain illustrations (WebP)
 └── styles.css                   Design tokens and shared components
@@ -184,18 +190,29 @@ Requirements: Node.js 20 or later and npm.
 npm install
 npm start          # http://localhost:4200
 npm test           # unit tests (Vitest)
-npm run build      # production build in dist/tiago-rodrigues-portfolio
+npm run build      # production build in dist/website-tiago-rodrigues
 ```
 
-The admin area calls a REST API under `/api`. For local development with the backend running on port 8080:
+Comments, the admin area and the first-party visit log call the REST API under `/api`. For local development with the backend running on port 8080:
 
 ```bash
 npm run start:proxy
 ```
 
+## External services
+
+Both are off until configured, and the site works without them (the comment section then says comments are coming soon). One command sets the production environment **and** the matching Content-Security-Policy entries in `src/index.html` and `public/_headers`:
+
+```bash
+node scripts/configure-services.mjs --api https://website-tiago-rodrigues-api.onrender.com --goatcounter <code>
+node scripts/configure-services.mjs --api none --goatcounter none   # back to fully static
+```
+
+Accounts and secrets are described in [`../docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md).
+
 ## Deployment
 
-Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml): install, unit tests, production build, and publication to GitHub Pages. The base href is derived from the repository name, and `404.html` mirrors `index.html` so that deep links such as `/about` also work after a page reload.
+Every push to `main` that touches `frontend/` runs [`../.github/workflows/deploy.yml`](../.github/workflows/deploy.yml): install, unit tests, production build, and publication to GitHub Pages. The base href is derived from the repository name, and `404.html` mirrors `index.html` so that deep links such as `/about` also work after a page reload. [Cloudflare Pages](docs/DEPLOY_CLOUDFLARE.md) is a documented alternative that also sends the security headers.
 
 ## Image credits
 

@@ -1,6 +1,6 @@
 // src/app/services/auth.service.ts
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
@@ -76,6 +76,11 @@ export class AuthService {
       return null;
     }
     return token;
+  }
+
+  /** Bearer header for admin calls (an empty token when logged out: the backend answers 401). */
+  authHeaders(): HttpHeaders {
+    return new HttpHeaders({ Authorization: `Bearer ${this.getToken() ?? ''}` });
   }
 
   private hasToken(): boolean {

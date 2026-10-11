@@ -1,0 +1,113 @@
+import { Component, Injector, OnInit, afterNextRender, computed, inject, input, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Locale } from '../../services/i18n.service';
+import { PublicReview, REVIEW_LIMITS, ReviewService } from '../../services/review.service';
+import { REVIEW_TEXT } from './review-text';
+
+type SendState = 'idle' | 'sending' | 'sent' | 'error';
+
+/**
+ * Comments under a project: approved comments, and a form whose submissions wait for the owner's approval.
+ * Loads in the browser only (the projects page is prerendered without calling the API).
+ */
+@Component({
+  selector: 'app-project-reviews',
+  templateUrl: './project-reviews.component.html',
+  styleUrls: ['./project-reviews.component.css'],
+})
+export class ProjectReviewsComponent implements OnInit {
+  private readonly reviews = inject(ReviewService);
+  private readonly injector = inject(Injector);
+
+  readonly projectKey = input.required<string>();
+  readonly projectTitle = input.required<string>();
+  readonly locale = input.required<Locale>();
+
+  readonly limits = REVIEW_LIMITS;
+  readonly ratings = [5, 4, 3, 2, 1];
+  readonly available = this.reviews.available;
+  readonly t = computed(() => REVIEW_TEXT[this.locale()]);
+
+  readonly items = signal<PublicReview[]>([]);
+  readonly loadFailed = signal(false);
+  readonly formOpen = signal(false);
+  readonly name = signal('');
+  readonly text = signal('');
+  readonly rating = signal<number | null>(null);
+  readonly honeypot = signal('');
+  readonly state = signal<SendState>('idle');
+  readonly errorMessage = signal('');
+  readonly charsLeft = computed(() => this.limits.textMax - this.text().length);
+  readonly canSend = computed(
+    () => this.name().trim().length > 0 && this.text().trim().length >= this.limits.textMin && this.state() !== 'sending',
+  );
+
+  ngOnInit(): void {
+    if (this.available) {
+      afterNextRender(() => this.load(), { injector: this.injector });
+    }
+  }
+
+  dateOf(review: PublicReview): string {
+    return new Date(review.createdAt).toLocaleDateString(this.locale() === 'pt' ? 'pt-BR' : this.locale());
+  }
+
+  starsOf(rating: number): string {
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  }
+
+  open(): void {
+    this.state.set('idle');
+    this.formOpen.set(true);
+  }
+
+  close(): void {
+    this.formOpen.set(false);
+  }
+
+  send(event: Event): void {
+    event.preventDefault();
+    if (!this.canSend()) {
+      this.fail(this.t().invalid);
+      return;
+    }
+    this.state.set('sending');
+    this.reviews
+      .submit({
+        project: this.projectKey(),
+        name: this.name().trim(),
+        text: this.text().trim(),
+        rating: this.rating(),
+        website: this.honeypot(),
+      })
+      .subscribe({
+        next: () => {
+          this.state.set('sent');
+          this.formOpen.set(false);
+          this.name.set('');
+          this.text.set('');
+          this.rating.set(null);
+        },
+        error: (error: HttpErrorResponse) => this.fail(this.messageFor(error)),
+      });
+  }
+
+  private load(): void {
+    this.reviews.approved(this.projectKey()).subscribe({
+      next: (items) => this.items.set(items),
+      error: () => this.loadFailed.set(true),
+    });
+  }
+
+  private messageFor(error: HttpErrorResponse): string {
+    if (error.status === 429) {
+      return this.t().tooMany;
+    }
+    return error.status === 400 ? this.t().invalid : this.t().failed;
+  }
+
+  private fail(message: string): void {
+    this.errorMessage.set(message);
+    this.state.set('error');
+  }
+}

@@ -1,0 +1,75 @@
+<section class="reviews" [attr.aria-label]="t().heading + ': ' + projectTitle()">
+  <h3 class="reviews-title">{{ t().heading }} @if (items().length) {<span class="reviews-count">({{ items().length }})</span>}</h3>
+
+  @if (!available) {
+    <p class="reviews-note">{{ t().unavailable }}</p>
+  } @else {
+    @if (loadFailed()) {
+      <p class="reviews-note">{{ t().loadError }}</p>
+    } @else if (items().length === 0) {
+      <p class="reviews-note">{{ t().empty }}</p>
+    } @else {
+      <ul class="reviews-list">
+        @for (review of items(); track review.id) {
+          <li class="review">
+            <p class="review-head">
+              <strong>{{ review.name }}</strong>
+              <span class="review-date">{{ dateOf(review) }}</span>
+              @if (review.rating) {
+                <span class="review-stars" role="img" [attr.aria-label]="t().stars(review.rating)">{{ starsOf(review.rating) }}</span>
+              }
+            </p>
+            <p class="review-text">{{ review.text }}</p>
+          </li>
+        }
+      </ul>
+    }
+
+    @if (state() === 'sent') {
+      <p class="reviews-status" role="status">{{ t().thanks }}</p>
+    }
+
+    @if (!formOpen()) {
+      <button type="button" class="btn btn-outline reviews-open" (click)="open()">{{ t().write }}</button>
+    } @else {
+      <form class="review-form" (submit)="send($event)" novalidate>
+        <label [for]="'review-name-' + projectKey()">{{ t().name }}</label>
+        <input [id]="'review-name-' + projectKey()" type="text" autocomplete="name" required
+               [attr.maxlength]="limits.name" [value]="name()" (input)="name.set($any($event.target).value)" />
+
+        <label [for]="'review-text-' + projectKey()">{{ t().comment }}</label>
+        <textarea [id]="'review-text-' + projectKey()" rows="4" required
+                  [attr.maxlength]="limits.textMax" [attr.aria-describedby]="'review-left-' + projectKey()"
+                  [value]="text()" (input)="text.set($any($event.target).value)"></textarea>
+        <p class="review-hint" [id]="'review-left-' + projectKey()">{{ t().charsLeft(charsLeft()) }}</p>
+
+        <label [for]="'review-rating-' + projectKey()">{{ t().rating }}</label>
+        <select [id]="'review-rating-' + projectKey()"
+                (change)="rating.set($any($event.target).value ? +$any($event.target).value : null)">
+          <option value="" [selected]="rating() === null">{{ t().noRating }}</option>
+          @for (n of ratings; track n) {
+            <option [value]="n" [selected]="rating() === n">{{ starsOf(n) }} · {{ t().stars(n) }}</option>
+          }
+        </select>
+
+        <!-- Honeypot: invisible to people and to screen readers; bots fill it and the backend drops the comment. -->
+        <div class="review-trap" aria-hidden="true">
+          <label [for]="'review-website-' + projectKey()">Website</label>
+          <input [id]="'review-website-' + projectKey()" type="text" tabindex="-1" autocomplete="off"
+                 [value]="honeypot()" (input)="honeypot.set($any($event.target).value)" />
+        </div>
+
+        <p class="review-hint">{{ t().privacy }}</p>
+        @if (state() === 'error') {
+          <p class="reviews-error" role="alert">{{ errorMessage() }}</p>
+        }
+        <div class="review-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="!canSend()">
+            {{ state() === 'sending' ? t().sending : t().send }}
+          </button>
+          <button type="button" class="btn btn-outline" (click)="close()">{{ t().cancel }}</button>
+        </div>
+      </form>
+    }
+  }
+</section>

@@ -1,0 +1,44 @@
+<div class="projects-section moderation">
+  <h2>{{ t['heading'] }}</h2>
+  <p class="hint">{{ t['hint'] }}</p>
+
+  <div class="moderation-filter" role="group" [attr.aria-label]="t['show']">
+    @for (s of statuses; track s) {
+      <button type="button" class="btn btn-outline" [attr.aria-pressed]="status() === s" (click)="show(s)">{{ t[s] }}</button>
+    }
+  </div>
+
+  @if (error()) {
+    <p class="error-message" role="alert">{{ error() }}</p>
+  }
+  @if (loading()) {
+    <p class="loading" role="status">{{ t['loading'] }}</p>
+  } @else if (items().length === 0) {
+    <p class="hint">{{ t['none'] }}</p>
+  } @else {
+    <ul class="moderation-list">
+      @for (review of items(); track review.id) {
+        <li class="moderation-item">
+          <p class="moderation-meta">
+            <strong>{{ review.name }}</strong>
+            <span>{{ t['project'] }}: {{ review.project }}</span>
+            <span>{{ review.createdAt | date: 'short' }}</span>
+            @if (review.rating) {
+              <span>{{ review.rating }}/5</span>
+            }
+          </p>
+          <p class="moderation-text">{{ review.text }}</p>
+          <div class="moderation-actions">
+            @if (review.status !== 'APPROVED') {
+              <button type="button" class="btn btn-primary" (click)="setStatus(review, 'APPROVED')">{{ t['approve'] }}</button>
+            }
+            @if (review.status !== 'REJECTED') {
+              <button type="button" class="btn btn-outline" (click)="setStatus(review, 'REJECTED')">{{ t['reject'] }}</button>
+            }
+            <button type="button" class="btn btn-outline" (click)="remove(review)">{{ t['remove'] }}</button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

@@ -1,5 +1,5 @@
 {
-  "name": "tiago-rodrigues-portfolio",
+  "name": "website-tiago-rodrigues",
   "version": "1.0.0",
   "description": "Multilingual, accessible portfolio of Tiago Rodrigues — software development for the automotive industry.",
   "author": "Tiago Rodrigues",
@@ -12,8 +12,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:tiago-rodrigues-portfolio": "node dist/tiago-rodrigues-portfolio/server/server.mjs",
-    "build:cloudflare": "ng build --configuration production,cloudflare && node -e \"require('fs').copyFileSync('dist/tiago-rodrigues-portfolio/browser/index.csr.html','dist/tiago-rodrigues-portfolio/browser/404.html')\""
+    "serve:ssr:website-tiago-rodrigues": "node dist/website-tiago-rodrigues/server/server.mjs",
+    "build:cloudflare": "ng build --configuration production,cloudflare && node -e \"require('fs').copyFileSync('dist/website-tiago-rodrigues/browser/index.csr.html','dist/website-tiago-rodrigues/browser/404.html')\""
   },
   "dependencies": {
     "@angular/common": "^21.2.0",

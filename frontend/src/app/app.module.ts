@@ -1,3 +1,4 @@
+import { ProjectReviewsComponent } from './shared/project-reviews/project-reviews.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
@@ -29,7 +30,7 @@ import { PendencyChartComponent } from './shared/pendency-chart/pendency-chart.c
     BlueprintFigureComponent,
     PendencyChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, ProjectReviewsComponent],
   // Hydration reuses the prerendered DOM instead of re-creating it (less main-thread work, lower TBT/INP).
   // No event replay: it would need an inline script, which the Content-Security-Policy forbids.
   providers: [provideHttpClient(withFetch()), provideClientHydration()],

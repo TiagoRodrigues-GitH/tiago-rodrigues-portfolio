@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling // daily purge of visit records (AnalyticsService.purgeOld)
+@EnableScheduling // daily purge of visit records (AnalyticsService.purgeOld); sweep of comment rate limits (SubmissionLimiter)
 public class PortfolioApplication {
     public static void main(String[] args) {
         SpringApplication.run(PortfolioApplication.class, args);

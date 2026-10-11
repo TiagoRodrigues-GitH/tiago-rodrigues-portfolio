@@ -54,4 +54,21 @@ class ReviewUnitTest {
         clock.advance(SubmissionLimiter.WINDOW.plusSeconds(1));
         assertThat(limiter.tryAcquire("a")).isTrue();
     }
+
+    @Test
+    void sweepForgetsAddressesOnceTheirAttemptsLeaveTheWindow() {
+        TestClock clock = new TestClock();
+        SubmissionLimiter limiter = new SubmissionLimiter(5, clock);
+        limiter.tryAcquire("a");
+        clock.advance(Duration.ofMinutes(30));
+        limiter.tryAcquire("b");
+
+        clock.advance(Duration.ofMinutes(31));
+        limiter.forgetIdleClients();
+        assertThat(limiter.trackedClients()).isEqualTo(1); // "a" is past the window, "b" is not
+
+        clock.advance(Duration.ofMinutes(30));
+        limiter.forgetIdleClients();
+        assertThat(limiter.trackedClients()).isZero();
+    }
 }

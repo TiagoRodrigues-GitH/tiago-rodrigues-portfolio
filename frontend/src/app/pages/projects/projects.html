@@ -52,6 +52,8 @@
             {{ t.demo }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span>
           </a>
         }
+
+        <app-project-reviews [projectKey]="project.slug" [projectTitle]="project.title" [locale]="locale()" />
       </div>
 
       <div class="project-media">

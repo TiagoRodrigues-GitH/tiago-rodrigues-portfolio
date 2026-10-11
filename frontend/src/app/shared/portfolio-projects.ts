@@ -29,6 +29,8 @@ interface ProjectText {
 
 interface ProjectSource {
   id: number;
+  /** Stable key for visitor comments; must be listed in the backend's REVIEW_PROJECTS. */
+  slug: string;
   status: ProjectStatus;
   /** Route of the project's demo page, if it has one. */
   demo?: string;
@@ -49,6 +51,7 @@ export interface ProjectImage {
 
 export interface PortfolioProject extends ProjectText {
   id: number;
+  slug: string;
   status: ProjectStatus;
   demo: string | null;
   image: ProjectImage;
@@ -60,6 +63,7 @@ export interface PortfolioProject extends ProjectText {
 const PROJECTS: ProjectSource[] = [
   {
     id: 1,
+    slug: 'compact-llm',
     status: 'progress',
     demo: '/projects/compact-llm',
     image: {
@@ -103,6 +107,7 @@ const PROJECTS: ProjectSource[] = [
   },
   {
     id: 2,
+    slug: 'vehicle-management',
     status: 'done',
     image: {
       src: '',
@@ -155,6 +160,7 @@ const PROJECTS: ProjectSource[] = [
   },
   {
     id: 3,
+    slug: 'car-collectors',
     status: 'soon',
     image: {
       src: 'assets/images/blueprints/patent-1900.webp',
@@ -204,6 +210,7 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
     const image = localizeImage(project.image, locale);
     return {
       id: project.id,
+      slug: project.slug,
       status: project.status,
       demo: project.demo ?? null,
       ...project.text[locale],

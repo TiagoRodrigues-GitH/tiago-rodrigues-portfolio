@@ -1,0 +1,39 @@
+# Render Blueprint for the API (backend/). The site itself stays on GitHub Pages.
+# Render → New → Blueprint → pick this repository; it asks for every `sync: false` value once.
+# Step-by-step guide, including the Neon database and GoatCounter: docs/DEPLOYMENT.md
+services:
+  - type: web
+    name: website-tiago-rodrigues-api
+    runtime: docker
+    plan: free                      # sleeps after ~15 min idle; the first request then waits about a minute
+    region: virginia                # create the Neon database in AWS us-east-1 (N. Virginia), next to it
+    rootDir: backend                # changes outside backend/ do not redeploy
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass   # deploy only after the "Backend" GitHub workflow passes
+    envVars:
+      # Neon → Connection details → "Java" (JDBC) URL without user and password, e.g.
+      # jdbc:postgresql://ep-xxxx.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      # Signs the admin login tokens; generated once by Render, never stored in the repository.
+      - key: JWT_SECRET
+        generateValue: true
+      # Admin account: e-mail, and the BCrypt hash of the password (never the password itself).
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://tiagorodrigues-gith.github.io
+      # Keys of the projects that accept comments (shared/portfolio-projects.ts → slug).
+      - key: REVIEW_PROJECTS
+        value: compact-llm,vehicle-management,car-collectors
+      # The free instance has 512 MB: let the JVM heap use most of it.
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=75

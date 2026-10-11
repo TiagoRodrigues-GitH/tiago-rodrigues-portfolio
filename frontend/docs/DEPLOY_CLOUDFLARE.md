@@ -8,11 +8,12 @@ Referrer-Policy, Permissions-Policy, HSTS) as real HTTP headers. GitHub Pages ca
 ## One-time setup (Cloudflare dashboard)
 
 1. **Workers & Pages → Create → Pages → Connect to Git** → choose
-   `TiagoRodrigues-GitH/tiago-rodrigues-portfolio`, production branch `main`.
+   `TiagoRodrigues-GitH/website-tiago-rodrigues`, production branch `main`.
 2. Build settings:
    - Framework preset: *None*
+   - Root directory (advanced): `frontend`
    - Build command: `npm run build:cloudflare`
-   - Build output directory: `dist/tiago-rodrigues-portfolio/browser`
+   - Build output directory: `dist/website-tiago-rodrigues/browser` (relative to `frontend`)
    - Environment variable: `NODE_VERSION` = `20`
 3. Save and deploy. The site appears at `https://<project-name>.pages.dev`
    (or add a custom domain under *Custom domains*).
@@ -24,7 +25,7 @@ powershell -ExecutionPolicy Bypass -File scripts\deploy-cloudflare.ps1
 ```
 
 The first run opens the Cloudflare login in the browser (click *Allow*), creates the Pages project
-`tiago-rodrigues-portfolio`, runs `set-site-url.mjs` with its `*.pages.dev` address, builds and
+`website-tiago-rodrigues`, runs `set-site-url.mjs` with its `*.pages.dev` address, builds and
 uploads. Later runs rebuild and upload. A direct-upload project cannot be switched to the Git
 connection later; pick one of the two ways.
 
@@ -41,7 +42,7 @@ git commit -am "Site address: Cloudflare Pages" && git push
 ## What the build does
 
 - `ng build --configuration production,cloudflare`: same production build, base href `/`
-  instead of `/tiago-rodrigues-portfolio/`.
+  instead of `/website-tiago-rodrigues/`.
 - Copies `index.csr.html` to `404.html` (unknown URLs).
 - `public/_redirects`: `/login` and `/admin` are served by the client-side shell; legacy
   `/projects/:id` and `/language/:lang` URLs redirect.

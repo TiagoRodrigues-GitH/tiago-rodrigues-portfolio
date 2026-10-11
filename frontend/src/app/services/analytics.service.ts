@@ -1,10 +1,11 @@
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { GoatCounterService } from './goatcounter.service';
 
-/** One page view as sent to portfolio-backend. The backend adds the IP address and user agent. */
+/** One page view as sent to the backend. The backend adds the IP address and user agent. */
 interface VisitPayload {
   path: string;
   lang: string;
@@ -46,15 +47,16 @@ const OPT_OUT_KEY = 'visit_stats_opt_out';
 const SESSION_KEY = 'visit_session';
 
 /**
- * First-party visit statistics (no third-party tracker, no cookies).
- * Nothing is sent when no backend is configured, when the browser asks not to be
- * tracked (Global Privacy Control or Do Not Track) or when the visitor opted out
- * on the privacy page. See /privacy for what is stored and for how long.
+ * Visit statistics, no cookies: page counts through GoatCounter (aggregates only) and, when a backend is
+ * configured, a first-party visit log. Nothing is sent when neither is configured, when the browser asks not to
+ * be tracked (Global Privacy Control or Do Not Track) or when the visitor opted out on the privacy page.
+ * See /privacy for what is stored and for how long.
  */
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
+  private readonly goatCounter = inject(GoatCounterService);
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private firstView = true;
@@ -63,8 +65,19 @@ export class AnalyticsService {
     return this.auth.backendConfigured;
   }
 
+  /** Some statistics service exists: GoatCounter, the first-party log, or both. */
+  get statisticsConfigured(): boolean {
+    return this.goatCounter.configured || this.auth.backendConfigured;
+  }
+
+  /** The visitor may be counted at all: in a browser, no Global Privacy Control / Do Not Track, no opt-out. */
+  get countingAllowed(): boolean {
+    return this.isBrowser && !this.browserOptOut() && !this.optedOut();
+  }
+
+  /** First-party statistics are recorded: counting allowed and a backend configured. */
   get enabled(): boolean {
-    return this.isBrowser && this.auth.backendConfigured && !this.browserOptOut() && !this.optedOut();
+    return this.countingAllowed && this.auth.backendConfigured;
   }
 
   /** True when the browser itself signals "do not track" (honoured, cannot be overridden here). */
@@ -95,7 +108,11 @@ export class AnalyticsService {
   }
 
   trackPageView(path: string, lang: string): void {
-    if (!this.enabled || path.startsWith('/admin') || path.startsWith('/login')) {
+    if (!this.countingAllowed || path.startsWith('/admin') || path.startsWith('/login')) {
+      return;
+    }
+    this.goatCounter.count(path);
+    if (!this.auth.backendConfigured) {
       return;
     }
     const win = this.document.defaultView!;
@@ -113,15 +130,11 @@ export class AnalyticsService {
   }
 
   summary(days: number): Observable<VisitSummary> {
-    return this.http.get<VisitSummary>(`${this.auth.apiUrl}/admin/analytics/summary`, { params: { days }, headers: this.authHeaders() });
+    return this.http.get<VisitSummary>(`${this.auth.apiUrl}/admin/analytics/summary`, { params: { days }, headers: this.auth.authHeaders() });
   }
 
   recent(limit: number): Observable<VisitRow[]> {
-    return this.http.get<VisitRow[]>(`${this.auth.apiUrl}/admin/analytics/visits`, { params: { limit }, headers: this.authHeaders() });
-  }
-
-  private authHeaders(): HttpHeaders {
-    return new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken() ?? ''}` });
+    return this.http.get<VisitRow[]>(`${this.auth.apiUrl}/admin/analytics/visits`, { params: { limit }, headers: this.auth.authHeaders() });
   }
 
   /** Random id per browser tab (sessionStorage), only to group page views into visits. */
