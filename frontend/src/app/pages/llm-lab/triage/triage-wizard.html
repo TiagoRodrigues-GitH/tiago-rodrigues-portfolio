@@ -1,0 +1,202 @@
+<section class="tw" [attr.aria-label]="t.categoryQuestion">
+  <div class="tw-top">
+    <span class="tw-count">{{ progress() }}</span>
+    @if (index() > 0) {
+      <button type="button" class="tw-ghost" (click)="restart()">{{ t.restart }}</button>
+    }
+  </div>
+  <div class="tw-bar" role="progressbar" [attr.aria-label]="progress()" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="donePct()">
+    <span [style.transform]="'scaleX(' + done() + ')'"></span>
+  </div>
+
+  @if (urgent() && step() !== 'category') {
+    <p class="tw-urgent" role="alert"><strong>{{ t.urgentBadge }}</strong> {{ t.urgent }}</p>
+  }
+
+  @switch (step()) {
+    @case ('category') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q">{{ t.categoryQuestion }}</h3>
+        <div class="tw-cards">
+          @for (c of categories; track c) {
+            <button type="button" class="tw-card" [class.on]="category() === c" [class.alt]="c === 'unknown'"
+              [attr.aria-pressed]="category() === c" [attr.title]="t.categories[c].info" (click)="chooseCategory(c)">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[c]" /></svg>
+              <span>{{ t.categories[c].label }}</span>
+            </button>
+          }
+        </div>
+        <p class="tw-note">{{ t.privacy }}</p>
+      </div>
+    }
+
+    @case ('detail') {
+      @if (category(); as c) {
+        <div class="tw-screen">
+          <h3 #stepHeading tabindex="-1" class="tw-q">
+            <svg class="tw-q-icon" viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[c]" /></svg>
+            {{ t.detailQuestion }}
+          </h3>
+          <div class="tw-list">
+            @for (d of t.categories[c].details; track d.key) {
+              <button type="button" class="tw-row" [class.on]="state().detail === d.key" [attr.aria-pressed]="state().detail === d.key" (click)="chooseDetail(d.key)">
+                <span class="tw-row-main">{{ d.short }}</span>
+                @if (showExamples()) {
+                  <span class="tw-row-ex"><b class="ok">✓</b> {{ d.fits }}</span>
+                  <span class="tw-row-ex"><b class="no">✗</b> {{ d.notFits }}</span>
+                }
+              </button>
+            }
+          </div>
+          <button type="button" class="tw-ghost" [attr.aria-expanded]="showExamples()" (click)="showExamples.set(!showExamples())">
+            {{ showExamples() ? t.hideExamples : t.examples }}
+          </button>
+          @if (showExamples()) {
+            <p class="tw-note">{{ t.illustrative }} {{ t.categories[c].info }}</p>
+          }
+        </div>
+      }
+    }
+
+    @case ('questions') {
+      @for (q of question() ? [question()!] : []; track q) {
+        <div class="tw-screen">
+          <ol class="tw-dots" [attr.aria-label]="t.questionsTitle">
+            @for (k of questions(); track k; let i = $index) {
+              <li [class.done]="!!state().answers[k]" [class.current]="i === qIndex()"><span class="visually-hidden">{{ t.questions[k].short }}</span></li>
+            }
+          </ol>
+          <h3 #stepHeading tabindex="-1" class="tw-q" [id]="'tw-q-' + q">{{ t.questions[q].text }}</h3>
+          <div class="tw-answers" role="group" [attr.aria-labelledby]="'tw-q-' + q">
+            @for (a of answers; track a) {
+              <button type="button" [class]="'tw-answer ' + a" [class.on]="state().answers[q] === a"
+                [attr.aria-pressed]="state().answers[q] === a" (click)="answer(q, a)">{{ t.answers[a] }}</button>
+            }
+          </div>
+          <button type="button" class="tw-ghost" [attr.aria-expanded]="showWhy()" (click)="showWhy.set(!showWhy())">ⓘ {{ t.info }}</button>
+          @if (showWhy()) {
+            <p class="tw-note">{{ t.questions[q].why }}</p>
+          }
+        </div>
+      }
+    }
+
+    @case ('describe') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q"><label for="tw-description">{{ t.describeLabel }}</label></h3>
+        <textarea id="tw-description" rows="4" [attr.lang]="lang" [placeholder]="t.describePlaceholder" aria-describedby="tw-describe-hint"
+          [value]="state().description" [attr.aria-invalid]="errors().includes('describeUnknown')" (input)="describe($any($event.target).value)"></textarea>
+        <p class="tw-note" id="tw-describe-hint">{{ t.describeHint }}</p>
+        @if (noWords()) {
+          <p class="tw-error" role="alert">{{ t.noKnownWords }}</p>
+        }
+        @if (failed()) {
+          <p class="tw-error" role="alert">{{ t.loadError }}</p>
+        }
+      </div>
+    }
+
+    @case ('review') {
+      <div class="tw-screen">
+        <h3 #stepHeading tabindex="-1" class="tw-q">{{ t.resultTitle }}</h3>
+
+        <div class="tw-result">
+          @if (effective(); as e) {
+            <div class="tw-verdict">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[e]" /></svg>
+              <div>
+                <span class="tw-kicker">{{ top() ? t.likely : t.yourChoice }}</span>
+                <strong>{{ top() ? className(top()!.label) : t.categories[e].label }}</strong>
+                @if (top() && category() !== 'unknown') {
+                  <span class="tw-agree" [class.differs]="!agrees()">{{ agrees() ? t.agrees : t.differs }}</span>
+                }
+              </div>
+            </div>
+          }
+          @if (ranking(); as r) {
+            <ul class="tw-bars">
+              @for (row of r; track row.label; let i = $index) {
+                <li [class.top]="i === 0">
+                  <span class="tw-bar-label">{{ className(row.label) }}</span>
+                  <span class="tw-bar-track" aria-hidden="true"><span [style.width.%]="grown() ? row.p * 100 : 0" [style.--i]="i"></span></span>
+                  <span class="tw-bar-value">{{ percent(row.p) }}</span>
+                </li>
+              }
+            </ul>
+            @if (modelNote) {
+              <p class="tw-note">{{ modelNote }}</p>
+            }
+            @if (category() !== 'unknown' && !agrees()) {
+              <button type="button" class="btn btn-outline small" (click)="useSuggestion()">{{ t.useSuggestion }}</button>
+            }
+          }
+        </div>
+
+        <h4 class="tw-sub">{{ t.answersTitle }}</h4>
+        <ul class="tw-chips" [attr.aria-describedby]="'tw-edit-hint'">
+          <li><button type="button" (click)="edit('category')">{{ category() ? t.categories[category()!].label : '' }}</button></li>
+          @if (detailText(); as d) {
+            <li><button type="button" (click)="edit('detail')">{{ d.short }}</button></li>
+          }
+          @for (q of questions(); track q) {
+            <li>
+              <button type="button" (click)="edit('questions', q)">
+                {{ t.questions[q].short }} <b>{{ state().answers[q] ? t.answers[state().answers[q]!] : '' }}</b>
+              </button>
+            </li>
+          }
+          @if (state().description.trim()) {
+            <li><button type="button" class="text" [attr.lang]="lang" (click)="edit('describe')">“{{ state().description }}”</button></li>
+          }
+        </ul>
+        <p class="tw-note" id="tw-edit-hint">{{ t.editHint }}</p>
+
+        <div class="tw-columns">
+          @if (effective(); as e) {
+            <div>
+              <h4 class="tw-sub">{{ t.evidenceTitle }}</h4>
+              <ul class="tw-check">
+                @for (ev of t.categories[e].evidence; track ev) {
+                  <li>{{ ev }}</li>
+                }
+              </ul>
+            </div>
+          }
+          <div>
+            <h4 class="tw-sub">{{ t.nextTitle }}</h4>
+            <ul class="tw-links">
+              @for (n of t.nextSteps; track n.label) {
+                <li><a [href]="n.link" target="_blank" rel="noopener noreferrer">{{ n.label }} <span aria-hidden="true">↗</span></a></li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  @if (errors().length) {
+    <div class="tw-error" role="alert">
+      @for (e of errors(); track e) {
+        <p>{{ t.errors[e] }}</p>
+      }
+    </div>
+  }
+
+  <div class="tw-nav">
+    @if (index() > 0) {
+      <button type="button" class="btn btn-outline" (click)="back()">← {{ t.back }}</button>
+    }
+    @if (step() === 'describe') {
+      @if (category() !== 'unknown') {
+        <button type="button" class="btn btn-outline" (click)="skip()">{{ t.skip }}</button>
+      }
+      <button type="button" class="btn btn-primary" [disabled]="analysing() || !state().description.trim()" (click)="analyse()">
+        {{ analysing() ? t.classifying : t.classify }}
+      </button>
+    }
+    @if (step() === 'review') {
+      <button type="button" class="btn btn-primary" (click)="restart()">{{ t.restart }}</button>
+    }
+  </div>
+</section>

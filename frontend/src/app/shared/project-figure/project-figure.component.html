@@ -70,7 +70,7 @@
     }
 
     @case ('llm') {
-      <!-- 1 Sources: official documents and defect complaints -->
+      <!-- 1 Sources: official patent documents -->
       <g class="part" [class.on]="active() === 0">
         @for (doc of [0, 1, 2]; track doc) {
           <path class="draw card" pathLength="1"
@@ -78,7 +78,7 @@
         }
         <path class="detail" d="M98 186 H200 M98 206 H200 M98 226 H184 M98 246 H200 M98 266 H170 M98 286 H196" />
         <text class="tag" x="90" y="160">INPI · LPI</text>
-        <text class="tag" x="90" y="330">NHTSA</text>
+        <text class="tag" x="90" y="330">RAG · BM25</text>
       </g>
 
       <!-- Token flow into the model and out to the answer -->

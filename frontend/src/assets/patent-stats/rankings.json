@@ -1,0 +1,974 @@
+{
+ "generated": "2026-10-09",
+ "years": [
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026
+ ],
+ "views": [
+  {
+   "id": "br-nonresidents",
+   "office": "INPI",
+   "years": {
+    "2020": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 44,
+     "total": 19058,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/rankdepositantesnaoresidentes-2020.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2021": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 43,
+     "total": 19567,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/rankdepositantesnaoresidentes-vf_2021.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2022": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 39,
+     "total": 20361,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/ranking-de-depositantes-nao-residentes-2022.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2023": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 44,
+     "total": 20396,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/ranking-de-depositantes-nao-residentes-2023.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2024": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 40,
+     "total": null,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/inpi-rankings-de-depositantes-2024.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2025": {
+     "published": true,
+     "listSize": 53,
+     "cutoff": 40,
+     "total": null,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/inpi-rankings-de-depositantes-2025.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2026": {
+     "published": false
+    }
+   },
+   "companies": [
+    {
+     "name": "Qualcomm",
+     "publishedNames": [
+      "QUALCOMM",
+      "QUALCOMM INCORPORATED"
+     ],
+     "values": {
+      "2020": 390,
+      "2021": 210,
+      "2022": 644,
+      "2023": 1134,
+      "2024": 1002,
+      "2025": 514,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 2,
+      "2021": 5,
+      "2022": 1,
+      "2023": 1,
+      "2024": 1,
+      "2025": 2,
+      "2026": null
+     }
+    },
+    {
+     "name": "Huawei Technologies",
+     "publishedNames": [
+      "HUAWEI",
+      "HUAWEI TECHNOLOGIES CO LTD",
+      "HUAWEI TECHNOLOGIES CO., LTD."
+     ],
+     "values": {
+      "2020": 448,
+      "2021": 389,
+      "2022": 419,
+      "2023": 460,
+      "2024": 330,
+      "2025": 652,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 1,
+      "2021": 1,
+      "2022": 2,
+      "2023": 2,
+      "2024": 2,
+      "2025": 1,
+      "2026": null
+     }
+    },
+    {
+     "name": "BASF",
+     "publishedNames": [
+      "BASF",
+      "BASF SE"
+     ],
+     "values": {
+      "2020": 216,
+      "2021": 261,
+      "2022": 192,
+      "2023": 257,
+      "2024": 195,
+      "2025": 193,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 5,
+      "2021": 2,
+      "2022": 4,
+      "2023": 3,
+      "2024": 4,
+      "2025": 7,
+      "2026": null
+     }
+    },
+    {
+     "name": "Deere & Company",
+     "publishedNames": [
+      "DEERE  COMPANY",
+      "DEERE & COMPANY"
+     ],
+     "values": {
+      "2020": 202,
+      "2021": 234,
+      "2022": 143,
+      "2023": 171,
+      "2024": 195,
+      "2025": 207,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 6,
+      "2021": 4,
+      "2022": 7,
+      "2023": 7,
+      "2024": 5,
+      "2025": 5,
+      "2026": null
+     }
+    },
+    {
+     "name": "Ericsson",
+     "publishedNames": [
+      "ERICSSON",
+      "TELEFONAKTIEBOLAGET LM ERICSSON (PUBL)",
+      "TELEFONAKTIEBOLAGET LM ERICSSON PUBL"
+     ],
+     "values": {
+      "2020": 165,
+      "2021": 139,
+      "2022": 150,
+      "2023": 208,
+      "2024": 128,
+      "2025": 122,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 8,
+      "2021": 7,
+      "2022": 6,
+      "2023": 5,
+      "2024": 12,
+      "2025": 15,
+      "2026": null
+     }
+    },
+    {
+     "name": "Unilever IP Holdings",
+     "publishedNames": [
+      "UNILEVER",
+      "UNILEVER IP HOLDINGS B.V.",
+      "UNILEVER IP HOLDINGS BV"
+     ],
+     "values": {
+      "2020": 122,
+      "2021": 137,
+      "2022": 121,
+      "2023": 165,
+      "2024": 158,
+      "2025": 111,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 12,
+      "2021": 9,
+      "2022": 10,
+      "2023": 8,
+      "2024": 7,
+      "2025": 20,
+      "2026": null
+     }
+    },
+    {
+     "name": "Dow Global Technologies",
+     "publishedNames": [
+      "DOW GLOBAL TECHNOLOGIES LLC"
+     ],
+     "values": {
+      "2020": null,
+      "2021": null,
+      "2022": 211,
+      "2023": 180,
+      "2024": 165,
+      "2025": 201,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": null,
+      "2022": 3,
+      "2023": 6,
+      "2024": 6,
+      "2025": 6,
+      "2026": null
+     }
+    },
+    {
+     "name": "Nippon Steel",
+     "publishedNames": [
+      "NIPPON STEEL CORPORATION"
+     ],
+     "values": {
+      "2020": 113,
+      "2021": 115,
+      "2022": 63,
+      "2023": 81,
+      "2024": 103,
+      "2025": 166,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 14,
+      "2021": 16,
+      "2022": 27,
+      "2023": 20,
+      "2024": 16,
+      "2025": 10,
+      "2026": null
+     }
+    },
+    {
+     "name": "Dow Chemical",
+     "publishedNames": [
+      "DOW CHEMICAL"
+     ],
+     "values": {
+      "2020": 301,
+      "2021": 257,
+      "2022": null,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 3,
+      "2021": 3,
+      "2022": null,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     }
+    },
+    {
+     "name": "Halliburton Energy Services",
+     "publishedNames": [
+      "HALLIBURTON ENERGY SERVICES INC",
+      "HALLIBURTON ENERGY SERVICES, INC."
+     ],
+     "values": {
+      "2020": null,
+      "2021": null,
+      "2022": 129,
+      "2023": 127,
+      "2024": 156,
+      "2025": 127,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": null,
+      "2022": 8,
+      "2023": 12,
+      "2024": 8,
+      "2025": 14,
+      "2026": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "br-residents",
+   "office": "INPI",
+   "years": {
+    "2020": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 12,
+     "total": 5281,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/rankdepositantesresidentes-2020.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2021": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 10,
+     "total": 4671,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/rankdepositantesresidentes-vf_2021.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2022": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 10,
+     "total": 4398,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/ranking-de-depositantes-residentes-2022.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2023": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 12,
+     "total": 4971,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/ranking-de-depositantes-residentes-2023.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2024": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 16,
+     "total": null,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/inpi-rankings-de-depositantes-2024.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2025": {
+     "published": true,
+     "listSize": 51,
+     "cutoff": 18,
+     "total": null,
+     "source": "https://www.gov.br/inpi/pt-br/central-de-conteudo/estatisticas/arquivos/estatisticas-preliminares/inpi-rankings-de-depositantes-2025.pdf",
+     "page": "https://www.gov.br/inpi/pt-br/inpi-data/relatorios/ranking-depositantes"
+    },
+    "2026": {
+     "published": false
+    }
+   },
+   "companies": [
+    {
+     "name": "Petrobras",
+     "publishedNames": [
+      "PETROLEO BRASILEIRO S A PETROBRAS",
+      "PETROLEO BRASILEIRO SA - PETROBRAS",
+      "PETRÓLEO BRASILEIRO S.A. - PETROBRAS",
+      "PETRÓLEO BRASILEIRO SA PETROBRAS"
+     ],
+     "values": {
+      "2020": 79,
+      "2021": 113,
+      "2022": 110,
+      "2023": 125,
+      "2024": 155,
+      "2025": 172,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 2,
+      "2021": 1,
+      "2022": 1,
+      "2023": 1,
+      "2024": 2,
+      "2025": 2,
+      "2026": null
+     }
+    },
+    {
+     "name": "Stellantis Automóveis Brasil",
+     "publishedNames": [
+      "FCA FIAT CHRYSLER AUTOMOVEIS BRASIL LTDA",
+      "STELLANTIS AUTOMOVEIS BRASIL",
+      "STELLANTIS AUTOMOVEIS BRASIL LTDA"
+     ],
+     "values": {
+      "2020": null,
+      "2021": null,
+      "2022": 31,
+      "2023": 58,
+      "2024": 185,
+      "2025": 225,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": null,
+      "2022": 8,
+      "2023": 3,
+      "2024": 1,
+      "2025": 1,
+      "2026": null
+     }
+    },
+    {
+     "name": "Robert Bosch",
+     "publishedNames": [
+      "ROBERT BOSCH LIMITADA",
+      "ROBERT BOSCH LTDA."
+     ],
+     "values": {
+      "2020": 30,
+      "2021": 33,
+      "2022": 30,
+      "2023": 38,
+      "2024": 37,
+      "2025": 42,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 18,
+      "2021": 8,
+      "2022": 10,
+      "2023": 8,
+      "2024": 19,
+      "2025": 16,
+      "2026": null
+     }
+    },
+    {
+     "name": "CNH Industrial Brasil",
+     "publishedNames": [
+      "CNH INDUSTRIAL BRASIL LTDA",
+      "CNH INDUSTRIAL BRASIL LTDA."
+     ],
+     "values": {
+      "2020": 15,
+      "2021": 25,
+      "2022": 28,
+      "2023": 40,
+      "2024": 26,
+      "2025": 19,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 36,
+      "2021": 16,
+      "2022": 13,
+      "2023": 6,
+      "2024": 29,
+      "2025": 46,
+      "2026": null
+     }
+    },
+    {
+     "name": "Vale",
+     "publishedNames": [
+      "VALE AS",
+      "VALE S.A.",
+      "VALE SA"
+     ],
+     "values": {
+      "2020": 15,
+      "2021": 21,
+      "2022": 28,
+      "2023": 23,
+      "2024": 22,
+      "2025": null,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 36,
+      "2021": 21,
+      "2022": 14,
+      "2023": 21,
+      "2024": 37,
+      "2025": null,
+      "2026": null
+     }
+    },
+    {
+     "name": "Marchesan Implementos E Maquinas Agricolas Tatu",
+     "publishedNames": [
+      "MARCHESAN IMPLEMENTOS E MAQUINAS AGRICOLAS TATU S A",
+      "MARCHESAN IMPLEMENTOS E MAQUINAS AGRICOLAS TATU SA",
+      "MARCHESAN IMPLEMENTOS E MÁQUINAS AGRÍCOLAS TATU S.A.",
+      "MARCHESAN IMPLEMENTOS E MÁQUINAS AGRÍCOLAS TATU S/A",
+      "MARCHESAN IMPLEMENTOS E MÁQUINAS AGRÍCOLAS TATU SA"
+     ],
+     "values": {
+      "2020": 19,
+      "2021": 15,
+      "2022": 29,
+      "2023": 14,
+      "2024": 28,
+      "2025": null,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 24,
+      "2021": 27,
+      "2022": 24,
+      "2023": 43,
+      "2024": 27,
+      "2025": null,
+      "2026": null
+     }
+    },
+    {
+     "name": "Marcopolo",
+     "publishedNames": [
+      "MARCOPOLO S.A",
+      "MARCOPOLO SA"
+     ],
+     "values": {
+      "2020": null,
+      "2021": 67,
+      "2022": 36,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": 4,
+      "2022": 5,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     }
+    },
+    {
+     "name": "Braskem",
+     "publishedNames": [
+      "BRASKEM AS",
+      "BRASKEM S.A.",
+      "BRASKEM SA"
+     ],
+     "values": {
+      "2020": 19,
+      "2021": 25,
+      "2022": 17,
+      "2023": null,
+      "2024": 18,
+      "2025": 20,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 24,
+      "2021": 15,
+      "2022": 27,
+      "2023": null,
+      "2024": 43,
+      "2025": 42,
+      "2026": null
+     }
+    },
+    {
+     "name": "WEG Equipamentos Elétricos",
+     "publishedNames": [
+      "WEG EQUIPAMENTOS ELETRICOS SA",
+      "WEG EQUIPAMENTOS ELÉTRICOS S/A"
+     ],
+     "values": {
+      "2020": null,
+      "2021": null,
+      "2022": 15,
+      "2023": 23,
+      "2024": 16,
+      "2025": 18,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": null,
+      "2022": 34,
+      "2023": 22,
+      "2024": 50,
+      "2025": 49,
+      "2026": null
+     }
+    },
+    {
+     "name": "Bioreset Biotecnologia",
+     "publishedNames": [
+      "BIORESET BIOTECNOLOGIA LTDA",
+      "BIORESET BIOTECNOLOGIA LTDA."
+     ],
+     "values": {
+      "2020": null,
+      "2021": 28,
+      "2022": 28,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     },
+     "ranks": {
+      "2020": null,
+      "2021": 11,
+      "2022": 12,
+      "2023": null,
+      "2024": null,
+      "2025": null,
+      "2026": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "epo",
+   "office": "EPO",
+   "years": {
+    "2020": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 413,
+     "total": null,
+     "source": "https://report-archive.epo.org/files/babylon/patent_index_2020_top_applicants_en_.xlsx",
+     "page": "https://report-archive.epo.org/about-us/annual-reports-statistics/statistics/2020/statistics/applicants.html"
+    },
+    "2021": {
+     "published": true,
+     "listSize": 51,
+     "cutoff": 437,
+     "total": null,
+     "source": "https://report-archive.epo.org/files/babylon/Patent_Index_2021_Top_applicants_en.xlsx",
+     "page": "https://report-archive.epo.org/about-us/annual-reports-statistics/statistics/2021/statistics/applicants.html"
+    },
+    "2022": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 431,
+     "total": null,
+     "source": "https://report-archive.epo.org/files/babylon/Patent_Index_2022_Top_applicants.xlsx",
+     "page": "https://report-archive.epo.org/about-us/annual-reports-statistics/statistics/2022/statistics/applicants.html"
+    },
+    "2023": {
+     "published": true,
+     "listSize": 49,
+     "cutoff": 462,
+     "total": null,
+     "source": "https://link.epo.org/web/about-us/statistics/en-patent-index-2023-at-a-glance.pdf",
+     "page": "https://www.epo.org/en/about-us/statistics/patent-index-2023"
+    },
+    "2024": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 445,
+     "total": null,
+     "source": "https://link.epo.org/web/about-us/statistics/en-patent-index-2024-at-a-glance.pdf",
+     "page": "https://www.epo.org/en/about-us/statistics/patent-index-2024"
+    },
+    "2025": {
+     "published": true,
+     "listSize": 50,
+     "cutoff": 417,
+     "total": null,
+     "source": "https://link.epo.org/web/about-us/statistics/en-technology-dashboard-2025-at-a-glance.pdf",
+     "page": "https://www.epo.org/en/about-us/statistics/technology-dashboard-2025"
+    },
+    "2026": {
+     "published": false
+    }
+   },
+   "companies": [
+    {
+     "name": "Huawei",
+     "publishedNames": [
+      "HUAWEI",
+      "Huawei"
+     ],
+     "values": {
+      "2020": 3113,
+      "2021": 3544,
+      "2022": 4505,
+      "2023": 5071,
+      "2024": 4322,
+      "2025": 4744,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 2,
+      "2021": 1,
+      "2022": 1,
+      "2023": 1,
+      "2024": 2,
+      "2025": 2,
+      "2026": null
+     }
+    },
+    {
+     "name": "Samsung",
+     "publishedNames": [
+      "SAMSUNG",
+      "Samsung"
+     ],
+     "values": {
+      "2020": 3276,
+      "2021": 3439,
+      "2022": 2874,
+      "2023": 4760,
+      "2024": 5107,
+      "2025": 5337,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 1,
+      "2021": 2,
+      "2022": 4,
+      "2023": 2,
+      "2024": 1,
+      "2025": 1,
+      "2026": null
+     }
+    },
+    {
+     "name": "LG",
+     "publishedNames": [
+      "LG"
+     ],
+     "values": {
+      "2020": 2909,
+      "2021": 2422,
+      "2022": 3510,
+      "2023": 3498,
+      "2024": 3623,
+      "2025": 4464,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 3,
+      "2021": 3,
+      "2022": 2,
+      "2023": 3,
+      "2024": 3,
+      "2025": 3,
+      "2026": null
+     }
+    },
+    {
+     "name": "Qualcomm",
+     "publishedNames": [
+      "QUALCOMM",
+      "Qualcomm"
+     ],
+     "values": {
+      "2020": 1711,
+      "2021": 1534,
+      "2022": 2966,
+      "2023": 3275,
+      "2024": 3015,
+      "2025": 2939,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 4,
+      "2021": 7,
+      "2022": 3,
+      "2023": 4,
+      "2024": 4,
+      "2025": 4,
+      "2026": null
+     }
+    },
+    {
+     "name": "Siemens",
+     "publishedNames": [
+      "SIEMENS",
+      "Siemens"
+     ],
+     "values": {
+      "2020": 1625,
+      "2021": 1720,
+      "2022": 1735,
+      "2023": 1889,
+      "2024": 1830,
+      "2025": 1653,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 6,
+      "2021": 5,
+      "2022": 6,
+      "2023": 6,
+      "2024": 6,
+      "2025": 6,
+      "2026": null
+     }
+    },
+    {
+     "name": "Ericsson",
+     "publishedNames": [
+      "ERICSSON",
+      "Ericsson"
+     ],
+     "values": {
+      "2020": 1634,
+      "2021": 1884,
+      "2022": 1827,
+      "2023": 1969,
+      "2024": 1470,
+      "2025": 1418,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 5,
+      "2021": 4,
+      "2022": 5,
+      "2023": 5,
+      "2024": 8,
+      "2025": 7,
+      "2026": null
+     }
+    },
+    {
+     "name": "RTX",
+     "publishedNames": [
+      "RAYTHEON TECHNOLOGIES",
+      "RTX"
+     ],
+     "values": {
+      "2020": 1284,
+      "2021": 1623,
+      "2022": 1539,
+      "2023": 1822,
+      "2024": 2061,
+      "2025": 1288,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 11,
+      "2021": 6,
+      "2022": 7,
+      "2023": 7,
+      "2024": 5,
+      "2025": 13,
+      "2026": null
+     }
+    },
+    {
+     "name": "BASF",
+     "publishedNames": [
+      "BASF"
+     ],
+     "values": {
+      "2020": 1305,
+      "2021": 1284,
+      "2022": 1401,
+      "2023": 1445,
+      "2024": 1599,
+      "2025": 1372,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 10,
+      "2021": 11,
+      "2022": 8,
+      "2023": 8,
+      "2024": 7,
+      "2025": 8,
+      "2026": null
+     }
+    },
+    {
+     "name": "Royal Philips",
+     "publishedNames": [
+      "Philips",
+      "ROYAL PHILIPS",
+      "Royal Philips"
+     ],
+     "values": {
+      "2020": 1419,
+      "2021": 1311,
+      "2022": 1338,
+      "2023": 1299,
+      "2024": 1231,
+      "2025": 1289,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 9,
+      "2021": 9,
+      "2022": 9,
+      "2023": 9,
+      "2024": 11,
+      "2025": 12,
+      "2026": null
+     }
+    },
+    {
+     "name": "Sony",
+     "publishedNames": [
+      "SONY",
+      "Sony"
+     ],
+     "values": {
+      "2020": 1477,
+      "2021": 1465,
+      "2022": 1329,
+      "2023": 1213,
+      "2024": 1307,
+      "2025": 1032,
+      "2026": null
+     },
+     "ranks": {
+      "2020": 8,
+      "2021": 8,
+      "2022": 10,
+      "2023": 10,
+      "2024": 9,
+      "2025": 15,
+      "2026": null
+     }
+    }
+   ]
+  }
+ ],
+ "aliases": [
+  {
+   "from": "RAYTHEON",
+   "to": "RTX",
+   "note": "Raytheon Technologies Corporation renamed RTX Corporation on 17 July 2023 (SEC Form 8-K).",
+   "source": "https://www.sec.gov/Archives/edgar/data/101829/000119312523187728/d708798d8k.htm"
+  },
+  {
+   "from": "FCAFIATCHRYSLERAUTOMOVEISBRASIL",
+   "to": "STELLANTISAUTOMOVEISBRASIL",
+   "note": "FCA Fiat Chrysler Automóveis Brasil Ltda became Stellantis Automóveis Brasil Ltda, same CNPJ 16.701.716/0001-56 (contract record, Comprasnet).",
+   "source": "https://contratos.comprasnet.gov.br/gescon/consulta/download-arquivo-contrato/641667"
+  },
+  {
+   "from": "PHILIPS",
+   "to": "ROYALPHILIPS",
+   "note": "Short form of Royal Philips used in the EPO 2024 list.",
+   "source": ""
+  },
+  {
+   "from": "TELEFONAKTIEBOLAGETLMERICSSON",
+   "to": "ERICSSON",
+   "note": "Telefonaktiebolaget LM Ericsson is the legal name of Ericsson (INPI used the short name in 2020-2021).",
+   "source": ""
+  }
+ ]
+}

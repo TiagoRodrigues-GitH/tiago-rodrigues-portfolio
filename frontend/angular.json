@@ -28,6 +28,7 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "webWorkerTsConfig": "tsconfig.worker.json",
             "assets": [
               {
                 "glob": "**/*",
@@ -37,6 +38,11 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "{maplibre-gl-csp-worker.js,maplibre-gl.css}",
+                "input": "node_modules/maplibre-gl/dist",
+                "output": "assets/maplibre"
               }
             ],
             "styles": [

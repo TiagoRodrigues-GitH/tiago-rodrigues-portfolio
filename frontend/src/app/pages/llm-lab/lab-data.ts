@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { ClassifierData } from './lab-engine';
+import { RankingsData } from './patent-guide/stats-chart';
 
 /** Shapes of the files written by scripts/llm-lab/export_llm_lab.py into src/assets/llm-lab/. */
 
@@ -104,10 +105,16 @@ export class LabDataService {
     return this.load<ClassifierData>('nhtsa-classifier.json');
   }
 
-  private load<T>(file: string): Observable<T> {
-    if (!this.cache.has(file)) {
-      this.cache.set(file, this.http.get<T>(`assets/llm-lab/${file}`).pipe(shareReplay(1)));
+  /** Top patent applicants by office (scripts/patent-stats/build_patent_rankings.py). */
+  rankings(): Observable<RankingsData> {
+    return this.load<RankingsData>('rankings.json', 'assets/patent-stats');
+  }
+
+  private load<T>(file: string, folder = 'assets/llm-lab'): Observable<T> {
+    const url = `${folder}/${file}`;
+    if (!this.cache.has(url)) {
+      this.cache.set(url, this.http.get<T>(url).pipe(shareReplay(1)));
     }
-    return this.cache.get(file) as Observable<T>;
+    return this.cache.get(url) as Observable<T>;
   }
 }

@@ -175,7 +175,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   de: {
     eyebrow: 'Datenschutz · LGPD / DSGVO',
     title: 'Wie diese Website Ihre Daten verarbeitet',
-    intro: 'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten die Leser interessieren, nimmt Kommentare zu den Projekten an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
+    intro: 'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten für Lesende interessant sind, nimmt Kommentare zu den Projekten an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
     updated: 'Stand: 5. Oktober 2026.',
     sections: [
       {

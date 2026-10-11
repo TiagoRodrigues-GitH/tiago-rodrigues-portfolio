@@ -1,0 +1,59 @@
+<div class="od">
+  <div class="od-controls">
+    <label class="od-check">
+      <input type="checkbox" [checked]="respect()" (change)="setRespect($any($event.target).checked)" />
+      {{ t.onewayRespect }}
+    </label>
+    <label class="od-select">
+      <span class="mono-label">{{ t.algorithm }}</span>
+      <select (change)="setAlgorithm($any($event.target).value)">
+        @for (key of order; track key) {
+          <option [value]="key" [selected]="key === algorithm()">{{ t.algorithms[key].name }}</option>
+        }
+      </select>
+    </label>
+  </div>
+  <p class="od-note">{{ t.onewayNote }} {{ t.onewayPick }}</p>
+
+  <figure class="od-figure">
+    <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" role="group" [attr.aria-label]="t.onewayFigure">
+      <defs>
+        <marker id="od-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M1 1 L9 5 L1 9" fill="none" stroke="currentColor" stroke-width="2" />
+        </marker>
+      </defs>
+      @for (s of streets; track s.i) {
+        <polyline [attr.points]="points(s.u, s.v)" [attr.class]="streetClass(s.i, s.oneway)" />
+      }
+      @for (n of nodes; track n.id) {
+        <g class="od-hit" tabindex="0" role="button" [attr.aria-label]="nodeLabel(n.id)" (click)="pick(n.id)" (keydown.enter)="pick(n.id)" (keydown.space)="pick(n.id); $event.preventDefault()">
+          <circle [attr.cx]="n.x" [attr.cy]="n.y" r="16" class="od-target" />
+          <circle [attr.cx]="n.x" [attr.cy]="n.y" r="8" [attr.class]="nodeClass(n.id)" />
+          @if (n.id === origin()) {
+            <text [attr.x]="n.x" [attr.y]="n.y + 4" class="od-letter">A</text>
+          } @else if (n.id === destination()) {
+            <text [attr.x]="n.x" [attr.y]="n.y + 4" class="od-letter">B</text>
+          }
+        </g>
+      }
+    </svg>
+    <figcaption aria-live="polite">{{ comparison() }}</figcaption>
+  </figure>
+
+  <app-playback-bar
+    idPrefix="od"
+    [t]="t"
+    [locale]="locale"
+    [status]="controller.status()"
+    [progress]="controller.progress()"
+    [speed]="controller.speed()"
+    [canRun]="true"
+    (run)="run()"
+    (toggle)="controller.toggle()"
+    (step)="controller.stepOnce()"
+    (restart)="controller.restart()"
+    (skip)="controller.skipToEnd()"
+    (speedChange)="controller.setSpeed($event)"
+  />
+  <app-map-legend [text]="t.legend" [title]="t.legendTitle" variant="demo" />
+</div>

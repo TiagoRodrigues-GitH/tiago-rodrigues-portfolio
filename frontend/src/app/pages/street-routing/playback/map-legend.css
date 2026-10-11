@@ -1,0 +1,68 @@
+:host { display: block; margin-top: 1rem; }
+
+.lg-title {
+  margin: 0 0 0.35rem;
+}
+
+.lg-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.3rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.lg-list li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.lg-sw {
+  flex: none;
+  width: 1.6rem;
+  height: 0.9rem;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* lines */
+.lg-street { background-image: linear-gradient(var(--map-street), var(--map-street)); background-size: 100% 2px; }
+.lg-evaluated { background-image: linear-gradient(var(--map-evaluated), var(--map-evaluated)); background-size: 100% 4px; }
+.lg-route { background-image: linear-gradient(var(--map-route), var(--map-route)); background-size: 100% 6px; }
+.lg-link { background-image: repeating-linear-gradient(90deg, var(--map-street) 0 4px, transparent 4px 8px); background-size: 100% 2px; }
+.lg-candidate { background-image: repeating-linear-gradient(90deg, var(--map-candidate) 0 3px, transparent 3px 6px); background-size: 100% 2px; }
+.lg-best { background-image: repeating-linear-gradient(90deg, var(--map-best) 0 7px, transparent 7px 11px); background-size: 100% 4px; }
+.lg-oneway {
+  background-image: linear-gradient(var(--map-street), var(--map-street));
+  background-size: 100% 2px;
+  position: relative;
+}
+.lg-oneway::after {
+  content: '›';
+  position: absolute;
+  inset: -0.45rem 0 0;
+  color: var(--map-outline);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* nodes */
+.lg-frontier,
+.lg-visited,
+.lg-backward,
+.lg-origin,
+.lg-destination {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0 0.4rem;
+  border-radius: 50%;
+}
+.lg-frontier { border: 2px solid var(--map-frontier); background: #fff; }
+.lg-visited { border: 1px solid var(--map-visited-stroke); background: var(--map-visited); }
+.lg-backward { border: 1px solid var(--map-backward-stroke); background: var(--map-backward); }
+.lg-origin { width: 1rem; height: 1rem; border: 2px solid #fff; outline: 1px solid var(--rule-strong); background: var(--map-origin); }
+.lg-destination { width: 1rem; height: 1rem; border: 2px solid #fff; outline: 1px solid var(--rule-strong); background: var(--map-destination); }

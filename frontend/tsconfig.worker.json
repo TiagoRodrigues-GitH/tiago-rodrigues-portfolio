@@ -1,0 +1,10 @@
+/* Web Workers (src/**/*.worker.ts): bundled separately by the application builder. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/worker",
+    "lib": ["es2022", "webworker"],
+    "types": []
+  },
+  "include": ["src/**/*.worker.ts"]
+}

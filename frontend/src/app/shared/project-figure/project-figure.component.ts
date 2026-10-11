@@ -11,9 +11,9 @@ const CALLOUTS: Record<ProjectFigureKind, Record<Locale, string[]>> = {
     de: ['Pkw (Klasse Passeio)', 'Lastfahrzeug (Klasse Carga)', 'Fahrzeugdatenblatt: Mercosur-Kennzeichen und Attribute', 'Fahrzeug-Repository (BDVeiculos)'],
   },
   llm: {
-    pt: ['Fontes: documentos do INPI e reclamações da NHTSA', 'Modelo compacto ajustado com LoRA (até 4 bilhões de parâmetros)', 'Resposta com a fonte citada'],
-    en: ['Sources: INPI documents and NHTSA complaints', 'Compact model fine-tuned with LoRA (up to 4 billion parameters)', 'Answer that cites its source'],
-    de: ['Quellen: INPI-Dokumente und NHTSA-Beschwerden', 'Kompaktes, mit LoRA feinabgestimmtes Modell (bis 4 Milliarden Parameter)', 'Antwort mit Quellenangabe'],
+    pt: ['Fontes: Lei 9.279/1996 e documentos do INPI', 'Modelo compacto ajustado com LoRA (até 4 bilhões de parâmetros)', 'Resposta com a fonte citada'],
+    en: ['Sources: Law 9,279/1996 and INPI documents', 'Compact model fine-tuned with LoRA (up to 4 billion parameters)', 'Answer that cites its source'],
+    de: ['Quellen: Gesetz 9.279/1996 und INPI-Dokumente', 'Kompaktes, mit LoRA feinabgestimmtes Modell (bis 4 Milliarden Parameter)', 'Antwort mit Quellenangabe'],
   },
 };
 

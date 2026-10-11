@@ -46,3 +46,6 @@ src/app/models/angular_json.code-search
 
 # Python
 __pycache__/
+
+# Downloaded official publications (rebuilt by scripts/patent-stats/build_patent_rankings.py)
+scripts/patent-stats/cache/
