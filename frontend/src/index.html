@@ -8,7 +8,7 @@
     as real headers; public/_headers sets all of them on hosts that read it (Cloudflare Pages, Netlify).
     When the backend is deployed, add its origin to connect-src (see src/environments/environment.prod.ts).
   -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://website-tiago-rodrigues-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Tiago Rodrigues — Software para a indústria automotiva</title>
   <base href="/">

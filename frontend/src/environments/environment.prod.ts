@@ -8,6 +8,6 @@
  */
 export const environment = {
   production: true,
-  apiUrl: null as string | null,
+  apiUrl: 'https://website-tiago-rodrigues-api.onrender.com' as string | null,
   goatcounter: null as string | null,
 };
