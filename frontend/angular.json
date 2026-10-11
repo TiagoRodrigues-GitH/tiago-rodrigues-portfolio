@@ -59,7 +59,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/website-tiago-rodrigues/",
+              "baseHref": "/tiago-rodrigues-portfolio/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

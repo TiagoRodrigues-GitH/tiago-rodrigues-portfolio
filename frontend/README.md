@@ -13,7 +13,7 @@ The Angular site of [website-tiago-rodrigues](../README.md): the personal portfo
 
 The site is available in **Portuguese, English and German**, follows **WCAG 2.2 level AA**, and was designed against **Nielsen's 10 usability heuristics**, **Shneiderman's Eight Golden Rules** and the usability definition of **ISO 9241-11**.
 
-**Live site:** https://tiagorodrigues-gith.github.io/website-tiago-rodrigues/
+**Live site:** https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio/
 
 ---
 

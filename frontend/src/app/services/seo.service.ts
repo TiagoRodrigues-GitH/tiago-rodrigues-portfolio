@@ -4,7 +4,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Locale } from './i18n.service';
 
 /** Public address of the site (GitHub Pages project site). */
-export const SITE_URL = 'https://tiagorodrigues-gith.github.io/website-tiago-rodrigues';
+export const SITE_URL = 'https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio';
 
 const OG_LOCALE: Record<Locale, string> = { pt: 'pt_BR', en: 'en_US', de: 'de_DE' };
 const HREFLANG: Record<Locale, string> = { pt: 'pt-BR', en: 'en', de: 'de' };

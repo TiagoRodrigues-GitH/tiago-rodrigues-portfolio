@@ -8,7 +8,7 @@ Referrer-Policy, Permissions-Policy, HSTS) as real HTTP headers. GitHub Pages ca
 ## One-time setup (Cloudflare dashboard)
 
 1. **Workers & Pages → Create → Pages → Connect to Git** → choose
-   `TiagoRodrigues-GitH/website-tiago-rodrigues`, production branch `main`.
+   `TiagoRodrigues-GitH/tiago-rodrigues-portfolio`, production branch `main`.
 2. Build settings:
    - Framework preset: *None*
    - Root directory (advanced): `frontend`
@@ -42,7 +42,7 @@ git commit -am "Site address: Cloudflare Pages" && git push
 ## What the build does
 
 - `ng build --configuration production,cloudflare`: same production build, base href `/`
-  instead of `/website-tiago-rodrigues/`.
+  instead of `/tiago-rodrigues-portfolio/`.
 - Copies `index.csr.html` to `404.html` (unknown URLs).
 - `public/_redirects`: `/login` and `/admin` are served by the client-side shell; legacy
   `/projects/:id` and `/language/:lang` URLs redirect.
