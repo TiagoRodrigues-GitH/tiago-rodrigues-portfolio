@@ -7,9 +7,13 @@ services:
     runtime: docker
     plan: free                      # sleeps after ~15 min idle; the first request then waits about a minute
     region: virginia                # create the Neon database in AWS us-east-1 (N. Virginia), next to it
-    rootDir: backend                # changes outside backend/ do not redeploy
+    # No rootDir: with it, Render resolves dockerContext relative to rootDir (backend/backend).
+    # Both paths below are relative to the repository root.
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
+    buildFilter:                    # changes outside backend/ do not redeploy
+      paths:
+        - backend/**
     healthCheckPath: /api/health
     autoDeployTrigger: checksPass   # deploy only after the "Backend" GitHub workflow passes
     envVars:
