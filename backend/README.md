@@ -5,11 +5,20 @@ Spring Boot 3.5 (Java 17) API behind the portfolio site
 
 | Endpoint | Access | Purpose |
 |---|---|---|
-| `GET /api/health`, `GET /api/projects`, `GET /api/projects/{id}` | public | health check, published projects |
+| `GET /api/health` | public | health check (no database access) |
 | `POST /api/auth/login` | public, rate limited | e-mail + password → JWT (HS256, scope `ADMIN`, 2 h) |
-| `POST /api/analytics/visit` | public, rate limited | records one page view (IP from the connection) |
+| `POST /api/analytics/visit` | public | records one page view (IP from the connection) |
+| `GET /api/reviews?project=…`, `POST /api/reviews` | public, 5/hour per address | approved comments of a project; submit a comment for moderation |
+| `POST /api/contact` | public, 3/hour per address | contact form message (name, e-mail, text) for the owner's inbox |
 | `GET /api/admin/analytics/summary?days=30`, `GET /api/admin/analytics/visits?limit=100` | admin | visit statistics for the admin page |
-| `POST/PUT/DELETE /api/projects/**`, `GET /api/projects/all` | admin | project management |
+| `GET /api/admin/reviews?status=…`, `PUT /api/admin/reviews/{id}/status`, `DELETE /api/admin/reviews/{id}` | admin | comment moderation |
+| `GET /api/admin/messages`, `GET /api/admin/messages/unread`, `PUT /api/admin/messages/{id}/read`, `DELETE /api/admin/messages/{id}` | admin | contact inbox |
+
+The site's project list is static (prerendered, three languages: `frontend/src/app/shared/portfolio-projects.ts`);
+the former project CRUD API was removed because the site never read it.
+
+New comments and contact messages can trigger an **e-mail alert** to the owner through Resend's free plan
+(`RESEND_API_KEY`, `NOTIFY_EMAIL`); without them, everything still works and the inbox is in the admin page.
 
 ## Security model
 
@@ -44,6 +53,9 @@ before relying on it.
 | `DATABASE_URL`, `DATABASE_USER`, `DATABASE_PASSWORD` | recommended | `jdbc:postgresql://host:5432/db`; default is in-memory H2 (data lost on restart) |
 | `CORS_ALLOWED_ORIGINS` | no | `https://tiagorodrigues-gith.github.io,http://localhost:4200` |
 | `ANALYTICS_RETENTION_DAYS` | no | `90` |
+| `CONTACT_RETENTION_DAYS`, `CONTACT_MAX_PER_HOUR` | no | `365`, `3` |
+| `REVIEW_PROJECTS`, `REVIEW_MAX_PER_HOUR` | no | project keys accepting comments; `5` |
+| `RESEND_API_KEY`, `NOTIFY_EMAIL` | no (alerts off when empty) | Resend API key; the Resend account's e-mail address |
 | `PORT` | set by the host | `8080` |
 
 ## Run and test

@@ -9,12 +9,7 @@
   @if (isCheckingAuth()) {
     <p class="loading" role="status">{{ t.verify }}</p>
   } @else {
-    <div class="messages">
-      @if (errorMessage()) {
-        <p class="error-message" role="alert">{{ errorMessage() }}</p>
-      }
-      <p class="success-message" [class.visible]="successMessage()" role="status">{{ successMessage() }}</p>
-    </div>
+    <app-message-inbox [locale]="locale()" />
 
     <app-review-moderation [locale]="locale()" />
 
@@ -81,111 +76,6 @@
         </div>
       } @else {
         <p class="loading" role="status">{{ t.loadingVisits }}</p>
-      }
-    </div>
-
-    <div class="form-section">
-      <h2>{{ editingId() ? t.editProject : t.createNew }}</h2>
-      <p class="hint">{{ t.requiredHint }}</p>
-      <form (ngSubmit)="submitForm()" novalidate>
-        <div class="form-group">
-          <label for="title">{{ t.title }} <span aria-hidden="true">*</span></label>
-          <input id="title" type="text" [(ngModel)]="newProject.title" name="title" required />
-        </div>
-
-        <div class="form-group">
-          <label for="description">{{ t.description }} <span aria-hidden="true">*</span></label>
-          <textarea id="description" [(ngModel)]="newProject.description" name="description" required rows="4"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="mediaUrl">{{ t.mediaUrl }}</label>
-          <input id="mediaUrl" type="url" [(ngModel)]="newProject.mediaUrl" name="mediaUrl" [placeholder]="t.mediaUrlPlaceholder" />
-        </div>
-
-        <div class="form-group">
-          <label for="mediaType">{{ t.mediaType }}</label>
-          <select id="mediaType" [(ngModel)]="newProject.mediaType" name="mediaType">
-            <option value="IMAGE">{{ t.image }}</option>
-            <option value="VIDEO">{{ t.video }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="thumbnailUrl">{{ t.thumbnailUrl }}</label>
-          <input id="thumbnailUrl" type="url" [(ngModel)]="newProject.thumbnailUrl" name="thumbnailUrl" [placeholder]="t.thumbnailUrlPlaceholder" />
-        </div>
-
-        <div class="form-group">
-          <label for="projectUrl">{{ t.projectUrl }}</label>
-          <input id="projectUrl" type="url" [(ngModel)]="newProject.projectUrl" name="projectUrl" [placeholder]="t.projectUrlPlaceholder" />
-        </div>
-
-        <div class="form-group">
-          <label for="displayOrder">{{ t.order }}</label>
-          <input id="displayOrder" type="number" [(ngModel)]="newProject.displayOrder" name="displayOrder" min="0" />
-        </div>
-
-        <div class="form-group checkbox">
-          <input id="published" type="checkbox" [(ngModel)]="newProject.published" name="published" />
-          <label for="published">{{ t.published }}</label>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">{{ editingId() ? t.update : t.create }}</button>
-          @if (editingId()) {
-            <button type="button" class="btn btn-outline" (click)="resetForm()">{{ t.cancel }}</button>
-          }
-        </div>
-      </form>
-    </div>
-
-    <div class="projects-section">
-      <h2>{{ t.list }}</h2>
-
-      @if (isLoading()) {
-        <p class="loading" role="status">{{ t.loading }}</p>
-      } @else if (projects().length === 0) {
-        <p class="empty-state">{{ t.empty }}</p>
-      } @else {
-        <div class="table-scroll">
-          <table class="projects-table">
-            <caption class="visually-hidden">{{ t.list }}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{{ t.id }}</th>
-                <th scope="col">{{ t.title }}</th>
-                <th scope="col">{{ t.description }}</th>
-                <th scope="col">{{ t.published }}</th>
-                <th scope="col">{{ t.order }}</th>
-                <th scope="col">{{ t.actions }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (project of projects(); track project.id) {
-                <tr>
-                  <td>{{ project.id }}</td>
-                  <th scope="row">{{ project.title }}</th>
-                  <td>{{ project.description | slice: 0 : 50 }}{{ project.description.length > 50 ? '…' : '' }}</td>
-                  <td>
-                    <span [class.badge-published]="project.published" [class.badge-unpublished]="!project.published">
-                      {{ project.published ? t.yes : t.no }}
-                    </span>
-                  </td>
-                  <td>{{ project.displayOrder }}</td>
-                  <td class="actions">
-                    <button type="button" class="btn-edit" (click)="editProject(project)">
-                      {{ t.edit }}<span class="visually-hidden">: {{ project.title }}</span>
-                    </button>
-                    <button type="button" class="btn-delete" (click)="deleteProject(project.id)">
-                      {{ t.delete }}<span class="visually-hidden">: {{ project.title }}</span>
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
       }
     </div>
   }

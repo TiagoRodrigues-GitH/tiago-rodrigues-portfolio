@@ -91,7 +91,40 @@ Pages* workflow publishes the site. (`--goatcounter <code>` optionally enables G
 
 - Site → a project page → comments load (empty at first) and a test comment says *will appear after moderation*.
 - Site → `/login` → admin e-mail + password → admin page shows the pending comment and visit statistics.
-- Render → *Logs* shows no errors; Neon → *Tables* shows `reviews`, `visits`, `users`, …
+- Render → *Logs* shows no errors; Neon → *Tables* shows `reviews`, `visits`, `users`, `messages`.
+- Site → `/contact` → send a test message → it appears under *Messages* in the admin page.
+
+## 7. Optional: e-mail alerts (Resend, free)
+
+New contact messages and new comments to moderate can also arrive in your inbox (free plan: 3,000 e-mails a month).
+
+1. Sign up at <https://resend.com> (GitHub login works) **with the e-mail address that should receive the alerts**.
+2. *API Keys* → *Create API key* → permission **Sending access** → copy the key (`re_...`, shown once).
+3. Render → service → *Environment* → *Add environment variable*:
+   `RESEND_API_KEY` = the key, `NOTIFY_EMAIL` = the address you signed up with → *Save, rebuild, and deploy*.
+4. Render → *Logs* shows `E-mail alerts on (Resend)`. Send a test message on `/contact`; reply to the alert e-mail
+   to answer the visitor directly.
+
+Without a verified domain Resend only delivers to the account's own address, which is exactly what alerts need.
+`render.yaml` lists both variables, but Render ignores `sync: false` entries on an existing Blueprint, so they
+must be added by hand once.
+
+## 8. Keeping the API awake (free)
+
+`.github/workflows/keep-api-awake.yml` calls `/api/health` every 14 minutes from 07:00 to 24:00 (Brasília),
+so visitors during the day do not wait for the free service to wake up. It uses about 530 of the 750 free
+Render hours a month and never touches the database. GitHub pauses scheduled workflows after 60 days without
+commits; re-enable it under *Actions → Keep API awake* if that happens. To switch it off: *Disable workflow*.
+
+## Obsolete tables (one-time cleanup)
+
+The removed project API and the first contact-message design left two **empty** tables in the database.
+In Neon → *SQL Editor* (database `neondb`), check they are empty, then drop them:
+
+```sql
+SELECT (SELECT count(*) FROM projects) AS projects, (SELECT count(*) FROM contact_messages) AS old_messages;
+DROP TABLE IF EXISTS projects, contact_messages;
+```
 
 ## Local development
 
@@ -110,4 +143,6 @@ The `dev` profile (`application-dev.properties`) uses the local PostgreSQL in Do
 | Login always fails | `ADMIN_PASSWORD_HASH` must be the full 60-character `$2a$12$...` value |
 | Browser console: *blocked by CORS* | `CORS_ALLOWED_ORIGINS` must be exactly `https://tiagorodrigues-gith.github.io` (origin only, no path) |
 | Browser console: *violates Content Security Policy* | re-run `configure-services.mjs` with the exact Render address, commit, push |
-| First request takes ~1 minute | normal on the free plan (service waking up) |
+| First request takes ~1 minute | normal on the free plan (service waking up); the site says so; see step 8 |
+| No alert e-mails | Render logs say `E-mail alerts off` → variables missing; `rejected by Resend: HTTP 403` → `NOTIFY_EMAIL` is not the Resend account's address |
+| Local `mvn test` on JDK 23+: getters/builders "cannot find symbol" | Lombok must be in `annotationProcessorPaths` (already in `pom.xml`) |

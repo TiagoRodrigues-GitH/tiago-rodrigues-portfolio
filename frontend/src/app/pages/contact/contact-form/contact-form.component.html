@@ -1,0 +1,57 @@
+@if (available) {
+  <section class="contact-form" aria-labelledby="contact-form-title">
+    <h2 id="contact-form-title" class="mono-label">{{ t().heading }}</h2>
+
+    @if (state() === 'sent') {
+      <p class="form-status" role="status">{{ t().thanks }}</p>
+      <button type="button" class="btn btn-outline" (click)="again()">{{ t().another }}</button>
+    } @else {
+      <p class="form-intro">{{ t().intro }}</p>
+      <form (submit)="send($event)" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="contact-name">{{ t().name }}</label>
+            <input id="contact-name" type="text" autocomplete="name" required [attr.maxlength]="limits.name"
+                   [value]="name()" (input)="name.set($any($event.target).value)" />
+          </div>
+          <div class="field">
+            <label for="contact-email">{{ t().email }}</label>
+            <input id="contact-email" type="email" autocomplete="email" inputmode="email" required
+                   [attr.maxlength]="limits.email" [value]="email()" (input)="email.set($any($event.target).value)" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="contact-message">{{ t().message }}</label>
+          <textarea id="contact-message" rows="6" required [attr.maxlength]="limits.messageMax"
+                    aria-describedby="contact-message-left" [value]="message()"
+                    (input)="message.set($any($event.target).value)"></textarea>
+          <p class="form-hint" id="contact-message-left">{{ t().charsLeft(charsLeft()) }}</p>
+        </div>
+
+        <!-- Honeypot: invisible to people and to screen readers; bots fill it and the backend drops the message. -->
+        <div class="form-trap" aria-hidden="true">
+          <label for="contact-website">Website</label>
+          <input id="contact-website" type="text" tabindex="-1" autocomplete="off"
+                 [value]="honeypot()" (input)="honeypot.set($any($event.target).value)" />
+        </div>
+
+        <p class="form-hint">
+          {{ t().privacy }}
+          <a routerLink="/privacy" [queryParams]="{ lang: locale() }">{{ t().privacyLink }}</a>
+        </p>
+
+        @if (state() === 'error') {
+          <p class="form-error" role="alert">{{ errorMessage() }}</p>
+        }
+        @if (slow()) {
+          <p class="form-hint" role="status">{{ t().waking }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="state() === 'sending'">
+          {{ state() === 'sending' ? t().sending : t().send }}
+        </button>
+      </form>
+    }
+  </section>
+}

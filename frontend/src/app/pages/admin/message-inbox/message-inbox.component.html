@@ -1,0 +1,41 @@
+<div class="projects-section inbox">
+  <h2>
+    {{ t['heading'] }}
+    @if (unread()) {
+      <span class="inbox-badge">{{ unread() }} {{ t['unread'] }}</span>
+    }
+  </h2>
+  <p class="hint">{{ t['hint'] }}</p>
+
+  @if (error()) {
+    <p class="error-message" role="alert">{{ error() }}</p>
+  }
+  @if (loading()) {
+    <p class="loading" role="status">{{ t['loading'] }}</p>
+  } @else if (items().length === 0) {
+    <p class="hint">{{ t['none'] }}</p>
+  } @else {
+    <ul class="inbox-list">
+      @for (message of items(); track message.id) {
+        <li class="inbox-item" [class.unread]="!message.read">
+          <p class="inbox-meta">
+            @if (!message.read) {
+              <span class="inbox-new">{{ t['newLabel'] }}</span>
+            }
+            <strong>{{ message.name }}</strong>
+            <span>{{ message.email }}</span>
+            <span>{{ message.receivedAt | date: 'short' }}</span>
+          </p>
+          <p class="inbox-text">{{ message.message }}</p>
+          <div class="inbox-actions">
+            <a class="btn btn-primary" [href]="replyLink(message)">{{ t['reply'] }}</a>
+            <button type="button" class="btn btn-outline" (click)="toggleRead(message)">
+              {{ message.read ? t['markUnread'] : t['markRead'] }}
+            </button>
+            <button type="button" class="btn btn-outline" (click)="remove(message)">{{ t['remove'] }}</button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

@@ -2,6 +2,7 @@ package org.example.reviews;
 
 import org.example.exception.BadRequestException;
 import org.example.exception.ResourceNotFoundException;
+import org.example.notify.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,18 +29,21 @@ public class ReviewService {
 
     private final ReviewRepository reviews;
     private final SubmissionLimiter limiter;
+    private final Notifier notifier;
     private final Set<String> projects;
     private final Clock clock;
 
     @Autowired
-    public ReviewService(ReviewRepository reviews, SubmissionLimiter limiter,
+    public ReviewService(ReviewRepository reviews, SubmissionLimiter limiter, Notifier notifier,
                          @Value("${app.reviews.projects}") String projects) {
-        this(reviews, limiter, parseList(projects), Clock.systemUTC());
+        this(reviews, limiter, notifier, parseList(projects), Clock.systemUTC());
     }
 
-    ReviewService(ReviewRepository reviews, SubmissionLimiter limiter, Set<String> projects, Clock clock) {
+    ReviewService(ReviewRepository reviews, SubmissionLimiter limiter, Notifier notifier, Set<String> projects,
+                  Clock clock) {
         this.reviews = reviews;
         this.limiter = limiter;
+        this.notifier = notifier;
         this.projects = Set.copyOf(projects);
         this.clock = clock;
     }
@@ -74,6 +78,11 @@ public class ReviewService {
                 .status(ReviewStatus.PENDING)
                 .createdAt(clock.instant())
                 .build());
+        notifier.send("Portfolio: new comment on " + submission.projectKey(),
+                name + " commented on " + submission.projectKey()
+                        + (submission.rating() != null ? " (" + submission.rating() + "/5)" : "") + ":\n\n" + text
+                        + "\n\nIt waits for your approval in the admin panel of the site.",
+                null);
     }
 
     @Transactional(readOnly = true)

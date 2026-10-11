@@ -41,3 +41,9 @@ services:
       # The free instance has 512 MB: let the JVM heap use most of it.
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=75
+      # Optional e-mail alerts (new contact message, new comment) through Resend's free plan; off while empty.
+      # On an existing Blueprint Render ignores sync:false entries: add these in Environment by hand (docs/DEPLOYMENT.md).
+      - key: RESEND_API_KEY
+        sync: false
+      - key: NOTIFY_EMAIL
+        sync: false

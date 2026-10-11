@@ -27,8 +27,8 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   pt: {
     eyebrow: 'Privacidade · LGPD',
     title: 'Como este site trata seus dados',
-    intro: 'Este portfólio pode contar visitas para saber quais páginas interessam aos leitores, aceita comentários nos projetos e se protege contra abusos. Não há cookies nem publicidade.',
-    updated: 'Atualizado em 5 de outubro de 2026.',
+    intro: 'Este portfólio pode contar visitas para saber quais páginas interessam aos leitores, aceita comentários nos projetos e mensagens pelo formulário de contato e se protege contra abusos. Não há cookies nem publicidade.',
+    updated: 'Atualizado em 11 de outubro de 2026.',
     sections: [
       {
         heading: 'Quem é o controlador',
@@ -65,17 +65,24 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         ],
       },
       {
+        heading: 'Mensagens pelo formulário de contato',
+        paragraphs: [
+          'Uma mensagem contém o nome, o e-mail e o texto que você escrever, e a data. Ela não é publicada: só o autor a lê, no painel administrativo do site, e o e-mail serve apenas para responder.',
+          'Quando os avisos por e-mail estão ativos, uma cópia da mensagem é enviada à caixa de entrada do autor pelo serviço Resend. O endereço IP é usado apenas em memória para limitar envios em massa (até 3 por hora) e não é gravado.',
+        ],
+      },
+      {
         heading: 'Para que e com qual base legal',
         paragraphs: [
           'Contagem e registro de visitas: saber quais páginas são lidas e de onde vêm os visitantes, e identificar acessos abusivos. Base legal: legítimo interesse (LGPD, art. 7º, IX; para visitantes da União Europeia, GDPR, art. 6º, 1, f).',
-          'Comentários: publicar a opinião que você decidiu enviar. Base legal: consentimento (LGPD, art. 7º, I; GDPR, art. 6º, 1, a), que você pode revogar a qualquer momento pelo e-mail acima.',
-          'Os dados não são vendidos nem usados para publicidade. São processados apenas pelos provedores que operam o site: GitHub Pages (páginas), Render (servidor), Neon (banco de dados) e GoatCounter (estatísticas). Alguns desses servidores ficam fora do Brasil.',
+          'Comentários: publicar a opinião que você decidiu enviar. Mensagens de contato: ler e responder ao que você escreveu. Base legal: consentimento (LGPD, art. 7º, I; GDPR, art. 6º, 1, a), que você pode revogar a qualquer momento pelo e-mail acima.',
+          'Os dados não são vendidos nem usados para publicidade. São processados apenas pelos provedores que operam o site: GitHub Pages (páginas), Render (servidor), Neon (banco de dados), GoatCounter (estatísticas) e Resend (avisos por e-mail, quando ativos). Alguns desses servidores ficam fora do Brasil.',
         ],
       },
       {
         heading: 'Por quanto tempo',
         paragraphs: [
-          'Registros de visita no servidor: apagados automaticamente após 90 dias. Totais do GoatCounter: não identificam ninguém e são mantidos enquanto o site usar o serviço. Comentários: até você pedir a exclusão ou o autor removê-los.',
+          'Registros de visita no servidor: apagados automaticamente após 90 dias. Totais do GoatCounter: não identificam ninguém e são mantidos enquanto o site usar o serviço. Comentários: até você pedir a exclusão ou o autor removê-los. Mensagens de contato: apagadas automaticamente após 12 meses, ou antes, a seu pedido.',
         ],
       },
       {
@@ -101,8 +108,8 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   en: {
     eyebrow: 'Privacy · LGPD / GDPR',
     title: 'How this site handles your data',
-    intro: 'This portfolio may count visits to learn which pages readers find useful, accepts comments on its projects and protects itself against abuse. There are no cookies and no advertising.',
-    updated: 'Updated on 5 October 2026.',
+    intro: 'This portfolio may count visits to learn which pages readers find useful, accepts comments on its projects and messages through its contact form, and protects itself against abuse. There are no cookies and no advertising.',
+    updated: 'Updated on 11 October 2026.',
     sections: [
       {
         heading: 'Who is responsible',
@@ -139,17 +146,24 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         ],
       },
       {
+        heading: 'Messages through the contact form',
+        paragraphs: [
+          'A message holds the name, e-mail address and text you write, and the date. It is not published: only the author reads it, in the site’s admin panel, and the e-mail address is used only to reply.',
+          'When e-mail alerts are on, a copy of the message is sent to the author’s inbox through the Resend service. The IP address is used only in memory to stop mass submissions (at most 3 per hour) and is not stored.',
+        ],
+      },
+      {
         heading: 'Why, and on which legal basis',
         paragraphs: [
           'Visit counting and logging: learning which pages are read and where visitors come from, and spotting abusive traffic. Legal basis: legitimate interest (Brazilian LGPD, art. 7, IX; for visitors from the European Union, GDPR, art. 6(1)(f)).',
-          'Comments: publishing the opinion you chose to send. Legal basis: consent (LGPD, art. 7, I; GDPR, art. 6(1)(a)), which you can withdraw at any time at the address above.',
-          'The data is not sold or used for advertising. It is processed only by the providers that run the site: GitHub Pages (pages), Render (server), Neon (database) and GoatCounter (statistics). Some of these servers are outside Brazil.',
+          'Comments: publishing the opinion you chose to send. Contact messages: reading and answering what you wrote. Legal basis: consent (LGPD, art. 7, I; GDPR, art. 6(1)(a)), which you can withdraw at any time at the address above.',
+          'The data is not sold or used for advertising. It is processed only by the providers that run the site: GitHub Pages (pages), Render (server), Neon (database), GoatCounter (statistics) and Resend (e-mail alerts, when on). Some of these servers are outside Brazil.',
         ],
       },
       {
         heading: 'How long',
         paragraphs: [
-          'Visit records on the server: deleted automatically after 90 days. GoatCounter totals: they identify no one and are kept while the site uses the service. Comments: until you ask for deletion or the author removes them.',
+          'Visit records on the server: deleted automatically after 90 days. GoatCounter totals: they identify no one and are kept while the site uses the service. Comments: until you ask for deletion or the author removes them. Contact messages: deleted automatically after 12 months, or earlier on request.',
         ],
       },
       {
@@ -175,8 +189,8 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   de: {
     eyebrow: 'Datenschutz · LGPD / DSGVO',
     title: 'Wie diese Website Ihre Daten verarbeitet',
-    intro: 'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten für Lesende interessant sind, nimmt Kommentare zu den Projekten an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
-    updated: 'Stand: 5. Oktober 2026.',
+    intro: 'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten für Lesende interessant sind, nimmt Kommentare zu den Projekten und Nachrichten über das Kontaktformular an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
+    updated: 'Stand: 11. Oktober 2026.',
     sections: [
       {
         heading: 'Verantwortlicher',
@@ -213,17 +227,24 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         ],
       },
       {
+        heading: 'Nachrichten über das Kontaktformular',
+        paragraphs: [
+          'Eine Nachricht enthält Name, E-Mail-Adresse und Text, die Sie eingeben, sowie das Datum. Sie wird nicht veröffentlicht: Nur der Autor liest sie im Admin-Bereich der Website, und die E-Mail-Adresse dient nur der Antwort.',
+          'Wenn E-Mail-Benachrichtigungen aktiv sind, wird eine Kopie der Nachricht über den Dienst Resend an das Postfach des Autors gesendet. Die IP-Adresse wird nur im Arbeitsspeicher genutzt, um Massensendungen zu begrenzen (höchstens 3 pro Stunde), und nicht gespeichert.',
+        ],
+      },
+      {
         heading: 'Zweck und Rechtsgrundlage',
         paragraphs: [
           'Besuchszählung und -protokoll: sehen, welche Seiten gelesen werden und woher die Besucher kommen, und missbräuchliche Zugriffe erkennen. Rechtsgrundlage: berechtigtes Interesse (brasilianisches LGPD, Art. 7 IX; für Besucher aus der EU Art. 6 Abs. 1 lit. f DSGVO).',
-          'Kommentare: Veröffentlichung der Meinung, die Sie senden möchten. Rechtsgrundlage: Einwilligung (LGPD Art. 7 I; Art. 6 Abs. 1 lit. a DSGVO), die Sie jederzeit über die oben genannte Adresse widerrufen können.',
-          'Die Daten werden weder verkauft noch für Werbung genutzt. Sie werden nur von den Anbietern verarbeitet, die die Website betreiben: GitHub Pages (Seiten), Render (Server), Neon (Datenbank) und GoatCounter (Statistik). Einige dieser Server stehen außerhalb Brasiliens.',
+          'Kommentare: Veröffentlichung der Meinung, die Sie senden möchten. Kontaktnachrichten: Lesen und Beantworten Ihrer Nachricht. Rechtsgrundlage: Einwilligung (LGPD Art. 7 I; Art. 6 Abs. 1 lit. a DSGVO), die Sie jederzeit über die oben genannte Adresse widerrufen können.',
+          'Die Daten werden weder verkauft noch für Werbung genutzt. Sie werden nur von den Anbietern verarbeitet, die die Website betreiben: GitHub Pages (Seiten), Render (Server), Neon (Datenbank), GoatCounter (Statistik) und Resend (E-Mail-Benachrichtigungen, wenn aktiv). Einige dieser Server stehen außerhalb Brasiliens.',
         ],
       },
       {
         heading: 'Speicherdauer',
         paragraphs: [
-          'Besuchsprotokoll auf dem Server: nach 90 Tagen automatisch gelöscht. GoatCounter-Summen: identifizieren niemanden und bleiben gespeichert, solange die Website den Dienst nutzt. Kommentare: bis Sie die Löschung verlangen oder der Autor sie entfernt.',
+          'Besuchsprotokoll auf dem Server: nach 90 Tagen automatisch gelöscht. GoatCounter-Summen: identifizieren niemanden und bleiben gespeichert, solange die Website den Dienst nutzt. Kommentare: bis Sie die Löschung verlangen oder der Autor sie entfernt. Kontaktnachrichten: nach 12 Monaten automatisch gelöscht, auf Wunsch früher.',
         ],
       },
       {

@@ -67,8 +67,9 @@ class AuthAndAnalyticsTest {
     @Test
     void adminEndpointsNeedAToken() throws Exception {
         mvc.perform(get("/api/admin/analytics/summary")).andExpect(status().isUnauthorized());
-        mvc.perform(post("/api/projects").contentType(MediaType.APPLICATION_JSON).content("{}")).andExpect(status().isUnauthorized());
-        mvc.perform(get("/api/projects")).andExpect(status().isOk());
+        mvc.perform(get("/api/admin/messages")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/admin/reviews")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/projects")).andExpect(status().isUnauthorized()); // project API removed: denied by default
     }
 
     @Test

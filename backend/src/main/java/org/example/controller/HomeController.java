@@ -15,7 +15,7 @@ public class HomeController {
         return Map.of(
                 "message", "Portfolio API is running!",
                 "status", "OK",
-                "endpoints", "Available endpoints: /api/health, /api/projects, /api/test/hello"
+                "endpoints", "Public: /api/health, /api/reviews, /api/contact (see the repository README)"
         );
     }
 

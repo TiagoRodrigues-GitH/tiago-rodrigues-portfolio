@@ -42,6 +42,8 @@
 }
 
 .channels {
+  display: grid;
+  gap: 1.25rem;
   padding-block: clamp(3rem, 6vw, 5rem);
 }
 
