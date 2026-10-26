@@ -24,31 +24,51 @@ const PHOTOS: Record<PhotoSection, PerLocale> = {
   home: {
     pt: [
       p('tiradentes-minas', 'Tiradentes, Minas Gerais'),
+      p('ouro-preto-praca', 'Praça Tiradentes, Ouro Preto, Minas Gerais'),
+      p('rio-sugarloaf', 'Pão de Açúcar, Rio de Janeiro'),
       p('sao-paulo-paulista', 'Avenida Paulista, São Paulo'),
+      p('salvador-pelourinho', 'Pelourinho, Salvador, Bahia'),
       p('parana-iguacu', 'Cataratas do Iguaçu, Paraná'),
       p('brasilia-congresso', 'Congresso Nacional, Brasília'),
+      p('lencois-maranhenses', 'Lençóis Maranhenses, Maranhão'),
+      p('gramado-lago-negro', 'Lago Negro, Gramado, Rio Grande do Sul'),
+      p('rio-cristo', 'Cristo Redentor, Rio de Janeiro'),
       p('nordeste-noronha', 'Fernando de Noronha, Pernambuco'),
+      p('manaus-teatro', 'Teatro Amazonas, Manaus'),
       p('sul-itaimbezinho', 'Cânion Itaimbezinho, Rio Grande do Sul'),
     ],
     en: [
       p('seattle-rainier', 'Seattle, Washington'),
+      p('golden-gate', 'Golden Gate Bridge, San Francisco'),
+      p('statue-of-liberty', 'Statue of Liberty, New York'),
+      p('grand-canyon', 'Grand Canyon, Arizona'),
+      p('brooklyn-bridge', 'Brooklyn Bridge, New York'),
       p('texas-austin', 'Austin, Texas'),
       p('miami-harbor', 'Miami, Florida'),
     ],
     de: [
       p('stuttgart-neues-schloss', 'Stuttgart, Baden-Württemberg'),
+      p('heidelberg', 'Heidelberg, Baden-Württemberg'),
+      p('neuschwanstein', 'Schloss Neuschwanstein, Bayern'),
       p('munich-alps', 'München, Bayern'),
+      p('koeln-dom', 'Kölner Dom, Nordrhein-Westfalen'),
       p('berlin-dom', 'Berlin'),
     ],
   },
-  projects: [p('code-macro', '')],
+  // code, notebooks and a coffee: where projects start
+  projects: [p('code-macro', ''), p('notebooks-coffee', '')],
   automotive: [p('stelvio-pass', 'Passo dello Stelvio')],
   ai: [p('gpu-dies', '')],
   security: [p('data-center', '')],
-  // Londrina, my home town: the city behind Lago Igapó
-  about: [p('londrina-igapo', 'Londrina, Paraná')],
-  // ripe coffee cherries: let's talk over a coffee
-  contact: [p('coffee-cherries', '')],
+  // Londrina, my home town: Lago Igapó, the old bus station by Vilanova Artigas and the history museum
+  about: [
+    p('londrina-igapo', 'Lago Igapó, Londrina'),
+    p('londrina-igapo-skyline', 'Lago Igapó, Londrina'),
+    p('londrina-rodoviaria', 'Antiga Rodoviária, Londrina'),
+    p('londrina-museu', 'Museu Histórico de Londrina'),
+  ],
+  // let's talk over a coffee: ripe cherries, a cup, the harvest
+  contact: [p('coffee-cherries', ''), p('coffee-cup', ''), p('coffee-berries', ''), p('coffee-harvest', '')],
   privacy: [p('code-macro', '')],
   // project demo pages, by the area they belong to
   streetRouting: [p('stelvio-pass', 'Passo dello Stelvio')],
