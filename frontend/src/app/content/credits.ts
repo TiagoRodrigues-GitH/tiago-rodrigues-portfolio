@@ -279,4 +279,46 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     license: 'CC0',
     url: 'https://commons.wikimedia.org/wiki/File:Coffee,_notebooks_and_pen_(Unsplash).jpg',
   },
+  {
+    title: 'Moraine Lake, Banff National Park',
+    author: 'Dylannother',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Moraine_Lake_Summer_Banff_National_Park.jpg',
+  },
+  {
+    title: 'Toronto skyline from Trillium Park',
+    author: 'Maksim Sokolov',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Toronto_skyline_viewed_from_Trillium_Park.jpg',
+  },
+  {
+    title: 'Vancouver skyline and mountains',
+    author: 'Kyle Pearce',
+    license: 'CC BY-SA 2.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Vancouver_Skyline_and_Mountains.jpg',
+  },
+  {
+    title: 'Château Frontenac at dusk, Québec',
+    author: 'Wilfredor',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Chateau_Frontenac_at_dusk_in_Quebec_City.jpg',
+  },
+  {
+    title: 'Rainbow over Horseshoe Falls, Niagara',
+    author: 'Rhododendrites',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Rainbow_over_horseshoe_falls_(52877p).jpg',
+  },
+  {
+    title: 'Peyto Lake, Banff National Park',
+    author: 'Dylannother',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Peyto_Lake_Banff_National_Park.jpg',
+  },
+  {
+    title: 'Parliament Hill from the river path, Ottawa',
+    author: 'Suwannee.payne',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Parliament_Hill_from_the_river_path.jpg',
+  },
 ];

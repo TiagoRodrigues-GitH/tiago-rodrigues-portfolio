@@ -20,7 +20,7 @@ const p = (file: string, place: string): Photo => ({ src: `assets/images/photos/
  * content/credits.ts), chosen and cropped without brand marks. Any section may give each language its own list.
  */
 const PHOTOS: Record<PhotoSection, PerLocale> = {
-  // the home hero travels: Brazil in Portuguese, the United States in English, Germany in German
+  // the home hero travels: Brazil in Portuguese, Canada and the United States in English, Germany in German
   home: {
     pt: [
       p('tiradentes-minas', 'Tiradentes, Minas Gerais'),
@@ -37,13 +37,21 @@ const PHOTOS: Record<PhotoSection, PerLocale> = {
       p('manaus-teatro', 'Teatro Amazonas, Manaus'),
       p('sul-itaimbezinho', 'Cânion Itaimbezinho, Rio Grande do Sul'),
     ],
+    // Canada first, then Canada and the United States in turn
     en: [
+      p('canada-moraine-lake', 'Moraine Lake, Banff, Alberta'),
       p('seattle-rainier', 'Seattle, Washington'),
+      p('canada-toronto', 'Toronto, Ontario'),
       p('golden-gate', 'Golden Gate Bridge, San Francisco'),
+      p('canada-quebec-frontenac', 'Château Frontenac, Québec'),
       p('statue-of-liberty', 'Statue of Liberty, New York'),
+      p('canada-vancouver', 'Vancouver, British Columbia'),
       p('grand-canyon', 'Grand Canyon, Arizona'),
+      p('canada-niagara', 'Niagara Falls, Ontario'),
       p('brooklyn-bridge', 'Brooklyn Bridge, New York'),
+      p('canada-peyto-lake', 'Peyto Lake, Banff, Alberta'),
       p('texas-austin', 'Austin, Texas'),
+      p('canada-ottawa-parliament', 'Parliament Hill, Ottawa'),
       p('miami-harbor', 'Miami, Florida'),
     ],
     de: [
