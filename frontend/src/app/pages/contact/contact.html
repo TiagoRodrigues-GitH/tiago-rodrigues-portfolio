@@ -1,9 +1,10 @@
-<section class="page-hero graph-paper" [appBackdrop]="photo" aria-labelledby="contact-title">
+<section class="page-hero graph-paper" [appBackdrop]="photo()" aria-labelledby="contact-title">
   <div class="shell contact-hero">
     <div>
       <p class="mono-label">{{ t.eyebrow }}</p>
       <h1 id="contact-title" class="page-title">{{ t.title }}</h1>
       <p class="section-lede">{{ t.intro }}</p>
+      <p class="coffee"><span aria-hidden="true">☕</span> {{ t.coffee }}</p>
     </div>
 
     <section class="availability blueprint" aria-labelledby="availability-title">

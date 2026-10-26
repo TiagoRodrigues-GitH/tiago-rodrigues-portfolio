@@ -124,3 +124,33 @@
     grid-row: auto;
   }
 }
+
+/* a warm invitation over the coffee photo */
+.coffee {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 600;
+  color: #7a2e1d;
+  box-shadow: 0 14px 30px -20px rgba(122, 46, 29, 0.6);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .coffee span {
+    display: inline-block;
+    animation: steam 3s ease-in-out infinite;
+  }
+}
+
+@keyframes steam {
+  50% {
+    transform: translateY(-3px) rotate(-6deg);
+  }
+}

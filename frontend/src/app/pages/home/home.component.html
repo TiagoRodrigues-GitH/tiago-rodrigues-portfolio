@@ -1,5 +1,5 @@
 <!-- Hero -->
-<section class="hero sky" [appBackdrop]="photos.home" aria-labelledby="hero-title">
+<section class="hero sky" [appBackdrop]="heroSources()" (backdropIndex)="heroIndex.set($event)" aria-labelledby="hero-title">
   <div class="shell hero-grid">
     <div class="hero-copy">
       <p class="mono-label">{{ t.eyebrow }}</p>
@@ -13,12 +13,7 @@
       </div>
       <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
     </div>
-    <!-- An editor that types out who I am (decorative: the intro says the same in words) -->
-    <div class="code-card" aria-hidden="true">
-      <p class="code-bar"><span></span><span></span><span></span><b>developer.ts</b></p>
-      <pre class="code"><code>@for (line of codeLines; track $index) {<span class="ln" [style.--i]="$index"><i>{{ $index + 1 }}</i>@for (token of line; track $index) {<span [class]="token[0]">{{ token[1] }}</span>}</span>}</code></pre>
-      <p class="code-status"><span class="ok"></span>build passing</p>
-    </div>
+    <p class="hero-place" aria-hidden="true"><span></span>{{ heroPlace() }}</p>
   </div>
 </section>
 

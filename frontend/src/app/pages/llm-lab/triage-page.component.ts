@@ -2,7 +2,7 @@ import { Component, afterNextRender, computed, inject, signal } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 import { BackdropDirective } from '../../shared/backdrop.directive';
 import { DefectTriageComponent } from './defect-triage.component';
 import { LabDataService, MODEL_NAMES, NhtsaData } from './lab-data';
@@ -20,7 +20,7 @@ import { ResultBar, ResultBarsComponent } from './result-bars.component';
 })
 export class TriagePageComponent {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.defectTriage;
+  readonly photo = computed(() => photoSources('defectTriage', this.locale()));
 
   private readonly data = inject(LabDataService);
   private readonly i18n = inject(I18nService);

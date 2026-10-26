@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 import { getPortfolioProjects } from '../portfolio-projects';
 import { AREA_KEYS, AREAS, AREAS_TEXT } from '../areas';
 
@@ -24,7 +24,7 @@ export class AreaDoorsComponent {
       const n = projects.filter((project) => project.areas.includes(key)).length;
       return {
         key,
-        photo: PHOTOS[key],
+        photo: photoSources(key, this.locale())[0],
         text: AREAS[key][this.locale()],
         count: n === 0 ? count.none : n === 1 ? count.one : count.many.replace('{n}', String(n)),
       };

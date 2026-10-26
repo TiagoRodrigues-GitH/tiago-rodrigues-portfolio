@@ -7,7 +7,7 @@ import { DOCUMENT } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import type { FeatureCollection } from 'geojson';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 import { BackdropDirective } from '../../shared/backdrop.directive';
 import { AlgorithmPanelComponent } from './algorithm-panel/algorithm-panel.component';
 import { AlgorithmKey, DEFAULT_PARAMS, ORDER, Params } from './engine/algorithm-catalog';
@@ -59,7 +59,7 @@ function fill(template: string, values: Record<string, string>): string {
 })
 export class StreetRoutingComponent implements OnDestroy {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.streetRouting;
+  readonly photo = computed(() => photoSources('streetRouting', this.locale()));
 
   @ViewChild('mapEl') private mapEl?: ElementRef<HTMLElement>;
   private readonly http = inject(HttpClient);

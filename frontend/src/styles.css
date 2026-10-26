@@ -852,12 +852,20 @@ button {
 }
 
 .backdrop img {
+	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	opacity: 0;
 	transform: translate3d(calc(var(--px) * -28px), calc(var(--py) * -18px + var(--scroll) * 0.12px), 0) scale(1.04);
-	transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
-	will-change: transform;
+	transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 1.4s ease;
+	will-change: transform, opacity;
+}
+
+/* the photo on screen; the other one waits, loads and cross-fades in */
+.backdrop img.on {
+	opacity: 1;
 }
 
 @media (max-width: 760px) {

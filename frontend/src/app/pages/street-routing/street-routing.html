@@ -1,5 +1,5 @@
 <div class="street-page">
-  <section class="page-hero graph-paper" [appBackdrop]="photo" aria-labelledby="street-title">
+  <section class="page-hero graph-paper" [appBackdrop]="photo()" aria-labelledby="street-title">
     <div class="shell">
       <a class="arrow-link back" routerLink="/projects" [queryParams]="langQuery()" fragment="project-4">
         <span aria-hidden="true">←</span> {{ t().back }}

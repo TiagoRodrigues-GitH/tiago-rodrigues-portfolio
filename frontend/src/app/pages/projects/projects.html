@@ -1,4 +1,4 @@
-<section class="page-hero graph-paper" [appBackdrop]="photo" [attr.data-area]="area" aria-labelledby="projects-title">
+<section class="page-hero graph-paper" [appBackdrop]="photo()" [attr.data-area]="area" aria-labelledby="projects-title">
   <div class="shell hero-grid">
     <div>
       <p class="mono-label">{{ t.eyebrow }}@if (area) { · {{ areaName(area) }}}</p>

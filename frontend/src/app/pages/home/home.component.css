@@ -66,145 +66,6 @@
   box-shadow: 0 0 0 4px rgba(47, 140, 245, 0.2);
 }
 
-/* Editor card: lines appear one after another, like code being typed */
-.code-card {
-  justify-self: end;
-  width: min(100%, 34rem);
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: rgba(6, 26, 58, 0.92);
-  box-shadow: 0 40px 80px -36px rgba(10, 91, 196, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(6px);
-  color: #dbe8ff;
-}
-
-.code-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin: 0;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.code-bar span {
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 50%;
-  background: #ff6b5f;
-}
-
-.code-bar span:nth-child(2) {
-  background: #ffc53d;
-}
-
-.code-bar span:nth-child(3) {
-  background: #3ddc84;
-}
-
-.code-bar b {
-  margin-left: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #9fb8de;
-}
-
-.code {
-  margin: 0;
-  padding: 1.1rem 1.25rem 0.5rem;
-  font-family: var(--font-mono);
-  font-size: clamp(0.78rem, 1.05vw, 0.92rem);
-  line-height: 1.85;
-  white-space: pre;
-  overflow-x: auto;
-}
-
-.code .ln {
-  display: block;
-}
-
-.code i {
-  display: inline-block;
-  width: 1.6rem;
-  font-style: normal;
-  color: #4f6a92;
-  user-select: none;
-}
-
-.code .k { color: #c792ea; }
-.code .p { color: #82aaff; }
-.code .s { color: #7fdbca; }
-.code .f { color: #ffcb6b; }
-.code .c { color: #6f86ad; font-style: italic; }
-
-.code-status {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0.6rem 1.25rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #9fb8de;
-}
-
-.code-status .ok {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: #3ddc84;
-  box-shadow: 0 0 0 4px rgba(61, 220, 132, 0.18);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .code-card {
-    animation: rise 0.9s var(--ease) both, float 8s 1s ease-in-out infinite;
-  }
-
-  .code .ln {
-    animation: type 0.45s steps(18, end) both;
-    animation-delay: calc(0.5s + var(--i) * 0.38s);
-  }
-
-  .code-status {
-    animation: rise 0.5s 3.4s var(--ease) both;
-  }
-
-  .code-status .ok {
-    animation: pulse-ok 2s 3.8s ease-out infinite;
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-}
-
-@keyframes float {
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes type {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes pulse-ok {
-  70% {
-    box-shadow: 0 0 0 10px rgba(61, 220, 132, 0);
-  }
-}
-
 /* ---------- Spec sheet (bento) ---------- */
 
 .bento {
@@ -554,12 +415,43 @@
 
 /* the home veil stays opaque under the headline only, so Rio shows bright and alive on the right */
 .hero.has-backdrop::before {
-  background-image: linear-gradient(100deg, rgba(242, 248, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 44%, rgba(242, 248, 255, 0.25) 68%, rgba(242, 248, 255, 0) 100%);
+  background-image: linear-gradient(100deg, rgba(242, 248, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 48%, rgba(242, 248, 255, 0.25) 70%, rgba(242, 248, 255, 0) 100%);
   background-size: auto;
 }
 
 @media (max-width: 760px) {
   .hero.has-backdrop::before {
     background-image: linear-gradient(180deg, rgba(242, 248, 255, 0.94) 0%, rgba(242, 248, 255, 0.82) 100%);
+  }
+}
+
+/* where the hero photo was taken, bottom right */
+.hero-place {
+  align-self: end;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--blue-800);
+  box-shadow: 0 10px 30px -18px rgba(10, 91, 196, 0.6);
+}
+
+.hero-place span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--blue-500);
+}
+
+@media (max-width: 1024px) {
+  .hero-place {
+    justify-self: start;
   }
 }

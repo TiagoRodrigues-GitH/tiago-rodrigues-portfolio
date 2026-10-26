@@ -42,7 +42,7 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 
 | Route | Content |
 | --- | --- |
-| `/` | Software-development hero over a photo of Rio de Janeiro with a self-typing code editor, technology strip, doors into the three areas (automotive, AI, security), spec sheet with the ADAS sensor drawing, selected projects, article series and call to action |
+| `/` | Software-development hero over rotating photos in the reader's language (Brazilian regions in PT, US cities in EN, German cities in DE) with the place labelled, technology strip, doors into the three areas (automotive, AI, security), spec sheet with the ADAS sensor drawing, selected projects, article series and call to action |
 | `/projects`, `/projects/automotive`, `/projects/ai`, `/projects/security` | Project case studies, one tab per area (colour and photo of its own), with an accessible image viewer and visitor comments under each project (shown after approval) |
 | `/projects/defect-triage` | Project 01: guided triage of vehicle defect complaints — one decision per screen, an NHTSA classifier that runs in the browser with an animated ranking, real test complaints with every model's prediction, benchmark bars and table (`/projects/compact-llm` redirects here) |
 | `/projects/patent-assistant` | Project 05: patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO) and sources; benchmark bars and table |

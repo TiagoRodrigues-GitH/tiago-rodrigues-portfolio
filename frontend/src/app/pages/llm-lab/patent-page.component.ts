@@ -2,7 +2,7 @@ import { Component, afterNextRender, computed, inject, signal } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 import { BackdropDirective } from '../../shared/backdrop.directive';
 import { LabDataService, MODEL_NAMES, PatentData } from './lab-data';
 import { LAB_I18N } from './lab-i18n';
@@ -22,7 +22,7 @@ import { ResultBar, ResultBarsComponent } from './result-bars.component';
 })
 export class PatentPageComponent {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.patentAssistant;
+  readonly photo = computed(() => photoSources('patentAssistant', this.locale()));
 
   private readonly data = inject(LabDataService);
   private readonly i18n = inject(I18nService);

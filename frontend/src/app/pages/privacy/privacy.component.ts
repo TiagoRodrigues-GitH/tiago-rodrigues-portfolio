@@ -1,7 +1,7 @@
-import { Component, PLATFORM_ID, inject, signal } from '@angular/core';
+import { Component, PLATFORM_ID, inject, signal, computed } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 import { AnalyticsService } from '../../services/analytics.service';
 
 interface PrivacyText {
@@ -278,7 +278,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
 })
 export class PrivacyComponent {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.privacy;
+  readonly photo = computed(() => photoSources('privacy', this.locale()));
 
   private readonly analytics = inject(AnalyticsService);
   readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));

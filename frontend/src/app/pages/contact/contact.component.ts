@@ -1,8 +1,8 @@
-import { Component, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnDestroy, inject, signal, computed } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ContactTranslations, I18nService } from '../../services/i18n.service';
 import { injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 
 interface ProfileLink {
   label: string;
@@ -19,7 +19,7 @@ interface ProfileLink {
 })
 export class ContactComponent implements OnDestroy {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.contact;
+  readonly photo = computed(() => photoSources('contact', this.locale()));
 
   private readonly i18n = inject(I18nService);
   private readonly document = inject(DOCUMENT);

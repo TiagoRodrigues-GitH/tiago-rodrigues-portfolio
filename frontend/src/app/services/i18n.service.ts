@@ -125,6 +125,8 @@ export interface ContactTranslations {
   eyebrow: string;
   title: string;
   intro: string;
+  /** Friendly line under the introduction, over the coffee photo. */
+  coffee: string;
   availabilityLabel: string;
   availabilityText: string;
   emailLabel: string;
@@ -573,6 +575,7 @@ export class I18nService {
   readonly contact: Record<Locale, ContactTranslations> = {
     pt: {
       eyebrow: 'Contato',
+      coffee: 'Vamos tomar um café?',
       title: 'Vamos conversar',
       intro: 'Estou disponível para conversar sobre projetos, colaborações e oportunidades profissionais. Escolha o canal que preferir.',
       availabilityLabel: 'Disponível para',
@@ -592,6 +595,7 @@ export class I18nService {
     },
     en: {
       eyebrow: 'Contact',
+      coffee: 'Shall we grab a coffee?',
       title: 'Let’s talk',
       intro: 'I’m open to discussing projects, collaborations and professional opportunities. Pick whichever channel suits you best.',
       availabilityLabel: 'Available for',
@@ -611,6 +615,7 @@ export class I18nService {
     },
     de: {
       eyebrow: 'Kontakt',
+      coffee: 'Auf einen Kaffee?',
       title: 'Lassen Sie uns sprechen',
       intro: 'Ich freue mich über Gespräche zu Projekten, Zusammenarbeit und beruflichen Möglichkeiten. Wählen Sie den Kanal, der Ihnen am besten passt.',
       availabilityLabel: 'Verfügbar für',

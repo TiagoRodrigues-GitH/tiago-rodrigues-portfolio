@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { AboutTranslations, I18nService } from '../../services/i18n.service';
 import { injectLocale } from '../../services/locale';
-import { PHOTOS } from '../../content/photos';
+import { photoSources } from '../../content/photos';
 
 @Component({
   selector: 'app-about',
@@ -11,7 +11,7 @@ import { PHOTOS } from '../../content/photos';
 })
 export class AboutComponent {
   /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = PHOTOS.about;
+  readonly photo = computed(() => photoSources('about', this.locale()));
 
   private readonly i18n = inject(I18nService);
 

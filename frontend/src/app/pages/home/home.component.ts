@@ -5,10 +5,7 @@ import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/bluep
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { ARTICLES, Article } from '../../content/articles';
 import { AREAS, AreaKey } from '../../shared/areas';
-import { PHOTOS } from '../../content/photos';
-
-/** Syntax token: [css class, text]. k keyword, p property, s string, f function, c comment. */
-type Token = [string, string];
+import { photosFor } from '../../content/photos';
 
 const WORDS_PER_MINUTE = 200;
 
@@ -29,18 +26,12 @@ export class HomeComponent {
   readonly marquee = ['Java', 'Spring Boot', 'Python', 'PyTorch', 'Angular', 'TypeScript', 'LLMs', 'ADAS', 'Lane detection',
     'OpenStreetMap', 'Dijkstra · A*', 'Docker', 'SQL', 'Linux', 'Cisco networking'];
 
-  readonly photos = PHOTOS;
+  /** Hero photos in the reader's language (Brazil, the United States or Germany), rotating; the label follows. */
+  readonly heroPhotos = computed(() => photosFor('home', this.locale()));
+  readonly heroSources = computed(() => this.heroPhotos().map((photo) => photo.src));
+  readonly heroIndex = signal(0);
+  readonly heroPlace = computed(() => this.heroPhotos()[this.heroIndex()]?.place ?? '');
 
-  /** Lines typed out in the hero editor card. */
-  readonly codeLines: Token[][] = [
-    [['k', 'const'], ['', ' developer = {']],
-    [['p', '  name'], ['', ': '], ['s', "'Tiago Rodrigues'"], ['', ',']],
-    [['p', '  languages'], ['', ': ['], ['s', "'Java'"], ['', ', '], ['s', "'Python'"], ['', ', '], ['s', "'TypeScript'"], ['', '],']],
-    [['p', '  builds'], ['', ': ['], ['s', "'APIs'"], ['', ', '], ['s', "'web apps'"], ['', ', '], ['s', "'AI models'"], ['', '],']],
-    [['p', '  areas'], ['', ': ['], ['s', "'automotive'"], ['', ', '], ['s', "'ai'"], ['', ', '], ['s', "'security'"], ['', '],']],
-    [['', '};']],
-    [['', 'developer.'], ['f', 'ship'], ['', '(); '], ['c', '// clean, tested, documented']],
-  ];
 
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */
