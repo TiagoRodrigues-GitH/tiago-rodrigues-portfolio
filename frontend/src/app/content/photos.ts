@@ -22,20 +22,22 @@ const p = (file: string, place: string): Photo => ({ src: `assets/images/photos/
 const PHOTOS: Record<PhotoSection, PerLocale> = {
   // the home hero travels: Brazil in Portuguese, Canada and the United States in English, Germany in German
   home: {
+    // urban and nature in turn, a city first
     pt: [
-      p('tiradentes-minas', 'Tiradentes, Minas Gerais'),
-      p('ouro-preto-praca', 'Praça Tiradentes, Ouro Preto, Minas Gerais'),
-      p('rio-sugarloaf', 'Pão de Açúcar, Rio de Janeiro'),
+      p('bh-pampulha', 'Igreja da Pampulha, Belo Horizonte, Minas Gerais'),
+      p('tiradentes-minas', 'Serra de São José, Tiradentes, Minas Gerais'),
       p('sao-paulo-paulista', 'Avenida Paulista, São Paulo'),
-      p('salvador-pelourinho', 'Pelourinho, Salvador, Bahia'),
       p('parana-iguacu', 'Cataratas do Iguaçu, Paraná'),
-      p('brasilia-congresso', 'Congresso Nacional, Brasília'),
+      p('salvador-pelourinho', 'Pelourinho, Salvador, Bahia'),
       p('lencois-maranhenses', 'Lençóis Maranhenses, Maranhão'),
-      p('gramado-lago-negro', 'Lago Negro, Gramado, Rio Grande do Sul'),
-      p('rio-cristo', 'Cristo Redentor, Rio de Janeiro'),
+      p('brasilia-congresso', 'Congresso Nacional, Brasília'),
       p('nordeste-noronha', 'Fernando de Noronha, Pernambuco'),
+      p('ouro-preto-praca', 'Praça Tiradentes, Ouro Preto, Minas Gerais'),
+      p('gramado-lago-negro', 'Lago Negro, Gramado, Rio Grande do Sul'),
       p('manaus-teatro', 'Teatro Amazonas, Manaus'),
       p('sul-itaimbezinho', 'Cânion Itaimbezinho, Rio Grande do Sul'),
+      p('rio-sugarloaf', 'Pão de Açúcar, Rio de Janeiro'),
+      p('rio-cristo', 'Cristo Redentor, Rio de Janeiro'),
     ],
     // Canada first, then Canada and the United States in turn
     en: [
@@ -63,24 +65,24 @@ const PHOTOS: Record<PhotoSection, PerLocale> = {
       p('berlin-dom', 'Berlin'),
     ],
   },
-  // where projects start: code, books, notebooks and a coffee; a light photo first
+  // technology up close: a robot, circuit boards and code; the light photo first
   projects: [
-    p('code-laptop-light', ''),
-    p('laptop-books', ''),
-    p('fountain-pen', ''),
-    p('notebooks-coffee', ''),
-    p('open-book', ''),
-    p('code-macro', ''),
+    p('robot-white', ''),
+    p('pcb-traces', ''),
+    p('coding-workstation', ''),
+    p('controller-board', ''),
+    p('colorful-code', ''),
   ],
   automotive: [p('stelvio-pass', 'Passo dello Stelvio')],
   ai: [p('gpu-dies', '')],
   security: [p('data-center', '')],
-  // Londrina, my home town: Lago Igapó, the old bus station by Vilanova Artigas and the history museum
+  // Londrina, my home town: the history museum first, the "Eu amo Londrina" sign, Lago Igapó, the old bus station
   about: [
+    p('londrina-museu', 'Museu Histórico de Londrina'),
+    p('londrina-amo-londrina', 'Lago Cabrinha, Londrina'),
     p('londrina-igapo', 'Lago Igapó, Londrina'),
     p('londrina-igapo-skyline', 'Lago Igapó, Londrina'),
     p('londrina-rodoviaria', 'Antiga Rodoviária, Londrina'),
-    p('londrina-museu', 'Museu Histórico de Londrina'),
   ],
   // let's talk over a coffee: ripe cherries, a cup, the harvest
   contact: [p('coffee-cherries', ''), p('coffee-cup', ''), p('coffee-berries', ''), p('coffee-harvest', '')],

@@ -6,7 +6,7 @@ export interface ImageCredit {
   url: string;
 }
 
-/** Sources of the illustrations (assets/images/blueprints) and photographs (assets/images/photos), all from Wikimedia Commons. */
+/** Sources of the illustrations (assets/images/blueprints) and photographs (assets/images/photos): Wikimedia Commons, and one photo from the Londrina city blog. */
 export const IMAGE_CREDITS: ImageCredit[] = [
   {
     title: 'Streamlined Car Carries Engine at Rear (1931)',
@@ -274,12 +274,6 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     url: 'https://commons.wikimedia.org/wiki/File:Caf%C3%A9_cai,_cerrado,_colheita_mecanizada_de_caf%C3%A9._-_panoramio.jpg',
   },
   {
-    title: 'Coffee, notebooks and pen',
-    author: 'Freddy Castro (Unsplash)',
-    license: 'CC0',
-    url: 'https://commons.wikimedia.org/wiki/File:Coffee,_notebooks_and_pen_(Unsplash).jpg',
-  },
-  {
     title: 'Moraine Lake, Banff National Park',
     author: 'Dylannother',
     license: 'CC BY-SA 4.0',
@@ -322,27 +316,45 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     url: 'https://commons.wikimedia.org/wiki/File:Parliament_Hill_from_the_river_path.jpg',
   },
   {
-    title: 'Lines of code',
-    author: 'Artem Sapegin (Unsplash)',
-    license: 'CC0',
-    url: 'https://commons.wikimedia.org/wiki/File:Lines_of_code_(Unsplash).jpg',
+    title: 'Igreja São Francisco de Assis, Pampulha',
+    author: 'Boaventuravinicius',
+    license: 'CC BY 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Igreja_S%C3%A3o_Francisco_de_Assis_(98975).jpg',
   },
   {
-    title: 'Laptop and books',
-    author: 'Kari Shea (Unsplash)',
+    title: 'Robot (Alex Knight 2017-01-30)',
+    author: 'Alex Knight (Unsplash)',
     license: 'CC0',
-    url: 'https://commons.wikimedia.org/wiki/File:Laptop_and_books_(Unsplash).jpg',
+    url: 'https://commons.wikimedia.org/wiki/File:Alex_Knight_2017-01-30_(Unsplash).jpg',
   },
   {
-    title: 'Writing with a fountain pen',
-    author: 'Aaron Burden (Unsplash)',
-    license: 'CC0',
-    url: 'https://commons.wikimedia.org/wiki/File:Writing_with_a_fountain_pen_(Unsplash).jpg',
+    title: 'Leiterbahnen',
+    author: 'Smial',
+    license: 'Free Art License',
+    url: 'https://commons.wikimedia.org/wiki/File:Leiterbahnen_IMGP2839_smial_wp.jpg',
   },
   {
-    title: 'Open book',
-    author: 'Alina Daniker (Unsplash)',
+    title: 'Coding workstation',
+    author: 'Farzad Nazifi (Unsplash)',
     license: 'CC0',
-    url: 'https://commons.wikimedia.org/wiki/File:Open_book_1_(Unsplash).jpg',
+    url: 'https://commons.wikimedia.org/wiki/File:Coding_workstation_(Unsplash).jpg',
+  },
+  {
+    title: 'Colorful code',
+    author: 'Markus Spiske (Unsplash)',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Colorful_code_(Unsplash).jpg',
+  },
+  {
+    title: 'Controller board',
+    author: 'marsupium photography',
+    license: 'CC BY-SA 2.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Controller_board_(14837601847).jpg',
+  },
+  {
+    title: 'Letreiro "Eu amo Londrina", Lago Cabrinha',
+    author: 'Prefeitura de Londrina (blog.londrina.pr.gov.br)',
+    license: '© Prefeitura de Londrina',
+    url: 'https://blog.londrina.pr.gov.br/?p=106327',
   },
 ];

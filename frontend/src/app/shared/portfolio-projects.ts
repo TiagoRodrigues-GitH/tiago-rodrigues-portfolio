@@ -99,37 +99,27 @@ const PROJECTS: ProjectSource[] = [
     areas: ['automotive', 'ai'],
     status: 'progress',
     image: {
-      src: 'assets/videos/ufld-vs-lite-elas-poster.jpg',
+      src: 'assets/videos/lane-lite-v05-elas-poster.jpg',
       width: 1280,
       height: 480,
       alt: {
-        pt: 'Mesmo quadro de uma rodovia brasileira lado a lado: à esquerda as faixas previstas pelo UFLD, à direita as do modelo leve.',
-        en: 'The same frame of a Brazilian road side by side: lanes predicted by UFLD on the left and by the lightweight model on the right.',
-        de: 'Dasselbe Bild einer brasilianischen Straße nebeneinander: links die von UFLD erkannten Fahrspuren, rechts die des leichten Modells.',
+        pt: 'Avenida em Vitória lado a lado: à esquerda a imagem original, à direita as bordas da faixa previstas pelo modelo leve e a faixa ego em verde.',
+        en: 'An avenue in Vitória side by side: the original frame on the left, and on the right the lane boundaries predicted by the lightweight model with the ego lane in green.',
+        de: 'Eine Straße in Vitória nebeneinander: links das Originalbild, rechts die vom leichten Modell erkannten Fahrspurränder mit der Ego-Spur in Grün.',
       },
     },
     gallery: [],
+    // the video of the LinkedIn post (20 Oct 2026)
     videos: [
       {
-        src: 'assets/videos/ufld-vs-lite-elas.mp4',
-        poster: 'assets/videos/ufld-vs-lite-elas-poster.jpg',
+        src: 'assets/videos/lane-lite-v05-elas.mp4',
+        poster: 'assets/videos/lane-lite-v05-elas-poster.jpg',
         width: 1280,
         height: 480,
         caption: {
-          pt: 'UFLD (ResNet-18, à esquerda) e o modelo leve v0.5 (à direita) no mesmo trecho do ELAS, com o tempo de cada etapa e os quadros anteriores usados.',
-          en: 'UFLD (ResNet-18, left) and the lightweight v0.5 model (right) on the same ELAS stretch, with the time of each stage and the previous frames used.',
-          de: 'UFLD (ResNet-18, links) und das leichte Modell v0.5 (rechts) auf demselben ELAS-Abschnitt, mit der Zeit jedes Schritts und den genutzten vorherigen Bildern.',
-        },
-      },
-      {
-        src: 'assets/videos/carla-town05-models.mp4',
-        poster: 'assets/videos/carla-town05-models-poster.jpg',
-        width: 1600,
-        height: 600,
-        caption: {
-          pt: 'Simulador CARLA (Town05): imagem de entrada, verdade de campo e seis modelos lado a lado, com desvio lateral, alerta de saída de faixa e F1 acumulado em cada painel.',
-          en: 'CARLA simulator (Town05): input frame, ground truth and six models side by side, with lateral offset, lane-departure warning and running F1 on each panel.',
-          de: 'CARLA-Simulator (Town05): Eingangsbild, Ground Truth und sechs Modelle nebeneinander, mit seitlicher Abweichung, Spurverlassenswarnung und laufendem F1 in jedem Feld.',
+          pt: 'Imagem original (à esquerda) e o modelo leve v0.5 (à direita) em cenas do ELAS: bordas da faixa (vermelho = esquerda, azul = direita), faixa ego em verde, desvio lateral e detecção de troca de faixa.',
+          en: 'Original frame (left) and the lightweight v0.5 model (right) on ELAS scenes: lane boundaries (red = left, blue = right), ego lane in green, lateral offset and lane-change detection.',
+          de: 'Originalbild (links) und das leichte Modell v0.5 (rechts) auf ELAS-Szenen: Spurränder (rot = links, blau = rechts), Ego-Spur in Grün, seitliche Abweichung und Spurwechselerkennung.',
         },
       },
     ],
