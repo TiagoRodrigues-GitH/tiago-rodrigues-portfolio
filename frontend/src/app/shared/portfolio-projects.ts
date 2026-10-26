@@ -170,7 +170,7 @@ const PROJECTS: ProjectSource[] = [
       pt: {
         title: 'Ruas de cidades brasileiras e algoritmos de rota',
         subtitle: 'Georreferenciamento com dados públicos do IBGE e do INPE',
-        summary: 'Do mapa do Brasil à rua: grafos de ruas de Londrina, Curitiba, Florianópolis, Brasília, São Paulo e do ABC Paulista reconstruídos das faces de quadra do Censo 2022, com dez algoritmos de rota animados passo a passo no navegador.',
+        summary: 'Do mapa do Brasil à rua: grafos de ruas de Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo e do ABC Paulista reconstruídos das faces de quadra do Censo 2022, com dez algoritmos de rota animados passo a passo no navegador.',
         details: 'As faces de quadra do IBGE viram corredores de rua, o corredor é afinado até o eixo e o eixo vira um grafo com nomes de rua; cidades grandes são processadas em blocos. Sobre ele rodam Dijkstra, A*, ALT, busca bidirecional, Bellman-Ford, busca em largura, busca gulosa, colônia de formigas, algoritmo genético e recozimento simulado, calculados em um Web Worker e reproduzidos com pausa, passo a passo e controle de velocidade. Próxima etapa: detectar as ruas em imagens do satélite CBERS-4A (INPE) com segmentação semântica e comparar o grafo extraído com o do IBGE (métrica APLS).',
         role: 'Pesquisa, dados geoespaciais e desenvolvimento web',
         stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],
@@ -178,7 +178,7 @@ const PROJECTS: ProjectSource[] = [
       en: {
         title: 'Streets of Brazilian cities and routing algorithms',
         subtitle: 'Georeferencing with public data from IBGE and INPE',
-        summary: 'From the map of Brazil down to a street: street graphs of Londrina, Curitiba, Florianópolis, Brasília, São Paulo and the ABC Paulista region rebuilt from 2022 Census block faces, with ten routing algorithms animated step by step in the browser.',
+        summary: 'From the map of Brazil down to a street: street graphs of Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo and the ABC Paulista region rebuilt from 2022 Census block faces, with ten routing algorithms animated step by step in the browser.',
         details: 'IBGE block faces become street corridors, the corridors are thinned to centre lines and the centre lines become a graph with street names; large cities are processed in tiles. Dijkstra, A*, ALT, bidirectional search, Bellman-Ford, breadth-first search, greedy search, ant colony optimisation, a genetic algorithm and simulated annealing run on it, computed in a Web Worker and replayed with pause, single steps and speed control. Next step: detect the streets in CBERS-4A satellite images (INPE) with semantic segmentation and compare the extracted graph with IBGE’s (APLS metric).',
         role: 'Research, geospatial data and web development',
         stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],
@@ -186,7 +186,7 @@ const PROJECTS: ProjectSource[] = [
       de: {
         title: 'Straßen brasilianischer Städte und Routing-Algorithmen',
         subtitle: 'Georeferenzierung mit offenen Daten von IBGE und INPE',
-        summary: 'Von der Karte Brasiliens bis zur Straße: Straßengraphen von Londrina, Curitiba, Florianópolis, Brasília, São Paulo und der Region ABC Paulista, rekonstruiert aus den Blockseiten des Zensus 2022, mit zehn Routing-Algorithmen, Schritt für Schritt im Browser animiert.',
+        summary: 'Von der Karte Brasiliens bis zur Straße: Straßengraphen von Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo und der Region ABC Paulista, rekonstruiert aus den Blockseiten des Zensus 2022, mit zehn Routing-Algorithmen, Schritt für Schritt im Browser animiert.',
         details: 'Die Blockseiten des IBGE werden zu Straßenkorridoren, die Korridore zu Achsen ausgedünnt und die Achsen zu einem Graphen mit Straßennamen; große Städte werden in Kacheln verarbeitet. Darauf laufen Dijkstra, A*, ALT, bidirektionale Suche, Bellman-Ford, Breitensuche, gierige Suche, Ameisenkolonie, ein genetischer Algorithmus und simulierte Abkühlung, berechnet in einem Web Worker und mit Pause, Einzelschritt und Geschwindigkeitsregler abgespielt. Nächster Schritt: die Straßen in CBERS-4A-Satellitenbildern (INPE) mit semantischer Segmentierung erkennen und den extrahierten Graphen mit dem des IBGE vergleichen (APLS-Metrik).',
         role: 'Forschung, Geodaten und Webentwicklung',
         stack: ['Python', 'GeoPandas', 'NetworkX', 'scikit-image', 'TypeScript', 'MapLibre GL'],

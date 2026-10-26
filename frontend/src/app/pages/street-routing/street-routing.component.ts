@@ -43,7 +43,7 @@ function fill(template: string, values: Record<string, string>): string {
 }
 
 /**
- * Project page: IBGE boundaries from Brazil down to a neighbourhood, street graphs of six areas built from IBGE
+ * Project page: IBGE boundaries from Brazil down to a neighbourhood, street graphs of seven areas built from IBGE
  * block faces, and path-finding algorithms computed in a Web Worker and replayed step by step on the map.
  */
 @Component({

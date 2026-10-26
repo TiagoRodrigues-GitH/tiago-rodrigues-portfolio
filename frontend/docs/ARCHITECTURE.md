@@ -54,7 +54,7 @@ city map and the SVG demo share it.
 | R7 | Colours: Okabe & Ito palette; **blue only for the final route**; every state also has a shape (line, dash, ring, dot) | Colour-blind safety and WCAG 1.4.1 (use of colour); intermediate search states can never be taken for the result |
 | R8 | Phones: the map and playback bar are **sticky** above the scrolling controls; landscape phones place them side by side | The map stays visible while configuring and running, without shrinking the controls below touch size |
 | R9 | Clicks inside the loaded area always mark a point; cities are offered as buttons and as clickable boxes on the map | A small screen fits the city at a low zoom; the earlier zoom threshold silently ignored the first clicks |
-| R10 | Cities split by roads without block faces keep **all parts with ≥ 20 km of streets**; no link is invented | Brasília (75 parts) and Florianópolis (5) would otherwise lose most of their streets; between parts the search honestly finds no route |
+| R10 | Cities split by roads without block faces are **joined by the OpenStreetMap roads** between the parts (motorway to unclassified, OSM one-way kept; short connectors to the nearest IBGE junction shown as estimated links), then cut to the largest strongly connected part | Brasília had 75 parts (the largest with 26 % of the streets): highways and park avenues have no block faces. Joined, one part keeps 96 % of its IBGE streets and every origin reaches every destination; Maringá likewise. Florianópolis (5 parts) still keeps its parts apart |
 
 The graph data come from the georeferencing-street-routing-algorithms repository (its own ARCHITECTURE.md records
 the tiled rasterisation, the UTM zone per city and the multi-municipality areas).

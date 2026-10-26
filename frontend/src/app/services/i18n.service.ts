@@ -217,7 +217,7 @@ export class I18nService {
         admin: 'Painel administrativo do portfólio.',
         defectTriage: 'Triagem guiada de reclamações de defeitos veiculares da NHTSA com LLMs compactos ajustados com LoRA e um classificador que roda no navegador, com resultados reais.',
         patentAssistant: 'Assistente de patentes com documentos oficiais do INPI: perguntas respondidas por LLMs compactos, guia passo a passo para pedir uma patente e estatísticas oficiais de depositantes.',
-        streetRouting: 'Do mapa do Brasil à rua com dados do IBGE: grafos de ruas de seis áreas (de Londrina a São Paulo) reconstruídos das faces de quadra do Censo 2022 e dez algoritmos de rota animados passo a passo no navegador.',
+        streetRouting: 'Do mapa do Brasil à rua com dados do IBGE: grafos de ruas de sete áreas (de Londrina a São Paulo) reconstruídos das faces de quadra do Censo 2022 e dez algoritmos de rota animados passo a passo no navegador.',
       },
     },
     en: {
@@ -270,7 +270,7 @@ export class I18nService {
         admin: 'Portfolio admin panel.',
         defectTriage: 'Guided triage of NHTSA vehicle defect complaints with compact LLMs fine-tuned with LoRA and a classifier that runs in the browser, with real results.',
         patentAssistant: 'Patent assistant grounded in official INPI documents: questions answered by compact LLMs, a step-by-step guide to filing a patent and official applicant statistics.',
-        streetRouting: 'From the map of Brazil down to a street with IBGE data: street graphs of six areas (from Londrina to São Paulo) rebuilt from 2022 Census block faces, and ten routing algorithms animated step by step in the browser.',
+        streetRouting: 'From the map of Brazil down to a street with IBGE data: street graphs of seven areas (from Londrina to São Paulo) rebuilt from 2022 Census block faces, and ten routing algorithms animated step by step in the browser.',
       },
     },
     de: {
@@ -323,7 +323,7 @@ export class I18nService {
         admin: 'Admin-Bereich des Portfolios.',
         defectTriage: 'Geführte Triage von NHTSA-Fahrzeugmängelbeschwerden mit kompakten, per LoRA feinabgestimmten LLMs und einem Klassifikator im Browser, mit echten Ergebnissen.',
         patentAssistant: 'Patentassistent auf Grundlage amtlicher INPI-Dokumente: Fragen, beantwortet von kompakten LLMs, ein Schritt-für-Schritt-Leitfaden zur Anmeldung und amtliche Anmelderstatistik.',
-        streetRouting: 'Von der Karte Brasiliens bis zur Straße mit IBGE-Daten: Straßengraphen von sechs Gebieten (von Londrina bis São Paulo) aus den Blockseiten des Zensus 2022 und zehn Routing-Algorithmen, Schritt für Schritt im Browser animiert.',
+        streetRouting: 'Von der Karte Brasiliens bis zur Straße mit IBGE-Daten: Straßengraphen von sieben Gebieten (von Londrina bis São Paulo) aus den Blockseiten des Zensus 2022 und zehn Routing-Algorithmen, Schritt für Schritt im Browser animiert.',
       },
     },
   };

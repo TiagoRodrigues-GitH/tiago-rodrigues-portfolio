@@ -143,7 +143,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     title: 'Ruas de cidades brasileiras, de dados públicos ao melhor caminho',
     subtitle: 'Do mapa do Brasil à rua, com algoritmos de rota que você pode ver trabalhando',
     intro:
-      'Navegue do Brasil ao estado, ao município e ao bairro com as malhas oficiais do IBGE. Em seis áreas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo e o ABC Paulista), as ruas foram reconstruídas a partir das faces de quadra do Censo 2022 e transformadas em um grafo: escolha origem e destino e acompanhe, passo a passo, como dez algoritmos exatos, heurísticos e estocásticos constroem a rota.',
+      'Navegue do Brasil ao estado, ao município e ao bairro com as malhas oficiais do IBGE. Em sete áreas (Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo e o ABC Paulista), as ruas foram reconstruídas a partir das faces de quadra do Censo 2022 e transformadas em um grafo: escolha origem e destino e acompanhe, passo a passo, como dez algoritmos exatos, heurísticos e estocásticos constroem a rota.',
     honesty:
       'Tudo roda no seu navegador, sem servidor. As distâncias são em metros pelo eixo das ruas; o sentido das ruas de mão única vem do OpenStreetMap (setas a partir do zoom 14). Sem dados de velocidade, a rota é a mais curta, não a mais rápida.',
     back: 'Todos os projetos',
@@ -367,7 +367,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     title: 'Streets of Brazilian cities, from public data to the best route',
     subtitle: 'From the map of Brazil down to a street, with routing algorithms you can watch at work',
     intro:
-      'Navigate from Brazil to a state, a municipality and a neighbourhood using the official IBGE boundaries. In six areas (Londrina, Curitiba, Florianópolis, Brasília, São Paulo and the ABC Paulista region), the streets were rebuilt from the 2022 Census block faces and turned into a graph: pick an origin and a destination and watch, step by step, how ten exact, heuristic and stochastic algorithms build the route.',
+      'Navigate from Brazil to a state, a municipality and a neighbourhood using the official IBGE boundaries. In seven areas (Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo and the ABC Paulista region), the streets were rebuilt from the 2022 Census block faces and turned into a graph: pick an origin and a destination and watch, step by step, how ten exact, heuristic and stochastic algorithms build the route.',
     honesty:
       'Everything runs in your browser, with no server. Distances are metres along the street centre lines; the direction of one-way streets comes from OpenStreetMap (arrows from zoom 14). Without speed data, the route is the shortest, not the fastest.',
     back: 'All projects',
@@ -591,7 +591,7 @@ export const STREET_I18N: Record<Locale, StreetTranslations> = {
     title: 'Straßen brasilianischer Städte, von offenen Daten zur besten Route',
     subtitle: 'Von der Karte Brasiliens bis zur Straße, mit Routing-Algorithmen, denen Sie bei der Arbeit zusehen können',
     intro:
-      'Navigieren Sie mit den amtlichen Grenzen des IBGE von Brasilien zum Bundesstaat, zur Gemeinde und zum Stadtviertel. In sechs Gebieten (Londrina, Curitiba, Florianópolis, Brasília, São Paulo und die Region ABC Paulista) wurden die Straßen aus den Blockseiten des Zensus 2022 rekonstruiert und in einen Graphen überführt: Wählen Sie Start und Ziel und verfolgen Sie Schritt für Schritt, wie zehn exakte, heuristische und stochastische Algorithmen die Route aufbauen.',
+      'Navigieren Sie mit den amtlichen Grenzen des IBGE von Brasilien zum Bundesstaat, zur Gemeinde und zum Stadtviertel. In sieben Gebieten (Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo und die Region ABC Paulista) wurden die Straßen aus den Blockseiten des Zensus 2022 rekonstruiert und in einen Graphen überführt: Wählen Sie Start und Ziel und verfolgen Sie Schritt für Schritt, wie zehn exakte, heuristische und stochastische Algorithmen die Route aufbauen.',
     honesty:
       'Alles läuft in Ihrem Browser, ohne Server. Entfernungen sind Meter entlang der Straßenachsen; die Richtung der Einbahnstraßen stammt aus OpenStreetMap (Pfeile ab Zoomstufe 14). Ohne Geschwindigkeitsdaten ist die Route die kürzeste, nicht die schnellste.',
     back: 'Alle Projekte',
