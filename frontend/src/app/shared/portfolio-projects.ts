@@ -18,6 +18,28 @@ interface ProjectImageSource {
   blueprint?: BlueprintKind;
 }
 
+interface ProjectVideoSource {
+  src: string;
+  poster: string;
+  width: number;
+  height: number;
+  caption: Record<Locale, string>;
+}
+
+export interface ProjectVideo {
+  src: string;
+  poster: string;
+  width: number;
+  height: number;
+  caption: string;
+}
+
+/** An article, dataset or tool the project builds on; the same text in every language. */
+export interface ProjectReference {
+  text: string;
+  url?: string;
+}
+
 interface ProjectText {
   title: string;
   /** Second line of the title (what the project consists of), when the title alone is broad. */
@@ -39,6 +61,10 @@ interface ProjectSource {
   demo?: string;
   image: ProjectImageSource;
   gallery: ProjectImageSource[];
+  /** Videos shown above the images (muted, with controls). */
+  videos?: ProjectVideoSource[];
+  /** Articles and datasets the project is based on. */
+  references?: ProjectReference[];
   text: Record<Locale, ProjectText>;
 }
 
@@ -61,10 +87,87 @@ export interface PortfolioProject extends ProjectText {
   image: ProjectImage;
   /** Every image of the project, cover first — used by the lightbox. */
   gallery: ProjectImage[];
+  videos: ProjectVideo[];
+  references: ProjectReference[];
 }
 
 // Shown in this order (projects page and home): the current project first.
 const PROJECTS: ProjectSource[] = [
+  {
+    id: 6,
+    slug: 'lane-detection',
+    areas: ['automotive', 'ai'],
+    status: 'progress',
+    image: {
+      src: 'assets/videos/ufld-vs-lite-elas-poster.jpg',
+      width: 1280,
+      height: 480,
+      alt: {
+        pt: 'Mesmo quadro de uma rodovia brasileira lado a lado: à esquerda as faixas previstas pelo UFLD, à direita as do modelo leve.',
+        en: 'The same frame of a Brazilian road side by side: lanes predicted by UFLD on the left and by the lightweight model on the right.',
+        de: 'Dasselbe Bild einer brasilianischen Straße nebeneinander: links die von UFLD erkannten Fahrspuren, rechts die des leichten Modells.',
+      },
+    },
+    gallery: [],
+    videos: [
+      {
+        src: 'assets/videos/ufld-vs-lite-elas.mp4',
+        poster: 'assets/videos/ufld-vs-lite-elas-poster.jpg',
+        width: 1280,
+        height: 480,
+        caption: {
+          pt: 'UFLD (ResNet-18, à esquerda) e o modelo leve v0.5 (à direita) no mesmo trecho do ELAS, com o tempo de cada etapa e os quadros anteriores usados.',
+          en: 'UFLD (ResNet-18, left) and the lightweight v0.5 model (right) on the same ELAS stretch, with the time of each stage and the previous frames used.',
+          de: 'UFLD (ResNet-18, links) und das leichte Modell v0.5 (rechts) auf demselben ELAS-Abschnitt, mit der Zeit jedes Schritts und den genutzten vorherigen Bildern.',
+        },
+      },
+      {
+        src: 'assets/videos/carla-town05-models.mp4',
+        poster: 'assets/videos/carla-town05-models-poster.jpg',
+        width: 1600,
+        height: 600,
+        caption: {
+          pt: 'Simulador CARLA (Town05): imagem de entrada, verdade de campo e seis modelos lado a lado, com desvio lateral, alerta de saída de faixa e F1 acumulado em cada painel.',
+          en: 'CARLA simulator (Town05): input frame, ground truth and six models side by side, with lateral offset, lane-departure warning and running F1 on each panel.',
+          de: 'CARLA-Simulator (Town05): Eingangsbild, Ground Truth und sechs Modelle nebeneinander, mit seitlicher Abweichung, Spurverlassenswarnung und laufendem F1 in jedem Feld.',
+        },
+      },
+    ],
+    references: [
+      { text: 'Z. Qin, H. Wang, X. Li. Ultra Fast Structure-aware Deep Lane Detection. ECCV 2020.', url: 'https://arxiv.org/abs/2004.11757' },
+      { text: 'Z. Qin, P. Zhang, X. Li. Ultra Fast Deep Lane Detection with Hybrid Anchor Driven Ordinal Classification. IEEE TPAMI 2022.', url: 'https://arxiv.org/abs/2206.07389' },
+      { text: 'R. F. Berriel et al. Ego-Lane Analysis System (ELAS): Dataset and Algorithms. Image and Vision Computing, 2017.', url: 'https://arxiv.org/abs/1806.05984' },
+      { text: 'ELAS dataset (UFES): ego-lane analysis system repository.', url: 'https://github.com/rodrigoberriel/ego-lane-analysis-system' },
+      { text: 'A. Dosovitskiy et al. CARLA: An Open Urban Driving Simulator. CoRL 2017.', url: 'https://arxiv.org/abs/1711.03938' },
+      { text: 'T. Rodrigues, E. Laussac, E. Gomede. TAC-UFLD: code, protocol and results (UTFPR).', url: 'https://github.com/TiagoRodrigues-GitH/tac-ufld-lane-detection' },
+    ],
+    text: {
+      pt: {
+        title: 'Detecção de faixas em estradas brasileiras',
+        subtitle: 'UFLD comparado a um modelo leve e temporal, no ELAS e no CARLA',
+        summary: 'Um modelo de detecção de faixas com 7,7 vezes menos parâmetros que o UFLD, que usa os quadros anteriores do vídeo para manter as faixas contínuas mesmo com a pintura gasta ou encoberta.',
+        details: 'Pesquisa em andamento na UTFPR com Eva Laussac e o Prof. Everton Gomede. A referência é o UFLD (ResNet-18 pré-treinada no ImageNet); o modelo leve v0.5 alinha os quadros anteriores ao atual e os funde com uma porta residual. No dataset ELAS, de estradas brasileiras, o piloto chegou a F1 0,933 contra 0,881 do UFLD, com 2,84 M de parâmetros (contra 21,78 M) e 2,39 GMACs (contra 7,12): resultados preliminares, de pilotos com poucas épocas. No simulador CARLA, os modelos treinados só no ELAS perdem desempenho no domínio sintético, mais os leves, treinados do zero; o ajuste fino com dados do CARLA recupera parte dele, e a chuva forte com reflexos continua sem solução.',
+        role: 'Pesquisa e desenvolvimento de IA (visão computacional)',
+        stack: ['Python', 'PyTorch', 'ResNet-18', 'ONNX · TensorRT', 'CARLA', 'Streamlit'],
+      },
+      en: {
+        title: 'Lane detection on Brazilian roads',
+        subtitle: 'UFLD compared with a lightweight temporal model, on ELAS and in CARLA',
+        summary: 'A lane-detection model with 7.7 times fewer parameters than UFLD that uses the previous video frames to keep lanes continuous even when the paint is worn or hidden.',
+        details: 'Ongoing research at UTFPR with Eva Laussac and Prof. Everton Gomede. The reference is UFLD (ImageNet-pretrained ResNet-18); the lightweight v0.5 model aligns the previous frames with the current one and fuses them through a residual gate. On the ELAS dataset of Brazilian roads the pilot reached F1 0.933 against 0.881 for UFLD, with 2.84 M parameters (against 21.78 M) and 2.39 GMACs (against 7.12): preliminary results from short pilots. In the CARLA simulator, models trained on ELAS only lose accuracy in the synthetic domain, the lightweight ones (trained from scratch) the most; fine-tuning with CARLA data recovers part of it, and heavy rain with reflections remains unsolved.',
+        role: 'AI research and development (computer vision)',
+        stack: ['Python', 'PyTorch', 'ResNet-18', 'ONNX · TensorRT', 'CARLA', 'Streamlit'],
+      },
+      de: {
+        title: 'Spurerkennung auf brasilianischen Straßen',
+        subtitle: 'UFLD im Vergleich mit einem leichten zeitlichen Modell, auf ELAS und in CARLA',
+        summary: 'Ein Spurerkennungsmodell mit 7,7-mal weniger Parametern als UFLD, das die vorherigen Videobilder nutzt, um Fahrspuren auch bei abgenutzter oder verdeckter Markierung durchgehend zu erkennen.',
+        details: 'Laufende Forschung an der UTFPR mit Eva Laussac und Prof. Everton Gomede. Referenz ist UFLD (auf ImageNet vortrainiertes ResNet-18); das leichte Modell v0.5 richtet die vorherigen Bilder am aktuellen aus und fügt sie über ein residuales Gate zusammen. Auf dem ELAS-Datensatz brasilianischer Straßen erreichte der Pilot F1 0,933 gegenüber 0,881 für UFLD, mit 2,84 Mio. Parametern (statt 21,78 Mio.) und 2,39 GMACs (statt 7,12): vorläufige Ergebnisse aus kurzen Piloten. Im CARLA-Simulator verlieren nur auf ELAS trainierte Modelle in der synthetischen Domäne an Genauigkeit, am stärksten die leichten, von Grund auf trainierten; Feinabstimmung mit CARLA-Daten holt einen Teil zurück, starker Regen mit Spiegelungen bleibt ungelöst.',
+        role: 'KI-Forschung und -Entwicklung (Computer Vision)',
+        stack: ['Python', 'PyTorch', 'ResNet-18', 'ONNX · TensorRT', 'CARLA', 'Streamlit'],
+      },
+    },
+  },
   {
     id: 1,
     slug: 'defect-triage',
@@ -313,8 +416,10 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
       demo: project.demo ?? null,
       ...project.text[locale],
       image,
-      // An animated cover is shown on its own; the gallery (zoomable images) holds bitmaps only.
-      gallery: [...(image.figure || image.blueprint ? [] : [image]), ...project.gallery.map((item) => localizeImage(item, locale))],
+      videos: (project.videos ?? []).map((video) => ({ ...video, caption: video.caption[locale] })),
+      references: project.references ?? [],
+      // An animated cover or the videos are shown on their own; the gallery (zoomable images) holds bitmaps only.
+      gallery: [...(image.figure || image.blueprint || project.videos?.length ? [] : [image]), ...project.gallery.map((item) => localizeImage(item, locale))],
     };
   });
 }

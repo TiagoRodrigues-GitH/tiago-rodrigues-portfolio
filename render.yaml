@@ -37,7 +37,7 @@ services:
         value: https://tiagorodrigues-gith.github.io
       # Keys of the projects that accept comments (shared/portfolio-projects.ts → slug).
       - key: REVIEW_PROJECTS
-        value: defect-triage,patent-assistant,street-routing,vehicle-management,car-collectors
+        value: lane-detection,defect-triage,patent-assistant,street-routing,vehicle-management,car-collectors
       # The free instance has 512 MB: let the JVM heap use most of it.
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=75

@@ -313,3 +313,46 @@
 	font-size: 0.75rem;
 	color: var(--area-ink);
 }
+
+/* Project videos: full width of the media column, caption under each */
+.project-video {
+	margin: 0 0 1.25rem;
+}
+
+.project-video video {
+	display: block;
+	width: 100%;
+	height: auto;
+	background: var(--blue-975);
+}
+
+/* Articles and datasets a project builds on */
+.project-refs {
+	padding: 0.9rem 1.1rem;
+	border: 1px solid var(--rule-strong);
+	border-radius: var(--radius);
+	background: var(--surface-muted);
+}
+
+.project-refs summary {
+	cursor: pointer;
+	font-family: var(--font-display);
+	font-weight: 600;
+	color: var(--accent);
+}
+
+.project-refs ol {
+	display: grid;
+	gap: 0.6rem;
+	margin: 0.9rem 0 0;
+	padding-left: 1.25rem;
+	font-size: 0.92rem;
+	color: var(--text-muted);
+}
+
+.project-refs a {
+	display: block;
+	overflow-wrap: anywhere;
+	font-family: var(--font-mono);
+	font-size: 0.8rem;
+}

@@ -63,8 +63,15 @@ const PHOTOS: Record<PhotoSection, PerLocale> = {
       p('berlin-dom', 'Berlin'),
     ],
   },
-  // code, notebooks and a coffee: where projects start
-  projects: [p('code-macro', ''), p('notebooks-coffee', '')],
+  // where projects start: code, books, notebooks and a coffee; a light photo first
+  projects: [
+    p('code-laptop-light', ''),
+    p('laptop-books', ''),
+    p('fountain-pen', ''),
+    p('notebooks-coffee', ''),
+    p('open-book', ''),
+    p('code-macro', ''),
+  ],
   automotive: [p('stelvio-pass', 'Passo dello Stelvio')],
   ai: [p('gpu-dies', '')],
   security: [p('data-center', '')],

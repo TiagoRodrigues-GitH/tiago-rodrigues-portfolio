@@ -76,6 +76,14 @@ export class ProjectsComponent implements OnDestroy {
     return blueprintParts(kind, this.locale());
   }
 
+  get newTab(): string {
+    return this.i18n.shell[this.locale()].newTab;
+  }
+
+  displayUrl(url: string): string {
+    return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+  }
+
   get counter(): string {
     const total = this.activeProject()?.gallery.length ?? 0;
     const current = (this.viewer()?.image ?? 0) + 1;

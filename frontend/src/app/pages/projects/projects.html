@@ -77,10 +77,35 @@
           </a>
         }
 
+        @if (project.references.length) {
+          <details class="project-refs">
+            <summary>{{ t.references }} ({{ project.references.length }})</summary>
+            <ol>
+              @for (reference of project.references; track reference.text) {
+                <li>
+                  {{ reference.text }}
+                  @if (reference.url) {
+                    <a [href]="reference.url" target="_blank" rel="noopener noreferrer">{{ displayUrl(reference.url) }}<span class="visually-hidden"> {{ newTab }}</span></a>
+                  }
+                </li>
+              }
+            </ol>
+          </details>
+        }
+
         <app-project-reviews [projectKey]="project.slug" [projectTitle]="project.title" [locale]="locale()" />
       </div>
 
       <div class="project-media">
+        @for (video of project.videos; track video.src) {
+          <figure class="figure project-video">
+            <div class="frame">
+              <video [src]="video.src" [poster]="video.poster" [width]="video.width" [height]="video.height"
+                controls muted loop playsinline preload="none"></video>
+            </div>
+            <figcaption>{{ video.caption }}</figcaption>
+          </figure>
+        }
         @if (project.image.figure) {
           <div class="frame figure-cover">
             <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />

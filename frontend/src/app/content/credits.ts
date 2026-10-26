@@ -321,4 +321,28 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     license: 'CC BY-SA 3.0',
     url: 'https://commons.wikimedia.org/wiki/File:Parliament_Hill_from_the_river_path.jpg',
   },
+  {
+    title: 'Lines of code',
+    author: 'Artem Sapegin (Unsplash)',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Lines_of_code_(Unsplash).jpg',
+  },
+  {
+    title: 'Laptop and books',
+    author: 'Kari Shea (Unsplash)',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Laptop_and_books_(Unsplash).jpg',
+  },
+  {
+    title: 'Writing with a fountain pen',
+    author: 'Aaron Burden (Unsplash)',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Writing_with_a_fountain_pen_(Unsplash).jpg',
+  },
+  {
+    title: 'Open book',
+    author: 'Alina Daniker (Unsplash)',
+    license: 'CC0',
+    url: 'https://commons.wikimedia.org/wiki/File:Open_book_1_(Unsplash).jpg',
+  },
 ];

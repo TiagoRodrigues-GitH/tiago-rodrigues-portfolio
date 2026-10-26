@@ -117,6 +117,8 @@ export interface ProjectsTranslations {
   close: string;
   counter: string;
   demo: string;
+  /** Heading of the list of articles and datasets a project builds on. */
+  references: string;
   /** Link to the contact page on an area tab that has no project yet. */
   talk: string;
 }
@@ -526,6 +528,7 @@ export class I18nService {
       close: 'Fechar',
       counter: 'Imagem {current} de {total}',
       demo: 'Abrir a demonstração',
+      references: 'Referências: artigos e datasets',
       talk: 'Quer conversar sobre esta área? Fale comigo',
     },
     en: {
@@ -547,6 +550,7 @@ export class I18nService {
       close: 'Close',
       counter: 'Image {current} of {total}',
       demo: 'Open the demo',
+      references: 'References: articles and datasets',
       talk: 'Want to talk about this area? Get in touch',
     },
     de: {
@@ -568,6 +572,7 @@ export class I18nService {
       close: 'Schließen',
       counter: 'Bild {current} von {total}',
       demo: 'Demo öffnen',
+      references: 'Quellen: Artikel und Datensätze',
       talk: 'Über diesen Bereich sprechen? Schreiben Sie mir',
     },
   };
