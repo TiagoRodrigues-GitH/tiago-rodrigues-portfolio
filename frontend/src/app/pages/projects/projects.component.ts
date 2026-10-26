@@ -11,10 +11,13 @@ import {
   signal,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
+import { PHOTOS } from '../../content/photos';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
+import { AREA_KEYS, AREAS, AREAS_TEXT, AreaKey, isAreaKey } from '../../shared/areas';
 
 @Component({
   selector: 'app-projects',
@@ -29,7 +32,18 @@ export class ProjectsComponent implements OnDestroy {
 
   readonly locale = injectLocale();
   readonly langQuery = injectLangQuery(this.locale);
-  readonly projects = computed(() => getPortfolioProjects(this.locale()));
+  /** Area of this tab (projects/automotive, projects/ai, projects/security); null on the page with every project. */
+  readonly area: AreaKey | null = (() => {
+    const area = inject(ActivatedRoute).snapshot.data['area'];
+    return isAreaKey(area) ? area : null;
+  })();
+  readonly areaKeys = AREA_KEYS;
+  /** Photo behind the page hero (shared/backdrop.directive.ts). */
+  readonly photo = PHOTOS[this.area ?? 'projects'];
+  readonly projects = computed(() =>
+    getPortfolioProjects(this.locale()).filter((project) => !this.area || project.areas.includes(this.area)),
+  );
+  readonly areasText = computed(() => AREAS_TEXT[this.locale()]);
   readonly chassis = 'assets/images/blueprints/chassis.webp';
 
   private readonly viewer = signal<{ project: number; image: number } | null>(null);
@@ -48,6 +62,14 @@ export class ProjectsComponent implements OnDestroy {
 
   get t(): ProjectsTranslations {
     return this.i18n.projects[this.locale()];
+  }
+
+  areaName(key: AreaKey): string {
+    return AREAS[key][this.locale()].name;
+  }
+
+  get areaText() {
+    return this.area ? AREAS[this.area][this.locale()] : null;
   }
 
   parts(kind: BlueprintKind): BlueprintPart[] {

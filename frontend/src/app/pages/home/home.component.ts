@@ -4,6 +4,11 @@ import { injectLangQuery, injectLocale } from '../../services/locale';
 import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { ARTICLES, Article } from '../../content/articles';
+import { AREAS, AreaKey } from '../../shared/areas';
+import { PHOTOS } from '../../content/photos';
+
+/** Syntax token: [css class, text]. k keyword, p property, s string, f function, c comment. */
+type Token = [string, string];
 
 const WORDS_PER_MINUTE = 200;
 
@@ -20,14 +25,29 @@ export class HomeComponent {
   readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
   readonly articles = computed(() => ARTICLES[this.locale()]);
-  readonly chassis = 'assets/images/blueprints/chassis.webp';
+
+  readonly marquee = ['Java', 'Spring Boot', 'Python', 'PyTorch', 'Angular', 'TypeScript', 'LLMs', 'ADAS', 'Lane detection',
+    'OpenStreetMap', 'Dijkstra · A*', 'Docker', 'SQL', 'Linux', 'Cisco networking'];
+
+  readonly photos = PHOTOS;
+
+  /** Lines typed out in the hero editor card. */
+  readonly codeLines: Token[][] = [
+    [['k', 'const'], ['', ' developer = {']],
+    [['p', '  name'], ['', ': '], ['s', "'Tiago Rodrigues'"], ['', ',']],
+    [['p', '  languages'], ['', ': ['], ['s', "'Java'"], ['', ', '], ['s', "'Python'"], ['', ', '], ['s', "'TypeScript'"], ['', '],']],
+    [['p', '  builds'], ['', ': ['], ['s', "'APIs'"], ['', ', '], ['s', "'web apps'"], ['', ', '], ['s', "'AI models'"], ['', '],']],
+    [['p', '  areas'], ['', ': ['], ['s', "'automotive'"], ['', ', '], ['s', "'ai'"], ['', ', '], ['s', "'security'"], ['', '],']],
+    [['', '};']],
+    [['', 'developer.'], ['f', 'ship'], ['', '(); '], ['c', '// clean, tested, documented']],
+  ];
 
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */
   private readonly open = signal<ReadonlySet<string>>(new Set());
 
-  get chassisAlt(): string {
-    return this.i18n.projects[this.locale()].figureAlt;
+  areaName(key: AreaKey): string {
+    return AREAS[key][this.locale()].name;
   }
 
   parts(kind: BlueprintKind): BlueprintPart[] {

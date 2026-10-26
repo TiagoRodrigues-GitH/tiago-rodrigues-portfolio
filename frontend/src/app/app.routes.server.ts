@@ -7,6 +7,9 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'projects', renderMode: RenderMode.Prerender },
+  { path: 'projects/automotive', renderMode: RenderMode.Prerender },
+  { path: 'projects/ai', renderMode: RenderMode.Prerender },
+  { path: 'projects/security', renderMode: RenderMode.Prerender },
   { path: 'projects/defect-triage', renderMode: RenderMode.Prerender },
   { path: 'projects/patent-assistant', renderMode: RenderMode.Prerender },
   { path: 'projects/street-routing', renderMode: RenderMode.Prerender },

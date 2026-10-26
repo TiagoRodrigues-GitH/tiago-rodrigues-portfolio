@@ -23,9 +23,11 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 1000;
-  color: var(--text-on-dark);
-  background: rgba(6, 22, 52, 0.94);
-  border-bottom: 1px solid var(--rule-dark);
+  /* vivid azure bar; muted text lightened so every label keeps AA contrast on it */
+  --text-on-dark-muted: #dcebff;
+  color: #fff;
+  background: rgba(10, 91, 196, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(12px);
 }
 
@@ -220,7 +222,13 @@ main:focus:not(:focus-visible) {
 /* ---------- Footer ---------- */
 
 .site-footer {
+  --text-on-dark-muted: #dcebff;
   padding-block: 4.5rem 2rem;
+}
+
+/* same vivid azure as the header, with the drawing grid of .blueprint on top */
+.site-footer.blueprint {
+  background-color: var(--blue-700);
 }
 
 .footer-grid {
@@ -378,8 +386,8 @@ main:focus:not(:focus-visible) {
     align-items: stretch;
     gap: 0;
     padding: 0.75rem var(--gutter) 1.25rem;
-    background: var(--blue-950);
-    border-bottom: 1px solid var(--rule-dark);
+    background: var(--blue-700);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   }
 
   .primary-nav.open {

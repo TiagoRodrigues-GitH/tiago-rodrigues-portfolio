@@ -2,6 +2,8 @@ import { Component, afterNextRender, computed, inject, signal } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
+import { PHOTOS } from '../../content/photos';
+import { BackdropDirective } from '../../shared/backdrop.directive';
 import { LabDataService, MODEL_NAMES, PatentData } from './lab-data';
 import { LAB_I18N } from './lab-i18n';
 import { LabResultsComponent } from './lab-results.component';
@@ -14,11 +16,14 @@ import { ResultBar, ResultBarsComponent } from './result-bars.component';
 /** Project 02: patent assistant (assistant replay inside the patent guide, statistics, benchmark). */
 @Component({
   selector: 'app-patent-page',
-  imports: [RouterLink, PatentGuideComponent, PatentReplayComponent, LabResultsComponent, ResultBarsComponent],
+  imports: [RouterLink, BackdropDirective, PatentGuideComponent, PatentReplayComponent, LabResultsComponent, ResultBarsComponent],
   templateUrl: './patent-page.html',
   styleUrls: ['./llm-lab.css'],
 })
 export class PatentPageComponent {
+  /** Photo behind the page hero (shared/backdrop.directive.ts). */
+  readonly photo = PHOTOS.patentAssistant;
+
   private readonly data = inject(LabDataService);
   private readonly i18n = inject(I18nService);
 

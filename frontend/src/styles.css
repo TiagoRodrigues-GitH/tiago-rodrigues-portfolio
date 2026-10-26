@@ -32,21 +32,22 @@
 
 :root {
 	/* Blue scale */
-	--blue-975: #030c1f;
-	--blue-950: #061634;
-	--blue-900: #0a2150;
-	--blue-850: #0c2961;
-	--blue-800: #0f3274;
-	--blue-700: #14439a;
-	--blue-600: #1a55c2;
-	--blue-500: #2f6fe4;
-	--blue-400: #5c93f2;
-	--blue-300: #8fb8ff;
-	--blue-200: #c0d6fb;
-	--blue-150: #d6e6ff;
-	--blue-100: #e5effe;
-	--blue-50: #f3f8ff;
-	--signal: #6fd6ff;
+	/* Azure scale (October 2026): fresher and lighter than the earlier navy */
+	--blue-975: #031327;
+	--blue-950: #05203f;
+	--blue-900: #082c57;
+	--blue-850: #0a3770;
+	--blue-800: #0c4590;
+	--blue-700: #0a5bc4;
+	--blue-600: #0f74e6;
+	--blue-500: #2f8cf5;
+	--blue-400: #5ca8fb;
+	--blue-300: #8ec4ff;
+	--blue-200: #bfdcff;
+	--blue-150: #d7eaff;
+	--blue-100: #e6f2ff;
+	--blue-50: #f2f8ff;
+	--signal: #3fd2ff;
 
 	/* Semantic roles */
 	--surface: #ffffff;
@@ -55,7 +56,7 @@
 	--text-muted: #3b4d6b;
 	--text-on-dark: #e8f1ff;
 	--text-on-dark-muted: #a9c2e8;
-	/* blue-700 on white 9.1:1 and on blue-50 8.6:1: AAA for body text (1.4.6), not only AA. */
+	/* blue-700 on white 6.4:1 and on blue-50 5.9:1: AA for body text. */
 	--accent: var(--blue-700);
 	--accent-strong: var(--blue-800);
 	--border-input: #6a82ab;
@@ -63,6 +64,18 @@
 	--rule-strong: rgba(20, 67, 154, 0.3);
 	--rule-dark: rgba(143, 184, 255, 0.2);
 	--focus: var(--blue-500);
+
+	/* Portfolio areas: Petronas teal for automotive, the site blue for AI, violet for security.
+	   *-ink is the text tone (AA on white), *-glow the tone on dark blue surfaces. */
+	--auto: #00a19b;
+	--auto-ink: #00726d;
+	--auto-glow: #4fd8d0;
+	--ai: var(--blue-500);
+	--ai-ink: var(--blue-700);
+	--ai-glow: var(--blue-300);
+	--sec: #7f5ad8;
+	--sec-ink: #5a38b0;
+	--sec-glow: #c4b0f6;
 
 	/* Type */
 	--font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
@@ -732,5 +745,184 @@ button {
 	to {
 		opacity: 1;
 		transform: none;
+	}
+}
+
+/* ==========================================================================
+   Portfolio areas: any element with data-area gets its colour as --area*
+   ========================================================================== */
+
+[data-area='automotive'] {
+	--area: var(--auto);
+	--area-ink: var(--auto-ink);
+	--area-glow: var(--auto-glow);
+}
+
+[data-area='ai'] {
+	--area: var(--ai);
+	--area-ink: var(--ai-ink);
+	--area-glow: var(--ai-glow);
+}
+
+[data-area='security'] {
+	--area: var(--sec);
+	--area-ink: var(--sec-ink);
+	--area-glow: var(--sec-glow);
+}
+
+.area-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.area-chips a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.2rem 0.65rem;
+	border: 1px solid var(--area);
+	border-radius: 999px;
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.04em;
+	color: var(--area-ink);
+	text-decoration: none;
+	transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.area-chips a::before {
+	content: '';
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: var(--area);
+}
+
+.area-chips a:hover {
+	background: var(--area);
+	color: #fff;
+}
+
+.area-chips a:hover::before {
+	background: #fff;
+}
+
+/* ==========================================================================
+   Interactive photo behind page heroes (shared/backdrop.directive.ts)
+   ========================================================================== */
+
+.has-backdrop {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+}
+
+/* light veil over the photo: opaque under the text on the left, open on the right, with the drawing grid */
+.has-backdrop::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-image:
+		linear-gradient(rgba(15, 116, 230, 0.07) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(15, 116, 230, 0.07) 1px, transparent 1px),
+		linear-gradient(100deg, rgba(242, 248, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 42%, rgba(242, 248, 255, 0.45) 72%, rgba(242, 248, 255, 0.15) 100%);
+	background-size: 48px 48px, 48px 48px, auto;
+}
+
+.backdrop {
+	--px: 0;
+	--py: 0;
+	--scroll: 0;
+	position: absolute;
+	inset: -6%;
+	z-index: -2;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.9s var(--ease);
+}
+
+.backdrop.loaded {
+	opacity: 1;
+}
+
+.backdrop img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transform: translate3d(calc(var(--px) * -28px), calc(var(--py) * -18px + var(--scroll) * 0.12px), 0) scale(1.04);
+	transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+	will-change: transform;
+}
+
+@media (max-width: 760px) {
+	.has-backdrop::before {
+		background-image:
+			linear-gradient(rgba(15, 116, 230, 0.07) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(15, 116, 230, 0.07) 1px, transparent 1px),
+			linear-gradient(180deg, rgba(242, 248, 255, 0.95) 0%, rgba(242, 248, 255, 0.88) 100%);
+	}
+}
+
+/* ---------- Technology strip (home, below the hero) ---------- */
+
+.marquee {
+	overflow: hidden;
+	border-block: 1px solid var(--rule-strong);
+	background: var(--surface);
+	mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+	display: flex;
+	width: max-content;
+}
+
+.marquee ul {
+	display: flex;
+	gap: 3rem;
+	margin: 0;
+	padding: 1.1rem 1.5rem;
+	list-style: none;
+}
+
+.marquee li {
+	display: flex;
+	align-items: center;
+	gap: 3rem;
+	font-family: var(--font-display);
+	font-size: clamp(1rem, 1.6vw, 1.3rem);
+	font-weight: 500;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+	color: var(--text-muted);
+}
+
+.marquee li::after {
+	content: '';
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+	background: var(--blue-300);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.marquee-track {
+		animation: marquee 40s linear infinite;
+	}
+
+	.marquee:hover .marquee-track {
+		animation-play-state: paused;
+	}
+}
+
+@keyframes marquee {
+	to {
+		transform: translateX(-50%);
 	}
 }

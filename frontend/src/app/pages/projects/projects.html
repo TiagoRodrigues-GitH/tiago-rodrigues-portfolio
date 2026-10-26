@@ -1,11 +1,12 @@
-<section class="page-hero graph-paper" aria-labelledby="projects-title">
+<section class="page-hero graph-paper" [appBackdrop]="photo" [attr.data-area]="area" aria-labelledby="projects-title">
   <div class="shell hero-grid">
     <div>
-      <p class="mono-label">{{ t.eyebrow }}</p>
-      <h1 id="projects-title" class="page-title">{{ t.title }}</h1>
-      <p class="section-lede">{{ t.intro }}</p>
+      <p class="mono-label">{{ t.eyebrow }}@if (area) { · {{ areaName(area) }}}</p>
+      <h1 id="projects-title" class="page-title">{{ areaText?.title ?? t.title }}</h1>
+      <p class="section-lede">{{ areaText?.lede ?? t.intro }}</p>
     </div>
-    <figure class="figure">
+    <!-- the chassis drawing stays on the page with every project; area tabs show their photo alone -->
+    <figure class="figure" [hidden]="!!area">
       <app-blueprint-figure [src]="chassis" [width]="849" [height]="348" [alt]="t.figureAlt"
         [parts]="parts('chassis')" [legend]="true" />
       <figcaption>{{ t.figureCaption }}</figcaption>
@@ -13,12 +14,35 @@
   </div>
 </section>
 
+<nav class="shell area-tabs" [attr.aria-label]="areasText().tabs">
+  <a routerLink="/projects" [queryParams]="langQuery()" [attr.aria-current]="area ? null : 'page'">{{ areasText().all }}</a>
+  @for (key of areaKeys; track key) {
+    <a [routerLink]="'/projects/' + key" [queryParams]="langQuery()" [attr.data-area]="key" [attr.aria-current]="area === key ? 'page' : null">{{ areaName(key) }}</a>
+  }
+</nav>
+
 <div class="shell project-list">
+  @if (!projects().length) {
+    <div class="area-empty" [attr.data-area]="area">
+      <p>{{ areaText?.empty }}</p>
+      <ul class="area-chips">
+        @for (topic of areaText?.topics; track topic) {
+          <li [attr.data-area]="area"><span>{{ topic }}</span></li>
+        }
+      </ul>
+      <a class="arrow-link" routerLink="/contact" [queryParams]="langQuery()">{{ t.talk }} <span aria-hidden="true">→</span></a>
+    </div>
+  }
   @for (project of projects(); track project.id; let i = $index) {
     <article class="project reveal" [id]="'project-' + project.id" [attr.aria-labelledby]="'project-title-' + project.id">
       <div class="project-copy">
         <div class="project-head">
           <p class="project-index" aria-hidden="true">0{{ project.id }}</p>
+          <ul class="area-chips">
+            @for (key of project.areas; track key) {
+              <li [attr.data-area]="key"><a [routerLink]="'/projects/' + key" [queryParams]="langQuery()">{{ areaName(key) }}</a></li>
+            }
+          </ul>
           <p class="status" [class.status-soon]="project.status === 'soon'" [class.status-progress]="project.status === 'progress'">
             <span class="visually-hidden">{{ t.status }}: </span>{{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
           </p>

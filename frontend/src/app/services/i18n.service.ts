@@ -117,6 +117,8 @@ export interface ProjectsTranslations {
   close: string;
   counter: string;
   demo: string;
+  /** Link to the contact page on an area tab that has no project yet. */
+  talk: string;
 }
 
 export interface ContactTranslations {
@@ -178,7 +180,7 @@ export class I18nService {
       profiles: 'Perfis profissionais',
       newTab: '(abre em nova aba)',
       footer: {
-        tagline: 'Software para a indústria automotiva: sistemas, dados e inteligência artificial aplicados à mobilidade.',
+        tagline: 'Desenvolvimento de Software: sistemas, APIs e inteligência artificial para veículos, dados e redes.',
         navigate: 'Navegação',
         contact: 'Contato',
         author: 'Autor',
@@ -196,7 +198,7 @@ export class I18nService {
         url: 'https://www.w3c.br/traducoes/wcag/wcag21-pt-BR/',
       },
       titles: {
-        home: 'Tiago Rodrigues — Software para a indústria automotiva',
+        home: 'Tiago Rodrigues — Desenvolvedor de Software',
         projects: 'Projetos · Tiago Rodrigues',
         about: 'Sobre mim · Tiago Rodrigues',
         contact: 'Contato · Tiago Rodrigues',
@@ -231,7 +233,7 @@ export class I18nService {
       profiles: 'Professional profiles',
       newTab: '(opens in a new tab)',
       footer: {
-        tagline: 'Software for the automotive industry: systems, data and artificial intelligence applied to mobility.',
+        tagline: 'Software development: systems, APIs and artificial intelligence for vehicles, data and networks.',
         navigate: 'Navigation',
         contact: 'Contact',
         author: 'Author',
@@ -249,7 +251,7 @@ export class I18nService {
         url: 'https://www.w3.org/TR/WCAG21/',
       },
       titles: {
-        home: 'Tiago Rodrigues — Software for the automotive industry',
+        home: 'Tiago Rodrigues — Software Developer',
         projects: 'Projects · Tiago Rodrigues',
         about: 'About me · Tiago Rodrigues',
         contact: 'Contact · Tiago Rodrigues',
@@ -284,7 +286,7 @@ export class I18nService {
       profiles: 'Berufliche Profile',
       newTab: '(öffnet in neuem Tab)',
       footer: {
-        tagline: 'Software für die Automobilindustrie: Systeme, Daten und künstliche Intelligenz für die Mobilität.',
+        tagline: 'Softwareentwicklung: Systeme, APIs und künstliche Intelligenz für Fahrzeuge, Daten und Netzwerke.',
         navigate: 'Navigation',
         contact: 'Kontakt',
         author: 'Autor',
@@ -302,7 +304,7 @@ export class I18nService {
         url: 'https://www.w3.org/TR/WCAG21/',
       },
       titles: {
-        home: 'Tiago Rodrigues – Software für die Automobilindustrie',
+        home: 'Tiago Rodrigues – Softwareentwickler',
         projects: 'Projekte · Tiago Rodrigues',
         about: 'Über mich · Tiago Rodrigues',
         contact: 'Kontakt · Tiago Rodrigues',
@@ -330,17 +332,17 @@ export class I18nService {
 
   readonly home: Record<Locale, HomeTranslations> = {
     pt: {
-      eyebrow: 'Desenvolvedor de software · Indústria automotiva',
-      titleLead: 'Software para veículos que',
-      titleAccent: 'enxergam a estrada.',
-      intro: 'Sou Tiago Rodrigues, desenvolvedor Java e de inteligência artificial. Construo sistemas, APIs e modelos de percepção pensando no que um carro precisa: precisão, tempo real e segurança.',
+      eyebrow: 'Desenvolvimento de Software · Automotivo · IA · Segurança',
+      titleLead: 'Transformo ideias em',
+      titleAccent: 'software.',
+      intro: 'Sou Tiago Rodrigues, desenvolvedor de software Java e Python com foco em inteligência artificial. Construo sistemas, APIs, aplicações web e modelos de IA, com código limpo, testado e documentado, aplicados a veículos, a dados e à segurança de redes.',
       viewProjects: 'Ver projetos',
       readArticles: 'Ler os artigos',
-      availability: 'Aberto a projetos e oportunidades na indústria automotiva',
+      availability: 'Aberto a projetos e oportunidades em desenvolvimento de software',
       figure: {
-        title: 'Ilustração esquemática de um veículo genérico com sensores ADAS',
+        title: 'Ilustração esquemática de um carro esportivo genérico com sensores ADAS',
         desc: 'Vista lateral em estilo blueprint: câmera frontal atrás do para-brisa, radar frontal no para-choque, radar traseiro e sensores de ultrassom, todos ligados a uma unidade de controle ADAS pelo barramento CAN.',
-        caption: 'Fig. 00 — Arquitetura de sensores ADAS (ilustração esquemática, veículo genérico).',
+        caption: 'Fig. 00 — Arquitetura de sensores ADAS (ilustração esquemática, esportivo genérico).',
         camera: 'Câmera frontal',
         radar: 'Radar frontal',
         rearRadar: 'Radar traseiro',
@@ -353,7 +355,7 @@ export class I18nService {
       specLede: 'Uma transição de carreira com direção definida: software, inteligência artificial e a indústria automotiva.',
       specs: [
         { key: 'Foco', value: 'Indústria automotiva', detail: 'Transição de carreira para o setor automotivo, com foco em desenvolvimento de software e tecnologias inteligentes.' },
-        { key: 'Software', value: 'Java · Python', detail: 'Engenharia de software, APIs REST e bancos de dados.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Desenvolvimento de software, APIs REST e bancos de dados.' },
         { key: 'Inteligência artificial', value: 'Percepção', detail: 'Machine learning, reconhecimento de padrões, inteligência computacional e detecção de faixas.' },
         { key: 'Embarcados', value: 'IoT e sensores', detail: 'Sistemas embarcados, IoT e aplicações que coletam e interpretam dados de sensores.' },
         { key: 'Idiomas', value: 'PT · EN · DE', detail: 'Português nativo, inglês B2 e alemão B2, com cinco anos de vivência na Alemanha.' },
@@ -382,22 +384,22 @@ export class I18nService {
       readLess: 'Recolher o capítulo',
       references: 'Referências',
       laneDiagram: { rows: 'linhas de referência', lane: 'faixa detectada', horizon: 'horizonte' },
-      ctaTitle: 'Vamos conversar sobre software para a indústria automotiva?',
-      ctaText: 'Estou aberto a projetos, colaborações e oportunidades em desenvolvimento de sistemas, IA e ADAS.',
+      ctaTitle: 'Vamos construir software juntos?',
+      ctaText: 'Estou aberto a projetos, colaborações e oportunidades em desenvolvimento de software, IA, sistemas automotivos e segurança de redes.',
       ctaButton: 'Entrar em contato',
     },
     en: {
-      eyebrow: 'Software developer · Automotive industry',
-      titleLead: 'Software for vehicles that',
-      titleAccent: 'read the road.',
-      intro: 'I’m Tiago Rodrigues, a Java and artificial intelligence developer. I build systems, APIs and perception models around what a vehicle needs: accuracy, real-time performance and safety.',
+      eyebrow: 'Software Development · Automotive · AI · Security',
+      titleLead: 'I turn ideas into',
+      titleAccent: 'software.',
+      intro: 'I’m Tiago Rodrigues, a Java and Python software developer focused on artificial intelligence. I build systems, APIs, web applications and AI models with clean, tested and documented code, applied to vehicles, data and network security.',
       viewProjects: 'View projects',
       readArticles: 'Read the articles',
-      availability: 'Open to projects and opportunities in the automotive industry',
+      availability: 'Open to projects and opportunities in software development',
       figure: {
-        title: 'Schematic illustration of a generic vehicle with ADAS sensors',
+        title: 'Schematic illustration of a generic sports car with ADAS sensors',
         desc: 'Blueprint-style side view: a front camera behind the windscreen, a front radar in the bumper, a rear radar and ultrasonic sensors, all connected to an ADAS control unit over the CAN bus.',
-        caption: 'Fig. 00 — ADAS sensor architecture (schematic illustration, generic vehicle).',
+        caption: 'Fig. 00 — ADAS sensor architecture (schematic illustration, generic sports car).',
         camera: 'Front camera',
         radar: 'Front radar',
         rearRadar: 'Rear radar',
@@ -410,7 +412,7 @@ export class I18nService {
       specLede: 'A career change with a clear direction: software, artificial intelligence and the automotive industry.',
       specs: [
         { key: 'Focus', value: 'Automotive industry', detail: 'Career transition into the automotive sector, focused on software development and intelligent technologies.' },
-        { key: 'Software', value: 'Java · Python', detail: 'Software engineering, REST APIs and databases.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Software development, REST APIs and databases.' },
         { key: 'Artificial intelligence', value: 'Perception', detail: 'Machine learning, pattern recognition, computational intelligence and lane detection.' },
         { key: 'Embedded', value: 'IoT & sensors', detail: 'Embedded systems, IoT and applications that collect and interpret sensor data.' },
         { key: 'Languages', value: 'PT · EN · DE', detail: 'Native Portuguese, B2 English and B2 German, after five years of living in Germany.' },
@@ -439,22 +441,22 @@ export class I18nService {
       readLess: 'Collapse the chapter',
       references: 'References',
       laneDiagram: { rows: 'reference rows', lane: 'detected lane', horizon: 'horizon' },
-      ctaTitle: 'Shall we talk about software for the automotive industry?',
-      ctaText: 'I’m open to projects, collaborations and opportunities in systems development, AI and ADAS.',
+      ctaTitle: 'Shall we build software together?',
+      ctaText: 'I’m open to projects, collaborations and opportunities in software development, AI, automotive systems and network security.',
       ctaButton: 'Get in touch',
     },
     de: {
-      eyebrow: 'Softwareentwickler · Automobilindustrie',
-      titleLead: 'Software für Fahrzeuge,',
-      titleAccent: 'die ihre Umgebung verstehen.',
-      intro: 'Ich bin Tiago Rodrigues, Java- und KI-Entwickler. Ich entwickle Systeme, APIs und Wahrnehmungsmodelle mit Blick auf das, was ein Fahrzeug braucht: Genauigkeit, Echtzeitfähigkeit und Sicherheit.',
+      eyebrow: 'Softwareentwicklung · Automotive · KI · Sicherheit',
+      titleLead: 'Ich verwandle Ideen in',
+      titleAccent: 'Software.',
+      intro: 'Ich bin Tiago Rodrigues, Softwareentwickler für Java und Python mit Schwerpunkt auf künstlicher Intelligenz. Ich entwickle Systeme, APIs, Webanwendungen und KI-Modelle mit sauberem, getestetem und dokumentiertem Code, angewandt auf Fahrzeuge, Daten und Netzwerksicherheit.',
       viewProjects: 'Projekte ansehen',
       readArticles: 'Artikel lesen',
-      availability: 'Offen für Projekte und Positionen in der Automobilindustrie',
+      availability: 'Offen für Projekte und Positionen in der Softwareentwicklung',
       figure: {
-        title: 'Schematische Darstellung eines generischen Fahrzeugs mit ADAS-Sensoren',
+        title: 'Schematische Darstellung eines generischen Sportwagens mit ADAS-Sensoren',
         desc: 'Seitenansicht im Blueprint-Stil: Frontkamera hinter der Windschutzscheibe, Frontradar im Stoßfänger, Heckradar und Ultraschallsensoren, alle über den CAN-Bus mit einem ADAS-Steuergerät verbunden.',
-        caption: 'Abb. 00 – ADAS-Sensorarchitektur (schematische Darstellung, generisches Fahrzeug).',
+        caption: 'Abb. 00 – ADAS-Sensorarchitektur (schematische Darstellung, generischer Sportwagen).',
         camera: 'Frontkamera',
         radar: 'Frontradar',
         rearRadar: 'Heckradar',
@@ -467,7 +469,7 @@ export class I18nService {
       specLede: 'Ein Berufswechsel mit klarer Richtung: Software, künstliche Intelligenz und die Automobilindustrie.',
       specs: [
         { key: 'Schwerpunkt', value: 'Automobilindustrie', detail: 'Beruflicher Wechsel in die Automobilbranche mit Fokus auf Softwareentwicklung und intelligente Technologien.' },
-        { key: 'Software', value: 'Java · Python', detail: 'Softwaretechnik, REST-APIs und Datenbanken.' },
+        { key: 'Software', value: 'Java · Python', detail: 'Softwareentwicklung, REST-APIs und Datenbanken.' },
         { key: 'Künstliche Intelligenz', value: 'Wahrnehmung', detail: 'Machine Learning, Mustererkennung, Computational Intelligence und Fahrspurerkennung.' },
         { key: 'Eingebettete Systeme', value: 'IoT & Sensorik', detail: 'Eingebettete Systeme, IoT und Anwendungen, die Sensordaten erfassen und auswerten.' },
         { key: 'Sprachen', value: 'PT · EN · DE', detail: 'Portugiesisch als Muttersprache, Englisch B2 und Deutsch B2 – nach fünf Jahren in Deutschland.' },
@@ -496,8 +498,8 @@ export class I18nService {
       readLess: 'Kapitel einklappen',
       references: 'Quellen',
       laneDiagram: { rows: 'Referenzzeilen', lane: 'erkannte Fahrspur', horizon: 'Horizont' },
-      ctaTitle: 'Sprechen wir über Software für die Automobilindustrie?',
-      ctaText: 'Ich freue mich über Projekte, Kooperationen und Chancen in Systementwicklung, KI und ADAS.',
+      ctaTitle: 'Wollen wir gemeinsam Software entwickeln?',
+      ctaText: 'Ich freue mich über Projekte, Kooperationen und Chancen in Softwareentwicklung, KI, Fahrzeugsystemen und Netzwerksicherheit.',
       ctaButton: 'Kontakt aufnehmen',
     },
   };
@@ -522,6 +524,7 @@ export class I18nService {
       close: 'Fechar',
       counter: 'Imagem {current} de {total}',
       demo: 'Abrir a demonstração',
+      talk: 'Quer conversar sobre esta área? Fale comigo',
     },
     en: {
       eyebrow: 'Portfolio',
@@ -542,6 +545,7 @@ export class I18nService {
       close: 'Close',
       counter: 'Image {current} of {total}',
       demo: 'Open the demo',
+      talk: 'Want to talk about this area? Get in touch',
     },
     de: {
       eyebrow: 'Portfolio',
@@ -562,6 +566,7 @@ export class I18nService {
       close: 'Schließen',
       counter: 'Bild {current} von {total}',
       demo: 'Demo öffnen',
+      talk: 'Über diesen Bereich sprechen? Schreiben Sie mir',
     },
   };
 

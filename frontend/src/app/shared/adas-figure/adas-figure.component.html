@@ -16,8 +16,8 @@
     <!-- Sensor fields of view -->
     <g class="cones">
       <g class="part" [class.on]="active() === 0">
-        <polygon class="cone" points="566,138 960,40 960,236" fill="url(#adas-cone-right)" />
-        <path class="cone-edge" d="M566 138 L960 40 M566 138 L960 236" />
+        <polygon class="cone" points="546,158 960,60 960,256" fill="url(#adas-cone-right)" />
+        <path class="cone-edge" d="M546 158 L960 60 M546 158 L960 256" />
       </g>
       <g class="part" [class.on]="active() === 1">
         <polygon class="cone" points="766,232 960,170 960,294" fill="url(#adas-cone-right)" />
@@ -39,14 +39,14 @@
       <path d="M326 238v14M352 238v14M378 238v14M404 238v14M430 238v14M456 238v14M482 238v14M508 238v14M534 238v14M560 238v14" />
       <path d="M356 226 L344 180 M356 226 L404 222 M492 226 L480 178 M492 226 L540 222" />
       <path d="M556 214 L574 182 M566 176 L584 188" />
-      <rect x="650" y="190" width="52" height="22" rx="3" />
+      <rect x="640" y="204" width="52" height="18" rx="3" />
     </g>
 
     <!-- Body -->
     <g class="body">
-      <path class="draw" pathLength="1" d="M150 258 L146 214 Q148 190 178 180 L260 168 Q316 122 384 114 L522 112 Q559 114 594 150 L614 168 Q704 176 748 190 Q768 198 770 222 L768 250 Q766 260 754 262 L694 262 A50 50 0 0 0 594 262 L294 262 A50 50 0 0 0 194 262 L154 262 Z" />
-      <path class="draw" pathLength="1" d="M286 170 Q330 132 388 126 L516 124 Q544 126 574 156 L584 168 Z" />
-      <path d="M444 125 V169 M296 174 L300 254 M444 170 V256 M590 172 Q598 212 590 252 M418 186 H436 M562 186 H580 M736 194 L762 202 M150 204 L164 200" />
+      <path class="draw" pathLength="1" d="M152 256 L148 232 Q150 214 168 208 Q232 196 292 166 Q362 130 440 127 Q502 127 550 150 L602 178 Q690 186 752 200 Q776 208 778 228 L776 248 Q774 260 760 262 L694 262 A50 50 0 0 0 594 262 L294 262 A50 50 0 0 0 194 262 L156 262 Z" />
+      <path class="draw" pathLength="1" d="M318 174 Q372 144 440 140 Q492 140 532 158 L560 176 Z" />
+      <path d="M474 141 L478 176 M338 180 L342 254 M478 178 V256 M590 186 Q598 220 590 252 M446 198 H464 M742 204 L770 214 M150 218 L168 213 M168 208 L198 199" />
       <circle cx="244" cy="262" r="40" />
       <circle cx="644" cy="262" r="40" />
       <circle class="rim" cx="244" cy="262" r="26" />
@@ -56,10 +56,10 @@
     </g>
 
     <!-- CAN backbone, control unit and sensors -->
-    <path class="bus part" [class.on]="active() === 5" d="M152 232 H766 M566 142 V232" />
+    <path class="bus part" [class.on]="active() === 5" d="M152 232 H766 M546 162 V232" />
     <rect class="ecu part" [class.on]="active() === 4" x="452" y="222" width="48" height="20" rx="3" />
     <g class="sensor">
-      <rect class="part" [class.on]="active() === 0" x="560" y="134" width="12" height="8" rx="1.5" />
+      <rect class="part" [class.on]="active() === 0" x="540" y="154" width="12" height="8" rx="1.5" />
       <rect class="part" [class.on]="active() === 1" x="762" y="222" width="8" height="20" rx="1.5" />
       <rect class="part" [class.on]="active() === 2" x="144" y="222" width="8" height="20" rx="1.5" />
       <circle class="part" [class.on]="active() === 3" cx="766" cy="252" r="3.5" />
@@ -68,7 +68,7 @@
     <path class="wave part" [class.on]="active() === 3" d="M776 244 A12 12 0 0 1 776 260 M784 238 A20 20 0 0 1 784 266 M140 244 A12 12 0 0 0 140 260 M132 238 A20 20 0 0 0 132 266" />
 
     <!-- Callouts, keyed to the parts list below -->
-    <path class="leader" d="M566 134 L639 64 M770 240 L862 331 M144 226 L81 160 M146 256 L90 338 M476 242 V341 M330 232 V341" />
+    <path class="leader" d="M546 154 L639 64 M770 240 L862 331 M144 226 L81 160 M146 256 L90 338 M476 242 V341 M330 232 V341" />
     <g class="balloon">
       @for (b of balloons; track b.n) {
         <g [class.on]="active() === b.n - 1" (mouseenter)="active.set(b.n - 1)">

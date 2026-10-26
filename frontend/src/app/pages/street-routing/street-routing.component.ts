@@ -7,6 +7,8 @@ import { DOCUMENT } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import type { FeatureCollection } from 'geojson';
 import { injectLangQuery, injectLocale } from '../../services/locale';
+import { PHOTOS } from '../../content/photos';
+import { BackdropDirective } from '../../shared/backdrop.directive';
 import { AlgorithmPanelComponent } from './algorithm-panel/algorithm-panel.component';
 import { AlgorithmKey, DEFAULT_PARAMS, ORDER, Params } from './engine/algorithm-catalog';
 import { SearchPlayer } from './engine/search-player';
@@ -48,7 +50,7 @@ function fill(template: string, values: Record<string, string>): string {
  */
 @Component({
   selector: 'app-street-routing',
-  imports: [RouterLink, AlgorithmPanelComponent, PlaybackBarComponent, MapLegendComponent, OnewayDemoComponent],
+  imports: [RouterLink, BackdropDirective, AlgorithmPanelComponent, PlaybackBarComponent, MapLegendComponent, OnewayDemoComponent],
   templateUrl: './street-routing.html',
   styleUrls: ['./street-routing.css'],
   // MapLibre creates its controls outside Angular's templates, so its stylesheet cannot be encapsulated;
@@ -56,6 +58,9 @@ function fill(template: string, values: Record<string, string>): string {
   encapsulation: ViewEncapsulation.None,
 })
 export class StreetRoutingComponent implements OnDestroy {
+  /** Photo behind the page hero (shared/backdrop.directive.ts). */
+  readonly photo = PHOTOS.streetRouting;
+
   @ViewChild('mapEl') private mapEl?: ElementRef<HTMLElement>;
   private readonly http = inject(HttpClient);
   private readonly document = inject(DOCUMENT);

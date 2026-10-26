@@ -2,6 +2,8 @@ import { Component, afterNextRender, computed, inject, signal } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
+import { PHOTOS } from '../../content/photos';
+import { BackdropDirective } from '../../shared/backdrop.directive';
 import { DefectTriageComponent } from './defect-triage.component';
 import { LabDataService, MODEL_NAMES, NhtsaData } from './lab-data';
 import { LAB_I18N } from './lab-i18n';
@@ -12,11 +14,14 @@ import { ResultBar, ResultBarsComponent } from './result-bars.component';
 /** Project 01: defect complaint triage (guided triage, browser classifier, real test complaints, benchmark). */
 @Component({
   selector: 'app-triage-page',
-  imports: [RouterLink, DefectTriageComponent, LabResultsComponent, ResultBarsComponent],
+  imports: [RouterLink, BackdropDirective, DefectTriageComponent, LabResultsComponent, ResultBarsComponent],
   templateUrl: './triage-page.html',
   styleUrls: ['./llm-lab.css'],
 })
 export class TriagePageComponent {
+  /** Photo behind the page hero (shared/backdrop.directive.ts). */
+  readonly photo = PHOTOS.defectTriage;
+
   private readonly data = inject(LabDataService);
   private readonly i18n = inject(I18nService);
 

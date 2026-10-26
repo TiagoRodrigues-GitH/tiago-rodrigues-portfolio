@@ -1,5 +1,5 @@
 <!-- Hero -->
-<section class="hero blueprint" aria-labelledby="hero-title">
+<section class="hero sky" [appBackdrop]="photos.home" aria-labelledby="hero-title">
   <div class="shell hero-grid">
     <div class="hero-copy">
       <p class="mono-label">{{ t.eyebrow }}</p>
@@ -13,11 +13,32 @@
       </div>
       <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
     </div>
-    <app-adas-figure class="hero-figure" [labels]="t.figure" />
+    <!-- An editor that types out who I am (decorative: the intro says the same in words) -->
+    <div class="code-card" aria-hidden="true">
+      <p class="code-bar"><span></span><span></span><span></span><b>developer.ts</b></p>
+      <pre class="code"><code>@for (line of codeLines; track $index) {<span class="ln" [style.--i]="$index"><i>{{ $index + 1 }}</i>@for (token of line; track $index) {<span [class]="token[0]">{{ token[1] }}</span>}</span>}</code></pre>
+      <p class="code-status"><span class="ok"></span>build passing</p>
+    </div>
   </div>
 </section>
 
-<!-- 01 Spec sheet -->
+<!-- Technology strip (decorative: the same stack is listed in the spec sheet) -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    @for (copy of [0, 1]; track copy) {
+      <ul>
+        @for (item of marquee; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    }
+  </div>
+</div>
+
+<!-- Areas -->
+<app-area-doors />
+
+<!-- 02 Spec sheet -->
 <section class="section graph-paper" aria-labelledby="spec-title">
   <div class="shell">
     <header class="section-head reveal">
@@ -34,8 +55,7 @@
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <app-blueprint-figure class="tile-art" [src]="chassis" [width]="849" [height]="348" [alt]="chassisAlt"
-                [parts]="parts('chassis')" [framed]="false" />
+              <app-adas-figure class="tile-art" [labels]="t.figure" />
             }
           </div>
         </li>
@@ -59,7 +79,7 @@
   </div>
 </section>
 
-<!-- 02 Projects -->
+<!-- 03 Projects -->
 <section class="section" aria-labelledby="projects-title">
   <div class="shell">
     <header class="section-head reveal">
@@ -85,6 +105,7 @@
           <div class="card-body">
             <p class="card-meta">
               <span class="mono-label">P-0{{ project.id }}</span>
+              <span class="card-area" [attr.data-area]="project.areas[0]">{{ areaName(project.areas[0]) }}</span>
               <span class="status" [class.status-soon]="project.status === 'soon'" [class.status-progress]="project.status === 'progress'">
                 {{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
               </span>
@@ -103,7 +124,7 @@
   </div>
 </section>
 
-<!-- 03 Articles -->
+<!-- 04 Articles -->
 <section id="articles" class="section articles" aria-labelledby="articles-title">
   <div class="shell">
     <header class="section-head reveal">

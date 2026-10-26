@@ -1,6 +1,7 @@
 import { Locale } from '../services/i18n.service';
 import { ProjectFigureKind } from './project-figure/project-figure.component';
 import { BlueprintKind } from './blueprint-figure/blueprint-parts';
+import { AreaKey } from './areas';
 
 export type ProjectStatus = 'done' | 'progress' | 'soon';
 
@@ -31,6 +32,8 @@ interface ProjectSource {
   id: number;
   /** Stable key for visitor comments; must be listed in the backend's REVIEW_PROJECTS. */
   slug: string;
+  /** Portfolio areas, main one first (its colour marks the card). */
+  areas: AreaKey[];
   status: ProjectStatus;
   /** Route of the project's demo page, if it has one. */
   demo?: string;
@@ -52,6 +55,7 @@ export interface ProjectImage {
 export interface PortfolioProject extends ProjectText {
   id: number;
   slug: string;
+  areas: AreaKey[];
   status: ProjectStatus;
   demo: string | null;
   image: ProjectImage;
@@ -64,6 +68,7 @@ const PROJECTS: ProjectSource[] = [
   {
     id: 1,
     slug: 'defect-triage',
+    areas: ['automotive', 'ai'],
     status: 'progress',
     demo: '/projects/defect-triage',
     image: {
@@ -84,7 +89,7 @@ const PROJECTS: ProjectSource[] = [
         subtitle: 'Reclamações veiculares da NHTSA classificadas por LLMs compactos',
         summary: 'Triagem guiada de reclamações de defeitos veiculares: o usuário escolhe a parte do veículo ou descreve o problema, e um classificador indica o sistema afetado.',
         details: 'Benchmark de modelos de linguagem de até 4 bilhões de parâmetros, ajustados com LoRA em uma GPU de 6 GB, na classificação de 12.534 reclamações públicas da NHTSA, com divisão temporal para medir a mudança dos dados no tempo. A demonstração tem triagem passo a passo, um classificador TF-IDF que roda no navegador e as previsões reais de cada modelo.',
-        role: 'Pesquisa e engenharia de IA',
+        role: 'Pesquisa e desenvolvimento de IA',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'scikit-learn', 'Angular'],
       },
       en: {
@@ -92,7 +97,7 @@ const PROJECTS: ProjectSource[] = [
         subtitle: 'NHTSA vehicle complaints classified by compact LLMs',
         summary: 'Guided triage of vehicle defect complaints: users pick the part of the vehicle or describe the problem, and a classifier names the system involved.',
         details: 'A benchmark of language models of up to 4 billion parameters, fine-tuned with LoRA on a 6 GB GPU, classifying 12,534 public NHTSA complaints, with a temporal split to measure how the data change over time. The demo offers step-by-step triage, a TF-IDF classifier that runs in the browser and every model’s real predictions.',
-        role: 'AI research and engineering',
+        role: 'AI research and development',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'scikit-learn', 'Angular'],
       },
       de: {
@@ -108,6 +113,7 @@ const PROJECTS: ProjectSource[] = [
   {
     id: 5,
     slug: 'patent-assistant',
+    areas: ['ai'],
     status: 'progress',
     demo: '/projects/patent-assistant',
     image: {
@@ -128,7 +134,7 @@ const PROJECTS: ProjectSource[] = [
         subtitle: 'Orientação sobre patentes no Brasil com documentos oficiais do INPI',
         summary: 'Um assistente que responde sobre patentes a partir de trechos oficiais e cita a fonte, com guia passo a passo para pedir uma patente e estatísticas oficiais de depositantes.',
         details: 'LLMs compactos ajustados com LoRA respondem a perguntas sobre patentes no Brasil com base em trechos da Lei 9.279/1996 e de documentos do INPI recuperados por BM25 (RAG), comparados a respostas de referência. A página reúne um guia educativo com as 13 etapas do pedido no INPI, taxas e prazos verificados, e gráficos das empresas que mais depositam no INPI, no EPO e no USPTO.',
-        role: 'Pesquisa e engenharia de IA',
+        role: 'Pesquisa e desenvolvimento de IA',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       en: {
@@ -136,7 +142,7 @@ const PROJECTS: ProjectSource[] = [
         subtitle: 'Guidance on patents in Brazil from official INPI documents',
         summary: 'An assistant that answers questions on patents from official passages and cites the source, with a step-by-step guide to filing a patent and official applicant statistics.',
         details: 'Compact LLMs fine-tuned with LoRA answer questions on patents in Brazil from passages of Law 9,279/1996 and INPI documents retrieved with BM25 (RAG), compared with reference answers. The page adds an educational guide with the 13 steps of an application at INPI, verified fees and deadlines, and charts of the companies that file the most at INPI, the EPO and the USPTO.',
-        role: 'AI research and engineering',
+        role: 'AI research and development',
         stack: ['Python', 'PyTorch', 'LoRA / QLoRA', 'RAG (BM25)', 'Hugging Face'],
       },
       de: {
@@ -152,6 +158,7 @@ const PROJECTS: ProjectSource[] = [
   {
     id: 4,
     slug: 'street-routing',
+    areas: ['automotive'],
     status: 'progress',
     demo: '/projects/street-routing',
     image: {
@@ -196,6 +203,7 @@ const PROJECTS: ProjectSource[] = [
   {
     id: 2,
     slug: 'vehicle-management',
+    areas: ['automotive'],
     status: 'done',
     image: {
       src: '',
@@ -249,6 +257,7 @@ const PROJECTS: ProjectSource[] = [
   {
     id: 3,
     slug: 'car-collectors',
+    areas: ['automotive'],
     status: 'soon',
     image: {
       src: 'assets/images/blueprints/patent-1900.webp',
@@ -299,6 +308,7 @@ export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
     return {
       id: project.id,
       slug: project.slug,
+      areas: project.areas,
       status: project.status,
       demo: project.demo ?? null,
       ...project.text[locale],

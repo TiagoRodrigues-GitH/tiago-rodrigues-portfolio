@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AboutTranslations, I18nService } from '../../services/i18n.service';
 import { injectLocale } from '../../services/locale';
+import { PHOTOS } from '../../content/photos';
 
 @Component({
   selector: 'app-about',
@@ -9,6 +10,9 @@ import { injectLocale } from '../../services/locale';
   styleUrls: ['./about.css'],
 })
 export class AboutComponent {
+  /** Photo behind the page hero (shared/backdrop.directive.ts). */
+  readonly photo = PHOTOS.about;
+
   private readonly i18n = inject(I18nService);
 
   readonly locale = injectLocale();

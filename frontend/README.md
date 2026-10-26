@@ -42,8 +42,8 @@ The site is available in **Portuguese, English and German**, follows **WCAG 2.2 
 
 | Route | Content |
 | --- | --- |
-| `/` | Hero with ADAS sensor blueprint, spec sheet, selected projects, article series and call to action |
-| `/projects` | Project case studies with an accessible image viewer, and visitor comments under each project (shown after approval) |
+| `/` | Software-development hero over a photo of Rio de Janeiro with a self-typing code editor, technology strip, doors into the three areas (automotive, AI, security), spec sheet with the ADAS sensor drawing, selected projects, article series and call to action |
+| `/projects`, `/projects/automotive`, `/projects/ai`, `/projects/security` | Project case studies, one tab per area (colour and photo of its own), with an accessible image viewer and visitor comments under each project (shown after approval) |
 | `/projects/defect-triage` | Project 01: guided triage of vehicle defect complaints — one decision per screen, an NHTSA classifier that runs in the browser with an animated ranking, real test complaints with every model's prediction, benchmark bars and table (`/projects/compact-llm` redirects here) |
 | `/projects/patent-assistant` | Project 05: patent assistant (replay of real test answers) inside a patent guide with eligibility, prior-art search, the 13 filing steps at INPI, fees and deadlines, official top-applicant statistics (INPI, EPO) and sources; benchmark bars and table |
 | `/projects/street-routing` | Project 04: IBGE boundaries from Brazil down to a neighbourhood, street graphs of seven areas (Londrina, Maringá, Curitiba, Florianópolis, Brasília, São Paulo, ABC Paulista) and ten routing algorithms computed in a Web Worker and replayed step by step (play, pause, single step, speed), with one-way streets from OpenStreetMap (arrows from zoom 14), plus a small directed graph that explains them |

@@ -12,6 +12,8 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { AboutComponent } from './pages/about/about.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { AdasFigureComponent } from './shared/adas-figure/adas-figure.component';
+import { AreaDoorsComponent } from './shared/area-doors/area-doors.component';
+import { BackdropDirective } from './shared/backdrop.directive';
 import { LaneDiagramComponent } from './shared/lane-diagram/lane-diagram.component';
 import { ProjectFigureComponent } from './shared/project-figure/project-figure.component';
 import { BlueprintFigureComponent } from './shared/blueprint-figure/blueprint-figure.component';
@@ -31,7 +33,7 @@ import { PendencyChartComponent } from './shared/pendency-chart/pendency-chart.c
     BlueprintFigureComponent,
     PendencyChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ProjectReviewsComponent, ContactFormComponent],
+  imports: [BrowserModule, AppRoutingModule, ProjectReviewsComponent, ContactFormComponent, AreaDoorsComponent, BackdropDirective],
   // Hydration reuses the prerendered DOM instead of re-creating it (less main-thread work, lower TBT/INP).
   // No event replay: it would need an inline script, which the Content-Security-Policy forbids.
   providers: [provideHttpClient(withFetch()), provideClientHydration()],

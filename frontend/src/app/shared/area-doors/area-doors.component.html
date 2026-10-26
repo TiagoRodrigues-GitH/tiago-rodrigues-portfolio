@@ -1,0 +1,30 @@
+<section class="section areas" aria-labelledby="areas-title">
+  <div class="shell">
+    <h2 id="areas-title" class="visually-hidden">{{ text().tabs }}</h2>
+    <ul class="doors">
+      @for (door of doors(); track door.key) {
+        <li class="door reveal" [attr.data-area]="door.key">
+          <div class="door-art">
+            <img [src]="door.photo" alt="" width="960" height="540" loading="lazy" decoding="async" />
+          </div>
+          <div class="door-body">
+            <p class="door-name mono-label">0{{ $index + 1 }} · {{ door.text.name }}</p>
+            <h3 class="door-title">{{ door.text.title }}</h3>
+            <p class="door-lede">{{ door.text.lede }}</p>
+            <ul class="door-topics">
+              @for (topic of door.text.topics; track topic) {
+                <li>{{ topic }}</li>
+              }
+            </ul>
+            <p class="door-foot">
+              <span class="door-count">{{ door.count }}</span>
+              <a class="door-link" [routerLink]="'/projects/' + door.key" [queryParams]="langQuery()">
+                {{ text().open }}<span class="visually-hidden">: {{ door.text.name }}</span> <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

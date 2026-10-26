@@ -219,3 +219,97 @@
   line-height: 1.3;
   color: var(--accent);
 }
+
+/* Area tabs: underline in the colour of the area, like a drive-mode selector */
+.area-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem clamp(1rem, 3vw, 2.25rem);
+	margin-top: clamp(1.5rem, 3vw, 2.5rem);
+	border-bottom: 1px solid var(--rule-strong);
+}
+
+.area-tabs a:not([data-area]) {
+	--area: var(--accent);
+	--area-ink: var(--accent);
+}
+
+.area-tabs a {
+	position: relative;
+	padding: 0.85rem 0 0.9rem;
+	font-family: var(--font-display);
+	font-size: 1.05rem;
+	font-weight: 500;
+	color: var(--text-muted);
+	text-decoration: none;
+	transition: color 0.2s var(--ease);
+}
+
+.area-tabs a::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 -1px;
+	height: 3px;
+	border-radius: 3px 3px 0 0;
+	background: var(--area);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.35s var(--ease);
+}
+
+.area-tabs a:hover,
+.area-tabs a[aria-current='page'] {
+	color: var(--area-ink);
+}
+
+.area-tabs a:hover::after,
+.area-tabs a[aria-current='page']::after {
+	transform: scaleX(1);
+}
+
+.page-hero[data-area] .mono-label {
+	color: var(--area-ink);
+}
+
+.page-hero[data-area] .page-title::after {
+	content: '';
+	display: block;
+	width: 4.5rem;
+	height: 5px;
+	margin-top: 1.25rem;
+	border-radius: 3px;
+	background: var(--area);
+}
+
+.project-head .area-chips {
+	margin-left: auto;
+}
+
+.area-empty {
+	margin: clamp(2rem, 5vw, 3rem) 0;
+	padding: 1.5rem 1.75rem;
+	border-left: 4px solid var(--area);
+	background: var(--surface-muted);
+	font-size: 1.1rem;
+	color: var(--text);
+}
+
+.area-empty {
+	display: grid;
+	gap: 1rem;
+	justify-items: start;
+}
+
+.area-empty p {
+	margin: 0;
+}
+
+.area-chips span {
+	display: inline-flex;
+	padding: 0.2rem 0.65rem;
+	border: 1px solid var(--area);
+	border-radius: 999px;
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	color: var(--area-ink);
+}

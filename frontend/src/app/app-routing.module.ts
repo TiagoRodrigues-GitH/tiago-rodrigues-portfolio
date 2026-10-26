@@ -10,6 +10,10 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { page: 'home' } },
   { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
+  // one tab per portfolio area (shared/areas.ts)
+  { path: 'projects/automotive', component: ProjectsComponent, data: { page: 'projects', area: 'automotive' } },
+  { path: 'projects/ai', component: ProjectsComponent, data: { page: 'projects', area: 'ai' } },
+  { path: 'projects/security', component: ProjectsComponent, data: { page: 'projects', area: 'security' } },
   {
     path: 'projects/defect-triage',
     loadComponent: () => import('./pages/llm-lab/triage-page.component').then((m) => m.TriagePageComponent),
