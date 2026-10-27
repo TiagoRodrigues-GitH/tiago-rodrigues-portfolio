@@ -316,12 +316,6 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     url: 'https://commons.wikimedia.org/wiki/File:Parliament_Hill_from_the_river_path.jpg',
   },
   {
-    title: 'Igreja São Francisco de Assis, Pampulha',
-    author: 'Boaventuravinicius',
-    license: 'CC BY 4.0',
-    url: 'https://commons.wikimedia.org/wiki/File:Igreja_S%C3%A3o_Francisco_de_Assis_(98975).jpg',
-  },
-  {
     title: 'Robot (Alex Knight 2017-01-30)',
     author: 'Alex Knight (Unsplash)',
     license: 'CC0',
@@ -356,5 +350,17 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     author: 'Prefeitura de Londrina (blog.londrina.pr.gov.br)',
     license: '© Prefeitura de Londrina',
     url: 'https://blog.londrina.pr.gov.br/?p=106327',
+  },
+  {
+    title: 'Vista panorâmica parcial de Ouro Preto',
+    author: 'Luiz Roberto Krauss',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Vista_panor%C3%A2mica_parcial_de_Ouro_Preto.jpg',
+  },
+  {
+    title: 'Rio Solimões, Floresta Amazônica',
+    author: 'lubasi',
+    license: 'CC BY-SA 2.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Aerial_view_of_the_Amazon_Rainforest.jpg',
   },
 ];

@@ -22,21 +22,22 @@ const p = (file: string, place: string): Photo => ({ src: `assets/images/photos/
 const PHOTOS: Record<PhotoSection, PerLocale> = {
   // the home hero travels: Brazil in Portuguese, Canada and the United States in English, Germany in German
   home: {
-    // urban and nature in turn, a city first
+    // urban and nature in turn, opening with Ouro Preto: the colonial town and the mountains together
     pt: [
-      p('bh-pampulha', 'Igreja da Pampulha, Belo Horizonte, Minas Gerais'),
-      p('tiradentes-minas', 'Serra de São José, Tiradentes, Minas Gerais'),
-      p('sao-paulo-paulista', 'Avenida Paulista, São Paulo'),
+      p('ouro-preto-vista', 'Ouro Preto, Minas Gerais'),
       p('parana-iguacu', 'Cataratas do Iguaçu, Paraná'),
-      p('salvador-pelourinho', 'Pelourinho, Salvador, Bahia'),
+      p('sao-paulo-paulista', 'Avenida Paulista, São Paulo'),
       p('lencois-maranhenses', 'Lençóis Maranhenses, Maranhão'),
+      p('salvador-pelourinho', 'Pelourinho, Salvador, Bahia'),
+      p('amazonas-solimoes', 'Rio Solimões, Floresta Amazônica, Amazonas'),
       p('brasilia-congresso', 'Congresso Nacional, Brasília'),
       p('nordeste-noronha', 'Fernando de Noronha, Pernambuco'),
-      p('ouro-preto-praca', 'Praça Tiradentes, Ouro Preto, Minas Gerais'),
-      p('gramado-lago-negro', 'Lago Negro, Gramado, Rio Grande do Sul'),
       p('manaus-teatro', 'Teatro Amazonas, Manaus'),
-      p('sul-itaimbezinho', 'Cânion Itaimbezinho, Rio Grande do Sul'),
+      p('tiradentes-minas', 'Serra de São José, Tiradentes, Minas Gerais'),
       p('rio-sugarloaf', 'Pão de Açúcar, Rio de Janeiro'),
+      p('gramado-lago-negro', 'Lago Negro, Gramado, Rio Grande do Sul'),
+      p('ouro-preto-praca', 'Praça Tiradentes, Ouro Preto, Minas Gerais'),
+      p('sul-itaimbezinho', 'Cânion Itaimbezinho, Rio Grande do Sul'),
       p('rio-cristo', 'Cristo Redentor, Rio de Janeiro'),
     ],
     // Canada first, then Canada and the United States in turn

@@ -189,10 +189,26 @@
   color: var(--text-muted);
 }
 
+/* A project with a video gives it two thirds of the row, and the video stays in view while the text scrolls */
+.project:has(.project-video) {
+	grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr);
+	align-items: start;
+}
+
+.project:has(.project-video) .project-media {
+	position: sticky;
+	top: calc(var(--header-h) + 1.5rem);
+}
+
 @media (max-width: 900px) {
   .hero-grid,
-  .project {
+  .project,
+  .project:has(.project-video) {
     grid-template-columns: 1fr;
+  }
+
+  .project:has(.project-video) .project-media {
+    position: static;
   }
 }
 
@@ -355,4 +371,13 @@
 	overflow-wrap: anywhere;
 	font-family: var(--font-mono);
 	font-size: 0.8rem;
+}
+
+/* narrower text column next to a video: chips and status wrap as whole pieces */
+.project-head {
+	flex-wrap: wrap;
+}
+
+.project-head .status {
+	white-space: nowrap;
 }
