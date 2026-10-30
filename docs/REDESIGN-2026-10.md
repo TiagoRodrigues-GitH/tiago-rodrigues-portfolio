@@ -152,6 +152,8 @@ Review of 3.1 on the live site: the white reading sections hid the film for most
 
 Mobile performance is held back by total blocking time: three 360–430 ms tasks in the main chunk during hydration, while the film and the WebGL scene start. Fixes applied: the film starts only once the browser is idle after hydration (`requestIdleCallback`, at most 1.5 s); the area-door photos get 640 px `srcset` copies (about 400 kB less on phones); the comments API origin is preconnected (about 300 ms). Not yet done: long cache headers (GitHub Pages sets 10 minutes) and splitting the main chunk.
 
+After the fixes (`6a8ca53`): projects on mobile 73 (TBT 610 ms, 824 kB instead of 1,486 kB); home on desktop 90 (TBT 230 ms); home on mobile 53–61 over three runs, with TBT between 920 and 3,560 ms. The spread comes from CPU contention on the test machine, so treat single mobile runs with care. The area-door photos now load as 960 px copies (215 kB instead of 521 kB). The remaining mobile cost is main-thread work during hydration (the main chunk is 336 kB, with all articles and project texts in three languages), which is the next step (section 4).
+
 ### Accessibility and performance of the motion
 
 * `prefers-reduced-motion`: no sticky scroll track, no animation; the stage buttons switch forms instantly.
