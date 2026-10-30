@@ -1,6 +1,7 @@
 import { Locale } from '../services/i18n.service';
 import { ProjectFigureKind } from './project-figure/project-figure.component';
 import { BlueprintKind } from './blueprint-figure/blueprint-parts';
+import { VideoSlot } from '../content/videos';
 
 export type ProjectStatus = 'done' | 'progress' | 'soon';
 
@@ -15,6 +16,8 @@ interface ProjectImageSource {
   figure?: ProjectFigureKind;
   /** Bitmap drawing with numbered, interactive parts. */
   blueprint?: BlueprintKind;
+  /** Video loop shown in place of the still (per language, see content/videos). */
+  video: VideoSlot;
 }
 
 interface ProjectText {
@@ -45,6 +48,7 @@ export interface ProjectImage {
   contain: boolean;
   figure: ProjectFigureKind | null;
   blueprint: BlueprintKind | null;
+  video: VideoSlot;
 }
 
 export interface PortfolioProject extends ProjectText {
@@ -67,6 +71,7 @@ const PROJECTS: ProjectSource[] = [
       width: 640,
       height: 480,
       figure: 'llm',
+      video: 'llm',
       alt: {
         pt: 'Esquema animado: documentos oficiais e reclamações de defeitos alimentam um modelo de linguagem compacto ajustado com LoRA, que produz uma resposta com a fonte citada.',
         en: 'Animated schematic: official documents and defect complaints feed a compact language model fine-tuned with LoRA, which produces an answer that cites its source.',
@@ -109,6 +114,7 @@ const PROJECTS: ProjectSource[] = [
       width: 640,
       height: 480,
       figure: 'fleet',
+      video: 'fleet',
       alt: {
         pt: 'Esquema animado: um carro de passeio e um caminhão enviam seus dados para uma ficha de cadastro com placa Mercosul, que é gravada em um banco de dados.',
         en: 'Animated schematic: a passenger car and a truck send their data to a registration form with a Mercosur licence plate, which is stored in a database.',
@@ -122,6 +128,7 @@ const PROJECTS: ProjectSource[] = [
         height: 651,
         contain: true,
         blueprint: 'fleetUml',
+        video: 'fleet-code',
         alt: {
           pt: 'Diagrama de classes UML: classe abstrata Veiculo, especializações Passeio e Carga, interface Calcular, classe Motor e exceções personalizadas.',
           en: 'UML class diagram: abstract Veiculo (vehicle) class, Passeio (passenger) and Carga (cargo) subclasses, Calcular interface, Motor class and custom exceptions.',
@@ -161,6 +168,7 @@ const PROJECTS: ProjectSource[] = [
       width: 1400,
       height: 995,
       blueprint: 'patent1900',
+      video: 'collector',
       alt: {
         pt: 'Desenho de patente de 1900 de um automóvel com rodas raiadas, em estilo blueprint.',
         en: 'Patent drawing of an automobile with spoked wheels from 1900, in blueprint style.',
@@ -196,7 +204,7 @@ const PROJECTS: ProjectSource[] = [
 
 function localizeImage(image: ProjectImageSource, locale: Locale): ProjectImage {
   return { src: image.src, width: image.width, height: image.height, alt: image.alt[locale], contain: !!image.contain,
-           figure: image.figure ?? null, blueprint: image.blueprint ?? null };
+           figure: image.figure ?? null, blueprint: image.blueprint ?? null, video: image.video };
 }
 
 export function getPortfolioProjects(locale: Locale): PortfolioProject[] {

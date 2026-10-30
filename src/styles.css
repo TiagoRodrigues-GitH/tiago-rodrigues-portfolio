@@ -670,3 +670,96 @@ button {
 		transform: none;
 	}
 }
+
+/* ---------- Full-bleed video backgrounds (<app-video-figure [background]="true">) ---------- */
+
+.has-video-bg {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+}
+
+.has-video-bg > .shell {
+	position: relative;
+	z-index: 1;
+}
+
+app-video-figure.is-bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+
+/* The content sits on top; only the pause button takes clicks. */
+app-video-figure.is-bg .vf {
+	pointer-events: none;
+}
+
+app-video-figure.is-bg .vf-toggle {
+	right: max(1rem, calc((100% - var(--shell)) / 2));
+	bottom: 1.25rem;
+	pointer-events: auto;
+}
+
+app-video-figure.is-bg .stage {
+	height: 100%;
+	aspect-ratio: auto;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+/* Scrim on the text side keeps the copy at AA contrast over any frame. */
+app-video-figure.is-bg .hud::before {
+	background:
+		linear-gradient(90deg, rgba(3, 12, 31, 0.9) 0%, rgba(3, 12, 31, 0.7) 40%, rgba(3, 12, 31, 0.15) 78%, rgba(3, 12, 31, 0.3)),
+		linear-gradient(180deg, rgba(3, 12, 31, 0.45), transparent 25%, transparent 70%, rgba(3, 12, 31, 0.8));
+}
+
+/* Coloured light that follows the pointer, in the overlay's accent. */
+app-video-figure.is-bg .hud::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(30vmax 30vmax at calc(50% + var(--px) * 100%) calc(50% + var(--py) * 100%), var(--hud), transparent 70%);
+	mix-blend-mode: screen;
+	opacity: 0;
+	transition: opacity 0.4s var(--ease);
+}
+
+app-video-figure.is-bg .pointing .hud::after {
+	opacity: 0.28;
+}
+
+/* The neural graph fades out behind the copy so it never crosses the text. */
+app-video-figure.is-bg .graph {
+	mask-image: linear-gradient(90deg, transparent 30%, #000 65%);
+}
+
+app-video-figure.is-bg .readout {
+	left: auto;
+	right: calc(max(1rem, (100% - var(--shell)) / 2) + 3rem);
+	bottom: 1.6rem;
+}
+
+/* Phones: the copy covers the full width, so an even scrim lets more of the footage through. */
+@media (max-width: 720px) {
+	app-video-figure.is-bg .hud::before {
+		background: linear-gradient(180deg, rgba(3, 12, 31, 0.62), rgba(3, 12, 31, 0.5) 45%, rgba(3, 12, 31, 0.86));
+	}
+
+	app-video-figure.is-bg .readout {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	/* Parallax: the footage drifts against the pointer. */
+	app-video-figure.is-bg video {
+		transform: translate(calc(var(--px) * -28px), calc(var(--py) * -18px)) scale(1.08);
+		transition: transform 0.8s var(--ease);
+	}
+
+	app-video-figure.is-bg .stage {
+		transform: none !important;
+	}
+}

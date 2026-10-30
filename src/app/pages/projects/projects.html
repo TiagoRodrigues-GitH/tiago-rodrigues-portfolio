@@ -1,4 +1,5 @@
-<section class="page-hero graph-paper" aria-labelledby="projects-title">
+<section class="page-hero blueprint has-video-bg" aria-labelledby="projects-title">
+  <app-video-figure slot="ambient" [locale]="locale()" [background]="true" />
   <div class="shell hero-grid">
     <div>
       <p class="mono-label">{{ t.eyebrow }}</p>
@@ -6,9 +7,10 @@
       <p class="section-lede">{{ t.intro }}</p>
     </div>
     <figure class="figure">
-      <app-blueprint-figure [src]="chassis" [width]="849" [height]="348" [alt]="t.figureAlt"
-        [parts]="parts('chassis')" [legend]="true" />
-      <figcaption>{{ t.figureCaption }}</figcaption>
+      <div class="frame">
+        <app-video-figure slot="chassis" [locale]="locale()" [decorative]="true" />
+      </div>
+      <figcaption>{{ caption('chassis') }}</figcaption>
     </figure>
   </div>
 </section>
@@ -55,36 +57,18 @@
       </div>
 
       <div class="project-media">
-        @if (project.image.figure) {
-          <div class="frame figure-cover">
-            <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />
-          </div>
-        }
-        @if (project.image.blueprint) {
-          <app-blueprint-figure [src]="project.image.src" [width]="project.image.width" [height]="project.image.height"
-            [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" [legend]="true" />
-        }
-        @for (image of project.gallery; track image.src; let j = $index) {
-          @if (image.blueprint) {
-            <div class="gallery-blueprint">
-              <app-blueprint-figure [src]="image.src" [width]="image.width" [height]="image.height"
-                [alt]="image.alt" [parts]="parts(image.blueprint)" [legend]="true" />
-              <button type="button" class="btn btn-outline zoom-text" (click)="openImage(i, j, $event.currentTarget)">
-                {{ t.zoom }} <span aria-hidden="true">+</span>
-              </button>
+        <div class="frame figure-cover">
+          <app-video-figure [slot]="project.image.video" [locale]="locale()" [fill]="true" />
+        </div>
+        @for (image of project.gallery; track image.video; let j = $index) {
+          <div class="gallery-blueprint">
+            <div class="frame gallery-video">
+              <app-video-figure [slot]="image.video" [locale]="locale()" />
             </div>
-          } @else {
-          <button
-            type="button"
-            class="frame zoom"
-            (click)="openImage(i, j, $event.currentTarget)"
-          >
-            <span class="visually-hidden">{{ t.zoom }}: </span>
-            <img [class.contain]="image.contain" [src]="image.src" [width]="image.width" [height]="image.height" [alt]="image.alt" loading="lazy" decoding="async" />
-            <span class="scan" aria-hidden="true"></span>
-            <span class="zoom-icon" aria-hidden="true">+</span>
-          </button>
-          }
+            <button type="button" class="btn btn-outline zoom-text" (click)="openImage(i, j, $event.currentTarget)">
+              {{ t.zoom }} <span aria-hidden="true">+</span>
+            </button>
+          </div>
         }
       </div>
     </article>
@@ -105,7 +89,7 @@
         {{ t.close }} <span aria-hidden="true">✕</span>
       </button>
       <figure class="figure">
-        <img [src]="image.src" [alt]="image.alt" [width]="image.width" [height]="image.height" />
+        <app-video-figure [slot]="image.video" [locale]="locale()" />
         <figcaption>{{ activeProject()?.title }}</figcaption>
       </figure>
       @if ((activeProject()?.gallery?.length ?? 0) > 1) {

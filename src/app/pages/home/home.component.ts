@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { I18nService, HomeTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { ARTICLES, Article } from '../../content/articles';
+import { VideoSlot, videoCaption } from '../../content/videos';
 
 const WORDS_PER_MINUTE = 200;
 
@@ -20,18 +20,13 @@ export class HomeComponent {
   readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
   readonly articles = computed(() => ARTICLES[this.locale()]);
-  readonly chassis = 'assets/images/blueprints/chassis.webp';
 
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */
   private readonly open = signal<ReadonlySet<string>>(new Set());
 
-  get chassisAlt(): string {
-    return this.i18n.projects[this.locale()].figureAlt;
-  }
-
-  parts(kind: BlueprintKind): BlueprintPart[] {
-    return blueprintParts(kind, this.locale());
+  caption(slot: VideoSlot): string {
+    return videoCaption(slot, this.locale());
   }
 
   isOpen(id: string): boolean {

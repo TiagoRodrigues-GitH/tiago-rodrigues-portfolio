@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
-import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
+import { VideoSlot, videoCaption } from '../../content/videos';
 
 @Component({
   selector: 'app-projects',
@@ -30,7 +30,6 @@ export class ProjectsComponent implements OnDestroy {
   readonly locale = injectLocale();
   readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
-  readonly chassis = 'assets/images/blueprints/chassis.webp';
 
   private readonly viewer = signal<{ project: number; image: number } | null>(null);
   readonly activeProject = computed(() => {
@@ -50,8 +49,8 @@ export class ProjectsComponent implements OnDestroy {
     return this.i18n.projects[this.locale()];
   }
 
-  parts(kind: BlueprintKind): BlueprintPart[] {
-    return blueprintParts(kind, this.locale());
+  caption(slot: VideoSlot): string {
+    return videoCaption(slot, this.locale());
   }
 
   get counter(): string {

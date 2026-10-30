@@ -1,5 +1,6 @@
 <!-- Hero -->
-<section class="hero blueprint" aria-labelledby="hero-title">
+<section class="hero blueprint has-video-bg" aria-labelledby="hero-title">
+  <app-video-figure slot="hero" [locale]="locale()" [background]="true" />
   <div class="shell hero-grid">
     <div class="hero-copy">
       <p class="mono-label">{{ t.eyebrow }}</p>
@@ -13,7 +14,6 @@
       </div>
       <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
     </div>
-    <app-adas-figure class="hero-figure" [labels]="t.figure" />
   </div>
 </section>
 
@@ -34,8 +34,7 @@
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <app-blueprint-figure class="tile-art" [src]="chassis" [width]="849" [height]="348" [alt]="chassisAlt"
-                [parts]="parts('chassis')" [framed]="false" />
+              <app-video-figure class="tile-art" slot="chassis" [locale]="locale()" [fill]="true" />
             }
           </div>
         </li>
@@ -72,15 +71,7 @@
       @for (project of projects(); track project.id) {
         <li class="project-card reveal">
           <div class="frame card-media">
-            @if (project.image.figure) {
-              <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />
-            } @else if (project.image.blueprint) {
-              <app-blueprint-figure [src]="project.image.src" [width]="project.image.width" [height]="project.image.height"
-                [alt]="project.image.alt" [parts]="parts(project.image.blueprint)" fit="cover-top" [framed]="false" />
-            } @else {
-              <img [class.contain]="project.image.contain" [src]="project.image.src" [width]="project.image.width" [height]="project.image.height" [alt]="project.image.alt" loading="lazy" decoding="async" />
-              <span class="scan" aria-hidden="true"></span>
-            }
+            <app-video-figure [slot]="project.image.video" [locale]="locale()" [fill]="true" />
           </div>
           <div class="card-body">
             <p class="card-meta">
@@ -128,28 +119,9 @@
 
               <figure class="figure">
                 <div class="frame">
-                  @if (article.figure.src === 'lane-diagram') {
-                    <span class="scan" aria-hidden="true"></span>
-                    <app-lane-diagram [labels]="t.laneDiagram" [locale]="locale()" [description]="article.figure.alt" />
-                  } @else if (article.figure.src === 'patent-chart') {
-                    <span class="scan" aria-hidden="true"></span>
-                    <app-pendency-chart [locale]="locale()" [description]="article.figure.alt" />
-                  } @else if (article.figure.blueprint) {
-                    <app-blueprint-figure [src]="article.figure.src" [width]="article.figure.width ?? 0" [height]="article.figure.height ?? 0"
-                      [alt]="article.figure.alt" [parts]="parts(article.figure.blueprint)" [framed]="false" />
-                  } @else {
-                    <span class="scan" aria-hidden="true"></span>
-                    <img
-                      [src]="article.figure.src"
-                      [alt]="article.figure.alt"
-                      [width]="article.figure.width"
-                      [height]="article.figure.height"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  }
+                  <app-video-figure [slot]="article.figure.video" [locale]="locale()" [decorative]="true" />
                 </div>
-                <figcaption>{{ article.figure.caption }}</figcaption>
+                <figcaption>Fig. 0{{ i + 1 }} — {{ caption(article.figure.video) }}</figcaption>
               </figure>
 
               <div class="chapter-more">
@@ -196,7 +168,8 @@
 </section>
 
 <!-- CTA -->
-<section class="cta blueprint" aria-labelledby="cta-title">
+<section class="cta blueprint has-video-bg" aria-labelledby="cta-title">
+  <app-video-figure slot="ambient" [locale]="locale()" [background]="true" />
   <div class="shell cta-inner reveal">
     <h2 id="cta-title" class="cta-title">{{ t.ctaTitle }}</h2>
     <p>{{ t.ctaText }}</p>

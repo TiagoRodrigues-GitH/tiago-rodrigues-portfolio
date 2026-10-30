@@ -1,5 +1,6 @@
 import { Locale } from '../services/i18n.service';
 import { BlueprintKind } from '../shared/blueprint-figure/blueprint-parts';
+import { VideoSlot } from './videos';
 
 export interface ArticleReference {
   text: string;
@@ -15,6 +16,8 @@ export interface ArticleFigure {
   caption: string;
   /** Numbered parts drawn over a raster drawing (interactive callouts). */
   blueprint?: BlueprintKind;
+  /** Video loop shown in place of the figure (per language, see content/videos). */
+  video: VideoSlot;
 }
 
 export interface Article {
@@ -100,8 +103,8 @@ const REF_UP: ArticleReference = {
 const PATENT_REFS = [REF_LPI, REF_EPC, REF_WIPI_2025, REF_WIPI_2017, REF_UP];
 const PENDENCY = { width: 960, height: 540 };
 
-const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622, blueprint: 'cutaway1931' as const };
-const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382, blueprint: 'bodyFrame' as const };
+const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622, blueprint: 'cutaway1931' as const, video: 'perceive' as const };
+const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382, blueprint: 'bodyFrame' as const, video: 'rules' as const };
 
 export const ARTICLES: Record<Locale, Article[]> = {
   pt: [
@@ -165,6 +168,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'lane-diagram',
+        video: 'seeing',
         alt: 'Diagrama de uma estrada em perspectiva com linhas horizontais de referência; em cada linha, um ponto marca a posição escolhida para cada faixa.',
         caption: 'Fig. 03 — Seleção por linhas: em cada linha de referência (row anchor), o modelo escolhe a célula com maior probabilidade de conter a faixa.',
       },
@@ -184,6 +188,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'patent-chart',
+        video: 'patents',
         ...PENDENCY,
         alt: 'Gráfico de barras com o tempo médio até a decisão final de pedidos de patente em 2016 e 2024: Brasil 95,4 e 38,4 meses; Estados Unidos 22,6 e 29,5; Europa (EPO) 23,3 e 24,9; China 22,0 e 15,5; Japão 15,0 e 12,9.',
         caption: 'Fig. 04 — Tempo médio até a decisão final, em meses, contado do pedido de exame (ou do depósito). Fonte: OMPI, WIPI 2017 e 2025 [3], [4].',
@@ -252,6 +257,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'lane-diagram',
+        video: 'seeing',
         alt: 'Diagram of a road in perspective with horizontal reference rows; on each row, a dot marks the position chosen for each lane.',
         caption: 'Fig. 03 — Row-based selection: on each reference row (row anchor), the model picks the cell most likely to contain the lane.',
       },
@@ -271,6 +277,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'patent-chart',
+        video: 'patents',
         ...PENDENCY,
         alt: 'Bar chart of the average time to a final decision on patent applications in 2016 and 2024: Brazil 95.4 and 38.4 months; United States 22.6 and 29.5; Europe (EPO) 23.3 and 24.9; China 22.0 and 15.5; Japan 15.0 and 12.9.',
         caption: 'Fig. 04 — Average time to a final decision, in months, counted from the examination request (or filing). Source: WIPO, WIPI 2017 and 2025 [3], [4].',
@@ -339,6 +346,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'lane-diagram',
+        video: 'seeing',
         alt: 'Diagramm einer Straße in Perspektive mit horizontalen Referenzzeilen; auf jeder Zeile markiert ein Punkt die gewählte Position jeder Fahrspur.',
         caption: 'Abb. 03 – Zeilenbasierte Auswahl: In jeder Referenzzeile (Row Anchor) wählt das Modell die Zelle, die am wahrscheinlichsten die Fahrspur enthält.',
       },
@@ -358,6 +366,7 @@ export const ARTICLES: Record<Locale, Article[]> = {
       ],
       figure: {
         src: 'patent-chart',
+        video: 'patents',
         ...PENDENCY,
         alt: 'Balkendiagramm der mittleren Dauer bis zur endgültigen Entscheidung über Patentanmeldungen 2016 und 2024: Brasilien 95,4 und 38,4 Monate; USA 22,6 und 29,5; Europa (EPA) 23,3 und 24,9; China 22,0 und 15,5; Japan 15,0 und 12,9.',
         caption: 'Abb. 04 — Mittlere Dauer bis zur endgültigen Entscheidung in Monaten, gezählt ab Prüfungsantrag (oder Anmeldung). Quelle: WIPO, WIPI 2017 und 2025 [3], [4].',

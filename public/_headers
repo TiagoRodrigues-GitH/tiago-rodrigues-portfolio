@@ -9,6 +9,8 @@
   Cross-Origin-Opener-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
+/assets/videos/*
+  Cache-Control: public, max-age=604800
 /media/*
   Cache-Control: public, max-age=31536000, immutable
 /*.js

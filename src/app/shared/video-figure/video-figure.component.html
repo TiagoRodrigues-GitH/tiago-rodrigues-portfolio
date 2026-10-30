@@ -1,0 +1,63 @@
+<div class="vf" [class]="'vf theme-' + theme" [class.fill]="fill" [class.bg]="background" [class.pointing]="pointer() !== null" [class.playing]="playing()"
+  (pointermove)="track($event)" (pointerleave)="leave()">
+  <div class="stage" [attr.role]="decorative || background ? null : 'img'" [attr.aria-label]="decorative || background ? null : source.alt"
+    [attr.aria-hidden]="decorative || background || null">
+    <video
+      #video
+      [attr.src]="near() ? source.mp4 : null"
+      [poster]="source.poster"
+      [muted]="true"
+      muted
+      loop
+      playsinline
+      disablepictureinpicture
+      [attr.preload]="background ? 'auto' : 'none'"
+      aria-hidden="true"
+      (playing)="playing.set(true)"
+      (pause)="playing.set(false)"
+      (loadeddata)="loaded()"
+    ></video>
+
+    <div class="hud" aria-hidden="true">
+      @switch (theme) {
+        @case ('neural') {
+          <svg class="graph" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice">
+            @for (edge of edges; track $index) {
+              <line [attr.x1]="nodes[edge[0]][0]" [attr.y1]="nodes[edge[0]][1]" [attr.x2]="nodes[edge[1]][0]" [attr.y2]="nodes[edge[1]][1]"
+                [class.on]="lit(edge[0]) || lit(edge[1])" [style.--i]="$index" />
+            }
+            @for (node of nodes; track $index) {
+              <circle [attr.cx]="node[0]" [attr.cy]="node[1]" r="0.8" [class.on]="lit($index)" [style.--i]="$index" />
+            }
+          </svg>
+        }
+        @case ('neon') {
+          <span class="scanlines"></span>
+          <span class="glow"></span>
+        }
+        @case ('precision') {
+          <span class="grid"></span>
+          <span class="ruler ruler-x"></span>
+          <span class="ruler ruler-y"></span>
+          <span class="cross" [style.--cx.px]="cross().x" [style.--cy.px]="cross().y">
+            <span class="cross-readout">{{ crossReadout }}</span>
+          </span>
+          <span class="flagline"><i></i><i></i><i></i></span>
+        }
+      }
+      <span class="corner corner-tl"></span>
+      <span class="corner corner-br"></span>
+      <p class="origin">{{ origin }}</p>
+      <p class="readout"><span class="readout-text">{{ source.readout }}</span></p>
+    </div>
+  </div>
+
+  <button type="button" class="vf-toggle" [attr.aria-label]="playing() ? controls.pause : controls.play"
+    (click)="toggle()">
+    @if (playing()) {
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z" /></svg>
+    } @else {
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
+    }
+  </button>
+</div>

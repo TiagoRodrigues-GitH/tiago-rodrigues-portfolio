@@ -87,7 +87,7 @@
   justify-items: start;
 }
 
-.gallery-blueprint app-blueprint-figure {
+.gallery-blueprint .gallery-video {
   width: 100%;
 }
 
