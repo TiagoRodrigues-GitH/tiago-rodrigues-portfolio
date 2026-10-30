@@ -5,7 +5,7 @@
       @for (door of doors(); track door.key) {
         <li class="door reveal" appTilt="4" [attr.data-area]="door.key">
           <div class="door-art">
-            <img [src]="door.photo" alt="" width="960" height="540" loading="lazy" decoding="async" />
+            <img [src]="door.photo" [attr.srcset]="door.srcset" sizes="(max-width: 760px) 92vw, 400px" alt="" width="960" height="540" loading="lazy" decoding="async" />
           </div>
           <div class="door-body">
             <p class="door-name mono-label">0{{ $index + 1 }} · {{ door.text.name }}</p>

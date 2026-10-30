@@ -260,11 +260,23 @@
     background-image:
       linear-gradient(rgba(157, 188, 255, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(157, 188, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(4, 9, 20, 0.84) 0%, rgba(4, 9, 20, 0.7) 60%, rgba(4, 9, 20, 0.86) 100%);
+      /* open enough for the portrait to read behind the text; white text stays above 9:1 on the brightest frame */
+      linear-gradient(180deg, rgba(4, 9, 20, 0.7) 0%, rgba(4, 9, 20, 0.5) 45%, rgba(4, 9, 20, 0.72) 100%);
     background-size: 64px 64px, 64px 64px, auto;
   }
 
-  /* narrow screens: the scene fills the stage but fades out behind the text, which stays on deep navy */
+  .hero-eyebrow,
+  .hero-intro,
+  .hero-status {
+    text-shadow: 0 1px 14px rgba(4, 9, 20, 0.9);
+  }
+
+  /* the veil is more open here: the intro takes the main on-dark tone to stay AA on the brightest frame */
+  .hero-intro {
+    color: var(--text-on-dark);
+  }
+
+  /* narrow screens: the scene fills the stage but fades out behind the text */
   .hero-scene {
     inset: 0;
     opacity: 0.8;

@@ -23,9 +23,12 @@ export class AreaDoorsComponent {
     const count = this.text().count;
     return AREA_KEYS.map((key) => {
       const n = projects.filter((project) => project.areas.includes(key)).length;
+      const photo = photoSources(key, this.locale())[0];
       return {
         key,
-        photo: photoSources(key, this.locale())[0],
+        photo,
+        // 640 px copies (photos/<name>-640.webp) for phones and the three-column desktop grid
+        srcset: `${photo.replace('.webp', '-640.webp')} 640w, ${photo} 1280w`,
         text: AREAS[key][this.locale()],
         count: n === 0 ? count.none : n === 1 ? count.one : count.many.replace('{n}', String(n)),
       };

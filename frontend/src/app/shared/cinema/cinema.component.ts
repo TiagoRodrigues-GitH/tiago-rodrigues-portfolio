@@ -92,7 +92,9 @@ export class CinemaComponent {
       let py = 0;
       const paint = () => {
         frame = 0;
-        this.pickFilm(win.innerHeight);
+        if (this.ready()) {
+          this.pickFilm(win.innerHeight);
+        }
         if (!this.motion()) {
           return;
         }
@@ -112,8 +114,16 @@ export class CinemaComponent {
         win.removeEventListener('scroll', queue);
         win.removeEventListener('resize', queue);
       });
-      this.ready.set(true);
-      queue();
+      // the film starts once hydration is done, so its download and decoding do not compete with it
+      const start = () => {
+        this.ready.set(true);
+        queue();
+      };
+      if ('requestIdleCallback' in win) {
+        win.requestIdleCallback(start, { timeout: 1500 });
+      } else {
+        setTimeout(start, 400);
+      }
       if (!this.motion()) {
         return;
       }

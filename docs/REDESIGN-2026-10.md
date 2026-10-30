@@ -118,6 +118,40 @@ A first pass rejected a background video on cost grounds. Review feedback revers
 * **Cleanup:** the 52 hero photos (landmarks, Londrina, coffee) and their credits were removed; they remain in git history (`1ab8a80`, `b9cda63`). The three photos in the home area doors stay. The phone veil of the heroes was still the light one from the old identity, under white text; it is now navy (contrast fix). The area eyebrow in the projects hero used the white-surface ink tone on navy (about 2.6:1); it now uses the glow tone.
 * **Wording:** every job title on the site already reads *desenvolvedor de software / software developer / Softwareentwickler*. "Software Engineering / Engenharia de Software / Softwaretechnik" remains only as the name of a master's course actually taken, and in one journal title.
 
+### 3.2 Dark glass, section films and software-first copy (second revision, 30 Oct)
+
+Review of 3.1 on the live site: the white reading sections hid the film for most of each page, the home copy was too focused on the automotive industry, and the fast in-car clip behind the projects did not fit. This revision supersedes 3.1 where they differ.
+
+* **No white sections.** Every public page is navy glass over its film, from the hero to the footer: `main` redefines the semantic tokens (`--surface`, `--text`, `--accent`, `--rule`…) for dark, reading sections take a 64 % navy veil (`--section-veil`), cards a deeper glass, and highlights, status colours and error boxes have dark-safe tokens (`--tint`, `--ok`, `--bad`, `--warn`, `--bad-bg`). Admin and login stay light. The project covers for defect triage and street routing were redrawn in navy.
+* **Films per section.** A section can bring its own film with `data-film="<clip>"`; it cross-fades in (1.6 s) when the section reaches the middle of the screen, and sections close by preload. At most six films stay loaded.
+
+| Page | Films, top to bottom |
+| --- | --- |
+| Home | Circuit-implant portrait on the whole page; a Pantanal jaguar behind the closing call to action |
+| Projects (all tabs) | One film for the whole page: a woman in a futuristic visor |
+| Defect triage | Instrument cluster · engineer soldering a microcircuit · data centre · fibre optics in a rack |
+| Patent assistant | Holographic screens · circuit board with processor · data centre · glowing optic fibre |
+| Street routing | Aerial city traffic (hero and map) · Frankfurt at night · trains at night · fibre optics · Earth from space |
+| About | Programmer's hands · Earth from space |
+| Contact | Meeting in a modern room · silhouettes at a window |
+| Privacy, login, admin | Data-centre hallway · server lights |
+
+* **New clips:** fibre optics (two), Earth at night, futuristic visor, engineer with a microcircuit, trains at night, meeting room, silhouettes at a window (Mixkit), and the jaguar: *Pantanal Jaguar (Panthera onca)* by Gregory "Slobirdr" Smith, Wikimedia Commons, CC BY-SA 2.0. The cut and graded loop is shared under the same licence and credited in the footer. The in-car clip was removed.
+* **Phones and tablets:** a full-height crop of the 16:9 portrait is a thin strip that often missed the face. Below 1025 px the home film is a wide band across the top of the screen (190 vw, 235 vw on phones) that always holds the face and fades into navy. The hero veil is lighter there, and the intro uses the main on-dark tone with a text shadow, so it stays AA on the brightest frame.
+* **Pause button:** always visible now, since the film shows on the whole page (WCAG 2.2.2).
+* **Copy:** the home is software-first and general. Headline *Código limpo. Software inteligente.* / *Clean code. Intelligent software.* / *Sauberer Code. Intelligente Software.*; the eyebrow, intro, spec sheet focus (*Software development*), call to action, footer tagline, projects and about intros, and the SEO titles and descriptions follow. The *Developer.java* card replaces the ADAS car drawing in the spec sheet. Projects are numbered by position (01–06) and shown as glass case-study panels with a top line in their area's colour. The home count was wrong (three in progress); it is four.
+
+### 3.3 Lighthouse on the live site (30 Oct, before the fixes below)
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | TBT | CLS |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Home, mobile | 60 | 100 | 100 | 100 | 3.7 s | 910 ms | 0 |
+| Home, desktop | 86 | 100 | 100 | 100 | 0.6 s | 320 ms | 0 |
+| Projects, mobile | 63 | 100 | 100 | 100 | 3.5 s | 1,200 ms | 0 |
+| Projects, desktop | 97 | 100 | 100 | 100 | 0.7 s | 100 ms | 0 |
+
+Mobile performance is held back by total blocking time: three 360–430 ms tasks in the main chunk during hydration, while the film and the WebGL scene start. Fixes applied: the film starts only once the browser is idle after hydration (`requestIdleCallback`, at most 1.5 s); the area-door photos get 640 px `srcset` copies (about 400 kB less on phones); the comments API origin is preconnected (about 300 ms). Not yet done: long cache headers (GitHub Pages sets 10 minutes) and splitting the main chunk.
+
 ### Accessibility and performance of the motion
 
 * `prefers-reduced-motion`: no sticky scroll track, no animation; the stage buttons switch forms instantly.
@@ -130,11 +164,10 @@ A first pass rejected a background video on cost grounds. Review feedback revers
 
 | Priority | Task | Why |
 | --- | --- | --- |
-| P1 | Merge `feat/blue-identity` into `main` and deploy | Publishes the identity, the routing project and the video fix together |
-| P1 | Real-device check of the hero on a mid-range Android phone and an iPhone | GPU drivers differ; tune the point count if needed |
-| P2 | Lighthouse run on the deployed site (LCP, INP, CLS) and trim the initial bundle, which was 603.3 kB before this redesign and is 623.7 kB after it (+5.3 kB transferred: scene renderer, scene copy in three languages, view transitions); candidates: lazy-load the LLM-lab data and MapLibre-only code paths | Core Web Vitals |
-| P2 | Project cover illustrations (defect triage, street routing) redrawn in the navy identity | They still use the earlier pale-blue palette |
+| P1 | Lighthouse again after the 3.3 fixes; then split the main chunk (lazy-load the LLM-lab data and the article content) to cut mobile TBT | Mobile performance score 60–63 |
+| P1 | Real-device check of the hero and films on a mid-range Android phone and an iPhone (low-power mode shows posters only) | GPU drivers and autoplay rules differ |
 | P2 | Optional: replace stock films with custom AI-generated ones (section 5) | Unique footage nobody else uses |
+| P2 | Check the Mixkit licence of each clip (some are listed as *Restricted*) | Licensing |
 | P3 | Delete `feat/locale-videos`: its clips were reviewed, and their 1080p originals are now in use where they fit | Avoid a second divergent line |
 | P3 | Structured data (`Person`, `CreativeWork` per project) in the three languages | Search snippets |
 
