@@ -20,6 +20,8 @@ export class HomeComponent {
   readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
   readonly articles = computed(() => ARTICLES[this.locale()]);
+  readonly githubUrl = 'https://github.com/TiagoRodrigues-GitH';
+  readonly linkedInUrl = 'https://www.linkedin.com/in/tiagorodriguesde/';
 
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */

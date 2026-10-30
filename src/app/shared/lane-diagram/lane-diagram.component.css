@@ -50,7 +50,7 @@ svg {
 }
 
 .cell {
-  fill: rgba(111, 214, 255, 0.28);
+  fill: rgba(197, 161, 91, 0.28);
   stroke: var(--signal);
   stroke-width: 1.2;
 }

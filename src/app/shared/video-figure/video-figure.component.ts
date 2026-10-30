@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnDestroy, ViewChild, afterNextRender, si
 import { Locale } from '../../services/i18n.service';
 import { VIDEO_CONTROLS, VIDEO_ORIGIN, VIDEO_THEME, VideoSlot, VideoSource, VideoTheme, videoSource } from '../../content/videos';
 
-/** Neural graph of the `neural` (pt) overlay, in a 160 × 90 box. */
+/** Neural graph of the `cinematic` (pt) overlay, in a 160 × 90 box. */
 const NODES: Array<[number, number]> = [
   [14, 18], [38, 10], [62, 24], [88, 12], [112, 28], [140, 16],
   [26, 52], [52, 70], [78, 46], [104, 64], [130, 50], [150, 76],
@@ -13,7 +13,7 @@ const EDGES: Array<[number, number]> = [
 ];
 /** Pointer reach (fraction of the width) within which a node lights up. */
 const REACH = 0.2;
-/** Crosshair snap of the `precision` (de) overlay, in CSS pixels; 1 px reads as 0.25 mm. */
+/** Crosshair snap of the `minimal` (de) overlay, in CSS pixels; 1 px reads as 0.25 mm. */
 const SNAP = 8;
 
 /**
@@ -49,7 +49,7 @@ export class VideoFigureComponent implements OnDestroy {
   readonly playing = signal(false);
   /** Pointer position as fractions of the figure (0..1), or null when away. */
   readonly pointer = signal<{ x: number; y: number } | null>(null);
-  /** Snapped crosshair of the precision overlay, in pixels. */
+  /** Snapped crosshair of the minimal overlay, in pixels. */
   readonly cross = signal({ x: 0, y: 0 });
 
   /** Paused by the reader: visibility never restarts it. */
@@ -128,7 +128,10 @@ export class VideoFigureComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
-    document.removeEventListener('pointermove', this.onDocumentPointer);
+    // Only the browser added it (start() runs after render); prerendering has no document.
+    if (this.observer && this.background) {
+      document.removeEventListener('pointermove', this.onDocumentPointer);
+    }
   }
 
   /** Backgrounds sit under the section's content, so they listen to the whole document. */

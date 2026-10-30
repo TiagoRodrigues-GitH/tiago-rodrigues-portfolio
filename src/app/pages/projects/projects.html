@@ -15,6 +15,8 @@
   </div>
 </section>
 
+<div class="band blueprint has-video-bg">
+  <app-video-figure class="section-bg" slot="bg-research" [locale]="locale()" [background]="true" />
 <div class="shell project-list">
   @for (project of projects(); track project.id; let i = $index) {
     <article class="project reveal" [id]="'project-' + project.id" [attr.aria-labelledby]="'project-title-' + project.id">
@@ -49,6 +51,32 @@
           </div>
         </div>
 
+        <dl class="project-facts">
+          <div>
+            <dt class="mono-label">{{ t.objectives }}</dt>
+            <dd>{{ project.objectives }}</dd>
+          </div>
+          <div>
+            <dt class="mono-label">{{ t.results }}</dt>
+            <dd>{{ project.results }}</dd>
+          </div>
+          <div>
+            <dt class="mono-label">{{ t.limitations }}</dt>
+            <dd>{{ project.limitations }}</dd>
+          </div>
+        </dl>
+
+        <ul class="project-links">
+          <li><a class="arrow-link" [href]="githubUrl" target="_blank" rel="noopener noreferrer">{{ t.repository }}<span class="visually-hidden">: {{ project.title }} {{ newTab }}</span> <span aria-hidden="true">↗</span></a></li>
+          <li>
+            @if (project.demo) {
+              <a class="arrow-link" [routerLink]="project.demo" [queryParams]="langQuery()">{{ t.documentation }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span></a>
+            } @else {
+              <a class="arrow-link" [href]="githubUrl" target="_blank" rel="noopener noreferrer">{{ t.documentation }}<span class="visually-hidden">: {{ project.title }} {{ newTab }}</span> <span aria-hidden="true">↗</span></a>
+            }
+          </li>
+        </ul>
+
         @if (project.demo) {
           <a class="btn btn-primary demo-link" [routerLink]="project.demo" [queryParams]="langQuery()">
             {{ t.demo }}<span class="visually-hidden">: {{ project.title }}</span> <span aria-hidden="true">→</span>
@@ -73,6 +101,7 @@
       </div>
     </article>
   }
+</div>
 </div>
 
 @if (activeImage(); as image) {

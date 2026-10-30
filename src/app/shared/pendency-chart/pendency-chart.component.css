@@ -98,7 +98,7 @@ svg {
 }
 
 .group.on .hit {
-  fill: rgba(111, 214, 255, 0.06);
+  fill: rgba(197, 161, 91, 0.06);
 }
 
 /* Bars grow from the axis while the chart scrolls into view; values fade in after them. */

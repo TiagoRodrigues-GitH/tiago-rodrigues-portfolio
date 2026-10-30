@@ -39,7 +39,7 @@
 }
 
 .ring {
-  fill: rgba(111, 214, 255, 0.08);
+  fill: rgba(197, 161, 91, 0.08);
   stroke: var(--signal);
   stroke-width: 2.5;
   stroke-dasharray: 6 6;
@@ -70,7 +70,7 @@
 }
 
 .hotspot.on .ring {
-  fill: rgba(111, 214, 255, 0.22);
+  fill: rgba(197, 161, 91, 0.22);
   opacity: 1;
 }
 

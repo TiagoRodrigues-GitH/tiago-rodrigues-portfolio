@@ -1,4 +1,5 @@
-<section class="page-hero graph-paper" aria-labelledby="contact-title">
+<section class="page-hero blueprint has-video-bg" aria-labelledby="contact-title">
+  <app-video-figure class="section-bg" slot="ambient" [locale]="locale()" [background]="true" />
   <div class="shell contact-hero">
     <div>
       <p class="mono-label">{{ t.eyebrow }}</p>
@@ -17,6 +18,8 @@
   </div>
 </section>
 
+<div class="band blueprint has-video-bg">
+  <app-video-figure class="section-bg" slot="bg-projects" [locale]="locale()" [background]="true" />
 <div class="shell channels">
   <ul class="channel-list">
     <li class="channel channel-email">
@@ -41,4 +44,5 @@
       </li>
     }
   </ul>
+</div>
 </div>

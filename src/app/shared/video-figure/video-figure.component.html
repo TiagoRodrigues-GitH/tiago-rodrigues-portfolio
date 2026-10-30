@@ -20,7 +20,7 @@
 
     <div class="hud" aria-hidden="true">
       @switch (theme) {
-        @case ('neural') {
+        @case ('cinematic') {
           <svg class="graph" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice">
             @for (edge of edges; track $index) {
               <line [attr.x1]="nodes[edge[0]][0]" [attr.y1]="nodes[edge[0]][1]" [attr.x2]="nodes[edge[1]][0]" [attr.y2]="nodes[edge[1]][1]"
@@ -31,18 +31,16 @@
             }
           </svg>
         }
-        @case ('neon') {
-          <span class="scanlines"></span>
+        @case ('editorial') {
           <span class="glow"></span>
         }
-        @case ('precision') {
+        @case ('minimal') {
           <span class="grid"></span>
           <span class="ruler ruler-x"></span>
           <span class="ruler ruler-y"></span>
           <span class="cross" [style.--cx.px]="cross().x" [style.--cy.px]="cross().y">
             <span class="cross-readout">{{ crossReadout }}</span>
           </span>
-          <span class="flagline"><i></i><i></i><i></i></span>
         }
       }
       <span class="corner corner-tl"></span>

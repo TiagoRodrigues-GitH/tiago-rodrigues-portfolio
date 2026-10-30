@@ -30,6 +30,8 @@ export class ProjectsComponent implements OnDestroy {
   readonly locale = injectLocale();
   readonly langQuery = injectLangQuery(this.locale);
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
+  /** Repositories are listed on the GitHub profile. */
+  readonly githubUrl = 'https://github.com/TiagoRodrigues-GitH';
 
   private readonly viewer = signal<{ project: number; image: number } | null>(null);
   readonly activeProject = computed(() => {
@@ -47,6 +49,10 @@ export class ProjectsComponent implements OnDestroy {
 
   get t(): ProjectsTranslations {
     return this.i18n.projects[this.locale()];
+  }
+
+  get newTab(): string {
+    return this.i18n.shell[this.locale()].newTab;
   }
 
   caption(slot: VideoSlot): string {

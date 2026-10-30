@@ -15,6 +15,7 @@ import { ProjectFigureComponent } from './shared/project-figure/project-figure.c
 import { BlueprintFigureComponent } from './shared/blueprint-figure/blueprint-figure.component';
 import { PendencyChartComponent } from './shared/pendency-chart/pendency-chart.component';
 import { VideoFigureComponent } from './shared/video-figure/video-figure.component';
+import { HeroSceneComponent } from './shared/hero-scene/hero-scene.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { VideoFigureComponent } from './shared/video-figure/video-figure.compone
     BlueprintFigureComponent,
     PendencyChartComponent,
     VideoFigureComponent,
+    HeroSceneComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   // Hydration reuses the prerendered DOM instead of re-creating it (less main-thread work, lower TBT/INP).

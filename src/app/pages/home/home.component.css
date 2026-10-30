@@ -56,7 +56,7 @@
   height: 0.55rem;
   border-radius: 50%;
   background: var(--signal);
-  box-shadow: 0 0 0 4px rgba(111, 214, 255, 0.18);
+  box-shadow: 0 0 0 4px rgba(197, 161, 91, 0.18);
 }
 
 /* ---------- Spec sheet (bento) ---------- */
@@ -381,5 +381,90 @@
 
   .hero-actions .btn {
     flex: 1 1 100%;
+  }
+}
+
+/* ---------- Hero profiles ---------- */
+
+.hero-profiles {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-profiles a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--text-on-dark-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.hero-profiles a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+/* ---------- Research status: interests, in progress, completed ---------- */
+
+.research-status {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  background: var(--rule-dark);
+}
+
+.status-col {
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  background: rgba(32, 39, 41, 0.94);
+}
+
+.status-col h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+}
+
+.status-col h3::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+}
+
+.status-col[data-status='progress'] h3::before {
+  background: linear-gradient(90deg, var(--gold) 50%, transparent 50%);
+}
+
+.status-col[data-status='done'] h3::before {
+  background: var(--gold);
+}
+
+.status-col ul {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-on-dark);
+}
+
+.status-col li {
+  padding-left: 1rem;
+  border-left: 1px solid var(--rule-dark);
+}
+
+@media (max-width: 860px) {
+  .research-status {
+    grid-template-columns: 1fr;
   }
 }

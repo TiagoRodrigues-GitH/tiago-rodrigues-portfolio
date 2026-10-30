@@ -1,4 +1,5 @@
-<section class="page-hero graph-paper" aria-labelledby="about-title">
+<section class="page-hero blueprint has-video-bg" aria-labelledby="about-title">
+  <app-video-figure class="section-bg" slot="bg-about" [locale]="locale()" [background]="true" />
   <div class="shell about-hero">
     <div class="frame portrait">
       <img [src]="profileImage" width="534" height="627" [alt]="t.photoAlt" />
@@ -15,6 +16,8 @@
   </div>
 </section>
 
+<div class="band blueprint has-video-bg">
+  <app-video-figure class="section-bg" slot="bg-research" [locale]="locale()" [background]="true" />
 <div class="shell about-body">
   <section class="about-row reveal" aria-labelledby="timeline-title">
     <h2 id="timeline-title" class="row-title">{{ t.timelineTitle }}</h2>
@@ -65,4 +68,5 @@
       }
     </div>
   </section>
+</div>
 </div>
