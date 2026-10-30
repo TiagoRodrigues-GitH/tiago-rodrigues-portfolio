@@ -127,7 +127,7 @@ Review of 3.1 on the live site: the white reading sections hid the film for most
 
 | Page | Films, top to bottom |
 | --- | --- |
-| Home | Circuit-implant portrait on the whole page; a Pantanal jaguar behind the closing call to action |
+| Home | Neon portrait of a woman with curly hair and glitter make-up (Mikhail Nilov, Pexels 6831846) on the whole page; a Pantanal jaguar behind the closing call to action. The earlier circuit-implant portrait (Mixkit 50443) is archived in `frontend/design/films/portrait-circuits/` |
 | Projects (all tabs) | One film for the whole page: a woman in a futuristic visor |
 | Defect triage | Instrument cluster · engineer soldering a microcircuit · data centre · fibre optics in a rack |
 | Patent assistant | Holographic screens · circuit board with processor · data centre · glowing optic fibre |

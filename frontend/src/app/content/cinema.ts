@@ -3,7 +3,7 @@ import { Locale, PageKey } from '../services/i18n.service';
 /**
  * Background films (shared/cinema): realistic clips shown behind the whole page. Each page has its film; a section
  * can bring its own with `data-film="<clip>"`, which cross-fades in when the section reaches the middle of the screen.
- * Clips are cut to seamless 9 s loops (7 s for `developer`) and graded towards the navy identity by
+ * Clips are cut to seamless 9 s loops (7 s for `developer` and `home`) and graded towards the navy identity by
  * scripts/encode-cinema.sh: assets/videos/cinema/<clip>.mp4 (1920 or 1280 px), <clip>-sm.mp4 (960 px, phones)
  * and <clip>.webp (poster).
  */
@@ -53,7 +53,13 @@ const mixkit = (title: string, url: string): FilmCredit => ({ title, url, author
 
 /** Where each clip comes from, for the footer credits. */
 export const CINEMA_SOURCES: Record<CinemaClip, FilmCredit> = {
-  home: mixkit('Close up on young woman with circuits on her face', 'https://mixkit.co/free-stock-video/close-up-on-young-woman-with-circuits-on-her-face-50443/'),
+  // the earlier home film (Mixkit 50443, circuits on the face) is archived in design/films/portrait-circuits
+  home: {
+    title: 'Woman with Creative Makeup Looking at Camera',
+    url: 'https://www.pexels.com/video/woman-with-creative-makeup-looking-at-camera-6831846/',
+    author: 'Mikhail Nilov',
+    license: 'Pexels License',
+  },
   circuit: mixkit('High tech circuit board with processor', 'https://mixkit.co/free-stock-video/high-tech-circuit-board-with-processor-47051/'),
   servers: mixkit('Server lights flickering', 'https://mixkit.co/free-stock-video/server-lights-flickering-7863/'),
   cluster: mixkit('Accelerating car dashboard', 'https://mixkit.co/free-stock-video/accelerating-car-dashboard-64/'),
