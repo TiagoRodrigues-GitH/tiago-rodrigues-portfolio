@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-hidden="true">
-  <rect width="640" height="480" fill="#f3f8ff"/>
-  <g stroke="#9aa9bf" stroke-width="3" stroke-linecap="round" fill="none">
+  <rect width="640" height="480" fill="#070f22"/>
+  <g stroke="#2a3f6b" stroke-width="3" stroke-linecap="round" fill="none">
     <path d="M40 60H600M40 140H600M40 220H600M40 300H600M40 380H600M40 450H600"/>
     <path d="M60 40V460M150 40V460M240 40V460M330 40V460M420 40V460M510 40V460M590 40V460"/>
     <path d="M60 300L240 140M330 450L590 220" stroke-width="2"/>
@@ -12,8 +12,8 @@
     <circle cx="330" cy="220" r="7"/><circle cx="150" cy="140" r="7"/><circle cx="330" cy="380" r="7"/>
     <circle cx="420" cy="300" r="7"/><circle cx="420" cy="220" r="7"/>
   </g>
-  <path d="M150 300H330V220H510V140" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M150 300H330V220H510V140" fill="none" stroke="#0072b2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="150" cy="300" r="13" fill="#009e73" stroke="#fff" stroke-width="4"/>
-  <circle cx="510" cy="140" r="13" fill="#d55e00" stroke="#fff" stroke-width="4"/>
+  <path d="M150 300H330V220H510V140" fill="none" stroke="#070f22" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150 300H330V220H510V140" fill="none" stroke="#3fe0f5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="150" cy="300" r="13" fill="#009e73" stroke="#070f22" stroke-width="4"/>
+  <circle cx="510" cy="140" r="13" fill="#d55e00" stroke="#070f22" stroke-width="4"/>
 </svg>

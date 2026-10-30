@@ -48,8 +48,10 @@ app-cinema {
   filter: saturate(0.88) brightness(0.74) contrast(1.05);
 }
 
-/* the instrument cluster has bright white dials right behind the page title */
-.cinema[data-clip='cluster'] video {
+/* the instrument cluster has bright white dials right behind the page title, and the trains clip
+   bright office windows behind long reading text */
+.cinema[data-clip='cluster'] video,
+.cinema[data-clip='trains'] video {
   filter: saturate(0.9) brightness(0.68);
 }
 
