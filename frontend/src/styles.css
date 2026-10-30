@@ -25,57 +25,64 @@
 }
 
 /* ==========================================================================
-   Blueprint design system
-   A navy-to-ice blue scale inspired by engineering drawings. Every text pair
-   used below meets WCAG 2.1 AA contrast; text pairs also reach AAA (7:1).
+   "Neural Navy" identity (October 2026)
+   Deep navy surfaces, an electric-blue accent, cyan signal light and a
+   champagne-gold hairline used sparingly for indices and dividers.
+   Every text pair below meets WCAG 2.2 AA; body text pairs reach AAA (7:1).
+   The token names are kept from the earlier blueprint scale so every page
+   and component follows the new identity without local overrides.
    ========================================================================== */
 
 :root {
-	/* Blue scale */
-	/* Azure scale (October 2026): fresher and lighter than the earlier navy */
-	--blue-975: #031327;
-	--blue-950: #05203f;
-	--blue-900: #082c57;
-	--blue-850: #0a3770;
-	--blue-800: #0c4590;
-	--blue-700: #0a5bc4;
-	--blue-600: #0f74e6;
-	--blue-500: #2f8cf5;
-	--blue-400: #5ca8fb;
-	--blue-300: #8ec4ff;
-	--blue-200: #bfdcff;
-	--blue-150: #d7eaff;
-	--blue-100: #e6f2ff;
-	--blue-50: #f2f8ff;
-	--signal: #3fd2ff;
+	/* Navy-to-ice scale */
+	--blue-975: #040914;
+	--blue-950: #070f22;
+	--blue-900: #0b1730;
+	--blue-850: #0f2142;
+	--blue-800: #163fa8;
+	--blue-700: #1d4fd8;
+	--blue-600: #2f66f0;
+	--blue-500: #3d7bff;
+	--blue-400: #6e9bff;
+	--blue-300: #9dbcff;
+	--blue-200: #c6d7ff;
+	--blue-150: #dce6ff;
+	--blue-100: #e9f0ff;
+	--blue-50: #f4f7fd;
+	--signal: #3fe0f5;
+	--gold: #cdb27a;
+	--gold-ink: #8a6d2f;
+	--platinum: #d5deea;
 
 	/* Semantic roles */
 	--surface: #ffffff;
 	--surface-muted: var(--blue-50);
-	--text: #0a1a36;
-	--text-muted: #3b4d6b;
-	--text-on-dark: #e8f1ff;
-	--text-on-dark-muted: #a9c2e8;
-	/* blue-700 on white 6.4:1 and on blue-50 5.9:1: AA for body text. */
+	--text: #0a1430;
+	--text-muted: #46546e;
+	--text-on-dark: #e9efff;
+	--text-on-dark-muted: #a8b6d6;
+	/* blue-700 on white 6.6:1 and on blue-50 6.2:1 */
 	--accent: var(--blue-700);
 	--accent-strong: var(--blue-800);
-	--border-input: #6a82ab;
-	--rule: rgba(20, 67, 154, 0.16);
-	--rule-strong: rgba(20, 67, 154, 0.3);
-	--rule-dark: rgba(143, 184, 255, 0.2);
+	--border-input: #6a7ea6;
+	--rule: rgba(22, 63, 168, 0.14);
+	--rule-strong: rgba(22, 63, 168, 0.28);
+	--rule-dark: rgba(157, 188, 255, 0.16);
+	--rule-gold: rgba(205, 178, 122, 0.35);
 	--focus: var(--blue-500);
+	--glow: 0 0 0 1px rgba(63, 224, 245, 0.25), 0 18px 60px -20px rgba(61, 123, 255, 0.55);
 
-	/* Portfolio areas: Petronas teal for automotive, the site blue for AI, violet for security.
-	   *-ink is the text tone (AA on white), *-glow the tone on dark blue surfaces. */
-	--auto: #00a19b;
-	--auto-ink: #00726d;
-	--auto-glow: #4fd8d0;
+	/* Portfolio areas, all in the cool spectrum of the identity.
+	   *-ink is the text tone (AA on white), *-glow the tone on navy. */
+	--auto: #12b5cb;
+	--auto-ink: #0b7285;
+	--auto-glow: #5ee6f5;
 	--ai: var(--blue-500);
 	--ai-ink: var(--blue-700);
 	--ai-glow: var(--blue-300);
-	--sec: #7f5ad8;
-	--sec-ink: #5a38b0;
-	--sec-glow: #c4b0f6;
+	--sec: #7c6cf2;
+	--sec-ink: #5543d6;
+	--sec-glow: #b9b0ff;
 
 	/* Type */
 	--font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
@@ -100,6 +107,7 @@
 }
 
 html {
+	background: var(--blue-975);
 	scroll-padding-top: calc(var(--header-h) + 1rem);
 	-webkit-text-size-adjust: 100%;
 }
@@ -116,7 +124,8 @@ body {
 	font-size: 1.0625rem;
 	line-height: 1.65;
 	color: var(--text);
-	background: var(--surface);
+	/* transparent: the background film (shared/cinema) shows through the windows; html is navy until it loads */
+	background: transparent;
 	text-rendering: optimizeLegibility;
 	overflow-wrap: break-word;
 }
@@ -176,7 +185,8 @@ button {
 }
 
 .on-dark,
-.blueprint {
+.blueprint,
+.has-backdrop {
 	--focus: var(--signal);
 }
 
@@ -221,25 +231,25 @@ button {
 	padding-block: clamp(4rem, 9vw, 7.5rem);
 }
 
-/* Dark blueprint surface with a major/minor drawing grid */
+/* Dark navy surface: soft electric-blue and cyan light over a faint drawing grid */
 .blueprint {
 	color: var(--text-on-dark);
 	background-color: var(--blue-950);
 	background-image:
-		linear-gradient(var(--rule-dark) 1px, transparent 1px),
-		linear-gradient(90deg, var(--rule-dark) 1px, transparent 1px),
-		linear-gradient(rgba(143, 184, 255, 0.06) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(143, 184, 255, 0.06) 1px, transparent 1px);
-	background-size: 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+		radial-gradient(60rem 30rem at 85% -10%, rgba(61, 123, 255, 0.22), transparent 70%),
+		radial-gradient(40rem 26rem at 0% 110%, rgba(63, 224, 245, 0.1), transparent 70%),
+		linear-gradient(rgba(157, 188, 255, 0.05) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(157, 188, 255, 0.05) 1px, transparent 1px);
+	background-size: auto, auto, 64px 64px, 64px 64px;
 }
 
 /* Light graph-paper surface */
 .graph-paper {
 	background-color: var(--blue-50);
 	background-image:
-		linear-gradient(rgba(26, 85, 194, 0.08) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(26, 85, 194, 0.08) 1px, transparent 1px);
-	background-size: 32px 32px;
+		linear-gradient(rgba(29, 79, 216, 0.05) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(29, 79, 216, 0.05) 1px, transparent 1px);
+	background-size: 40px 40px;
 }
 
 /* ---------- Editorial section heading ---------- */
@@ -270,8 +280,8 @@ button {
 	background: currentColor;
 }
 
-.blueprint .section-index {
-	color: var(--blue-300);
+:is(.blueprint, .has-backdrop) .section-index {
+	color: var(--gold);
 }
 
 .section-title {
@@ -286,7 +296,7 @@ button {
 	max-width: 44rem;
 }
 
-.blueprint .section-lede {
+:is(.blueprint, .has-backdrop) .section-lede {
 	color: var(--text-on-dark-muted);
 }
 
@@ -299,7 +309,7 @@ button {
 	color: var(--accent);
 }
 
-.blueprint .mono-label {
+:is(.blueprint, .has-backdrop) .mono-label {
 	color: var(--blue-300);
 }
 
@@ -328,12 +338,13 @@ button {
 }
 
 .btn-primary {
-	background: var(--accent);
+	background: linear-gradient(135deg, var(--blue-700), var(--blue-600));
 	color: #ffffff;
+	box-shadow: 0 10px 30px -12px rgba(29, 79, 216, 0.7);
 }
 
 .btn-primary:hover {
-	background: var(--accent-strong);
+	background: linear-gradient(135deg, var(--blue-800), var(--blue-700));
 	color: #ffffff;
 }
 
@@ -348,23 +359,24 @@ button {
 	color: var(--accent-strong);
 }
 
-.blueprint .btn-primary {
-	background: var(--blue-150);
+:is(.blueprint, .has-backdrop) .btn-primary {
+	background: linear-gradient(135deg, #ffffff, var(--blue-150));
 	color: var(--blue-950);
+	box-shadow: var(--glow);
 }
 
-.blueprint .btn-primary:hover {
+:is(.blueprint, .has-backdrop) .btn-primary:hover {
 	background: #ffffff;
 	color: var(--blue-950);
 }
 
-.blueprint .btn-outline {
+:is(.blueprint, .has-backdrop) .btn-outline {
 	border-color: var(--blue-300);
 	color: var(--text-on-dark);
 }
 
-.blueprint .btn-outline:hover {
-	background: rgba(143, 184, 255, 0.12);
+:is(.blueprint, .has-backdrop) .btn-outline:hover {
+	background: rgba(157, 188, 255, 0.12);
 	color: #ffffff;
 }
 
@@ -462,7 +474,7 @@ button {
 	color: var(--text-muted);
 }
 
-.blueprint .figure figcaption {
+:is(.blueprint, .has-backdrop) .figure figcaption {
 	color: var(--text-on-dark-muted);
 }
 
@@ -736,15 +748,16 @@ button {
 	}
 }
 
+/* `translate` (not `transform`), so revealed cards can still tilt toward the pointer */
 @keyframes reveal {
 	from {
 		opacity: 0;
-		transform: translateY(28px);
+		translate: 0 28px;
 	}
 
 	to {
 		opacity: 1;
-		transform: none;
+		translate: none;
 	}
 }
 
@@ -812,8 +825,26 @@ button {
 }
 
 /* ==========================================================================
-   Interactive photo behind page heroes (shared/backdrop.directive.ts)
+   Background film and its windows (shared/cinema, content/cinema.ts)
+   One fixed film plays behind the whole page. Reading blocks scroll over it on
+   their own light surface; heroes, the home call to action and the footer are
+   windows onto it, so the picture never changes while the reader scrolls.
    ========================================================================== */
+
+/* Reading surfaces: every top-level block of a page except the windows.
+   :where() keeps this at zero specificity, so any class background (graph paper, blueprint) wins,
+   and flow-root keeps children's margins inside the surface instead of opening gaps onto the film. */
+:where(main > * > :not(.has-backdrop, app-home-hero, .street-page, router-outlet)),
+:where(.street-page > :not(.has-backdrop)) {
+	display: flow-root;
+	background-color: var(--surface);
+}
+
+/* Centred blocks (.shell) paint their surface out to both edges of the screen. */
+:where(main > * > .shell:not(.has-backdrop)) {
+	box-shadow: 0 0 0 100vmax var(--surface);
+	clip-path: inset(0 -100vmax);
+}
 
 .has-backdrop {
 	position: relative;
@@ -821,7 +852,18 @@ button {
 	overflow: hidden;
 }
 
-/* light veil over the photo: opaque under the text on the left, open on the right, with the drawing grid */
+/* Navy veil over the film: deep under the text on the left, open on the right, with a faint
+   drawing grid. Text in these windows uses the on-dark roles. */
+.has-backdrop {
+	--text: var(--text-on-dark);
+	--text-muted: var(--text-on-dark-muted);
+	--accent: var(--blue-300);
+	--accent-strong: #ffffff;
+	--rule: var(--rule-dark);
+	color: var(--text-on-dark);
+	background-color: transparent;
+}
+
 .has-backdrop::before {
 	content: '';
 	position: absolute;
@@ -829,51 +871,19 @@ button {
 	z-index: -1;
 	pointer-events: none;
 	background-image:
-		linear-gradient(rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-		linear-gradient(100deg, rgba(242, 248, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 42%, rgba(242, 248, 255, 0.45) 72%, rgba(242, 248, 255, 0.15) 100%);
-	background-size: 48px 48px, 48px 48px, auto;
+		linear-gradient(rgba(157, 188, 255, 0.06) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(157, 188, 255, 0.06) 1px, transparent 1px),
+		linear-gradient(100deg, rgba(4, 9, 20, 0.9) 0%, rgba(4, 9, 20, 0.78) 38%, rgba(4, 9, 20, 0.35) 72%, rgba(4, 9, 20, 0.15) 100%);
+	background-size: 64px 64px, 64px 64px, auto;
 }
 
-.backdrop {
-	--px: 0;
-	--py: 0;
-	--scroll: 0;
-	position: absolute;
-	inset: -6%;
-	z-index: -2;
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity 0.9s var(--ease);
-}
-
-.backdrop.loaded {
-	opacity: 1;
-}
-
-.backdrop img {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	opacity: 0;
-	transform: translate3d(calc(var(--px) * -28px), calc(var(--py) * -18px + var(--scroll) * 0.12px), 0) scale(1.04);
-	transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 1.4s ease;
-	will-change: transform, opacity;
-}
-
-/* the photo on screen; the other one waits, loads and cross-fades in */
-.backdrop img.on {
-	opacity: 1;
-}
-
+/* Phones: the text spans the width, so the veil is even and deep enough for AA over any frame. */
 @media (max-width: 760px) {
 	.has-backdrop::before {
 		background-image:
-			linear-gradient(rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-			linear-gradient(180deg, rgba(242, 248, 255, 0.95) 0%, rgba(242, 248, 255, 0.88) 100%);
+			linear-gradient(rgba(157, 188, 255, 0.06) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(157, 188, 255, 0.06) 1px, transparent 1px),
+			linear-gradient(180deg, rgba(4, 9, 20, 0.86) 0%, rgba(4, 9, 20, 0.74) 100%);
 	}
 }
 
@@ -933,4 +943,74 @@ button {
 	to {
 		transform: translateX(-50%);
 	}
+}
+
+/* ==========================================================================
+   Page transitions (View Transitions API, enabled in the router)
+   The header keeps its place; the page underneath fades and rises.
+   ========================================================================== */
+
+.site-header {
+	view-transition-name: site-header;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-old(root) {
+		animation: 0.22s var(--ease) both page-out;
+	}
+
+	::view-transition-new(root) {
+		animation: 0.5s var(--ease) both page-in;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+}
+
+@keyframes page-out {
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes page-in {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+}
+
+/* ---------- 3D tilt toward the pointer (shared/tilt.directive.ts) ---------- */
+
+.tilt {
+	position: relative;
+	transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+	transform-style: preserve-3d;
+	transition: transform 0.5s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.tilt.tilting {
+	transition: transform 0.08s linear, box-shadow 0.4s var(--ease);
+	box-shadow: 0 30px 60px -30px rgba(7, 15, 34, 0.55);
+}
+
+.tilt::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	opacity: 0;
+	background: radial-gradient(28rem circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.16), transparent 45%);
+	transition: opacity 0.3s var(--ease);
+}
+
+.tilt.tilting::after {
+	opacity: 1;
 }

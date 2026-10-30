@@ -6,8 +6,10 @@ import { Locale } from './i18n.service';
 /** Public address of the site (GitHub Pages project site). */
 export const SITE_URL = 'https://tiagorodrigues-gith.github.io/tiago-rodrigues-portfolio';
 
-const OG_LOCALE: Record<Locale, string> = { pt: 'pt_BR', en: 'en_US', de: 'de_DE' };
-const HREFLANG: Record<Locale, string> = { pt: 'pt-BR', en: 'en', de: 'de' };
+/** Each language version serves the regions it was written for: English for the UK and Canada,
+ *  German for Germany and Austria. The first region is the primary Open Graph locale. */
+const REGIONS: Record<Locale, string[]> = { pt: ['pt-BR'], en: ['en-GB', 'en-CA'], de: ['de-DE', 'de-AT'] };
+const ogLocale = (tag: string) => tag.replace('-', '_');
 
 /**
  * Title, description, canonical URL, hreflang alternates and Open Graph tags per page.
@@ -29,14 +31,22 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:title', content: page.title });
     this.meta.updateTag({ property: 'og:description', content: page.description });
     this.meta.updateTag({ property: 'og:url', content: canonical });
-    this.meta.updateTag({ property: 'og:locale', content: OG_LOCALE[page.locale] });
+    const [primary, ...others] = REGIONS[page.locale];
+    this.meta.updateTag({ property: 'og:locale', content: ogLocale(primary) });
+    this.meta.removeTag("property='og:locale:alternate'");
+    for (const tag of [...others, ...(Object.keys(REGIONS) as Locale[]).filter((l) => l !== page.locale).flatMap((l) => REGIONS[l])]) {
+      this.meta.addTag({ property: 'og:locale:alternate', content: ogLocale(tag) });
+    }
     this.meta.updateTag({ name: 'twitter:title', content: page.title });
     this.meta.updateTag({ name: 'twitter:description', content: page.description });
 
     this.link('canonical', canonical);
-    for (const locale of Object.keys(HREFLANG) as Locale[]) {
+    for (const locale of Object.keys(REGIONS) as Locale[]) {
       const href = locale === 'pt' ? `${SITE_URL}${path}` : `${SITE_URL}${path}?lang=${locale}`;
-      this.link('alternate', href, HREFLANG[locale]);
+      // the plain language code catches readers from other regions (e.g. English in the US)
+      for (const tag of locale === 'pt' ? REGIONS[locale] : [locale, ...REGIONS[locale]]) {
+        this.link('alternate', href, tag);
+      }
     }
     this.link('alternate', `${SITE_URL}${path}`, 'x-default');
   }

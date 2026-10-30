@@ -14,7 +14,6 @@ import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { photoSources } from '../../content/photos';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
 import { AREA_KEYS, AREAS, AREAS_TEXT, AreaKey, isAreaKey } from '../../shared/areas';
@@ -38,8 +37,6 @@ export class ProjectsComponent implements OnDestroy {
     return isAreaKey(area) ? area : null;
   })();
   readonly areaKeys = AREA_KEYS;
-  /** Photo behind the page hero (shared/backdrop.directive.ts). */
-  readonly photo = computed(() => photoSources(this.area ?? 'projects', this.locale()));
   readonly projects = computed(() =>
     getPortfolioProjects(this.locale()).filter((project) => !this.area || project.areas.includes(this.area)),
   );

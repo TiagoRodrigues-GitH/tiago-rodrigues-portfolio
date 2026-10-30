@@ -1,71 +1,3 @@
-/* ---------- Hero ---------- */
-
-.hero {
-  padding-block: clamp(3rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
-  overflow: hidden;
-}
-
-/* Light, airy hero: sky blue to white, a faint drawing grid and the real photo */
-.hero.sky {
-  color: var(--text);
-  background-color: var(--blue-50);
-  background-image:
-    linear-gradient(rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 116, 230, 0.07) 1px, transparent 1px),
-    linear-gradient(160deg, var(--blue-100) 0%, var(--blue-50) 45%, #fff 100%);
-  background-size: 48px 48px, 48px 48px, auto;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
-}
-
-.hero-title {
-  margin-block: 1.25rem 1.5rem;
-  font-size: clamp(2.6rem, 5.6vw, 5rem);
-  font-weight: 600;
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-}
-
-.accent {
-  color: var(--blue-600);
-}
-
-.hero-intro {
-  max-width: 36rem;
-  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-  color: var(--text-muted);
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-block: 2rem 1.75rem;
-}
-
-.hero-status {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.dot {
-  flex: none;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--blue-500);
-  box-shadow: 0 0 0 4px rgba(47, 140, 245, 0.2);
-}
-
 /* ---------- Spec sheet (bento) ---------- */
 
 .bento {
@@ -324,11 +256,13 @@
   overflow-wrap: anywhere;
 }
 
-/* ---------- CTA ---------- */
+/* ---------- CTA: a tall window onto the home film before the footer ---------- */
 
 .cta {
-  padding-block: clamp(4rem, 9vw, 7rem);
-  border-bottom: 1px solid var(--rule-dark);
+  display: grid;
+  align-content: center;
+  min-height: min(80svh, 48rem);
+  padding-block: clamp(4.5rem, 10vw, 8rem);
 }
 
 .cta-inner {
@@ -352,10 +286,6 @@
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
-
   .project-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -410,48 +340,4 @@
   height: 0.5rem;
   border-radius: 50%;
   background: var(--area);
-}
-
-
-/* the home veil stays opaque under the headline only, so Rio shows bright and alive on the right */
-.hero.has-backdrop::before {
-  background-image: linear-gradient(100deg, rgba(242, 248, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 48%, rgba(242, 248, 255, 0.25) 70%, rgba(242, 248, 255, 0) 100%);
-  background-size: auto;
-}
-
-@media (max-width: 760px) {
-  .hero.has-backdrop::before {
-    background-image: linear-gradient(180deg, rgba(242, 248, 255, 0.94) 0%, rgba(242, 248, 255, 0.82) 100%);
-  }
-}
-
-/* where the hero photo was taken, bottom right */
-.hero-place {
-  align-self: end;
-  justify-self: end;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--blue-800);
-  box-shadow: 0 10px 30px -18px rgba(10, 91, 196, 0.6);
-}
-
-.hero-place span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--blue-500);
-}
-
-@media (max-width: 1024px) {
-  .hero-place {
-    justify-self: start;
-  }
 }

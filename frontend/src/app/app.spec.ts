@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { I18nService, Locale } from './services/i18n.service';
 import { ARTICLES } from './content/articles';
 import { getPortfolioProjects } from './shared/portfolio-projects';
+import { CinemaComponent } from './shared/cinema/cinema.component';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -11,7 +12,7 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([])],
+      imports: [RouterModule.forRoot([]), CinemaComponent],
       declarations: [AppComponent],
     }).compileComponents();
 

@@ -7,6 +7,8 @@ import { IMAGE_CREDITS } from './content/credits';
 import { SeoService } from './services/seo.service';
 import { AnalyticsService } from './services/analytics.service';
 import { langQueryFor } from './services/locale';
+import { CinemaClip, cinemaClip } from './content/cinema';
+import { AreaKey } from './shared/areas';
 
 const LANG_KEY = 'preferred_lang';
 
@@ -36,6 +38,8 @@ export class AppComponent {
   readonly langQuery = computed(() => langQueryFor(this.lang()));
   /** Footer image credits (disclosure; closed content is `hidden`, so its links are not focusable). */
   readonly creditsOpen = signal(false);
+  /** Film behind the current page (shared/cinema); it changes with the page, never on scroll. */
+  readonly clip = signal<CinemaClip>('home');
 
   @ViewChild('mainContent') private mainContent?: ElementRef<HTMLElement>;
   @ViewChild('menuButton') private menuButton?: ElementRef<HTMLButtonElement>;
@@ -141,6 +145,7 @@ export class AppComponent {
     this.menuOpen.set(false);
     this.document.documentElement.lang = this.i18n.option(locale).htmlLang;
     const page = this.currentPage();
+    this.clip.set(cinemaClip(page, this.currentArea()));
     const path = url.split(/[?#]/)[0];
     this.seo.update({
       path,
@@ -173,11 +178,19 @@ export class AppComponent {
   }
 
   private currentPage(): PageKey {
+    return (this.leafRoute()?.data['page'] as PageKey | undefined) ?? 'home';
+  }
+
+  private currentArea(): AreaKey | undefined {
+    return this.leafRoute()?.data['area'] as AreaKey | undefined;
+  }
+
+  private leafRoute(): ActivatedRouteSnapshot | null {
     let route: ActivatedRouteSnapshot | null = this.router.routerState.snapshot.root;
     while (route?.firstChild) {
       route = route.firstChild;
     }
-    return (route?.data['page'] as PageKey | undefined) ?? 'home';
+    return route;
   }
 
   private rememberLanguage(language: Locale): void {

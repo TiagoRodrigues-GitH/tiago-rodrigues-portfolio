@@ -41,7 +41,10 @@
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.05em;
-  color: var(--blue-200);
+  background: linear-gradient(160deg, var(--gold) 0%, var(--blue-300) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .project-title {
@@ -189,15 +192,12 @@
   color: var(--text-muted);
 }
 
-/* A project with a video gives it two thirds of the row, and the video stays in view while the text scrolls */
+/* A project with a video gives it the wider column. The media column is not sticky: a column taller
+   than the screen could never scroll into view, and its lower part was cut off at the section end
+   (the cropped video). Videos are capped to the screen instead (see .project-video). */
 .project:has(.project-video) {
-	grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr);
+	grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
 	align-items: start;
-}
-
-.project:has(.project-video) .project-media {
-	position: sticky;
-	top: calc(var(--header-h) + 1.5rem);
 }
 
 @media (max-width: 900px) {
@@ -205,10 +205,6 @@
   .project,
   .project:has(.project-video) {
     grid-template-columns: 1fr;
-  }
-
-  .project:has(.project-video) .project-media {
-    position: static;
   }
 }
 
@@ -241,7 +237,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.25rem clamp(1rem, 3vw, 2.25rem);
-	margin-top: clamp(1.5rem, 3vw, 2.5rem);
+	/* padding, not margin: a margin would open a gap onto the background film */
+	padding-top: clamp(1.5rem, 3vw, 2.5rem);
 	border-bottom: 1px solid var(--rule-strong);
 }
 
@@ -284,7 +281,8 @@
 }
 
 .page-hero[data-area] .mono-label {
-	color: var(--area-ink);
+	/* the hero is a dark window onto the film: the glow tone (the ink tone is for white surfaces) */
+	color: var(--area-glow);
 }
 
 .page-hero[data-area] .page-title::after {
@@ -330,15 +328,23 @@
 	color: var(--area-ink);
 }
 
-/* Project videos: full width of the media column, caption under each */
+/* Project videos: the frame keeps the video's own aspect ratio and never grows taller than the
+   screen below the header, so the whole picture and its controls are always visible. */
 .project-video {
 	margin: 0 0 1.25rem;
+}
+
+.project-video .frame {
+	overflow: hidden;
+	box-shadow: var(--glow);
 }
 
 .project-video video {
 	display: block;
 	width: 100%;
 	height: auto;
+	max-height: calc(100svh - var(--header-h) - 6rem);
+	object-fit: contain;
 	background: var(--blue-975);
 }
 

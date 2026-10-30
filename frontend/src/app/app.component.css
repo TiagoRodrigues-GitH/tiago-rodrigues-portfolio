@@ -23,12 +23,12 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 1000;
-  /* vivid azure bar; muted text lightened so every label keeps AA contrast on it */
-  --text-on-dark-muted: #dcebff;
+  /* navy glass; a gold hairline marks its lower edge */
   color: #fff;
-  background: rgba(10, 91, 196, 0.96);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(12px);
+  background: rgba(7, 15, 34, 0.92);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--rule-gold) 20%, var(--rule-gold) 80%, transparent) 1;
+  backdrop-filter: blur(16px) saturate(140%);
 }
 
 .header-bar {
@@ -222,119 +222,128 @@ main:focus:not(:focus-visible) {
 /* ---------- Footer ---------- */
 
 .site-footer {
-  --text-on-dark-muted: #dcebff;
-  padding-block: 4.5rem 2rem;
+  position: relative;
+  padding-block: clamp(3.5rem, 7vw, 5.5rem) 0;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--rule-gold) 15%, var(--rule-gold) 85%, transparent) 1;
 }
 
-/* same vivid azure as the header, with the drawing grid of .blueprint on top */
+/* deep navy glass: the page's film (shared/cinema) glows faintly through it, closing the page */
 .site-footer.blueprint {
-  background-color: var(--blue-700);
+  background-color: rgba(4, 9, 20, 0.86);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
-.footer-grid {
+.footer-top {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1.3fr 1.1fr;
-  gap: 2.5rem;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid var(--rule-dark);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
 
-.footer-name {
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-brand .brand-mark {
+  width: 2rem;
+  height: 2rem;
 }
 
 .footer-tagline {
-  max-width: 28rem;
+  max-width: 30rem;
+  margin: 1rem 0 1.75rem;
   color: var(--text-on-dark-muted);
 }
 
 .site-footer h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
 }
 
 .footer-list {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.65rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.site-footer a {
+.footer-list a {
   color: var(--text-on-dark);
+  text-decoration: none;
   overflow-wrap: break-word;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.3s var(--ease), color 0.2s var(--ease);
 }
 
-.site-footer a:hover {
-  color: #ffffff;
-}
-
-.title-block {
-  align-self: start;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid var(--rule-dark);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-}
-
-.title-block li {
-  display: grid;
-  grid-template-columns: 6.5rem 1fr;
-}
-
-.title-block li + li {
-  border-top: 1px solid var(--rule-dark);
-}
-
-.tb-key,
-.tb-value {
-  margin: 0;
-  padding: 0.55rem 0.75rem;
-}
-
-.tb-key {
-  color: var(--blue-300);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-right: 1px solid var(--rule-dark);
+.footer-list a:hover,
+.footer-list a:focus-visible {
+  color: #fff;
+  background-size: 100% 1px;
 }
 
 .footer-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 1rem 2rem;
-  padding-top: 1.5rem;
+  gap: 0.75rem 2rem;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--rule-dark);
   color: var(--text-on-dark-muted);
   font-size: 0.9rem;
 }
 
-.credits {
-  flex: 1 1 100%;
+.footer-copy {
+  margin: 0;
 }
 
+.meta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0 auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meta-links a,
 .credits-toggle {
-  width: fit-content;
+  display: inline-flex;
+  align-items: center;
   min-height: 2.75rem;
   padding: 0;
   border: 0;
   background: none;
-  cursor: pointer;
   color: var(--text-on-dark);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.meta-links a:hover,
+.credits-toggle:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.credits {
+  padding-bottom: 1.5rem;
+  color: var(--text-on-dark-muted);
+  font-size: 0.85rem;
 }
 
 .credits p {
-  margin-block: 0.75rem;
+  margin-block: 0 0.75rem;
 }
 
 .credits ul {
@@ -344,14 +353,39 @@ main:focus:not(:focus-visible) {
   margin: 0;
 }
 
-.to-top {
-  border: 0;
-  padding: 0;
-  background: none;
+.credits a {
   color: var(--text-on-dark);
+}
+
+.to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem 0 0.4rem;
+  border: 1px solid var(--rule-dark);
+  border-radius: 999px;
+  background: rgba(157, 188, 255, 0.06);
+  color: var(--text-on-dark);
+  font: inherit;
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+
+.to-top:hover {
+  border-color: var(--gold);
+  background: rgba(205, 178, 122, 0.08);
+}
+
+.to-top-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--blue-150);
+  color: var(--blue-950);
+  font-weight: 600;
 }
 
 /* ---------- Responsive ---------- */
@@ -361,8 +395,12 @@ main:focus:not(:focus-visible) {
     display: none;
   }
 
-  .footer-grid {
+  .footer-top {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-intro {
+    grid-column: 1 / -1;
   }
 }
 
@@ -386,8 +424,8 @@ main:focus:not(:focus-visible) {
     align-items: stretch;
     gap: 0;
     padding: 0.75rem var(--gutter) 1.25rem;
-    background: var(--blue-700);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(7, 15, 34, 0.97);
+    border-bottom: 1px solid var(--rule-gold);
   }
 
   .primary-nav.open {
@@ -421,7 +459,7 @@ main:focus:not(:focus-visible) {
 }
 
 @media (max-width: 560px) {
-  .footer-grid {
+  .footer-top {
     grid-template-columns: 1fr;
   }
 

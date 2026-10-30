@@ -56,7 +56,8 @@ const routes: Routes = [
 
 @NgModule({
   // Scrolling is handled in AppComponent so a language switch keeps the reader's position.
-  imports: [RouterModule.forRoot(routes)],
+  // View transitions: pages cross-fade on navigation where the browser supports it (styles.css).
+  imports: [RouterModule.forRoot(routes, { enableViewTransitions: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

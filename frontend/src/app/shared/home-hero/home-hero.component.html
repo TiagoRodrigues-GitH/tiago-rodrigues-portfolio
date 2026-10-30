@@ -1,0 +1,51 @@
+<!-- Hero: the scroll drives a neural network into automotive vision, an embedded circuit and a software architecture -->
+<section #track class="hero-track" aria-labelledby="hero-title">
+  <div class="hero-stage blueprint">
+    <div class="hero-scene" [class.off]="!scene.supported()">
+      <app-neural-hero #scene [track]="track" />
+    </div>
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="mono-label hero-eyebrow">{{ t.eyebrow }}</p>
+        <h1 id="hero-title" class="hero-title">{{ t.titleLead }} <span class="accent">{{ t.titleAccent }}</span></h1>
+        <p class="hero-intro">{{ t.intro }}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" routerLink="/projects" [queryParams]="langQuery">
+            {{ t.viewProjects }} <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-outline" routerLink="/" [queryParams]="langQuery" fragment="articles">{{ t.readArticles }}</a>
+        </div>
+        <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
+      </div>
+    </div>
+
+    <div class="shell hero-story">
+      <ol class="stages" [attr.aria-label]="t.scene.label">
+        @for (stage of t.scene.stages; track $index; let i = $index) {
+          <li>
+            <button
+              type="button"
+              class="stage"
+              [class.active]="scene.active() === i"
+              [attr.aria-current]="scene.active() === i ? 'step' : null"
+              (click)="scene.goTo(i)"
+            >
+              <span class="stage-no" aria-hidden="true">0{{ i + 1 }}</span>
+              <span class="stage-title">{{ stage.title }}</span>
+              <span class="stage-text">{{ stage.text }}</span>
+            </button>
+          </li>
+        }
+      </ol>
+      <div class="story-controls">
+        <p class="scroll-hint" aria-hidden="true"><span class="mouse"></span>{{ t.scene.hint }}</p>
+        @if (scene.supported()) {
+          <button type="button" class="scene-toggle" (click)="scene.togglePause()">
+            <span aria-hidden="true">{{ scene.paused() ? '▶' : '❚❚' }}</span>
+            {{ scene.paused() ? t.scene.play : t.scene.pause }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</section>

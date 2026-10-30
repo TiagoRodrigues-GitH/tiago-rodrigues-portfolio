@@ -1,5 +1,7 @@
 <a class="skip-link" href="#main-content" (click)="skipToMain($event)">{{ t.skipLink }}</a>
 
+<app-cinema [clip]="clip()" [locale]="lang()" />
+
 <header class="site-header on-dark">
   <div class="header-bar shell">
     <a class="brand" routerLink="/" [queryParams]="langQuery()" [attr.aria-label]="t.homeLink">
@@ -66,13 +68,23 @@
 </main>
 
 <footer class="site-footer blueprint">
-  <div class="shell footer-grid">
+  <div class="shell footer-top">
     <div class="footer-intro">
-      <p class="footer-name">Tiago Rodrigues</p>
+      <a class="footer-brand" routerLink="/" [queryParams]="langQuery()" [attr.aria-label]="t.homeLink">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="8.5" />
+          <circle cx="12" cy="12" r="2.5" />
+          <path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5" />
+        </svg>
+        <span>Tiago Rodrigues</span>
+      </a>
       <p class="footer-tagline">{{ t.footer.tagline }}</p>
+      <a class="btn btn-primary footer-cta" routerLink="/contact" [queryParams]="langQuery()">
+        {{ t.nav.contact }} <span aria-hidden="true">→</span>
+      </a>
     </div>
 
-    <nav aria-labelledby="footer-nav-title">
+    <nav class="footer-col" aria-labelledby="footer-nav-title">
       <h2 id="footer-nav-title" class="mono-label">{{ t.footer.navigate }}</h2>
       <ul class="footer-list">
         @for (item of navItems; track item.path) {
@@ -81,46 +93,45 @@
       </ul>
     </nav>
 
-    <div>
+    <div class="footer-col">
       <h2 class="mono-label">{{ t.footer.contact }}</h2>
       <ul class="footer-list">
         <li><a [href]="'mailto:' + email">{{ emailUser }}@<wbr />{{ emailDomain }}</a></li>
-        <li><a [href]="linkedInUrl" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> {{ t.newTab }}</span></a></li>
-        <li><a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> {{ t.newTab }}</span></a></li>
+        <li><a [href]="linkedInUrl" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="visually-hidden"> {{ t.newTab }}</span></a></li>
+        <li><a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="visually-hidden"> {{ t.newTab }}</span></a></li>
       </ul>
     </div>
-
-    <ul class="title-block">
-      <li><span class="tb-key">{{ t.footer.author }}</span> <span class="tb-value">Tiago Rodrigues</span></li>
-      <li><span class="tb-key">{{ t.footer.revision }}</span> <span class="tb-value">{{ year }}</span></li>
-      <li><span class="tb-key">{{ t.language }}</span> <span class="tb-value">PT · EN · DE</span></li>
-    </ul>
   </div>
 
   <div class="shell footer-meta">
-    <div class="credits">
-      <button
-        type="button"
-        class="credits-toggle"
-        [attr.aria-expanded]="creditsOpen()"
-        aria-controls="image-credits"
-        (click)="creditsOpen.set(!creditsOpen())"
-      >{{ t.footer.credits }}</button>
-      <div id="image-credits" [hidden]="!creditsOpen()">
-        <p>{{ t.footer.creditsIntro }}</p>
-        <ul>
-          @for (credit of credits; track credit.url) {
-            <li>
-              <a [href]="credit.url" target="_blank" rel="noopener noreferrer">{{ credit.title }}<span class="visually-hidden"> {{ t.newTab }}</span></a>
-              — {{ credit.author }} · {{ credit.license ?? t.footer.publicDomain }}
-            </li>
-          }
-        </ul>
-      </div>
-    </div>
-    <p>&copy; {{ year }} Tiago Rodrigues. {{ t.footer.rights }}</p>
-    <p><a routerLink="/privacy" [queryParams]="langQuery()">{{ t.footer.privacy }}</a></p>
-    <button type="button" class="to-top" (click)="backToTop()">{{ t.footer.backToTop }} <span aria-hidden="true">↑</span></button>
+    <p class="footer-copy">&copy; {{ year }} Tiago Rodrigues. {{ t.footer.rights }}</p>
+    <ul class="meta-links">
+      <li><a routerLink="/privacy" [queryParams]="langQuery()">{{ t.footer.privacy }}</a></li>
+      <li>
+        <button
+          type="button"
+          class="credits-toggle"
+          [attr.aria-expanded]="creditsOpen()"
+          aria-controls="image-credits"
+          (click)="creditsOpen.set(!creditsOpen())"
+        >{{ t.footer.credits }}</button>
+      </li>
+    </ul>
+    <button type="button" class="to-top" (click)="backToTop()">
+      <span aria-hidden="true" class="to-top-icon">↑</span> {{ t.footer.backToTop }}
+    </button>
+  </div>
+
+  <div class="shell credits" id="image-credits" [hidden]="!creditsOpen()">
+    <p>{{ t.footer.creditsIntro }}</p>
+    <ul>
+      @for (credit of credits; track credit.url) {
+        <li>
+          <a [href]="credit.url" target="_blank" rel="noopener noreferrer">{{ credit.title }}<span class="visually-hidden"> {{ t.newTab }}</span></a>
+          — {{ credit.author }} · {{ credit.license ?? t.footer.publicDomain }}
+        </li>
+      }
+    </ul>
   </div>
 
   <div class="a11y-bar">

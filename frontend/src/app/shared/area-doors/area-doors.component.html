@@ -3,7 +3,7 @@
     <h2 id="areas-title" class="visually-hidden">{{ text().tabs }}</h2>
     <ul class="doors">
       @for (door of doors(); track door.key) {
-        <li class="door reveal" [attr.data-area]="door.key">
+        <li class="door reveal" appTilt="4" [attr.data-area]="door.key">
           <div class="door-art">
             <img [src]="door.photo" alt="" width="960" height="540" loading="lazy" decoding="async" />
           </div>

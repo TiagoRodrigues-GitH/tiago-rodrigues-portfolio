@@ -1,5 +1,6 @@
 import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TiltDirective } from '../tilt.directive';
 import { injectLangQuery, injectLocale } from '../../services/locale';
 import { photoSources } from '../../content/photos';
 import { getPortfolioProjects } from '../portfolio-projects';
@@ -8,7 +9,7 @@ import { AREA_KEYS, AREAS, AREAS_TEXT } from '../areas';
 /** Home page doors into the three portfolio areas: a slowly drifting photo, what the area covers and its tab. */
 @Component({
   selector: 'app-area-doors',
-  imports: [RouterLink],
+  imports: [RouterLink, TiltDirective],
   templateUrl: './area-doors.component.html',
   styleUrls: ['./area-doors.component.css'],
 })

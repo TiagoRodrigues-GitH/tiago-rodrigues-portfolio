@@ -1,0 +1,333 @@
+:host {
+  display: block;
+}
+
+/* ---------- Hero: cinematic scene driven by the scroll ---------- */
+
+/* Without motion the track is one screen and the stage list switches forms by click.
+   With motion it is taller: the stage stays in place while the scroll morphs the scene. */
+.hero-track {
+  position: relative;
+}
+
+.hero-stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+  min-height: calc(100svh - var(--header-h));
+  padding-block: clamp(2.5rem, 6vh, 4.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  /* a window onto the home film (shared/cinema): navy veil deep under the headline, open on the right,
+     over the faint drawing grid of the identity */
+  background-color: transparent;
+  background-image:
+    linear-gradient(rgba(157, 188, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 188, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(100deg, rgba(4, 9, 20, 0.9) 0%, rgba(4, 9, 20, 0.72) 34%, rgba(4, 9, 20, 0.22) 68%, rgba(4, 9, 20, 0.12) 100%),
+    linear-gradient(0deg, rgba(4, 9, 20, 0.7) 0%, transparent 32%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-track {
+    height: 260svh;
+  }
+
+  .hero-stage {
+    position: sticky;
+    top: var(--header-h);
+    height: calc(100svh - var(--header-h));
+  }
+}
+
+/* The scene sits on the right and fades into the headline; on phones it fills the stage behind the text. */
+.hero-scene {
+  position: absolute;
+  inset: 0 0 0 38%;
+  z-index: -1;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+}
+
+.hero-scene.off {
+  display: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.hero-eyebrow {
+  color: var(--gold);
+  line-height: 1.7;
+}
+
+.hero-title {
+  margin-block: 1.25rem 1.5rem;
+  font-size: clamp(2.3rem, 4.3vw, 4.1rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-shadow: 0 2px 30px rgba(7, 15, 34, 0.8);
+}
+
+.accent {
+  background: linear-gradient(100deg, #ffffff 0%, var(--blue-300) 35%, var(--signal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-intro {
+  max-width: 38rem;
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  color: var(--text-on-dark-muted);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1.75rem 1.25rem;
+}
+
+.hero-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-on-dark-muted);
+}
+
+.dot {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 4px rgba(63, 224, 245, 0.18), 0 0 18px rgba(63, 224, 245, 0.6);
+}
+
+/* Stage timeline along the bottom of the hero, like film chapters; the active form is marked in gold */
+.hero-story {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage {
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 0.85rem 0.85rem;
+  border: 0;
+  border-top: 2px solid var(--rule-dark);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: rgba(7, 15, 34, 0.45);
+  backdrop-filter: blur(8px);
+  color: var(--text-on-dark-muted);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.stage:hover {
+  background: rgba(157, 188, 255, 0.07);
+  color: var(--text-on-dark);
+}
+
+.stage.active {
+  border-top-color: var(--gold);
+  background: rgba(157, 188, 255, 0.09);
+  color: #ffffff;
+}
+
+.stage-no {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+}
+
+.stage-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stage-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-on-dark-muted);
+}
+
+.story-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.scroll-hint {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-on-dark-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-hint {
+    display: inline-flex;
+  }
+}
+
+.mouse {
+  position: relative;
+  width: 1rem;
+  height: 1.55rem;
+  border: 1.5px solid var(--blue-300);
+  border-radius: 999px;
+}
+
+.mouse::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.25rem;
+  width: 2px;
+  height: 0.35rem;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: var(--signal);
+  animation: wheel 2s var(--ease) 2;
+}
+
+@keyframes wheel {
+  to {
+    transform: translateY(0.5rem);
+    opacity: 0;
+  }
+}
+
+.scene-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--rule-dark);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-on-dark);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.scene-toggle:hover {
+  border-color: var(--gold);
+}
+
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    align-content: center;
+  }
+
+  .hero-stage {
+    background-image:
+      linear-gradient(rgba(157, 188, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(157, 188, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(4, 9, 20, 0.84) 0%, rgba(4, 9, 20, 0.7) 60%, rgba(4, 9, 20, 0.86) 100%);
+    background-size: 64px 64px, 64px 64px, auto;
+  }
+
+  /* narrow screens: the scene fills the stage but fades out behind the text, which stays on deep navy */
+  .hero-scene {
+    inset: 0;
+    opacity: 0.8;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 45%, #000 85%);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 45%, #000 85%);
+  }
+
+  .stages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phones: only the active stage shows its sentence; the others stay available to screen readers. */
+@media (max-width: 760px) {
+  .stages {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .stages {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .stage {
+    padding: 0.5rem 0.4rem;
+  }
+
+  .stage-title {
+    font-size: 0.78rem;
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+
+  .stage-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 760px) {
+  .hero-track {
+    height: 220svh;
+  }
+}
+
+/* Short laptop screens: the stage sentences collapse to their titles, like on phones. */
+@media (min-width: 761px) and (max-height: 820px) {
+  .stage-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+  }
+}

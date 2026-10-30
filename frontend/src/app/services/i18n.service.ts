@@ -51,11 +51,24 @@ export interface SpecItem {
   detail: string;
 }
 
+export interface SceneStage {
+  title: string;
+  text: string;
+}
+
 export interface HomeTranslations {
   eyebrow: string;
   titleLead: string;
   titleAccent: string;
   intro: string;
+  /** Cinematic hero: four forms of the WebGL scene and its controls. */
+  scene: {
+    label: string;
+    hint: string;
+    pause: string;
+    play: string;
+    stages: SceneStage[];
+  };
   viewProjects: string;
   readArticles: string;
   availability: string;
@@ -127,7 +140,7 @@ export interface ContactTranslations {
   eyebrow: string;
   title: string;
   intro: string;
-  /** Friendly line under the introduction, over the coffee photo. */
+  /** Friendly line under the introduction. */
   coffee: string;
   availabilityLabel: string;
   availabilityText: string;
@@ -190,7 +203,7 @@ export class I18nService {
         author: 'Autor',
         revision: 'Revisão',
         credits: 'Créditos das imagens',
-        creditsIntro: 'Ilustrações técnicas e fotos em domínio público ou com licença livre (Wikimedia Commons), e uma foto da Prefeitura de Londrina; as ilustrações foram convertidas para o estilo blueprint deste site.',
+        creditsIntro: 'Ilustrações técnicas e fotos em domínio público ou com licença livre (Wikimedia Commons), convertidas para o estilo blueprint deste site, e vídeos de fundo da Mixkit, recortados em loops e com cores ajustadas à identidade visual.',
         publicDomain: 'Domínio público',
         rights: 'Todos os direitos reservados.',
         backToTop: 'Voltar ao topo',
@@ -243,7 +256,7 @@ export class I18nService {
         author: 'Author',
         revision: 'Revision',
         credits: 'Image credits',
-        creditsIntro: 'Public-domain or openly licensed technical illustrations and photos (Wikimedia Commons), and one photo by the City of Londrina; the illustrations were converted to this site’s blueprint style.',
+        creditsIntro: 'Public-domain or openly licensed technical illustrations and photos (Wikimedia Commons), converted to this site’s blueprint style, and background films from Mixkit, cut into loops and colour-graded to the site’s palette.',
         publicDomain: 'Public domain',
         rights: 'All rights reserved.',
         backToTop: 'Back to top',
@@ -296,7 +309,7 @@ export class I18nService {
         author: 'Autor',
         revision: 'Revision',
         credits: 'Bildnachweise',
-        creditsIntro: 'Gemeinfreie oder frei lizenzierte technische Abbildungen und Fotos (Wikimedia Commons) sowie ein Foto der Stadt Londrina; die Abbildungen wurden im Blueprint-Stil dieser Website bearbeitet.',
+        creditsIntro: 'Gemeinfreie oder frei lizenzierte technische Abbildungen und Fotos (Wikimedia Commons), im Blueprint-Stil dieser Website bearbeitet, sowie Hintergrundvideos von Mixkit, als Schleifen geschnitten und farblich an die Website angepasst.',
         publicDomain: 'Gemeinfrei',
         rights: 'Alle Rechte vorbehalten.',
         backToTop: 'Nach oben',
@@ -336,10 +349,22 @@ export class I18nService {
 
   readonly home: Record<Locale, HomeTranslations> = {
     pt: {
-      eyebrow: 'Desenvolvimento de Software · Automotivo · IA · Segurança',
-      titleLead: 'Transformo ideias em',
-      titleAccent: 'software.',
-      intro: 'Sou Tiago Rodrigues, brasileiro e desenvolvedor de software com foco em inteligência artificial. Construo sistemas, APIs, aplicações web e modelos de IA, com código limpo, testado e documentado.',
+      eyebrow: 'Desenvolvedor de software · IA e deep learning · Visão computacional · Sistemas embarcados · ADAS',
+      titleLead: 'Sistemas inteligentes,',
+      titleAccent: 'da rede neural à estrada.',
+      intro: 'Sou Tiago Rodrigues, desenvolvedor de software brasileiro. Conecto deep learning, visão computacional, sistemas embarcados e arquitetura de software em soluções para a indústria automotiva — com código limpo, testado e documentado.',
+      scene: {
+        label: 'Da rede neural ao veículo, em quatro etapas',
+        hint: 'Role a página para transformar a cena',
+        pause: 'Pausar animação',
+        play: 'Retomar animação',
+        stages: [
+          { title: 'Redes neurais', text: 'Deep learning e LLMs compactos ajustados com LoRA, avaliados em dados reais.' },
+          { title: 'Visão computacional automotiva', text: 'Detecção de faixas para ADAS: UFLD comparado a um modelo leve e temporal.' },
+          { title: 'Sistemas embarcados', text: 'Percepção que precisa caber em hardware limitado e responder em tempo real.' },
+          { title: 'Arquitetura de software', text: 'APIs em Java e Spring Boot, front-ends em Angular e algoritmos que rodam no navegador.' },
+        ],
+      },
       viewProjects: 'Ver projetos',
       readArticles: 'Ler os artigos',
       availability: 'Aberto a projetos e oportunidades em desenvolvimento de software',
@@ -393,10 +418,22 @@ export class I18nService {
       ctaButton: 'Entrar em contato',
     },
     en: {
-      eyebrow: 'Software Development · Automotive · AI · Security',
-      titleLead: 'I turn ideas into',
-      titleAccent: 'software.',
-      intro: 'I’m Tiago Rodrigues, a Brazilian software developer focused on artificial intelligence. I build systems, APIs, web applications and AI models with clean, tested and documented code.',
+      eyebrow: 'Software developer · AI & deep learning · Computer vision · Embedded systems · ADAS',
+      titleLead: 'Intelligent systems,',
+      titleAccent: 'from neural network to the road.',
+      intro: 'I’m Tiago Rodrigues, a Brazilian software developer. I connect deep learning, computer vision, embedded systems and software architecture into solutions for the automotive industry — with clean, tested and documented code.',
+      scene: {
+        label: 'From neural network to vehicle, in four stages',
+        hint: 'Scroll to transform the scene',
+        pause: 'Pause animation',
+        play: 'Resume animation',
+        stages: [
+          { title: 'Neural networks', text: 'Deep learning and compact LLMs fine-tuned with LoRA, evaluated on real data.' },
+          { title: 'Automotive computer vision', text: 'Lane detection for ADAS: UFLD compared with a lightweight temporal model.' },
+          { title: 'Embedded systems', text: 'Perception that has to fit limited hardware and respond in real time.' },
+          { title: 'Software architecture', text: 'Java and Spring Boot APIs, Angular front ends and algorithms that run in the browser.' },
+        ],
+      },
       viewProjects: 'View projects',
       readArticles: 'Read the articles',
       availability: 'Open to projects and opportunities in software development',
@@ -450,10 +487,22 @@ export class I18nService {
       ctaButton: 'Get in touch',
     },
     de: {
-      eyebrow: 'Softwareentwicklung · Automotive · KI · Sicherheit',
-      titleLead: 'Ich verwandle Ideen in',
-      titleAccent: 'Software.',
-      intro: 'Ich bin Tiago Rodrigues, Brasilianer und Softwareentwickler mit Schwerpunkt auf künstlicher Intelligenz. Ich entwickle Systeme, APIs, Webanwendungen und KI-Modelle mit sauberem, getestetem und dokumentiertem Code.',
+      eyebrow: 'Softwareentwickler · KI und Deep Learning · Computer Vision · Eingebettete Systeme · ADAS',
+      titleLead: 'Intelligente Systeme –',
+      titleAccent: 'vom neuronalen Netz bis auf die Straße.',
+      intro: 'Ich bin Tiago Rodrigues, Softwareentwickler aus Brasilien. Ich verbinde Deep Learning, Computer Vision, eingebettete Systeme und Softwarearchitektur zu Lösungen für die Automobilindustrie – mit sauberem, getestetem und dokumentiertem Code.',
+      scene: {
+        label: 'Vom neuronalen Netz zum Fahrzeug, in vier Schritten',
+        hint: 'Scrollen Sie, um die Szene zu verwandeln',
+        pause: 'Animation anhalten',
+        play: 'Animation fortsetzen',
+        stages: [
+          { title: 'Neuronale Netze', text: 'Deep Learning und kompakte, mit LoRA feinabgestimmte LLMs – evaluiert auf realen Daten.' },
+          { title: 'Automotive Computer Vision', text: 'Fahrspurerkennung für ADAS: UFLD im Vergleich mit einem leichten, zeitlichen Modell.' },
+          { title: 'Eingebettete Systeme', text: 'Wahrnehmung, die auf begrenzter Hardware laufen und in Echtzeit reagieren muss.' },
+          { title: 'Softwarearchitektur', text: 'APIs mit Java und Spring Boot, Frontends mit Angular und Algorithmen direkt im Browser.' },
+        ],
+      },
       viewProjects: 'Projekte ansehen',
       readArticles: 'Artikel lesen',
       availability: 'Offen für Projekte und Positionen in der Softwareentwicklung',

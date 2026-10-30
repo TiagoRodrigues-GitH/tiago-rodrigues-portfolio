@@ -1,21 +1,4 @@
-<!-- Hero -->
-<section class="hero sky" [appBackdrop]="heroSources()" (backdropIndex)="heroIndex.set($event)" aria-labelledby="hero-title">
-  <div class="shell hero-grid">
-    <div class="hero-copy">
-      <p class="mono-label">{{ t.eyebrow }}</p>
-      <h1 id="hero-title" class="hero-title">{{ t.titleLead }} <span class="accent">{{ t.titleAccent }}</span></h1>
-      <p class="hero-intro">{{ t.intro }}</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" routerLink="/projects" [queryParams]="langQuery()">
-          {{ t.viewProjects }} <span aria-hidden="true">→</span>
-        </a>
-        <a class="btn btn-outline" routerLink="/" [queryParams]="langQuery()" fragment="articles">{{ t.readArticles }}</a>
-      </div>
-      <p class="hero-status"><span class="dot" aria-hidden="true"></span>{{ t.availability }}</p>
-    </div>
-    <p class="hero-place" aria-hidden="true"><span></span>{{ heroPlace() }}</p>
-  </div>
-</section>
+<app-home-hero [t]="t" [langQuery]="langQuery()" />
 
 <!-- Technology strip (decorative: the same stack is listed in the spec sheet) -->
 <div class="marquee" aria-hidden="true">
@@ -85,7 +68,7 @@
 
     <ul class="project-cards">
       @for (project of projects(); track project.id) {
-        <li class="project-card reveal">
+        <li class="project-card reveal" appTilt="4">
           <div class="frame card-media">
             @if (project.image.figure) {
               <app-project-figure [kind]="project.image.figure" [label]="project.image.alt" [locale]="locale()" />
@@ -212,7 +195,7 @@
 </section>
 
 <!-- CTA -->
-<section class="cta blueprint" aria-labelledby="cta-title">
+<section class="cta has-backdrop" aria-labelledby="cta-title">
   <div class="shell cta-inner reveal">
     <h2 id="cta-title" class="cta-title">{{ t.ctaTitle }}</h2>
     <p>{{ t.ctaText }}</p>
