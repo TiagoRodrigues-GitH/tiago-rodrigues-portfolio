@@ -35,7 +35,8 @@ app-cinema {
   object-fit: cover;
   opacity: 0;
   filter: saturate(0.95) brightness(0.92);
-  transition: opacity 1.2s ease;
+  /* cross-fade between films (FADE in cinema.component.ts) */
+  transition: opacity 1.6s ease;
 }
 
 .cinema video.on {
@@ -129,13 +130,7 @@ app-cinema {
   letter-spacing: -0.05em;
   cursor: pointer;
   box-shadow: 0 10px 30px -12px rgba(4, 9, 20, 0.7);
-  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), opacity 0.3s var(--ease), visibility 0.3s;
-}
-
-/* shown only while a window onto the film is on screen, so it never sits over reading text */
-.cinema-toggle.away {
-  opacity: 0;
-  visibility: hidden;
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
 }
 
 .cinema-toggle:hover {

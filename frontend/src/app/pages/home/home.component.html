@@ -33,7 +33,7 @@
             <span class="tile-value">{{ spec.value }}</span>
             <span class="tile-detail">{{ spec.detail }}</span>
             @if (first) {
-              <app-adas-figure class="tile-art" [labels]="t.figure" />
+              <app-code-card class="tile-art" />
             }
           </div>
         </li>
@@ -67,7 +67,7 @@
     </header>
 
     <ul class="project-cards">
-      @for (project of projects(); track project.id) {
+      @for (project of projects(); track project.id; let i = $index) {
         <li class="project-card reveal" appTilt="4">
           <div class="frame card-media">
             @if (project.image.figure) {
@@ -82,7 +82,7 @@
           </div>
           <div class="card-body">
             <p class="card-meta">
-              <span class="mono-label">P-0{{ project.id }}</span>
+              <span class="mono-label">P-{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
               <span class="card-area" [attr.data-area]="project.areas[0]">{{ areaName(project.areas[0]) }}</span>
               <span class="status" [class.status-soon]="project.status === 'soon'" [class.status-progress]="project.status === 'progress'">
                 {{ project.status === 'done' ? t.statusDone : project.status === 'progress' ? t.statusProgress : t.statusSoon }}
@@ -195,7 +195,7 @@
 </section>
 
 <!-- CTA -->
-<section class="cta has-backdrop" aria-labelledby="cta-title">
+<section class="cta has-backdrop" data-film="jaguar" aria-labelledby="cta-title">
   <div class="shell cta-inner reveal">
     <h2 id="cta-title" class="cta-title">{{ t.ctaTitle }}</h2>
     <p>{{ t.ctaText }}</p>

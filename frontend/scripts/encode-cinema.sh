@@ -25,11 +25,14 @@ offset=$(awk "BEGIN{print $len-2}")
 loop="[0:v]fps=24,split[a][b];[a]trim=start=1:end=$len,setpts=PTS-STARTPTS,fps=24[A];[b]trim=start=0:end=1,setpts=PTS-STARTPTS,fps=24[B];[A][B]xfade=transition=fade:duration=1:offset=$offset,$grade"
 height=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$in")
 if [ "$height" -ge 1080 ]; then large="scale=1920:-2:flags=lanczos"; crf=27; else large="scale=1280:-2:flags=lanczos"; crf=25; fi
+# busy footage (particles, foliage) can take a higher CRF: CRF=30 CRF_SM=32 scripts/encode-cinema.sh ...
+crf="${CRF:-$crf}"
+crf_sm="${CRF_SM:-29}"
 
 ffmpeg -nostdin -loglevel error -y -ss "$start" -t "$len" -i "$in" -filter_complex "$loop,$large,format=yuv420p" \
   -an -c:v libx264 -preset slow -crf "$crf" -profile:v high -movflags +faststart "$out/$clip.mp4"
 ffmpeg -nostdin -loglevel error -y -ss "$start" -t "$len" -i "$in" -filter_complex "$loop,scale=960:-2:flags=lanczos,format=yuv420p" \
-  -an -c:v libx264 -preset slow -crf 29 -profile:v high -movflags +faststart "$out/$clip-sm.mp4"
+  -an -c:v libx264 -preset slow -crf "$crf_sm" -profile:v high -movflags +faststart "$out/$clip-sm.mp4"
 ffmpeg -nostdin -loglevel error -y -i "$out/$clip.mp4" -frames:v 1 -vf "scale=1280:-2" -c:v libwebp -quality 62 "$out/$clip.webp"
 
 for f in "$out/$clip.mp4" "$out/$clip-sm.mp4" "$out/$clip.webp"; do

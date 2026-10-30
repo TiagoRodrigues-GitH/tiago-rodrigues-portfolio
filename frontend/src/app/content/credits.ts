@@ -9,7 +9,7 @@ export interface ImageCredit {
 }
 
 /** Sources of the illustrations (assets/images/blueprints) and photographs (assets/images/photos), from Wikimedia Commons,
- *  and of the background films (assets/videos/cinema), from Mixkit. */
+ *  and of the background films (assets/videos/cinema), from Mixkit and Wikimedia Commons. */
 export const IMAGE_CREDITS: ImageCredit[] = [
   {
     title: 'Streamlined Car Carries Engine at Rear (1931)',
@@ -61,5 +61,5 @@ export const IMAGE_CREDITS: ImageCredit[] = [
     url: 'https://commons.wikimedia.org/wiki/File:Racks_Amravati_Data_Center.jpg',
   },
   // background films (assets/videos/cinema, cut to loops and colour-graded)
-  ...Object.values(CINEMA_SOURCES).map(({ title, url }) => ({ title, author: 'Mixkit', license: 'Mixkit License', url })),
+  ...Object.values(CINEMA_SOURCES).map(({ title, url, author, license }) => ({ title, author, license, url })),
 ];

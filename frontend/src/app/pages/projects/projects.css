@@ -10,16 +10,38 @@
 }
 
 .project-list {
+  /* a lighter veil than reading sections: each project's film shows between the panels */
+  --section-veil: rgba(4, 9, 20, 0.34);
   display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
   padding-block: clamp(2rem, 5vw, 4rem) clamp(4rem, 8vw, 6rem);
 }
 
+/* Each project is a case-study panel of navy glass, marked on top by a line in its area's colour */
 .project {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-  border-bottom: 1px solid var(--rule-strong);
+  gap: clamp(2rem, 4.5vw, 4rem);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(14, 28, 62, 0.86) 0%, rgba(6, 12, 28, 0.9) 100%);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease);
+}
+
+.project::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--area, var(--blue-500)) 0%, var(--gold) 55%, transparent 100%);
+}
+
+.project:hover {
+  border-color: var(--rule-strong);
 }
 
 .project-copy {
@@ -64,7 +86,8 @@
 
 .project-meta {
   display: grid;
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1.25rem 2rem;
   margin: 0.75rem 0 0;
   padding-top: 1.25rem;
   border-top: 1px solid var(--rule);
@@ -150,7 +173,8 @@
   overflow: auto;
   padding: 3.75rem 1.25rem 1.25rem;
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--blue-950);
+  border: 1px solid var(--rule-dark);
 }
 
 .lightbox-panel img {
@@ -175,7 +199,7 @@
 }
 
 .lightbox-close:hover {
-  background: var(--blue-100);
+  background: var(--tint);
 }
 
 .lightbox-nav {
@@ -204,6 +228,12 @@
   .hero-grid,
   .project,
   .project:has(.project-video) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-meta {
     grid-template-columns: 1fr;
   }
 }

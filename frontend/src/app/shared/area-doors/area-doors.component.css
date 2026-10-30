@@ -39,7 +39,7 @@
 .door-art {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--blue-100);
+  background: var(--tint);
   overflow: hidden;
 }
 

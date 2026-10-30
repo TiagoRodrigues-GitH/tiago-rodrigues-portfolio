@@ -35,7 +35,7 @@
 }
 
 .pb-btn:hover:not(:disabled) {
-  background: var(--blue-50);
+  background: var(--tint-soft);
 }
 
 .pb-btn:disabled {

@@ -8,7 +8,6 @@ import { SeoService } from './services/seo.service';
 import { AnalyticsService } from './services/analytics.service';
 import { langQueryFor } from './services/locale';
 import { CinemaClip, cinemaClip } from './content/cinema';
-import { AreaKey } from './shared/areas';
 
 const LANG_KEY = 'preferred_lang';
 
@@ -145,7 +144,7 @@ export class AppComponent {
     this.menuOpen.set(false);
     this.document.documentElement.lang = this.i18n.option(locale).htmlLang;
     const page = this.currentPage();
-    this.clip.set(cinemaClip(page, this.currentArea()));
+    this.clip.set(cinemaClip(page));
     const path = url.split(/[?#]/)[0];
     this.seo.update({
       path,
@@ -179,10 +178,6 @@ export class AppComponent {
 
   private currentPage(): PageKey {
     return (this.leafRoute()?.data['page'] as PageKey | undefined) ?? 'home';
-  }
-
-  private currentArea(): AreaKey | undefined {
-    return this.leafRoute()?.data['area'] as AreaKey | undefined;
   }
 
   private leafRoute(): ActivatedRouteSnapshot | null {

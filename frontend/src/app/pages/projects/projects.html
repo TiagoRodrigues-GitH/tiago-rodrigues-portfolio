@@ -34,10 +34,10 @@
     </div>
   }
   @for (project of projects(); track project.id; let i = $index) {
-    <article class="project reveal" [id]="'project-' + project.id" [attr.aria-labelledby]="'project-title-' + project.id">
+    <article class="project reveal" [id]="'project-' + project.id" [attr.data-area]="project.areas[0]" [attr.aria-labelledby]="'project-title-' + project.id">
       <div class="project-copy">
         <div class="project-head">
-          <p class="project-index" aria-hidden="true">0{{ project.id }}</p>
+          <p class="project-index" aria-hidden="true">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</p>
           <ul class="area-chips">
             @for (key of project.areas; track key) {
               <li [attr.data-area]="key"><a [routerLink]="'/projects/' + key" [queryParams]="langQuery()">{{ areaName(key) }}</a></li>

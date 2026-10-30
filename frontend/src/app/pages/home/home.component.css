@@ -169,7 +169,7 @@
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.05em;
-  color: var(--blue-200);
+  color: var(--rule-strong);
 }
 
 .chapter-time {
@@ -216,7 +216,7 @@
 }
 
 .more-toggle:hover {
-  background: var(--blue-100);
+  background: var(--tint);
 }
 
 .refs-toggle {

@@ -94,11 +94,11 @@ blockquote {
 .predictions li {
   display: flex;
   gap: 0.5rem;
-  color: #8a1f16;
+  color: var(--bad);
 }
 
 .predictions li.ok {
-  color: #11643a;
+  color: var(--ok);
 }
 
 .mark {

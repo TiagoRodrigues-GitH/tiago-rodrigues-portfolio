@@ -56,7 +56,7 @@ select {
 }
 
 .example:hover {
-  background: var(--blue-100);
+  background: var(--tint);
 }
 
 .matches .mono-label {
