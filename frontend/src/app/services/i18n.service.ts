@@ -361,8 +361,8 @@ export class I18nService {
   readonly home: Record<Locale, HomeTranslations> = {
     pt: {
       eyebrow: 'Desenvolvedor de software · Web e APIs · Inteligência artificial · Visão computacional',
-      titleLead: 'Código limpo.',
-      titleAccent: 'Software inteligente.',
+      titleLead: 'Software que enxerga.',
+      titleAccent: 'Ideias que chegam longe.',
       intro: 'Sou Tiago Rodrigues, desenvolvedor de software brasileiro. Crio aplicações web, APIs e sistemas com inteligência artificial — com código limpo, testado e documentado.',
       scene: {
         label: 'Da rede neural ao software, em quatro etapas',
@@ -430,8 +430,8 @@ export class I18nService {
     },
     en: {
       eyebrow: 'Software developer · Web & APIs · Artificial intelligence · Computer vision',
-      titleLead: 'Clean code.',
-      titleAccent: 'Intelligent software.',
+      titleLead: 'Software that sees.',
+      titleAccent: 'Ideas that go the distance.',
       intro: 'I’m Tiago Rodrigues, a Brazilian software developer. I build web applications, APIs and AI-powered systems — with clean, tested and documented code.',
       scene: {
         label: 'From neural network to software, in four stages',
@@ -499,8 +499,8 @@ export class I18nService {
     },
     de: {
       eyebrow: 'Softwareentwickler · Web & APIs · Künstliche Intelligenz · Computer Vision',
-      titleLead: 'Sauberer Code.',
-      titleAccent: 'Intelligente Software.',
+      titleLead: 'Software, die sieht.',
+      titleAccent: 'Ideen, die ankommen.',
       intro: 'Ich bin Tiago Rodrigues, Softwareentwickler aus Brasilien. Ich entwickle Webanwendungen, APIs und KI-gestützte Systeme – mit sauberem, getestetem und dokumentiertem Code.',
       scene: {
         label: 'Vom neuronalen Netz zur Software, in vier Schritten',

@@ -29,6 +29,10 @@ const COLOR = {
   jabuticaba: '#2a0e2d',
 };
 
+/** Logical canvas is 480 × 480: a river margin of 24 px around a 432 px field. */
+const MARGIN = 24;
+const PLAY = 480 - 2 * MARGIN;
+
 const BEST_KEY = 'trilha-da-capivara:recorde';
 /** 16 × 16 cells: big enough to see the animals on a phone. */
 const GRID = 16;
@@ -67,6 +71,8 @@ export class CapybaraGameComponent implements OnDestroy {
   readonly announcement = signal('');
 
   private ctx: CanvasRenderingContext2D | null = null;
+  /** The field (grass, river, lily pads) changes only on resize, so it is drawn once and copied every frame. */
+  private field: HTMLCanvasElement | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private touchStart: { x: number; y: number } | null = null;
   private readonly onKey = (event: KeyboardEvent) => this.handleKey(event);
@@ -224,6 +230,14 @@ export class CapybaraGameComponent implements OnDestroy {
     canvas.height = Math.round(size * ratio);
     this.ctx = canvas.getContext('2d');
     this.ctx?.setTransform((size * ratio) / 480, 0, 0, (size * ratio) / 480, 0, 0);
+    this.field = this.document.createElement('canvas');
+    this.field.width = canvas.width;
+    this.field.height = canvas.height;
+    const fctx = this.field.getContext('2d');
+    if (fctx) {
+      fctx.setTransform((size * ratio) / 480, 0, 0, (size * ratio) / 480, 0, 0);
+      this.paintField(fctx);
+    }
     this.draw();
   }
 
@@ -231,46 +245,144 @@ export class CapybaraGameComponent implements OnDestroy {
     const ctx = this.ctx;
     if (!ctx) return;
     const s = this.state();
-    const cell = 480 / s.width;
-    this.drawField(ctx, s, cell);
+    const cell = PLAY / s.width;
+    ctx.clearRect(0, 0, 480, 480);
+    if (this.field) ctx.drawImage(this.field, 0, 0, 480, 480);
+    ctx.save();
+    ctx.translate(MARGIN, MARGIN);
     this.drawFruit(ctx, s.fruit.cell, s.fruit.kind, cell);
-    for (let i = s.family.length - 1; i >= 1; i--) this.drawPup(ctx, s.family[i], cell);
+    for (let i = s.family.length - 1; i >= 1; i--) this.drawPup(ctx, s.family[i], s.family[i - 1], cell, i);
     this.drawCapybara(ctx, s.family[0], s.direction, cell);
-    if (s.jaguar) this.drawJaguar(ctx, s.jaguar, cell);
+    if (s.jaguar) this.drawJaguar(ctx, s.jaguar, s.family[0], cell);
+    ctx.restore();
     if (this.phase() !== 'running') this.drawOverlay(ctx, s);
   }
 
-  private drawField(ctx: CanvasRenderingContext2D, s: GameState, cell: number): void {
-    for (let y = 0; y < s.height; y++) {
-      for (let x = 0; x < s.width; x++) {
-        ctx.fillStyle = (x + y) % 2 === 0 ? COLOR.grassA : COLOR.grassB;
-        ctx.fillRect(x * cell, y * cell, cell, cell);
+  /** Grass with light and blades, the flag's lozenge and circle in soft tones, a river with lily pads around it. */
+  private paintField(ctx: CanvasRenderingContext2D): void {
+    // River: the whole canvas, the field sits inside it.
+    const water = ctx.createLinearGradient(0, 0, 480, 480);
+    water.addColorStop(0, '#1b78c2');
+    water.addColorStop(1, '#0d4f8f');
+    ctx.fillStyle = water;
+    ctx.fillRect(0, 0, 480, 480);
+    ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+    ctx.lineWidth = 1.2;
+    for (let k = 0; k < 18; k++) {
+      const y = 4 + (k % 3) * 5;
+      const x = (k * 53) % 460;
+      for (const [ox, oy] of [[x, y], [x, 480 - y - 4], [y, x], [480 - y - 4, x]]) {
+        ctx.beginPath();
+        ctx.moveTo(ox, oy);
+        ctx.quadraticCurveTo(ox + 6, oy - 3, ox + 12, oy);
+        ctx.stroke();
       }
     }
-    // A faint yellow lozenge and blue circle in the middle of the field, after the flag's colours.
+    // Field with a soft light in the centre.
+    const grass = ctx.createRadialGradient(240, 220, 40, 240, 240, 300);
+    grass.addColorStop(0, '#22b257');
+    grass.addColorStop(1, '#0b7a36');
+    ctx.fillStyle = grass;
+    this.roundRect(ctx, MARGIN, MARGIN, PLAY, PLAY, 14);
+    ctx.fill();
+    // Sandy bank and the yellow edge.
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#e9c46a';
+    ctx.stroke();
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = COLOR.yellow;
+    this.roundRect(ctx, MARGIN + 4, MARGIN + 4, PLAY - 8, PLAY - 8, 11);
+    ctx.stroke();
     ctx.save();
-    ctx.globalAlpha = 0.16;
+    this.roundRect(ctx, MARGIN, MARGIN, PLAY, PLAY, 14);
+    ctx.clip();
+    // Faint cell grid, so turns are easy to judge.
+    const cell = PLAY / GRID;
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    for (let y = 0; y < GRID; y++) {
+      for (let x = 0; x < GRID; x++) {
+        if ((x + y) % 2 === 0) ctx.fillRect(MARGIN + x * cell, MARGIN + y * cell, cell, cell);
+      }
+    }
+    // Lozenge and circle in soft tones (a nod to the flag, not the flag itself).
+    ctx.globalAlpha = 0.2;
     ctx.fillStyle = COLOR.yellow;
     ctx.beginPath();
-    ctx.moveTo(240, 40);
-    ctx.lineTo(450, 240);
-    ctx.lineTo(240, 440);
-    ctx.lineTo(30, 240);
+    ctx.moveTo(240, 70);
+    ctx.lineTo(420, 240);
+    ctx.lineTo(240, 410);
+    ctx.lineTo(60, 240);
     ctx.closePath();
     ctx.fill();
-    ctx.globalAlpha = 0.1;
+    ctx.globalAlpha = 0.16;
     ctx.fillStyle = COLOR.blue;
     ctx.beginPath();
-    ctx.arc(240, 240, 85, 0, Math.PI * 2);
+    ctx.arc(240, 240, 78, 0, Math.PI * 2);
     ctx.fill();
+    ctx.globalAlpha = 0.22;
+    ctx.strokeStyle = COLOR.white;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(240, 330, 120, Math.PI * 1.28, Math.PI * 1.72);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    // Grass blades from a fixed pattern (same on every visit).
+    let seed = 7;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    ctx.strokeStyle = 'rgba(190,255,170,0.22)';
+    ctx.lineWidth = 1;
+    for (let k = 0; k < 260; k++) {
+      const x = MARGIN + rnd() * PLAY;
+      const y = MARGIN + rnd() * PLAY;
+      const h = 3 + rnd() * 4;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + (rnd() - 0.5) * 3, y - h);
+      ctx.stroke();
+    }
+    // Small flowers: yellow ipê petals scattered on the grass.
+    for (let k = 0; k < 14; k++) {
+      const x = MARGIN + 10 + rnd() * (PLAY - 20);
+      const y = MARGIN + 10 + rnd() * (PLAY - 20);
+      ctx.fillStyle = k % 3 === 0 ? '#ffd23f' : 'rgba(255,240,170,0.8)';
+      for (let p = 0; p < 4; p++) {
+        ctx.beginPath();
+        ctx.arc(x + Math.cos((p * Math.PI) / 2) * 2, y + Math.sin((p * Math.PI) / 2) * 2, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
     ctx.restore();
-    // River banks: blue water inside a yellow edge.
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = COLOR.river;
-    ctx.strokeRect(3, 3, 474, 474);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = COLOR.yellow;
-    ctx.strokeRect(7, 7, 466, 466);
+    // Lily pads (vitória-régia) in the river corners.
+    for (const [x, y, r] of [[14, 14, 11], [466, 16, 9], [16, 464, 9], [465, 465, 12], [240, 8, 6], [472, 240, 6]]) {
+      ctx.fillStyle = '#2f9e44';
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0.25, Math.PI * 2);
+      ctx.lineTo(x, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#7bd389';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0.25, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  private roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number): void {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  private shadow(ctx: CanvasRenderingContext2D, cx: number, cy: number, rx: number, ry: number): void {
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.beginPath();
+    ctx.ellipse(cx + 2, cy + ry * 0.9, rx, ry * 0.45, 0, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   private center(c: Cell, cell: number): [number, number] {
@@ -279,7 +391,8 @@ export class CapybaraGameComponent implements OnDestroy {
 
   private drawFruit(ctx: CanvasRenderingContext2D, c: Cell, kind: FruitKind, cell: number): void {
     const [cx, cy] = this.center(c, cell);
-    const r = cell * 0.18;
+    const r = cell * 0.16;
+    this.shadow(ctx, cx, cy + r, r * 2, r * 1.6);
     if (kind === 'acai') {
       ctx.fillStyle = COLOR.acai;
       for (const [ox, oy] of [[-r, r * 0.4], [r, r * 0.4], [0, -r * 0.8], [0, r * 1.4]]) {
@@ -318,27 +431,51 @@ export class CapybaraGameComponent implements OnDestroy {
     }
   }
 
-  private drawPup(ctx: CanvasRenderingContext2D, c: Cell, cell: number): void {
+  private drawPup(ctx: CanvasRenderingContext2D, c: Cell, ahead: Cell, cell: number, index: number): void {
     const [cx, cy] = this.center(c, cell);
-    ctx.fillStyle = COLOR.pup;
+    const angle = Math.atan2(ahead.y - c.y, ahead.x - c.x);
+    const scale = Math.max(0.62, 0.82 - index * 0.012);
+    this.shadow(ctx, cx, cy, cell * 0.36 * scale, cell * 0.3 * scale);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+    ctx.scale(scale, scale);
+    const fur = ctx.createLinearGradient(0, -cell * 0.35, 0, cell * 0.35);
+    fur.addColorStop(0, '#c08a55');
+    fur.addColorStop(1, '#8a5a33');
+    ctx.fillStyle = fur;
     ctx.beginPath();
-    ctx.ellipse(cx, cy, cell * 0.36, cell * 0.3, 0, 0, Math.PI * 2);
+    ctx.ellipse(-cell * 0.04, 0, cell * 0.42, cell * 0.33, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = COLOR.capybaraDark;
     ctx.beginPath();
-    ctx.arc(cx - cell * 0.14, cy - cell * 0.22, cell * 0.07, 0, Math.PI * 2);
-    ctx.arc(cx + cell * 0.14, cy - cell * 0.22, cell * 0.07, 0, Math.PI * 2);
+    ctx.ellipse(cell * 0.3, 0, cell * 0.14, cell * 0.2, 0, 0, Math.PI * 2);
     ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cell * 0.08, -cell * 0.27, cell * 0.07, 0, Math.PI * 2);
+    ctx.arc(cell * 0.08, cell * 0.27, cell * 0.07, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#111';
+    ctx.beginPath();
+    ctx.arc(cell * 0.2, -cell * 0.12, cell * 0.04, 0, Math.PI * 2);
+    ctx.arc(cell * 0.2, cell * 0.12, cell * 0.04, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 
   private drawCapybara(ctx: CanvasRenderingContext2D, c: Cell, direction: Direction, cell: number): void {
     const [cx, cy] = this.center(c, cell);
     const angle = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 }[direction];
+    this.shadow(ctx, cx, cy, cell * 0.5, cell * 0.42);
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(angle);
+    ctx.scale(1.1, 1.1);
     // Body
-    ctx.fillStyle = COLOR.capybara;
+    const fur = ctx.createLinearGradient(0, -cell * 0.4, 0, cell * 0.4);
+    fur.addColorStop(0, '#a8703f');
+    fur.addColorStop(1, '#6f4524');
+    ctx.fillStyle = fur;
     ctx.beginPath();
     ctx.ellipse(-cell * 0.05, 0, cell * 0.48, cell * 0.4, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -371,8 +508,18 @@ export class CapybaraGameComponent implements OnDestroy {
     ctx.restore();
   }
 
-  private drawJaguar(ctx: CanvasRenderingContext2D, c: Cell, cell: number): void {
+  private drawJaguar(ctx: CanvasRenderingContext2D, c: Cell, target: Cell, cell: number): void {
     const [cx, cy] = this.center(c, cell);
+    this.shadow(ctx, cx, cy, cell * 0.5, cell * 0.45);
+    // A soft red halo: the danger is easy to spot.
+    const halo = ctx.createRadialGradient(cx, cy, cell * 0.3, cx, cy, cell * 0.95);
+    halo.addColorStop(0, 'rgba(255,80,40,0.35)');
+    halo.addColorStop(1, 'rgba(255,80,40,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(cx, cy, cell * 0.95, 0, Math.PI * 2);
+    ctx.fill();
+    void target;
     ctx.fillStyle = COLOR.jaguar;
     // Ears
     ctx.beginPath();
@@ -414,20 +561,33 @@ export class CapybaraGameComponent implements OnDestroy {
     const t = this.t();
     const phase = this.phase();
     ctx.save();
-    ctx.fillStyle = 'rgba(0, 39, 118, 0.72)';
-    ctx.fillRect(40, 170, 400, 140);
+    ctx.fillStyle = 'rgba(0, 20, 60, 0.35)';
+    ctx.fillRect(0, 0, 480, 480);
+    const panel = ctx.createLinearGradient(0, 170, 0, 310);
+    panel.addColorStop(0, 'rgba(0, 49, 140, 0.95)');
+    panel.addColorStop(1, 'rgba(0, 30, 90, 0.95)');
+    ctx.fillStyle = panel;
+    this.roundRect(ctx, 50, 168, 380, 144, 18);
+    ctx.fill();
     ctx.strokeStyle = COLOR.yellow;
     ctx.lineWidth = 3;
-    ctx.strokeRect(40, 170, 400, 140);
+    ctx.stroke();
+    // green-yellow-blue ribbon at the top of the panel
+    ctx.fillStyle = COLOR.green;
+    ctx.fillRect(170, 180, 46, 5);
+    ctx.fillStyle = COLOR.yellow;
+    ctx.fillRect(217, 180, 46, 5);
+    ctx.fillStyle = '#3d7be0';
+    ctx.fillRect(264, 180, 46, 5);
     ctx.fillStyle = COLOR.yellow;
     ctx.textAlign = 'center';
     ctx.font = '700 30px system-ui, sans-serif';
     const title = phase === 'over' ? `${t.score}: ${s.score}` : phase === 'paused' ? t.paused : t.title;
-    ctx.fillText(title, 240, 228);
+    ctx.fillText(title, 240, 232);
     ctx.fillStyle = COLOR.white;
     ctx.font = '500 16px system-ui, sans-serif';
     const line = phase === 'over' ? t.over[s.cause ?? 'bank'] : t.ready;
-    this.wrap(ctx, line, 240, 262, 360, 20);
+    this.wrap(ctx, line, 240, 266, 340, 20);
     ctx.restore();
   }
 

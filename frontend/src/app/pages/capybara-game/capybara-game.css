@@ -6,11 +6,31 @@
 }
 
 .game-body {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 32rem) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: start;
-  padding-block: clamp(2rem, 5vw, 4rem);
+  margin-block: clamp(1.5rem, 4vw, 3rem) clamp(2.5rem, 6vw, 5rem);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid rgb(255 223 0 / 35%);
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgb(0 156 59 / 22%), transparent 60%),
+    radial-gradient(90% 70% at 100% 100%, rgb(0 39 118 / 45%), transparent 65%),
+    rgb(3 10 28 / 86%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 45%);
+}
+
+/* Green, yellow and blue ribbon across the top of the panel. */
+.game-body::before {
+  content: '';
+  position: absolute;
+  inset: 0 24px auto;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--br-green) 0 33%, var(--br-yellow) 33% 66%, #3d7be0 66%);
 }
 
 @media (max-width: 900px) {
@@ -53,7 +73,7 @@
   max-width: 32rem;
   aspect-ratio: 1;
   border-radius: 12px;
-  box-shadow: 0 0 0 3px var(--br-yellow), 0 0 0 6px var(--br-green), 0 18px 40px rgb(0 0 0 / 35%);
+  box-shadow: 0 0 0 3px rgb(255 223 0 / 85%), 0 18px 40px rgb(0 0 0 / 45%);
   touch-action: none;
   background: var(--br-green);
 }
@@ -110,8 +130,16 @@
 
 .game-side {
   display: grid;
+  align-content: start;
   gap: 1.75rem;
   max-width: 40rem;
+}
+
+.game-side section {
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--br-green);
+  border-radius: 0 12px 12px 0;
+  background: rgb(255 255 255 / 4%);
 }
 
 .game-side h2 {
