@@ -1,5 +1,5 @@
 import {
-  FRUIT_POINTS, FRUITS_PER_LEVEL, GameState, JAGUAR_LEVEL, createGame, random, step, stepInterval, turn,
+  FRUIT_POINTS, FRUITS_PER_LEVEL, GameState, JAGUAR_LEVEL, OBSTACLE_LEVEL, createGame, obstacleCount, random, step, stepInterval, turn,
 } from './capivara-engine';
 
 /** A game with the fruit placed by hand, to drive the scenario. */
@@ -60,7 +60,7 @@ describe('Trilha da Capivara engine', () => {
     }
     expect(g.level).toBe(2);
     expect(stepInterval(2)).toBeLessThan(stepInterval(1));
-    expect(stepInterval(50)).toBe(70);
+    expect(stepInterval(50)).toBe(85);
   });
 
   it('the jaguar appears from its level on, far from the capybara', () => {
@@ -72,11 +72,46 @@ describe('Trilha da Capivara engine', () => {
     expect(d).toBeGreaterThan(10);
   });
 
-  it('the river bank ends the game', () => {
+  it('crosses the border and comes back on the opposite side', () => {
     let g = withFruit(createGame(8, 8, 1), 0, 0);
-    for (let i = 0; i < 10 && g.alive; i++) g = step(g);
-    expect(g.alive).toBe(false);
-    expect(g.cause).toBe('bank');
+    // head starts at x=5 facing right: 2 steps reach x=7, the 3rd wraps to x=0
+    for (let i = 0; i < 3; i++) g = step(g);
+    expect(g.alive).toBe(true);
+    expect(g.family[0]).toEqual({ x: 0, y: 4 });
+    g = step(turn(step(turn(g, 'up')), 'up'));
+    expect(g.alive).toBe(true);
+    for (let i = 0; i < 4; i++) g = step(g);
+    expect(g.family[0].y).toBe(6); // 4 -> 3 -> 2 ... -> 0 -> 7 -> 6
+  });
+
+  it('the chosen pace changes the speed, which still grows gently with the level', () => {
+    expect(stepInterval(1, 'slow')).toBeGreaterThan(stepInterval(1, 'normal'));
+    expect(stepInterval(1, 'fast')).toBeLessThan(stepInterval(1, 'normal'));
+    expect(stepInterval(2, 'normal')).toBeLessThan(stepInterval(1, 'normal'));
+    expect(stepInterval(99, 'normal')).toBe(85);
+    expect(stepInterval(99, 'fast')).toBe(60);
+  });
+
+  it('obstacles appear from level 5, never on or right in front of the family', () => {
+    expect(obstacleCount(OBSTACLE_LEVEL - 1)).toBe(0);
+    expect(obstacleCount(OBSTACLE_LEVEL)).toBe(3);
+    expect(obstacleCount(OBSTACLE_LEVEL + 1)).toBe(5);
+    expect(obstacleCount(50)).toBe(15);
+    let g: GameState = { ...createGame(20, 20, 9), eaten: FRUITS_PER_LEVEL * (OBSTACLE_LEVEL - 1) - 1, level: OBSTACLE_LEVEL - 1 };
+    g = step(withFruit(g, 6, 10));
+    expect(g.level).toBe(OBSTACLE_LEVEL);
+    expect(g.obstacles.length).toBe(3);
+    const blocked = (x: number, y: number) => g.obstacles.some((o) => o.x === x && o.y === y);
+    for (const c of g.family) expect(blocked(c.x, c.y)).toBe(false);
+    for (let i = 1; i <= 4; i++) expect(blocked(6 + i, 10)).toBe(false);
+    expect(blocked(g.fruit.cell.x, g.fruit.cell.y)).toBe(false);
+  });
+
+  it('hitting a rock ends the game', () => {
+    const g: GameState = { ...withFruit(createGame(20, 20, 1), 0, 0), obstacles: [{ x: 6, y: 10 }] };
+    const end = step(g);
+    expect(end.alive).toBe(false);
+    expect(end.cause).toBe('rock');
   });
 
   it('running into a pup ends the game', () => {
@@ -100,7 +135,7 @@ describe('Trilha da Capivara engine', () => {
   });
 
   it('does nothing once the game is over', () => {
-    const over: GameState = { ...createGame(), alive: false, cause: 'bank' };
+    const over: GameState = { ...createGame(), alive: false, cause: 'rock' };
     expect(step(over)).toBe(over);
     expect(turn(over, 'up')).toBe(over);
   });

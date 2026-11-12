@@ -21,10 +21,22 @@ RUN java -Djarmode=tools -jar /tmp/app.jar extract --destination /app \
  && cd /app \
  && java $JVM_FLAGS -XX:ArchiveClassesAtExit=/app/app.jsa -Dspring.context.exit=onRefresh -jar /app/app.jar
 
-# Stage 3: Run the application
+# Stage 3: Free offline IP -> country database ("IP to Country Lite" by DB-IP.com, CC BY 4.0).
+# Tries this month's file, then last month's; if both fail the image still builds and visits get no country.
+FROM alpine:3 AS geo
+RUN mkdir -p /geo && cd /geo \
+ && for m in "$(date +%Y-%m)" "$(date -d "@$(( $(date +%s) - 2678400 ))" +%Y-%m)"; do \
+      wget -q -O country.mmdb.gz "https://download.db-ip.com/free/dbip-country-lite-$m.mmdb.gz" \
+        && gunzip -f country.mmdb.gz && break; \
+      rm -f country.mmdb.gz; \
+    done; ls -la /geo
+
+# Stage 4: Run the application
 FROM eclipse-temurin:17-jre
 ARG JVM_FLAGS
 ENV JVM_FLAGS=${JVM_FLAGS}
+ENV GEOIP_DB=/geo/country.mmdb
+COPY --from=geo /geo /geo
 COPY --from=cds /app /app
 WORKDIR /app
 EXPOSE 8080

@@ -2,9 +2,10 @@
  * Trilha da Capivara: game logic with no DOM, so it can be unit-tested and replayed with a fixed seed.
  *
  * The capybara walks on a grid leading a line of pups. Each Brazilian fruit it eats adds a pup and points.
- * From the second level on, a jaguar prowls the field: it steps towards the capybara every other tick,
- * with some randomness, and touching any part of the family ends the game. So do the river banks (the border)
- * and the capybara's own pups.
+ * The field has no walls: leaving one side brings the family in on the opposite side.
+ * From level 2 a jaguar prowls the field (it steps towards the capybara every other tick, with some
+ * randomness); from level 5 rocks and fallen logs appear, a few more on every level. Touching the jaguar,
+ * an obstacle or the capybara's own pups ends the game.
  */
 
 export type Direction = 'up' | 'down' | 'left' | 'right';
@@ -21,7 +22,10 @@ export interface Fruit {
   kind: FruitKind;
 }
 
-export type GameOverCause = 'bank' | 'pups' | 'jaguar' | null;
+export type GameOverCause = 'rock' | 'pups' | 'jaguar' | null;
+
+/** Player-chosen pace; the game still speeds up gently with the level. */
+export type Speed = 'slow' | 'normal' | 'fast';
 
 export interface GameState {
   readonly width: number;
@@ -33,6 +37,8 @@ export interface GameState {
   readonly queued: Direction | null;
   readonly fruit: Fruit;
   readonly jaguar: Cell | null;
+  /** Rocks and logs (from OBSTACLE_LEVEL on). */
+  readonly obstacles: readonly Cell[];
   readonly score: number;
   readonly eaten: number;
   readonly level: number;
@@ -48,6 +54,18 @@ export const FRUIT_POINTS: Record<FruitKind, number> = { acai: 10, caju: 20, jab
 export const FRUITS_PER_LEVEL = 5;
 /** The jaguar appears from this level on. */
 export const JAGUAR_LEVEL = 2;
+/** Obstacles appear from this level on. */
+export const OBSTACLE_LEVEL = 5;
+/** Obstacles on the field at a level (0 before OBSTACLE_LEVEL, then 3, 5, 7 … up to 15). */
+export function obstacleCount(level: number): number {
+  return level < OBSTACLE_LEVEL ? 0 : Math.min(15, 3 + 2 * (level - OBSTACLE_LEVEL));
+}
+
+const SPEED: Record<Speed, { start: number; perLevel: number; min: number }> = {
+  slow: { start: 200, perLevel: 6, min: 120 },
+  normal: { start: 150, perLevel: 6, min: 85 },
+  fast: { start: 110, perLevel: 5, min: 60 },
+};
 
 const STEP: Record<Direction, Cell> = { up: { x: 0, y: -1 }, down: { x: 0, y: 1 }, left: { x: -1, y: 0 }, right: { x: 1, y: 0 } };
 const OPPOSITE: Record<Direction, Direction> = { up: 'down', down: 'up', left: 'right', right: 'left' };
@@ -63,19 +81,27 @@ export function random(seed: number): [number, number] {
 
 const same = (a: Cell, b: Cell): boolean => a.x === b.x && a.y === b.y;
 const inside = (c: Cell, w: number, h: number): boolean => c.x >= 0 && c.y >= 0 && c.x < w && c.y < h;
+const wrap = (v: number, n: number): number => ((v % n) + n) % n;
 
-/** Milliseconds between steps for a level: 150 ms at level 1, 10 ms faster per level, never below 70 ms. */
-export function stepInterval(level: number): number {
-  return Math.max(70, 150 - (level - 1) * 10);
+/** Milliseconds between steps: depends on the chosen pace, a few ms faster per level, with a floor. */
+export function stepInterval(level: number, speed: Speed = 'normal'): number {
+  const s = SPEED[speed];
+  return Math.max(s.min, s.start - (level - 1) * s.perLevel);
 }
 
-function placeFruit(width: number, height: number, blocked: readonly Cell[], seed: number): [Fruit, number] {
+function freeCells(width: number, height: number, blocked: readonly Cell[]): Cell[] {
+  const taken = new Set(blocked.map((c) => c.y * width + c.x));
   const free: Cell[] = [];
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      if (!blocked.some((c) => c.x === x && c.y === y)) free.push({ x, y });
+      if (!taken.has(y * width + x)) free.push({ x, y });
     }
   }
+  return free;
+}
+
+function placeFruit(width: number, height: number, blocked: readonly Cell[], seed: number): [Fruit, number] {
+  const free = freeCells(width, height, blocked);
   let r: number;
   [r, seed] = random(seed);
   const cell = free[Math.floor(r * free.length)] ?? { x: 0, y: 0 };
@@ -84,12 +110,38 @@ function placeFruit(width: number, height: number, blocked: readonly Cell[], see
   return [{ cell, kind }, seed];
 }
 
+/** Cells the capybara will cross in the next few steps: obstacles never appear there. */
+function safetyLane(head: Cell, direction: Direction, width: number, height: number, length = 4): Cell[] {
+  const lane: Cell[] = [];
+  for (let i = 1; i <= length; i++) {
+    lane.push({ x: wrap(head.x + STEP[direction].x * i, width), y: wrap(head.y + STEP[direction].y * i, height) });
+  }
+  return lane;
+}
+
+/** Adds obstacles until the level's count is reached, away from the family, the fruit, the jaguar and the path ahead. */
+function addObstacles(state: GameState, family: readonly Cell[], direction: Direction, fruit: Fruit, jaguar: Cell | null,
+                      level: number, seed: number): [Cell[], number] {
+  const obstacles = [...state.obstacles];
+  const head = family[0];
+  const near = (c: Cell) => Math.abs(c.x - head.x) + Math.abs(c.y - head.y) <= 2;
+  const blocked = [...family, ...obstacles, fruit.cell, ...(jaguar ? [jaguar] : []), ...safetyLane(head, direction, state.width, state.height)];
+  const free = freeCells(state.width, state.height, blocked).filter((c) => !near(c));
+  while (obstacles.length < obstacleCount(level) && free.length) {
+    let r: number;
+    [r, seed] = random(seed);
+    const [cell] = free.splice(Math.floor(r * free.length), 1);
+    obstacles.push(cell);
+  }
+  return [obstacles, seed];
+}
+
 export function createGame(width = 20, height = 20, seed = 1): GameState {
   const cy = Math.floor(height / 2);
   const family: Cell[] = [{ x: 5, y: cy }, { x: 4, y: cy }, { x: 3, y: cy }];
   const [fruit, next] = placeFruit(width, height, family, seed >>> 0);
   return {
-    width, height, family, direction: 'right', queued: null, fruit, jaguar: null,
+    width, height, family, direction: 'right', queued: null, fruit, jaguar: null, obstacles: [],
     score: 0, eaten: 0, level: 1, alive: true, cause: null, tick: 0, seed: next,
   };
 }
@@ -100,14 +152,14 @@ export function turn(state: GameState, direction: Direction): GameState {
   return { ...state, queued: direction };
 }
 
-/** The jaguar enters at the corner farthest from the capybara. */
-function spawnJaguar(state: GameState): Cell {
+/** The jaguar enters at the free corner farthest from the capybara. */
+function spawnJaguar(state: GameState, family: readonly Cell[]): Cell {
   const corners: Cell[] = [
     { x: 0, y: 0 }, { x: state.width - 1, y: 0 }, { x: 0, y: state.height - 1 }, { x: state.width - 1, y: state.height - 1 },
-  ];
-  const head = state.family[0];
+  ].filter((c) => !state.obstacles.some((o) => same(o, c)));
+  const head = family[0];
   const dist = (c: Cell) => Math.abs(c.x - head.x) + Math.abs(c.y - head.y);
-  return corners.reduce((best, c) => (dist(c) > dist(best) ? c : best));
+  return corners.reduce((best, c) => (dist(c) > dist(best) ? c : best), corners[0] ?? { x: 0, y: 0 });
 }
 
 /** One jaguar step: towards the capybara on the longer axis, but a random side step one time in four. */
@@ -126,7 +178,9 @@ function moveJaguar(jaguar: Cell, target: Cell, state: GameState, seed: number):
     move = { x: 0, y: dy };
   }
   const next = { x: jaguar.x + move.x, y: jaguar.y + move.y };
-  if (!inside(next, state.width, state.height) || same(next, state.fruit.cell)) return [jaguar, seed];
+  if (!inside(next, state.width, state.height) || same(next, state.fruit.cell) || state.obstacles.some((o) => same(o, next))) {
+    return [jaguar, seed];
+  }
   return [next, seed];
 }
 
@@ -135,11 +189,12 @@ export function step(state: GameState): GameState {
   if (!state.alive) return state;
   const direction = state.queued ?? state.direction;
   const head = state.family[0];
-  const nextHead = { x: head.x + STEP[direction].x, y: head.y + STEP[direction].y };
+  // No walls: the family comes back in on the opposite side.
+  const nextHead = { x: wrap(head.x + STEP[direction].x, state.width), y: wrap(head.y + STEP[direction].y, state.height) };
   const tick = state.tick + 1;
 
-  if (!inside(nextHead, state.width, state.height)) {
-    return { ...state, direction, queued: null, alive: false, cause: 'bank', tick };
+  if (state.obstacles.some((o) => same(o, nextHead))) {
+    return { ...state, direction, queued: null, alive: false, cause: 'rock', tick };
   }
   const eats = same(nextHead, state.fruit.cell);
   // The last pup moves away this tick unless the family grows, so its cell is free.
@@ -149,24 +204,29 @@ export function step(state: GameState): GameState {
   }
   const family = [nextHead, ...body];
 
-  let { seed, fruit, score, eaten, level, jaguar } = state;
+  let { seed, fruit, score, eaten, level, jaguar, obstacles } = state;
   if (eats) {
     score += FRUIT_POINTS[fruit.kind] * level;
     eaten += 1;
-    level = 1 + Math.floor(eaten / FRUITS_PER_LEVEL);
-    [fruit, seed] = placeFruit(state.width, state.height, jaguar ? [...family, jaguar] : family, seed);
+    const newLevel = 1 + Math.floor(eaten / FRUITS_PER_LEVEL);
+    if (newLevel !== level && obstacleCount(newLevel) > obstacles.length) {
+      [obstacles, seed] = addObstacles(state, family, direction, fruit, jaguar, newLevel, seed);
+    }
+    level = newLevel;
+    [fruit, seed] = placeFruit(state.width, state.height, [...family, ...obstacles, ...(jaguar ? [jaguar] : [])], seed);
   }
 
   if (level >= JAGUAR_LEVEL) {
+    const field = { ...state, fruit, obstacles };
     if (!jaguar) {
-      jaguar = spawnJaguar({ ...state, family });
+      jaguar = spawnJaguar(field, family);
     } else if (tick % 2 === 0) {
-      [jaguar, seed] = moveJaguar(jaguar, nextHead, { ...state, fruit }, seed);
+      [jaguar, seed] = moveJaguar(jaguar, nextHead, field, seed);
     }
     if (family.some((c) => same(c, jaguar!))) {
-      return { ...state, family, direction, queued: null, fruit, jaguar, score, eaten, level, alive: false, cause: 'jaguar', tick, seed };
+      return { ...state, family, direction, queued: null, fruit, jaguar, obstacles, score, eaten, level, alive: false, cause: 'jaguar', tick, seed };
     }
   }
 
-  return { ...state, family, direction, queued: null, fruit, jaguar, score, eaten, level, tick, seed };
+  return { ...state, family, direction, queued: null, fruit, jaguar, obstacles, score, eaten, level, tick, seed };
 }

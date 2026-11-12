@@ -5,9 +5,13 @@ import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { injectLangQuery, injectLocale } from '../../services/locale';
 import {
-  Cell, Direction, FRUIT_POINTS, FruitKind, GameState, JAGUAR_LEVEL, createGame, step, stepInterval, turn,
+  Cell, Direction, FRUIT_POINTS, FruitKind, GameState, JAGUAR_LEVEL, OBSTACLE_LEVEL, Speed, createGame, step, stepInterval, turn,
 } from './capivara-engine';
 import { CAPIVARA_TEXT } from './capivara-i18n';
+import { SpriteName, loadSprites } from './capivara-sprites';
+
+const SPEED_KEY = 'trilha-da-capivara:ritmo';
+const OPPOSITE: Record<Direction, Direction> = { up: 'down', down: 'up', left: 'right', right: 'left' };
 
 /** Colours of the Brazilian flag, plus the field and the animals. */
 const COLOR = {
@@ -69,8 +73,20 @@ export class CapybaraGameComponent implements OnDestroy {
   readonly best = signal(0);
   /** Short message for screen readers (aria-live). */
   readonly announcement = signal('');
+  readonly speed = signal<Speed>('normal');
+  readonly speeds: Speed[] = ['slow', 'normal', 'fast'];
 
   private ctx: CanvasRenderingContext2D | null = null;
+  private sprites: Partial<Record<SpriteName, HTMLImageElement>> = {};
+  private spritesReady = false;
+  /** State before the last step and when that step happened: animals glide between cells. */
+  private previous: GameState | null = null;
+  private lastStepAt = 0;
+  private frame: number | null = null;
+  /** Turns pressed faster than the game steps (at most two), applied one per step. */
+  private turnBuffer: Direction[] = [];
+  /** Which way the capybara looks while walking up or down (keeps the last horizontal heading). */
+  private facing: 'left' | 'right' = 'right';
   /** The field (grass, river, lily pads) changes only on resize, so it is drawn once and copied every frame. */
   private field: HTMLCanvasElement | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
@@ -81,6 +97,11 @@ export class CapybaraGameComponent implements OnDestroy {
   constructor() {
     afterNextRender(() => {
       this.best.set(this.readBest());
+      this.speed.set(this.readSpeed());
+      this.sprites = loadSprites(this.document, () => {
+        this.spritesReady = true;
+        this.draw();
+      });
       this.setupCanvas();
       this.document.addEventListener('keydown', this.onKey);
       this.document.defaultView?.addEventListener('resize', this.onResize);
@@ -113,7 +134,34 @@ export class CapybaraGameComponent implements OnDestroy {
   press(direction: Direction): void {
     if (this.phase() === 'ready') this.start();
     else if (this.phase() === 'paused') this.resume();
-    this.state.update((s) => turn(s, direction));
+    const s = this.state();
+    if (s.queued === null && this.turnBuffer.length === 0) {
+      this.state.set(turn(s, direction));
+      return;
+    }
+    // A turn is already waiting for the next step: keep this one for the step after (tight U-turns).
+    const last = this.turnBuffer[this.turnBuffer.length - 1] ?? s.queued ?? s.direction;
+    if (this.turnBuffer.length < 2 && direction !== last && direction !== OPPOSITE[last]) {
+      this.turnBuffer.push(direction);
+    }
+  }
+
+  setSpeed(speed: Speed): void {
+    this.speed.set(speed);
+    try {
+      localStorage.setItem(SPEED_KEY, speed);
+    } catch {
+      /* storage disabled */
+    }
+  }
+
+  private readSpeed(): Speed {
+    try {
+      const v = localStorage.getItem(SPEED_KEY);
+      return v === 'slow' || v === 'fast' ? v : 'normal';
+    } catch {
+      return 'normal';
+    }
   }
 
   onPointerDown(event: PointerEvent): void {
@@ -169,6 +217,9 @@ export class CapybaraGameComponent implements OnDestroy {
   private restart(): void {
     this.stop();
     this.state.set(createGame(GRID, GRID, (Date.now() >>> 0) || 1));
+    this.previous = null;
+    this.turnBuffer = [];
+    this.facing = 'right';
     this.start();
     this.draw();
   }
@@ -176,30 +227,59 @@ export class CapybaraGameComponent implements OnDestroy {
   private stop(): void {
     if (this.timer !== null) clearTimeout(this.timer);
     this.timer = null;
+    if (this.frame !== null) this.document.defaultView?.cancelAnimationFrame(this.frame);
+    this.frame = null;
+  }
+
+  private interval(): number {
+    return stepInterval(this.state().level, this.speed());
   }
 
   private schedule(): void {
     this.stop();
-    this.timer = setTimeout(() => this.tick(), stepInterval(this.state().level));
+    this.lastStepAt = performance.now();
+    this.timer = setTimeout(() => this.tick(), this.interval());
+    this.animate();
+  }
+
+  /** Redraws every frame while running, so the animals glide from cell to cell. */
+  private animate(): void {
+    const win = this.document.defaultView;
+    if (!win?.requestAnimationFrame) return;
+    const loop = () => {
+      this.draw();
+      if (this.phase() === 'running') this.frame = win.requestAnimationFrame(loop);
+    };
+    this.frame = win.requestAnimationFrame(loop);
   }
 
   private tick(): void {
     const before = this.state();
     const after = step(before);
-    this.state.set(after);
+    this.previous = before;
+    // Next buffered turn becomes the queued turn for the following step.
+    let next = after;
+    while (after.alive && this.turnBuffer.length && next.queued === null) {
+      next = turn(after, this.turnBuffer.shift()!);
+    }
+    this.state.set(next);
+    if (after.direction === 'left' || after.direction === 'right') this.facing = after.direction;
     if (after.eaten > before.eaten) this.announcement.set(`${this.t().score}: ${after.score}`);
     if (!before.jaguar && after.jaguar) this.announcement.set(this.t().jaguarWarning);
+    if (before.level < OBSTACLE_LEVEL && after.level >= OBSTACLE_LEVEL) this.announcement.set(this.t().obstacleWarning);
     if (!after.alive) {
+      this.stop();
+      this.previous = null;
       this.phase.set('over');
+      this.turnBuffer = [];
       if (after.score > this.best()) {
         this.best.set(after.score);
         this.writeBest(after.score);
       }
-      this.announcement.set(`${this.t().over[after.cause ?? 'bank']} ${this.t().score}: ${after.score}.`);
+      this.announcement.set(`${this.t().over[after.cause ?? 'pups']} ${this.t().score}: ${after.score}.`);
       this.draw();
       return;
     }
-    this.draw();
     this.schedule();
   }
 
@@ -225,7 +305,7 @@ export class CapybaraGameComponent implements OnDestroy {
     const canvas = this.boardRef?.nativeElement;
     if (!canvas) return;
     const size = canvas.clientWidth || 480;
-    const ratio = Math.min(2, this.document.defaultView?.devicePixelRatio ?? 1);
+    const ratio = Math.min(3, this.document.defaultView?.devicePixelRatio ?? 1);
     canvas.width = Math.round(size * ratio);
     canvas.height = Math.round(size * ratio);
     this.ctx = canvas.getContext('2d');
@@ -241,21 +321,57 @@ export class CapybaraGameComponent implements OnDestroy {
     this.draw();
   }
 
+  /** Position between the cell of the previous step and the current one (no gliding across the wrap). */
+  private glide(from: Cell | undefined, to: Cell, p: number): Cell {
+    if (!from || Math.abs(from.x - to.x) > 1 || Math.abs(from.y - to.y) > 1) return to;
+    return { x: from.x + (to.x - from.x) * p, y: from.y + (to.y - from.y) * p };
+  }
+
   private draw(): void {
     const ctx = this.ctx;
     if (!ctx) return;
     const s = this.state();
+    const prev = this.phase() === 'running' ? this.previous : null;
+    const p = prev ? Math.min(1, (performance.now() - this.lastStepAt) / this.interval()) : 1;
     const cell = PLAY / s.width;
     ctx.clearRect(0, 0, 480, 480);
     if (this.field) ctx.drawImage(this.field, 0, 0, 480, 480);
     ctx.save();
+    // Clip to the field: an animal crossing the edge disappears there and reappears on the other side.
+    this.roundRect(ctx, MARGIN, MARGIN, PLAY, PLAY, 14);
+    ctx.clip();
     ctx.translate(MARGIN, MARGIN);
+    for (const o of s.obstacles) this.drawObstacle(ctx, o, cell);
     this.drawFruit(ctx, s.fruit.cell, s.fruit.kind, cell);
-    for (let i = s.family.length - 1; i >= 1; i--) this.drawPup(ctx, s.family[i], s.family[i - 1], cell, i);
-    this.drawCapybara(ctx, s.family[0], s.direction, cell);
-    if (s.jaguar) this.drawJaguar(ctx, s.jaguar, s.family[0], cell);
+    const family = s.family.map((c, i) => this.glide(prev?.family[i] ?? prev?.family[prev.family.length - 1], c, p));
+    for (let i = family.length - 1; i >= 1; i--) this.drawPup(ctx, family[i], s.family[i], s.family[i - 1], cell, i);
+    this.drawCapybara(ctx, family[0], s.direction, cell);
+    if (s.jaguar) this.drawJaguar(ctx, this.glide(prev?.jaguar ?? undefined, s.jaguar, p), s.family[0], cell);
     ctx.restore();
     if (this.phase() !== 'running') this.drawOverlay(ctx, s);
+  }
+
+  /** Draws a sprite centred on (cx, cy), mirrored when facing left, slightly tilted when walking up or down. */
+  private sprite(ctx: CanvasRenderingContext2D, name: SpriteName, cx: number, cy: number, size: number, flip = false, tilt = 0): boolean {
+    const img = this.spritesReady ? this.sprites[name] : undefined;
+    if (!img) return false;
+    ctx.save();
+    ctx.translate(cx, cy);
+    if (flip) ctx.scale(-1, 1);
+    if (tilt) ctx.rotate(tilt);
+    ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    ctx.restore();
+    return true;
+  }
+
+  private drawObstacle(ctx: CanvasRenderingContext2D, c: Cell, cell: number): void {
+    const [cx, cy] = this.center(c, cell);
+    const name: SpriteName = (c.x * 7 + c.y * 3) % 3 === 0 ? 'log' : 'rock';
+    if (this.sprite(ctx, name, cx, cy, cell * 1.35)) return;
+    ctx.fillStyle = '#7d848d';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, cell * 0.44, cell * 0.36, 0, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   /** Grass with light and blades, the flag's lozenge and circle in soft tones, a river with lily pads around it. */
@@ -285,14 +401,12 @@ export class CapybaraGameComponent implements OnDestroy {
     ctx.fillStyle = grass;
     this.roundRect(ctx, MARGIN, MARGIN, PLAY, PLAY, 14);
     ctx.fill();
-    // Sandy bank and the yellow edge.
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#e9c46a';
-    ctx.stroke();
-    ctx.lineWidth = 1.5;
+    // Dashed yellow edge: there are no walls, the family crosses to the other side.
+    ctx.lineWidth = 3;
     ctx.strokeStyle = COLOR.yellow;
-    this.roundRect(ctx, MARGIN + 4, MARGIN + 4, PLAY - 8, PLAY - 8, 11);
+    ctx.setLineDash([10, 9]);
     ctx.stroke();
+    ctx.setLineDash([]);
     ctx.save();
     this.roundRect(ctx, MARGIN, MARGIN, PLAY, PLAY, 14);
     ctx.clip();
@@ -391,6 +505,9 @@ export class CapybaraGameComponent implements OnDestroy {
 
   private drawFruit(ctx: CanvasRenderingContext2D, c: Cell, kind: FruitKind, cell: number): void {
     const [cx, cy] = this.center(c, cell);
+    // A gentle bounce so the fruit catches the eye.
+    const bob = Math.sin(performance.now() / 260) * cell * 0.05;
+    if (this.sprite(ctx, kind, cx, cy + bob, cell * 1.25)) return;
     const r = cell * 0.16;
     this.shadow(ctx, cx, cy + r, r * 2, r * 1.6);
     if (kind === 'acai') {
@@ -431,10 +548,19 @@ export class CapybaraGameComponent implements OnDestroy {
     }
   }
 
-  private drawPup(ctx: CanvasRenderingContext2D, c: Cell, ahead: Cell, cell: number, index: number): void {
+  private drawPup(ctx: CanvasRenderingContext2D, c: Cell, at: Cell, ahead: Cell, cell: number, index: number): void {
     const [cx, cy] = this.center(c, cell);
-    const angle = Math.atan2(ahead.y - c.y, ahead.x - c.x);
+    // Direction to the cell ahead; across the wrap the neighbour is on the other side, so flip the sign.
+    let dx = ahead.x - at.x;
+    let dy = ahead.y - at.y;
+    if (Math.abs(dx) > 1) dx = -Math.sign(dx);
+    if (Math.abs(dy) > 1) dy = -Math.sign(dy);
+    const angle = Math.atan2(dy, dx);
     const scale = Math.max(0.62, 0.82 - index * 0.012);
+    const spriteScale = Math.max(0.78, 0.94 - index * 0.012);
+    const flip = dx < 0 || (dx === 0 && this.facing === 'left');
+    const hop = Math.abs(Math.sin(performance.now() / 120 + index)) * cell * 0.04;
+    if (this.sprite(ctx, 'pup', cx, cy - hop, cell * 1.5 * spriteScale, flip, dy * 0.25)) return;
     this.shadow(ctx, cx, cy, cell * 0.36 * scale, cell * 0.3 * scale);
     ctx.save();
     ctx.translate(cx, cy);
@@ -466,6 +592,11 @@ export class CapybaraGameComponent implements OnDestroy {
   private drawCapybara(ctx: CanvasRenderingContext2D, c: Cell, direction: Direction, cell: number): void {
     const [cx, cy] = this.center(c, cell);
     const angle = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 }[direction];
+    const flip = direction === 'left' || ((direction === 'up' || direction === 'down') && this.facing === 'left');
+    // Mirroring flips only x, so the same tilt raises (up) or lowers (down) the snout either way.
+    const tilt = direction === 'up' ? -0.3 : direction === 'down' ? 0.3 : 0;
+    const walk = this.phase() === 'running' ? Math.abs(Math.sin(performance.now() / 110)) * cell * 0.05 : 0;
+    if (this.sprite(ctx, 'capybara', cx, cy - walk, cell * 1.75, flip, tilt)) return;
     this.shadow(ctx, cx, cy, cell * 0.5, cell * 0.42);
     ctx.save();
     ctx.translate(cx, cy);
@@ -510,6 +641,7 @@ export class CapybaraGameComponent implements OnDestroy {
 
   private drawJaguar(ctx: CanvasRenderingContext2D, c: Cell, target: Cell, cell: number): void {
     const [cx, cy] = this.center(c, cell);
+    if (this.sprite(ctx, 'jaguar', cx, cy, cell * 1.75, target.x < c.x)) return;
     this.shadow(ctx, cx, cy, cell * 0.5, cell * 0.45);
     // A soft red halo: the danger is easy to spot.
     const halo = ctx.createRadialGradient(cx, cy, cell * 0.3, cx, cy, cell * 0.95);
@@ -586,7 +718,7 @@ export class CapybaraGameComponent implements OnDestroy {
     ctx.fillText(title, 240, 232);
     ctx.fillStyle = COLOR.white;
     ctx.font = '500 16px system-ui, sans-serif';
-    const line = phase === 'over' ? t.over[s.cause ?? 'bank'] : t.ready;
+    const line = phase === 'over' ? t.over[s.cause ?? 'pups'] : t.ready;
     this.wrap(ctx, line, 240, 266, 340, 20);
     ctx.restore();
   }

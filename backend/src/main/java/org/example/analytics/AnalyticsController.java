@@ -25,13 +25,15 @@ public class AnalyticsController {
                                @Size(max = 60) String timezone,
                                @Size(max = 36) String session) { }
 
-    public record VisitRow(Instant at, String ip, String path, String lang, String referrer, String userAgent,
-                           String screen, String timezone, String session) { }
+    public record VisitRow(Instant at, String ip, String country, String path, String lang, String referrer,
+                           String userAgent, String screen, String timezone, String session) { }
 
     private final AnalyticsService analytics;
+    private final GeoIpService geoIp;
 
-    public AnalyticsController(AnalyticsService analytics) {
+    public AnalyticsController(AnalyticsService analytics, GeoIpService geoIp) {
         this.analytics = analytics;
+        this.geoIp = geoIp;
     }
 
     /**
@@ -45,8 +47,10 @@ public class AnalyticsController {
             return ResponseEntity.noContent().build();
         }
         String ua = http.getHeader("User-Agent");
+        String ip = http.getRemoteAddr();
         analytics.record(Visit.builder()
-                .ip(http.getRemoteAddr())
+                .ip(ip)
+                .country(geoIp.country(ip))
                 .userAgent(ua == null ? null : ua.substring(0, Math.min(ua.length(), 300)))
                 .path(body.path())
                 .lang(body.lang())
@@ -64,10 +68,10 @@ public class AnalyticsController {
     }
 
     @GetMapping("/api/admin/analytics/visits")
-    public List<VisitRow> visits(@RequestParam(defaultValue = "100") int limit) {
-        return analytics.recent(Math.max(1, Math.min(limit, 500))).stream()
-                .map(v -> new VisitRow(v.getAt(), v.getIp(), v.getPath(), v.getLang(), v.getReferrer(), v.getUserAgent(),
-                        v.getScreen(), v.getTimezone(), v.getSession()))
+    public List<VisitRow> visits(@RequestParam(defaultValue = "200") int limit) {
+        return analytics.recent(Math.max(1, Math.min(limit, 1000))).stream()
+                .map(v -> new VisitRow(v.getAt(), v.getIp(), v.getCountry(), v.getPath(), v.getLang(), v.getReferrer(),
+                        v.getUserAgent(), v.getScreen(), v.getTimezone(), v.getSession()))
                 .toList();
     }
 }

@@ -212,3 +212,164 @@ form {
 .btn-delete:hover {
   background: #fef3f2;
 }
+
+/* Visits dashboard */
+.visits-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.period {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  min-height: 2.25rem;
+  padding: 0 0.85rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.chip.active,
+.chip:hover {
+  border-color: var(--accent);
+  background: var(--blue-100);
+  color: var(--accent-strong);
+}
+
+.per-day {
+  margin: 0 0 1.5rem;
+}
+
+.per-day figcaption,
+.visitors-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.per-day ol {
+  display: grid;
+  gap: 0.2rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.per-day li {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.per-day-bar {
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.per-day-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #009c3b, #ffdf00 60%, #002776);
+}
+
+.per-day-count {
+  text-align: right;
+}
+
+.visitor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+
+.visitor-tools input[type='search'],
+.visitor-tools select {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.7rem;
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.visitor-tools input[type='search'] {
+  flex: 1 1 16rem;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.btn-small {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+}
+
+.shown {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+
+.visitors-scroll {
+  max-height: 34rem;
+  overflow: auto;
+}
+
+.visitors-table {
+  font-size: 0.88rem;
+}
+
+.visitors-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.visitors-table td {
+  padding: 0.5rem 0.6rem;
+}
+
+.visitors-table tbody tr:nth-child(even) {
+  background: var(--surface-muted);
+}
+
+.visitors-table tr.bot {
+  opacity: 0.6;
+}
+
+.visitors-table code {
+  font-size: 0.8rem;
+}
+
+.muted {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

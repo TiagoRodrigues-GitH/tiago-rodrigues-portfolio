@@ -51,6 +51,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         paragraphs: ['Quando o servidor do site está ativo, cada página visitada também é registrada nele:'],
         items: [
           'endereço IP e identificação do navegador (user agent);',
+          'país, deduzido do IP no próprio servidor com a base offline gratuita “IP to Country Lite” da DB-IP (db-ip.com, licença CC BY 4.0) — nenhum dado é enviado a terceiros;',
           'página visitada, idioma escolhido e data e hora;',
           'site de origem (referrer), apenas na primeira página da visita;',
           'tamanho da tela e fuso horário;',
@@ -132,6 +133,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         paragraphs: ['When the site’s server is active, each page visited is also logged there:'],
         items: [
           'IP address and browser identification (user agent);',
+          'country, derived from the IP on the server itself with the free offline “IP to Country Lite” database by DB-IP (db-ip.com, CC BY 4.0) — nothing is sent to third parties;',
           'page visited, chosen language, date and time;',
           'referring site, on the first page of a visit only;',
           'screen size and time zone;',
@@ -213,6 +215,7 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
         paragraphs: ['Wenn der Server der Website aktiv ist, wird jede besuchte Seite zusätzlich dort protokolliert:'],
         items: [
           'IP-Adresse und Browserkennung (User-Agent);',
+          'Land, auf dem Server selbst aus der IP abgeleitet, mit der kostenlosen Offline-Datenbank „IP to Country Lite“ von DB-IP (db-ip.com, Lizenz CC BY 4.0) – es werden keine Daten an Dritte übermittelt;',
           'besuchte Seite, gewählte Sprache, Datum und Uhrzeit;',
           'verweisende Website, nur auf der ersten Seite eines Besuchs;',
           'Bildschirmgröße und Zeitzone;',

@@ -1,82 +1,137 @@
 <section class="admin-page shell" aria-labelledby="admin-title">
   <div class="admin-head">
-    <h1 id="admin-title">{{ t.panel }}</h1>
+    <h1 id="admin-title">{{ t().panel }}</h1>
     @if (!isCheckingAuth()) {
-      <button type="button" class="btn btn-outline" (click)="logout()">{{ t.logout }}</button>
+      <button type="button" class="btn btn-outline" (click)="logout()">{{ t().logout }}</button>
     }
   </div>
 
   @if (isCheckingAuth()) {
-    <p class="loading" role="status">{{ t.verify }}</p>
+    <p class="loading" role="status">{{ t().verify }}</p>
   } @else {
-    <app-message-inbox [locale]="locale()" />
-
-    <app-review-moderation [locale]="locale()" />
-
     <div class="projects-section visits-section">
-      <h2>{{ t.visits }}</h2>
-      <p class="hint">{{ t.visitsHint }}</p>
+      <div class="visits-head">
+        <h2>{{ t().visits }}</h2>
+        <div class="period" role="group" [attr.aria-label]="t().period">
+          @for (n of periods; track n) {
+            <button type="button" class="chip" [class.active]="days() === n" [attr.aria-pressed]="days() === n" (click)="setDays(n)">
+              {{ t().days(n) }}
+            </button>
+          }
+          <button type="button" class="chip" (click)="loadVisits()">↻ {{ t().reload }}</button>
+        </div>
+      </div>
+      <p class="hint">{{ t().visitsHint }}</p>
+
       @if (visitsError()) {
         <p class="error-message" role="alert">{{ visitsError() }}</p>
       } @else if (summary(); as s) {
         <ul class="visit-totals">
-          <li><span class="visit-number">{{ s.pageViews }}</span> {{ t.pageViews }}</li>
-          <li><span class="visit-number">{{ s.visitors }}</span> {{ t.visitors }}</li>
-          <li><span class="visit-number">{{ s.sessions }}</span> {{ t.sessions }}</li>
+          <li><span class="visit-number">{{ s.pageViews }}</span> {{ t().pageViews }}</li>
+          <li><span class="visit-number">{{ s.visitors }}</span> {{ t().visitors }}</li>
+          <li><span class="visit-number">{{ s.sessions }}</span> {{ t().sessions }}</li>
+          <li><span class="visit-number">{{ countryRows().length }}</span> {{ t().countriesN }}</li>
         </ul>
+
+        @if (s.perDay.length) {
+          <figure class="per-day">
+            <figcaption>{{ t().perDay }}</figcaption>
+            <ol>
+              @for (d of s.perDay; track d.key) {
+                <li>
+                  <span class="per-day-date">{{ d.key | date: 'dd/MM' }}</span>
+                  <span class="per-day-bar"><span [style.width]="barWidth(d.count)"></span></span>
+                  <span class="per-day-count">{{ d.count }}</span>
+                </li>
+              }
+            </ol>
+          </figure>
+        }
+
         <div class="visit-tables">
           @for (block of [
-            { title: t.topPages, rows: s.topPages },
-            { title: t.topReferrers, rows: s.topReferrers },
-            { title: t.languages, rows: s.languages }
+            { title: t().countries, rows: countryRows() },
+            { title: t().topPages, rows: s.topPages },
+            { title: t().topReferrers, rows: s.topReferrers },
+            { title: t().languages, rows: s.languages }
           ]; track block.title) {
             <div class="table-scroll">
               <table class="projects-table">
                 <caption>{{ block.title }}</caption>
-                <thead><tr><th scope="col">{{ t.item }}</th><th scope="col">{{ t.count }}</th></tr></thead>
+                <thead><tr><th scope="col">{{ t().item }}</th><th scope="col">{{ t().count }}</th></tr></thead>
                 <tbody>
                   @for (row of block.rows; track row.key) {
                     <tr><th scope="row">{{ row.key || '—' }}</th><td>{{ row.count }}</td></tr>
                   } @empty {
-                    <tr><td colspan="2">{{ t.noData }}</td></tr>
+                    <tr><td colspan="2">{{ t().noData }}</td></tr>
                   }
                 </tbody>
               </table>
             </div>
           }
         </div>
-        <div class="table-scroll">
-          <table class="projects-table">
-            <caption>{{ t.recent }}</caption>
+
+        <h3 class="visitors-title">{{ t().recent }}</h3>
+        <div class="visitor-tools">
+          <input type="search" [placeholder]="t().search" [attr.aria-label]="t().search" [value]="query()" (input)="query.set($any($event.target).value)" />
+          <select [attr.aria-label]="t().country" [value]="countryFilter()" (change)="countryFilter.set($any($event.target).value)">
+            <option value="">{{ t().allCountries }}</option>
+            @for (c of countryOptions(); track c.code) {
+              <option [value]="c.code">{{ c.label }}</option>
+            }
+          </select>
+          <label class="toggle"><input type="checkbox" [checked]="hideBots()" (change)="hideBots.set($any($event.target).checked)" /> {{ t().hideBots }}</label>
+          <label class="toggle"><input type="checkbox" [checked]="showIp()" (change)="showIp.set($any($event.target).checked)" /> {{ t().showIp }}</label>
+          <button type="button" class="btn btn-outline btn-small" (click)="exportCsv()" [disabled]="!filtered().length">⬇ {{ t().exportCsv }}</button>
+        </div>
+        <p class="hint shown">{{ t().shown(filtered().length, rows().length) }}</p>
+
+        <div class="table-scroll visitors-scroll">
+          <table class="projects-table visitors-table">
             <thead>
               <tr>
-                <th scope="col">{{ t.when }}</th>
-                <th scope="col">IP</th>
-                <th scope="col">{{ t.page }}</th>
-                <th scope="col">{{ t.referrer }}</th>
-                <th scope="col">{{ t.language }}</th>
-                <th scope="col">{{ t.browser }}</th>
+                <th scope="col">{{ t().when }}</th>
+                <th scope="col">{{ t().country }}</th>
+                <th scope="col">{{ t().page }}</th>
+                <th scope="col">{{ t().language }}</th>
+                <th scope="col">{{ t().browser }}</th>
+                <th scope="col">{{ t().os }}</th>
+                <th scope="col">{{ t().device }}</th>
+                <th scope="col">{{ t().referrer }}</th>
+                <th scope="col">{{ t().session }}</th>
+                <th scope="col">{{ t().ip }}</th>
               </tr>
             </thead>
             <tbody>
-              @for (v of visits(); track $index) {
-                <tr>
-                  <td>{{ v.at | date: 'dd/MM/yyyy HH:mm' }}</td>
-                  <td>{{ v.ip }}</td>
-                  <td>{{ v.path }}</td>
-                  <td>{{ v.referrer || '—' }}</td>
-                  <td>{{ v.lang || '—' }}</td>
-                  <td>{{ (v.userAgent || '—') | slice: 0 : 60 }}</td>
+              @for (r of filtered(); track $index) {
+                <tr [class.bot]="r.bot">
+                  <td class="nowrap">{{ r.at | date: 'dd/MM/yy HH:mm' }}</td>
+                  <td>
+                    {{ r.countryLabel }}
+                    @if (r.place) { <small class="muted">{{ r.place }}</small> }
+                  </td>
+                  <td><code>{{ r.page }}</code></td>
+                  <td>{{ r.lang }}</td>
+                  <td>{{ r.browser }}</td>
+                  <td>{{ r.os }}</td>
+                  <td>{{ r.device }} <small class="muted">{{ r.screen }}</small></td>
+                  <td>{{ r.from }}</td>
+                  <td><code>{{ r.session }}</code></td>
+                  <td class="nowrap"><code>{{ maskIp(r.ip) }}</code></td>
                 </tr>
               } @empty {
-                <tr><td colspan="6">{{ t.noData }}</td></tr>
+                <tr><td colspan="10">{{ t().noData }}</td></tr>
               }
             </tbody>
           </table>
         </div>
       } @else {
-        <p class="loading" role="status">{{ t.loadingVisits }}</p>
+        <p class="loading" role="status">{{ t().loadingVisits }}</p>
       }
     </div>
+
+    <app-message-inbox [locale]="locale()" />
+
+    <app-review-moderation [locale]="locale()" />
   }
 </section>

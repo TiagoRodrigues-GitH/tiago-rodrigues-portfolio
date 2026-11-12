@@ -18,6 +18,8 @@ interface VisitPayload {
 export interface VisitRow {
   at: string;
   ip: string;
+  /** ISO country code from the backend's offline IP database (null when unknown). */
+  country: string | null;
   path: string;
   lang: string | null;
   referrer: string | null;
@@ -41,6 +43,8 @@ export interface VisitSummary {
   topReferrers: CountRow[];
   languages: CountRow[];
   perDay: CountRow[];
+  /** Absent on an older backend. */
+  countries?: CountRow[];
 }
 
 const OPT_OUT_KEY = 'visit_stats_opt_out';

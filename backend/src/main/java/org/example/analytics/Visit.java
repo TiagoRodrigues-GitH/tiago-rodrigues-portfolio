@@ -53,4 +53,8 @@ public class Visit {
 
     @Column(length = 36)
     private String session;
+
+    /** ISO country code looked up offline from the IP when the visit is recorded (null when unknown). */
+    @Column(length = 2)
+    private String country;
 }

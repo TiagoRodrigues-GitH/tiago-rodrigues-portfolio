@@ -29,7 +29,8 @@ public class AnalyticsService {
     public record CountRow(String key, long count) { }
 
     public record Summary(int days, long pageViews, long visitors, long sessions, List<CountRow> topPages,
-                          List<CountRow> topReferrers, List<CountRow> languages, List<CountRow> perDay) { }
+                          List<CountRow> topReferrers, List<CountRow> languages, List<CountRow> perDay,
+                          List<CountRow> countries) { }
 
     private final VisitRepository visits;
     private final Duration retention;
@@ -68,7 +69,8 @@ public class AnalyticsService {
                 top(rows, Visit::getLang, 5),
                 rows.stream().collect(Collectors.groupingBy(v -> v.getAt().atZone(ZoneOffset.UTC).toLocalDate().toString(), Collectors.counting()))
                         .entrySet().stream().sorted(Map.Entry.comparingByKey())
-                        .map(e -> new CountRow(e.getKey(), e.getValue())).toList());
+                        .map(e -> new CountRow(e.getKey(), e.getValue())).toList(),
+                top(rows, Visit::getCountry, 15));
     }
 
     /** LGPD retention: visit records (IP, user agent) are deleted after the retention period. */

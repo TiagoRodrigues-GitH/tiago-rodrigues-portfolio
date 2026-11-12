@@ -30,6 +30,14 @@
 
     <div class="game-actions">
       <button type="button" class="btn-primary" (click)="primary()">{{ primaryLabel() }}</button>
+      <div class="speed" role="group" [attr.aria-label]="t().speed">
+        <span class="speed-label">{{ t().speed }}</span>
+        @for (s of speeds; track s) {
+          <button type="button" class="speed-btn" [class.active]="speed() === s" [attr.aria-pressed]="speed() === s" (click)="setSpeed(s)">
+            {{ t().speeds[s] }}
+          </button>
+        }
+      </div>
     </div>
 
     <div class="pad" role="group" [attr.aria-label]="t().pad.group">
