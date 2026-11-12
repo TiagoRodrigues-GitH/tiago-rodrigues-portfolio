@@ -18,6 +18,7 @@ const PAGE_CLIPS: Record<PageKey, CinemaClip> = {
   defectTriage: 'cluster',
   patentAssistant: 'hologram',
   streetRouting: 'traffic',
+  capybaraGame: 'jaguar',
   about: 'developer',
   contact: 'meeting',
   privacy: 'datacenter',

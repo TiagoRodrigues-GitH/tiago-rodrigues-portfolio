@@ -31,6 +31,11 @@ const routes: Routes = [
     loadComponent: () => import('./pages/street-routing/street-routing.component').then((m) => m.StreetRoutingComponent),
     data: { page: 'streetRouting' },
   },
+  {
+    path: 'game/capybara',
+    loadComponent: () => import('./pages/capybara-game/capybara-game.component').then((m) => m.CapybaraGameComponent),
+    data: { page: 'capybaraGame' },
+  },
   { path: 'about', component: AboutComponent, data: { page: 'about' } },
   { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
   { path: 'privacy', component: PrivacyComponent, data: { page: 'privacy' } },

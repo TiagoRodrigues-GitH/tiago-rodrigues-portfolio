@@ -90,6 +90,7 @@
         @for (item of navItems; track item.path) {
           <li><a [routerLink]="item.path" [queryParams]="langQuery()">{{ t.nav[item.key] }}</a></li>
         }
+        <li><a routerLink="/game/capybara" [queryParams]="langQuery()">{{ t.footer.game }}</a></li>
       </ul>
     </nav>
 

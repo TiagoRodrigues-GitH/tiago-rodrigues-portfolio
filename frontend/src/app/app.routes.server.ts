@@ -13,6 +13,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'projects/defect-triage', renderMode: RenderMode.Prerender },
   { path: 'projects/patent-assistant', renderMode: RenderMode.Prerender },
   { path: 'projects/street-routing', renderMode: RenderMode.Prerender },
+  { path: 'game/capybara', renderMode: RenderMode.Prerender },
   { path: 'about', renderMode: RenderMode.Prerender },
   { path: 'contact', renderMode: RenderMode.Prerender },
   { path: 'privacy', renderMode: RenderMode.Prerender },

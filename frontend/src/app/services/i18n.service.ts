@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 export type Locale = 'pt' | 'en' | 'de';
 
 export type PageKey =
-  | 'home' | 'projects' | 'defectTriage' | 'patentAssistant' | 'streetRouting' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
+  | 'home' | 'projects' | 'defectTriage' | 'patentAssistant' | 'streetRouting' | 'capybaraGame' | 'about' | 'contact' | 'privacy' | 'login' | 'admin';
 
 export interface LocaleOption {
   locale: Locale;
@@ -37,6 +37,8 @@ export interface ShellTranslations {
     rights: string;
     backToTop: string;
     privacy: string;
+    /** Link to the capybara game (footer). */
+    game: string;
   };
   /** Bottom bar on every page (WCAG 2.1 AA statement). */
   a11y: { statement: string; guidelines: string; url: string };
@@ -208,6 +210,7 @@ export class I18nService {
         rights: 'Todos os direitos reservados.',
         backToTop: 'Voltar ao topo',
         privacy: 'Privacidade',
+        game: 'Jogo: Trilha da Capivara',
       },
       a11y: {
         statement: 'Este site segue as recomendações de acessibilidade WCAG 2.1 AA.',
@@ -220,6 +223,7 @@ export class I18nService {
         about: 'Sobre mim · Tiago Rodrigues',
         contact: 'Contato · Tiago Rodrigues',
         privacy: 'Privacidade · Tiago Rodrigues',
+        capybaraGame: 'Trilha da Capivara, um jogo brasileiro · Tiago Rodrigues',
         defectTriage: 'Triagem de reclamações de defeitos · Tiago Rodrigues',
         patentAssistant: 'Assistente de patentes · Tiago Rodrigues',
         streetRouting: 'Ruas de cidades brasileiras e algoritmos de rota · Tiago Rodrigues',
@@ -232,6 +236,7 @@ export class I18nService {
         about: 'Formação e competências de Tiago Rodrigues em software, inteligência artificial e pesquisa em ADAS.',
         contact: 'Fale com Tiago Rodrigues sobre desenvolvimento de software, inteligência artificial e novos projetos.',
         privacy: 'Como este site trata dados de visita (LGPD): o que é registrado, por quanto tempo e como pedir a exclusão.',
+        capybaraGame: 'Jogo no navegador com tema brasileiro: guie a capivara, coma açaí, caju e jabuticaba e fuja da onça-pintada. Feito em TypeScript e Canvas, com lógica testada.',
         login: 'Acesso administrativo do portfólio.',
         admin: 'Painel administrativo do portfólio.',
         defectTriage: 'Triagem guiada de reclamações de defeitos veiculares da NHTSA com LLMs compactos ajustados com LoRA e um classificador que roda no navegador, com resultados reais.',
@@ -261,6 +266,7 @@ export class I18nService {
         rights: 'All rights reserved.',
         backToTop: 'Back to top',
         privacy: 'Privacy',
+        game: 'Game: Capybara Trail',
       },
       a11y: {
         statement: 'This site follows the WCAG 2.1 AA accessibility recommendations.',
@@ -273,6 +279,7 @@ export class I18nService {
         about: 'About me · Tiago Rodrigues',
         contact: 'Contact · Tiago Rodrigues',
         privacy: 'Privacy · Tiago Rodrigues',
+        capybaraGame: 'Capybara Trail, a Brazilian game · Tiago Rodrigues',
         defectTriage: 'Defect complaint triage · Tiago Rodrigues',
         patentAssistant: 'Patent assistant · Tiago Rodrigues',
         streetRouting: 'Streets of Brazilian cities and routing algorithms · Tiago Rodrigues',
@@ -285,6 +292,7 @@ export class I18nService {
         about: 'Background and skills of Tiago Rodrigues in software, artificial intelligence and ADAS research.',
         contact: 'Contact Tiago Rodrigues about software development, artificial intelligence and new projects.',
         privacy: 'How this site handles visit data (LGPD/GDPR): what is recorded, for how long and how to request deletion.',
+        capybaraGame: 'A browser game with a Brazilian theme: lead the capybara, eat açaí, cashew apple and jabuticaba, and escape the jaguar. Built with TypeScript and Canvas, with tested logic.',
         login: 'Portfolio administrative access.',
         admin: 'Portfolio admin panel.',
         defectTriage: 'Guided triage of NHTSA vehicle defect complaints with compact LLMs fine-tuned with LoRA and a classifier that runs in the browser, with real results.',
@@ -314,6 +322,7 @@ export class I18nService {
         rights: 'Alle Rechte vorbehalten.',
         backToTop: 'Nach oben',
         privacy: 'Datenschutz',
+        game: 'Spiel: Capybara-Pfad',
       },
       a11y: {
         statement: 'Diese Website folgt den Barrierefreiheitsempfehlungen der WCAG 2.1 AA.',
@@ -326,6 +335,7 @@ export class I18nService {
         about: 'Über mich · Tiago Rodrigues',
         contact: 'Kontakt · Tiago Rodrigues',
         privacy: 'Datenschutz · Tiago Rodrigues',
+        capybaraGame: 'Capybara-Pfad, ein brasilianisches Spiel · Tiago Rodrigues',
         defectTriage: 'Triage von Mängelbeschwerden · Tiago Rodrigues',
         patentAssistant: 'Patentassistent · Tiago Rodrigues',
         streetRouting: 'Straßen brasilianischer Städte und Routing-Algorithmen · Tiago Rodrigues',
@@ -338,6 +348,7 @@ export class I18nService {
         about: 'Werdegang und Kompetenzen von Tiago Rodrigues in Software, künstlicher Intelligenz und ADAS-Forschung.',
         contact: 'Kontakt zu Tiago Rodrigues zu Softwareentwicklung, künstlicher Intelligenz und neuen Projekten.',
         privacy: 'Wie diese Website Besuchsdaten verarbeitet (LGPD/DSGVO): was gespeichert wird und wie man die Löschung verlangt.',
+        capybaraGame: 'Ein Browserspiel mit brasilianischem Thema: Führe das Capybara, iss Açaí, Cashewäpfel und Jabuticaba und entkomme dem Jaguar. Gebaut mit TypeScript und Canvas, mit getesteter Logik.',
         login: 'Administrativer Zugang zum Portfolio.',
         admin: 'Admin-Bereich des Portfolios.',
         defectTriage: 'Geführte Triage von NHTSA-Fahrzeugmängelbeschwerden mit kompakten, per LoRA feinabgestimmten LLMs und einem Klassifikator im Browser, mit echten Ergebnissen.',

@@ -1,0 +1,68 @@
+<section class="page-hero has-backdrop" aria-labelledby="capybara-title">
+  <div class="shell">
+    <p class="mono-label">{{ t().eyebrow }}</p>
+    <h1 id="capybara-title" class="page-title">{{ t().title }}</h1>
+    <p class="section-lede">{{ t().intro }}</p>
+  </div>
+</section>
+
+<div class="shell game-body">
+  <div class="game-area">
+    <div class="hud" aria-hidden="true">
+      <span><b>{{ state().score }}</b> {{ t().score }}</span>
+      <span><b>{{ best() }}</b> {{ t().best }}</span>
+      <span><b>{{ state().level }}</b> {{ t().level }}</span>
+      <span><b>{{ state().family.length - 1 }}</b> {{ t().pups }}</span>
+    </div>
+
+    <canvas
+      #board
+      class="board"
+      width="480"
+      height="480"
+      role="img"
+      [attr.aria-label]="t().canvasLabel"
+      (pointerdown)="onPointerDown($event)"
+      (pointerup)="onPointerUp($event)"
+    ></canvas>
+
+    <p class="visually-hidden" aria-live="polite">{{ announcement() }}</p>
+
+    <div class="game-actions">
+      <button type="button" class="btn-primary" (click)="primary()">{{ primaryLabel() }}</button>
+    </div>
+
+    <div class="pad" role="group" [attr.aria-label]="t().pad.group">
+      <button type="button" class="pad-up" (click)="press('up')" [attr.aria-label]="t().pad.up">▲</button>
+      <button type="button" class="pad-left" (click)="press('left')" [attr.aria-label]="t().pad.left">◀</button>
+      <button type="button" class="pad-right" (click)="press('right')" [attr.aria-label]="t().pad.right">▶</button>
+      <button type="button" class="pad-down" (click)="press('down')" [attr.aria-label]="t().pad.down">▼</button>
+    </div>
+  </div>
+
+  <aside class="game-side">
+    <section>
+      <h2>{{ t().controlsTitle }}</h2>
+      <ul>
+        @for (line of t().controls; track $index) {
+          <li>{{ line }}</li>
+        }
+      </ul>
+    </section>
+    <section>
+      <h2>{{ t().fruitsTitle }}</h2>
+      <ul class="fruits">
+        @for (kind of fruitKinds; track kind) {
+          <li><span class="dot" [class]="'dot ' + kind" aria-hidden="true"></span>{{ t().fruits[kind] }}</li>
+        }
+      </ul>
+    </section>
+    <section>
+      <h2>{{ t().aboutTitle }}</h2>
+      @for (paragraph of t().about; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+    </section>
+    <a class="back-link" routerLink="/projects" [queryParams]="langQuery()">← {{ t().back }}</a>
+  </aside>
+</div>
