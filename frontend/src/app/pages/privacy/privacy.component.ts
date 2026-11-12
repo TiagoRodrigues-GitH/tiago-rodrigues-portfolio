@@ -27,12 +27,15 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   pt: {
     eyebrow: 'Privacidade · LGPD',
     title: 'Como este site trata seus dados',
-    intro: 'Este portfólio pode contar visitas para saber quais páginas interessam aos leitores, aceita comentários nos projetos e mensagens pelo formulário de contato e se protege contra abusos. Não há cookies nem publicidade.',
+    intro:
+      'Este portfólio pode contar visitas para saber quais páginas interessam aos leitores, aceita comentários nos projetos e mensagens pelo formulário de contato e se protege contra abusos. Não há cookies nem publicidade.',
     updated: 'Atualizado em 11 de outubro de 2026.',
     sections: [
       {
         heading: 'Quem é o controlador',
-        paragraphs: [`Tiago Rodrigues, autor deste site. Contato para qualquer assunto de privacidade: ${EMAIL}.`],
+        paragraphs: [
+          `Tiago Rodrigues, autor deste site. Contato para qualquer assunto de privacidade: ${EMAIL}.`,
+        ],
       },
       {
         heading: 'Contagem de visitas (GoatCounter)',
@@ -48,7 +51,9 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
       },
       {
         heading: 'Registro de visitas no servidor do site',
-        paragraphs: ['Quando o servidor do site está ativo, cada página visitada também é registrada nele:'],
+        paragraphs: [
+          'Quando o servidor do site está ativo, cada página visitada também é registrada nele:',
+        ],
         items: [
           'endereço IP e identificação do navegador (user agent);',
           'país, deduzido do IP no próprio servidor com a base offline gratuita “IP to Country Lite” da DB-IP (db-ip.com, licença CC BY 4.0) — nenhum dado é enviado a terceiros;',
@@ -95,12 +100,15 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
       },
       {
         heading: 'Fontes e arquivos',
-        paragraphs: ['As fontes tipográficas e as imagens são servidas pelo próprio site. Os únicos serviços externos chamados pelo navegador são o GoatCounter e o servidor do site, quando ativos.'],
+        paragraphs: [
+          'As fontes tipográficas e as imagens são servidas pelo próprio site. Os únicos serviços externos chamados pelo navegador são o GoatCounter e o servidor do site, quando ativos.',
+        ],
       },
     ],
     statusTitle: 'Situação neste navegador',
     statusOff: 'A contagem de visitas está desativada neste site: nenhum dado é enviado.',
-    statusBrowser: 'Seu navegador pede para não ser rastreado (Global Privacy Control ou Do Not Track): nenhum dado é enviado.',
+    statusBrowser:
+      'Seu navegador pede para não ser rastreado (Global Privacy Control ou Do Not Track): nenhum dado é enviado.',
     statusOptedOut: 'Você desativou a contagem de visitas neste navegador.',
     statusOn: 'As visitas deste navegador são contadas como descrito acima.',
     optOut: 'Não contar minhas visitas',
@@ -109,12 +117,15 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   en: {
     eyebrow: 'Privacy · LGPD / GDPR',
     title: 'How this site handles your data',
-    intro: 'This portfolio may count visits to learn which pages readers find useful, accepts comments on its projects and messages through its contact form, and protects itself against abuse. There are no cookies and no advertising.',
+    intro:
+      'This portfolio may count visits to learn which pages readers find useful, accepts comments on its projects and messages through its contact form, and protects itself against abuse. There are no cookies and no advertising.',
     updated: 'Updated on 11 October 2026.',
     sections: [
       {
         heading: 'Who is responsible',
-        paragraphs: [`Tiago Rodrigues, the author of this site. Contact for any privacy matter: ${EMAIL}.`],
+        paragraphs: [
+          `Tiago Rodrigues, the author of this site. Contact for any privacy matter: ${EMAIL}.`,
+        ],
       },
       {
         heading: 'Visit counting (GoatCounter)',
@@ -177,12 +188,15 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
       },
       {
         heading: 'Fonts and files',
-        paragraphs: ['Fonts and images are served by the site itself. The only external services the browser calls are GoatCounter and the site’s server, when active.'],
+        paragraphs: [
+          'Fonts and images are served by the site itself. The only external services the browser calls are GoatCounter and the site’s server, when active.',
+        ],
       },
     ],
     statusTitle: 'Status in this browser',
     statusOff: 'Visit counting is switched off on this site: nothing is sent.',
-    statusBrowser: 'Your browser asks not to be tracked (Global Privacy Control or Do Not Track): nothing is sent.',
+    statusBrowser:
+      'Your browser asks not to be tracked (Global Privacy Control or Do Not Track): nothing is sent.',
     statusOptedOut: 'You switched visit counting off in this browser.',
     statusOn: 'Visits from this browser are counted as described above.',
     optOut: 'Do not count my visits',
@@ -191,12 +205,15 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
   de: {
     eyebrow: 'Datenschutz · LGPD / DSGVO',
     title: 'Wie diese Website Ihre Daten verarbeitet',
-    intro: 'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten für Lesende interessant sind, nimmt Kommentare zu den Projekten und Nachrichten über das Kontaktformular an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
+    intro:
+      'Dieses Portfolio kann Besuche zählen, um zu sehen, welche Seiten für Lesende interessant sind, nimmt Kommentare zu den Projekten und Nachrichten über das Kontaktformular an und schützt sich vor Missbrauch. Es gibt keine Cookies und keine Werbung.',
     updated: 'Stand: 11. Oktober 2026.',
     sections: [
       {
         heading: 'Verantwortlicher',
-        paragraphs: [`Tiago Rodrigues, Autor dieser Website. Kontakt für alle Datenschutzfragen: ${EMAIL}.`],
+        paragraphs: [
+          `Tiago Rodrigues, Autor dieser Website. Kontakt für alle Datenschutzfragen: ${EMAIL}.`,
+        ],
       },
       {
         heading: 'Besuchszählung (GoatCounter)',
@@ -212,7 +229,9 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
       },
       {
         heading: 'Besuchsprotokoll auf dem Server der Website',
-        paragraphs: ['Wenn der Server der Website aktiv ist, wird jede besuchte Seite zusätzlich dort protokolliert:'],
+        paragraphs: [
+          'Wenn der Server der Website aktiv ist, wird jede besuchte Seite zusätzlich dort protokolliert:',
+        ],
         items: [
           'IP-Adresse und Browserkennung (User-Agent);',
           'Land, auf dem Server selbst aus der IP abgeleitet, mit der kostenlosen Offline-Datenbank „IP to Country Lite“ von DB-IP (db-ip.com, Lizenz CC BY 4.0) – es werden keine Daten an Dritte übermittelt;',
@@ -259,12 +278,16 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
       },
       {
         heading: 'Schriften und Dateien',
-        paragraphs: ['Schriften und Bilder werden von der Website selbst ausgeliefert. Die einzigen externen Dienste, die der Browser aufruft, sind GoatCounter und der Server der Website, wenn sie aktiv sind.'],
+        paragraphs: [
+          'Schriften und Bilder werden von der Website selbst ausgeliefert. Die einzigen externen Dienste, die der Browser aufruft, sind GoatCounter und der Server der Website, wenn sie aktiv sind.',
+        ],
       },
     ],
     statusTitle: 'Status in diesem Browser',
-    statusOff: 'Die Besuchszählung ist auf dieser Website abgeschaltet: Es werden keine Daten gesendet.',
-    statusBrowser: 'Ihr Browser bittet darum, nicht verfolgt zu werden (Global Privacy Control oder Do Not Track): Es werden keine Daten gesendet.',
+    statusOff:
+      'Die Besuchszählung ist auf dieser Website abgeschaltet: Es werden keine Daten gesendet.',
+    statusBrowser:
+      'Ihr Browser bittet darum, nicht verfolgt zu werden (Global Privacy Control oder Do Not Track): Es werden keine Daten gesendet.',
     statusOptedOut: 'Sie haben die Besuchszählung in diesem Browser abgeschaltet.',
     statusOn: 'Besuche aus diesem Browser werden wie oben beschrieben gezählt.',
     optOut: 'Meine Besuche nicht zählen',
@@ -274,12 +297,10 @@ const TEXT: Record<'pt' | 'en' | 'de', PrivacyText> = {
 
 @Component({
   selector: 'app-privacy',
-  standalone: false,
   templateUrl: './privacy.html',
   styleUrls: ['./privacy.css'],
 })
 export class PrivacyComponent {
-
   private readonly analytics = inject(AnalyticsService);
   readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly locale = injectLocale();

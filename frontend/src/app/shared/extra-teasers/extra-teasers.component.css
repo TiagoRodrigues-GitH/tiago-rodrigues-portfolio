@@ -1,0 +1,131 @@
+/* Game teaser at the bottom of the page */
+.game-teaser {
+  padding-block: 1rem 4rem;
+}
+
+.game-teaser-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgb(255 223 0 / 45%);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 15% 20%, rgb(0 156 59 / 35%), transparent 55%),
+    radial-gradient(circle at 90% 90%, rgb(0 39 118 / 55%), transparent 60%),
+    rgb(3 10 28 / 88%);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-teaser-card:hover,
+.game-teaser-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+}
+
+.game-teaser-card:focus-visible {
+  outline: 3px solid #ffdf00;
+  outline-offset: 4px;
+}
+
+.game-teaser-scene {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 3px dashed #ffdf00;
+  background:
+    repeating-conic-gradient(rgb(0 0 0 / 6%) 0 25%, transparent 0 50%) 0 0 / 12.5% 20%,
+    radial-gradient(circle at 50% 40%, #22b257, #0b7a36);
+}
+
+.game-teaser-scene img {
+  position: absolute;
+  height: auto;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 25%));
+}
+
+.gt-capybara { left: 50%; top: 38%; width: 22%; }
+.gt-pup { width: 14%; top: 46%; }
+.gt-pup1 { left: 38%; }
+.gt-pup2 { left: 27%; }
+.gt-pup3 { left: 16%; }
+.gt-jaguar { right: 3%; top: 6%; width: 22%; transform: scaleX(-1); }
+.gt-fruit { width: 11%; }
+.gt-acai { left: 78%; top: 60%; }
+.gt-caju { left: 10%; top: 12%; }
+.gt-rock { left: 60%; top: 72%; width: 14%; }
+
+.game-teaser-card:hover .gt-capybara { animation: gt-hop 0.5s ease-in-out infinite alternate; }
+
+@keyframes gt-hop {
+  to { transform: translateY(-6%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-teaser-card,
+  .game-teaser-card:hover .gt-capybara { transition: none; animation: none; }
+}
+
+.game-teaser-text h2 {
+  margin: 0.25rem 0 0.75rem;
+  color: #ffdf00;
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+}
+
+.game-teaser-text p:not(.mono-label) {
+  color: rgb(255 255 255 / 85%);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.game-teaser-text .mono-label {
+  color: #7ee2a0;
+}
+
+@media (max-width: 760px) {
+  .game-teaser-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Avisa Aí card: the blue of the app instead of the game's green and yellow */
+.game-teaser {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.teaser-avisa {
+  border-color: rgb(96 165 250 / 45%);
+  background:
+    radial-gradient(circle at 15% 20%, rgb(37 99 235 / 40%), transparent 55%),
+    radial-gradient(circle at 90% 90%, rgb(14 116 144 / 45%), transparent 60%),
+    rgb(3 10 28 / 88%);
+}
+
+.teaser-avisa:focus-visible {
+  outline-color: #93c5fd;
+}
+
+.teaser-avisa h2 {
+  color: #93c5fd;
+}
+
+.teaser-avisa .mono-label {
+  color: #7dd3fc;
+}
+
+.teaser-shot {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgb(147 197 253 / 50%);
+}
+
+.teaser-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

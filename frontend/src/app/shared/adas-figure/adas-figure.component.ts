@@ -4,7 +4,6 @@ import { HomeTranslations } from '../../services/i18n.service';
 /** Blueprint side view of a generic (brand-free) sports coupe with its ADAS sensor layout. */
 @Component({
   selector: 'app-adas-figure',
-  standalone: false,
   templateUrl: './adas-figure.component.html',
   styleUrls: ['./adas-figure.component.css'],
 })

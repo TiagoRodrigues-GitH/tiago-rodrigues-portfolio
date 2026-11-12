@@ -100,7 +100,6 @@ const VIEWS: Array<[number, number, number]> = [
  */
 @Component({
   selector: 'app-neural-hero',
-  standalone: false,
   template: '<canvas #canvas class="scene" aria-hidden="true"></canvas>',
   styleUrls: ['./neural-hero.component.css'],
 })
@@ -141,7 +140,10 @@ export class NeuralHeroComponent implements OnDestroy {
     const win = this.document.defaultView;
     if (range && win && this.track) {
       const top = this.track.getBoundingClientRect().top + win.scrollY;
-      win.scrollTo({ top: top + (range * index) / (SHAPE_COUNT - 1), behavior: this.reducedMotion ? 'auto' : 'smooth' });
+      win.scrollTo({
+        top: top + (range * index) / (SHAPE_COUNT - 1),
+        behavior: this.reducedMotion ? 'auto' : 'smooth',
+      });
     } else {
       this.targetMorph = index;
       this.active.set(index);
@@ -167,7 +169,12 @@ export class NeuralHeroComponent implements OnDestroy {
   private async init(): Promise<void> {
     const win = this.document.defaultView;
     const canvas = this.canvasRef.nativeElement;
-    const gl = canvas.getContext('webgl2', { antialias: false, alpha: true, premultipliedAlpha: true, powerPreference: 'low-power' });
+    const gl = canvas.getContext('webgl2', {
+      antialias: false,
+      alpha: true,
+      premultipliedAlpha: true,
+      powerPreference: 'low-power',
+    });
     if (!win || !gl) {
       this.supported.set(false);
       return;
@@ -206,7 +213,9 @@ export class NeuralHeroComponent implements OnDestroy {
     gl.clearColor(0, 0, 0, 0);
 
     this.listen(win, 'scroll', () => this.onScroll(), { passive: true });
-    this.listen(win, 'pointermove', (e) => this.onPointer(e as PointerEvent, win), { passive: true });
+    this.listen(win, 'pointermove', (e) => this.onPointer(e as PointerEvent, win), {
+      passive: true,
+    });
     this.listen(this.document, 'visibilitychange', () => this.requestDraw());
 
     const resize = new ResizeObserver(() => this.resize(win));
@@ -246,7 +255,13 @@ export class NeuralHeroComponent implements OnDestroy {
     return program;
   }
 
-  private attribute(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, data: Float32Array, size: number): void {
+  private attribute(
+    gl: WebGL2RenderingContext,
+    program: WebGLProgram,
+    name: string,
+    data: Float32Array,
+    size: number,
+  ): void {
     const location = gl.getAttribLocation(program, name);
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -255,7 +270,12 @@ export class NeuralHeroComponent implements OnDestroy {
     gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
   }
 
-  private listen(target: EventTarget, type: string, handler: (e: Event) => void, options?: AddEventListenerOptions): void {
+  private listen(
+    target: EventTarget,
+    type: string,
+    handler: (e: Event) => void,
+    options?: AddEventListenerOptions,
+  ): void {
     target.addEventListener(type, handler, options);
     this.cleanup.push(() => target.removeEventListener(type, handler, options));
   }
@@ -330,13 +350,22 @@ export class NeuralHeroComponent implements OnDestroy {
     gl.uniform1f(this.uniforms['uMorph'], this.morph);
     gl.uniform1f(this.uniforms['uTime'], time);
     gl.uniform1f(this.uniforms['uMotion'], animate ? 1 : 0);
-    gl.uniform2f(this.uniforms['uRot'], view[0] + drift + this.pointer.x * 0.35, view[1] - this.pointer.y * 0.18);
+    gl.uniform2f(
+      this.uniforms['uRot'],
+      view[0] + drift + this.pointer.x * 0.35,
+      view[1] - this.pointer.y * 0.18,
+    );
     gl.uniform1f(this.uniforms['uAspect'], canvas.width / canvas.height);
-    gl.uniform1f(this.uniforms['uSize'], (narrow ? 3.4 : 4.6) * Math.min(win.devicePixelRatio || 1, 1.75));
+    gl.uniform1f(
+      this.uniforms['uSize'],
+      (narrow ? 3.4 : 4.6) * Math.min(win.devicePixelRatio || 1, 1.75),
+    );
     gl.uniform1f(this.uniforms['uZoom'], view[2] * (narrow ? 0.82 : 1));
     gl.drawArrays(gl.POINTS, 0, this.count);
 
-    const settling = Math.abs(this.targetMorph - this.morph) > 0.001 || Math.abs(this.pointer.tx - this.pointer.x) > 0.001;
+    const settling =
+      Math.abs(this.targetMorph - this.morph) > 0.001 ||
+      Math.abs(this.pointer.tx - this.pointer.x) > 0.001;
     if (animate || settling) this.requestDraw();
   }
 }

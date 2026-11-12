@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { HomeTranslations } from '../../services/i18n.service';
+import { NeuralHeroComponent } from '../neural-hero/neural-hero.component';
+import { RouterLink } from '@angular/router';
 
 /**
  * Home hero: headline, actions and the cinematic scene (a neural network that becomes automotive
@@ -9,9 +11,9 @@ import { HomeTranslations } from '../../services/i18n.service';
  */
 @Component({
   selector: 'app-home-hero',
-  standalone: false,
   templateUrl: './home-hero.component.html',
   styleUrls: ['./home-hero.component.css'],
+  imports: [NeuralHeroComponent, RouterLink],
 })
 export class HomeHeroComponent {
   @Input({ required: true }) t!: HomeTranslations;

@@ -2,6 +2,7 @@ import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ContactTranslations, I18nService } from '../../services/i18n.service';
 import { injectLocale } from '../../services/locale';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 interface ProfileLink {
   label: string;
@@ -12,12 +13,11 @@ interface ProfileLink {
 
 @Component({
   selector: 'app-contact',
-  standalone: false,
   templateUrl: './contact.html',
   styleUrls: ['./contact.css'],
+  imports: [ContactFormComponent],
 })
 export class ContactComponent implements OnDestroy {
-
   private readonly i18n = inject(I18nService);
   private readonly document = inject(DOCUMENT);
   private resetTimer?: ReturnType<typeof setTimeout>;

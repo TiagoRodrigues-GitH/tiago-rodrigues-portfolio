@@ -1,19 +1,21 @@
 import { NgModule, inject } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { ProjectsComponent } from './pages/projects/projects.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { AboutComponent } from './pages/about/about.component';
-import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { AuthGuard } from './guards/auth.guard';
 
+// Pages load with their route, so the first download is the framework and the shell only.
+const loadHome = () => import('./pages/home/home.component').then((m) => m.HomeComponent);
+const loadProjects = () => import('./pages/projects/projects.component').then((m) => m.ProjectsComponent);
+const loadContact = () => import('./pages/contact/contact.component').then((m) => m.ContactComponent);
+const loadAbout = () => import('./pages/about/about.component').then((m) => m.AboutComponent);
+const loadPrivacy = () => import('./pages/privacy/privacy.component').then((m) => m.PrivacyComponent);
+
 const routes: Routes = [
-  { path: '', component: HomeComponent, data: { page: 'home' } },
-  { path: 'projects', component: ProjectsComponent, data: { page: 'projects' } },
+  { path: '', loadComponent: loadHome, data: { page: 'home' } },
+  { path: 'projects', loadComponent: loadProjects, data: { page: 'projects' } },
   // one tab per portfolio area (shared/areas.ts)
-  { path: 'projects/automotive', component: ProjectsComponent, data: { page: 'projects', area: 'automotive' } },
-  { path: 'projects/ai', component: ProjectsComponent, data: { page: 'projects', area: 'ai' } },
-  { path: 'projects/security', component: ProjectsComponent, data: { page: 'projects', area: 'security' } },
+  { path: 'projects/automotive', loadComponent: loadProjects, data: { page: 'projects', area: 'automotive' } },
+  { path: 'projects/ai', loadComponent: loadProjects, data: { page: 'projects', area: 'ai' } },
+  { path: 'projects/security', loadComponent: loadProjects, data: { page: 'projects', area: 'security' } },
   {
     path: 'projects/defect-triage',
     loadComponent: () => import('./pages/llm-lab/triage-page.component').then((m) => m.TriagePageComponent),
@@ -36,9 +38,9 @@ const routes: Routes = [
     loadComponent: () => import('./pages/capybara-game/capybara-game.component').then((m) => m.CapybaraGameComponent),
     data: { page: 'capybaraGame' },
   },
-  { path: 'about', component: AboutComponent, data: { page: 'about' } },
-  { path: 'contact', component: ContactComponent, data: { page: 'contact' } },
-  { path: 'privacy', component: PrivacyComponent, data: { page: 'privacy' } },
+  { path: 'about', loadComponent: loadAbout, data: { page: 'about' } },
+  { path: 'contact', loadComponent: loadContact, data: { page: 'contact' } },
+  { path: 'privacy', loadComponent: loadPrivacy, data: { page: 'privacy' } },
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent),

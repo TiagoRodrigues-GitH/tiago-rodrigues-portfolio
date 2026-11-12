@@ -1,18 +1,41 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { I18nService, HomeTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
-import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
+import {
+  BlueprintKind,
+  BlueprintPart,
+  blueprintParts,
+} from '../../shared/blueprint-figure/blueprint-parts';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
 import { ARTICLES, Article } from '../../content/articles';
 import { AREAS, AreaKey } from '../../shared/areas';
+import { HomeHeroComponent } from '../../shared/home-hero/home-hero.component';
+import { AreaDoorsComponent } from '../../shared/area-doors/area-doors.component';
+import { CodeCardComponent } from '../../shared/code-card/code-card.component';
+import { TiltDirective } from '../../shared/tilt.directive';
+import { ProjectFigureComponent } from '../../shared/project-figure/project-figure.component';
+import { BlueprintFigureComponent } from '../../shared/blueprint-figure/blueprint-figure.component';
+import { RouterLink } from '@angular/router';
+import { LaneDiagramComponent } from '../../shared/lane-diagram/lane-diagram.component';
+import { PendencyChartComponent } from '../../shared/pendency-chart/pendency-chart.component';
 
 const WORDS_PER_MINUTE = 200;
 
 @Component({
   selector: 'app-home',
-  standalone: false,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  imports: [
+    HomeHeroComponent,
+    AreaDoorsComponent,
+    CodeCardComponent,
+    TiltDirective,
+    ProjectFigureComponent,
+    BlueprintFigureComponent,
+    RouterLink,
+    LaneDiagramComponent,
+    PendencyChartComponent,
+  ],
 })
 export class HomeComponent {
   private readonly i18n = inject(I18nService);
@@ -22,8 +45,23 @@ export class HomeComponent {
   readonly projects = computed(() => getPortfolioProjects(this.locale()));
   readonly articles = computed(() => ARTICLES[this.locale()]);
 
-  readonly marquee = ['Java', 'Spring Boot', 'Python', 'PyTorch', 'Angular', 'TypeScript', 'LLMs', 'ADAS', 'Lane detection',
-    'OpenStreetMap', 'Dijkstra · A*', 'Docker', 'SQL', 'Linux', 'Cisco networking'];
+  readonly marquee = [
+    'Java',
+    'Spring Boot',
+    'Python',
+    'PyTorch',
+    'Angular',
+    'TypeScript',
+    'LLMs',
+    'ADAS',
+    'Lane detection',
+    'OpenStreetMap',
+    'Dijkstra · A*',
+    'Docker',
+    'SQL',
+    'Linux',
+    'Cisco networking',
+  ];
 
   /** Open disclosures (chapter text, reference lists). Closed content carries `hidden`,
    *  so its links are neither focusable nor announced until it is opened. */

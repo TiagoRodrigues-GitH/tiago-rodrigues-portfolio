@@ -142,26 +142,7 @@
   }
 </div>
 
-<section class="shell game-teaser" aria-labelledby="game-teaser-title">
-  <a class="game-teaser-card" routerLink="/game/capybara" [queryParams]="langQuery()">
-    <div class="game-teaser-scene" aria-hidden="true">
-      <img class="gt-fruit gt-acai" [src]="sprite('acai')" alt="" width="64" height="64" />
-      <img class="gt-fruit gt-caju" [src]="sprite('caju')" alt="" width="64" height="64" />
-      <img class="gt-rock" [src]="sprite('rock')" alt="" width="64" height="64" />
-      <img class="gt-pup gt-pup3" [src]="sprite('pup')" alt="" width="64" height="64" />
-      <img class="gt-pup gt-pup2" [src]="sprite('pup')" alt="" width="64" height="64" />
-      <img class="gt-pup gt-pup1" [src]="sprite('pup')" alt="" width="64" height="64" />
-      <img class="gt-capybara" [src]="sprite('capybara')" alt="" width="96" height="96" />
-      <img class="gt-jaguar" [src]="sprite('jaguar')" alt="" width="96" height="96" />
-    </div>
-    <div class="game-teaser-text">
-      <p class="mono-label">{{ gameText().eyebrow }}</p>
-      <h2 id="game-teaser-title">{{ gameText().title }}</h2>
-      <p>{{ gameText().text }}</p>
-      <span class="btn btn-primary">{{ gameText().cta }} <span aria-hidden="true">→</span></span>
-    </div>
-  </a>
-</section>
+<app-extra-teasers />
 
 @if (activeImage(); as image) {
   <div class="lightbox" (click)="closeImage()">

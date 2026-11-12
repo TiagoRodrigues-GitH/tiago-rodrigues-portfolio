@@ -11,40 +11,32 @@ import {
   signal,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { I18nService, ProjectsTranslations } from '../../services/i18n.service';
 import { injectLangQuery, injectLocale } from '../../services/locale';
 import { getPortfolioProjects } from '../../shared/portfolio-projects';
-import { BlueprintKind, BlueprintPart, blueprintParts } from '../../shared/blueprint-figure/blueprint-parts';
+import {
+  BlueprintKind,
+  BlueprintPart,
+  blueprintParts,
+} from '../../shared/blueprint-figure/blueprint-parts';
 import { AREA_KEYS, AREAS, AREAS_TEXT, AreaKey, isAreaKey } from '../../shared/areas';
-import { SPRITE_SVG, SpriteName } from '../capybara-game/capivara-sprites';
-
-const GAME_TEASER = {
-  pt: {
-    eyebrow: 'Extra · jogo no navegador',
-    title: 'Trilha da Capivara',
-    text: 'Um jogo brasileiro feito em TypeScript e Canvas: guie a capivara e os filhotes, colha açaí, caju e jabuticaba, fuja da onça-pintada e desvie das pedras. Sem paredes, com três ritmos e motor de regras coberto por testes.',
-    cta: 'Jogar agora',
-  },
-  en: {
-    eyebrow: 'Bonus · browser game',
-    title: 'Capybara Trail',
-    text: 'A Brazilian-themed game built with TypeScript and Canvas: lead the capybara and her pups, pick açaí, cashew apples and jabuticabas, escape the jaguar and dodge the rocks. No walls, three paces and a fully tested rules engine.',
-    cta: 'Play now',
-  },
-  de: {
-    eyebrow: 'Extra · Browserspiel',
-    title: 'Capybara-Pfad',
-    text: 'Ein brasilianisches Spiel mit TypeScript und Canvas: Führe das Capybara und seine Jungen, sammle Açaí, Cashewäpfel und Jabuticabas, entkomme dem Jaguar und weiche Felsen aus. Ohne Wände, mit drei Tempostufen und einer vollständig getesteten Spiellogik.',
-    cta: 'Jetzt spielen',
-  },
-} as const;
+import { BlueprintFigureComponent } from '../../shared/blueprint-figure/blueprint-figure.component';
+import { ProjectReviewsComponent } from '../../shared/project-reviews/project-reviews.component';
+import { ProjectFigureComponent } from '../../shared/project-figure/project-figure.component';
+import { ExtraTeasersComponent } from '../../shared/extra-teasers/extra-teasers.component';
 
 @Component({
   selector: 'app-projects',
-  standalone: false,
   templateUrl: './projects.html',
   styleUrls: ['./projects.css'],
+  imports: [
+    BlueprintFigureComponent,
+    RouterLink,
+    ProjectReviewsComponent,
+    ProjectFigureComponent,
+    ExtraTeasersComponent,
+  ],
 })
 export class ProjectsComponent implements OnDestroy {
   private readonly i18n = inject(I18nService);
@@ -60,15 +52,11 @@ export class ProjectsComponent implements OnDestroy {
   })();
   readonly areaKeys = AREA_KEYS;
   readonly projects = computed(() =>
-    getPortfolioProjects(this.locale()).filter((project) => !this.area || project.areas.includes(this.area)),
+    getPortfolioProjects(this.locale()).filter(
+      (project) => !this.area || project.areas.includes(this.area),
+    ),
   );
   readonly areasText = computed(() => AREAS_TEXT[this.locale()]);
-  /** Teaser of the browser game at the bottom of the page. */
-  readonly gameText = computed(() => GAME_TEASER[this.locale()]);
-
-  sprite(name: SpriteName): string {
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(SPRITE_SVG[name])}`;
-  }
   readonly chassis = 'assets/images/blueprints/chassis.webp';
 
   private readonly viewer = signal<{ project: number; image: number } | null>(null);
@@ -171,7 +159,9 @@ export class ProjectsComponent implements OnDestroy {
 
   /** Keeps keyboard focus inside the open dialog (WCAG 2.4.3). */
   private trapFocus(event: KeyboardEvent): void {
-    const buttons = Array.from(this.dialog?.nativeElement.querySelectorAll<HTMLElement>('button') ?? []);
+    const buttons = Array.from(
+      this.dialog?.nativeElement.querySelectorAll<HTMLElement>('button') ?? [],
+    );
     if (!buttons.length) {
       return;
     }

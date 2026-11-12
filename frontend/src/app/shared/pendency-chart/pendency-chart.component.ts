@@ -10,25 +10,49 @@ const DATA = [
   { key: 'jp', y2016: 15.0, y2024: 12.9 },
 ] as const;
 
-const TEXT: Record<Locale, { title: string; names: Record<string, string>; source: string; decimal: string; months: string }> = {
+const TEXT: Record<
+  Locale,
+  { title: string; names: Record<string, string>; source: string; decimal: string; months: string }
+> = {
   pt: {
     title: 'Tempo médio até a decisão final de um pedido de patente (meses)',
-    names: { br: 'Brasil (INPI)', us: 'EUA (USPTO)', epo: 'Europa (EPO)', cn: 'China (CNIPA)', jp: 'Japão (JPO)' },
-    source: 'Fonte: OMPI, World Intellectual Property Indicators 2017 e 2025. Contagem a partir do pedido de exame (ou do depósito).',
+    names: {
+      br: 'Brasil (INPI)',
+      us: 'EUA (USPTO)',
+      epo: 'Europa (EPO)',
+      cn: 'China (CNIPA)',
+      jp: 'Japão (JPO)',
+    },
+    source:
+      'Fonte: OMPI, World Intellectual Property Indicators 2017 e 2025. Contagem a partir do pedido de exame (ou do depósito).',
     decimal: ',',
     months: 'meses',
   },
   en: {
     title: 'Average time to a final decision on a patent application (months)',
-    names: { br: 'Brazil (INPI)', us: 'US (USPTO)', epo: 'Europe (EPO)', cn: 'China (CNIPA)', jp: 'Japan (JPO)' },
-    source: 'Source: WIPO, World Intellectual Property Indicators 2017 and 2025. Counted from the examination request (or filing).',
+    names: {
+      br: 'Brazil (INPI)',
+      us: 'US (USPTO)',
+      epo: 'Europe (EPO)',
+      cn: 'China (CNIPA)',
+      jp: 'Japan (JPO)',
+    },
+    source:
+      'Source: WIPO, World Intellectual Property Indicators 2017 and 2025. Counted from the examination request (or filing).',
     decimal: '.',
     months: 'months',
   },
   de: {
     title: 'Mittlere Dauer bis zur Entscheidung über Patentanmeldungen (Monate)',
-    names: { br: 'Brasilien (INPI)', us: 'USA (USPTO)', epo: 'Europa (EPA)', cn: 'China (CNIPA)', jp: 'Japan (JPO)' },
-    source: 'Quelle: WIPO, World Intellectual Property Indicators 2017 und 2025. Gezählt ab Prüfungsantrag (oder Anmeldung).',
+    names: {
+      br: 'Brasilien (INPI)',
+      us: 'USA (USPTO)',
+      epo: 'Europa (EPA)',
+      cn: 'China (CNIPA)',
+      jp: 'Japan (JPO)',
+    },
+    source:
+      'Quelle: WIPO, World Intellectual Property Indicators 2017 und 2025. Gezählt ab Prüfungsantrag (oder Anmeldung).',
     decimal: ',',
     months: 'Monate',
   },
@@ -40,7 +64,6 @@ const TEXT: Record<Locale, { title: string; names: Record<string, string>; sourc
  */
 @Component({
   selector: 'app-pendency-chart',
-  standalone: false,
   templateUrl: './pendency-chart.component.html',
   styleUrls: ['./pendency-chart.component.css'],
 })
@@ -84,8 +107,18 @@ export class PendencyChartComponent {
       return {
         name: this.t.names[d.key],
         cx,
-        old: { x: cx - this.barWidth - 4, y: this.y(d.y2016), h: this.base - this.y(d.y2016), label: this.fmt(d.y2016) },
-        now: { x: cx + 4, y: this.y(d.y2024), h: this.base - this.y(d.y2024), label: this.fmt(d.y2024) },
+        old: {
+          x: cx - this.barWidth - 4,
+          y: this.y(d.y2016),
+          h: this.base - this.y(d.y2016),
+          label: this.fmt(d.y2016),
+        },
+        now: {
+          x: cx + 4,
+          y: this.y(d.y2024),
+          h: this.base - this.y(d.y2024),
+          label: this.fmt(d.y2024),
+        },
         i,
       };
     });

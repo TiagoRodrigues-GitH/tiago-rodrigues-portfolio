@@ -8,7 +8,6 @@ import { BlueprintPart } from './blueprint-parts';
  */
 @Component({
   selector: 'app-blueprint-figure',
-  standalone: false,
   templateUrl: './blueprint-figure.component.html',
   styleUrls: ['./blueprint-figure.component.css'],
 })

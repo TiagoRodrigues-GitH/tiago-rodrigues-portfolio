@@ -1,0 +1,42 @@
+<section class="shell game-teaser" [attr.aria-label]="text().section">
+  <a class="game-teaser-card teaser-avisa" [href]="avisaRepo" target="_blank" rel="noopener noreferrer">
+    <div class="teaser-shot">
+      <img
+        src="assets/images/avisa-ai-painel.jpg"
+        [alt]="text().avisa.alt"
+        width="800"
+        height="609"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="game-teaser-text">
+      <p class="mono-label">{{ text().avisa.eyebrow }}</p>
+      <h2>{{ text().avisa.title }}</h2>
+      <p>{{ text().avisa.text }}</p>
+      <span class="btn btn-primary"
+        >{{ text().avisa.cta }} <span aria-hidden="true">↗</span
+        ><span class="visually-hidden"> {{ newTab }}</span></span
+      >
+    </div>
+  </a>
+
+  <a class="game-teaser-card" routerLink="/game/capybara" [queryParams]="langQuery()">
+    <div class="game-teaser-scene" aria-hidden="true">
+      <img class="gt-fruit gt-acai" [src]="sprite('acai')" alt="" width="64" height="64" />
+      <img class="gt-fruit gt-caju" [src]="sprite('caju')" alt="" width="64" height="64" />
+      <img class="gt-rock" [src]="sprite('rock')" alt="" width="64" height="64" />
+      <img class="gt-pup gt-pup3" [src]="sprite('pup')" alt="" width="64" height="64" />
+      <img class="gt-pup gt-pup2" [src]="sprite('pup')" alt="" width="64" height="64" />
+      <img class="gt-pup gt-pup1" [src]="sprite('pup')" alt="" width="64" height="64" />
+      <img class="gt-capybara" [src]="sprite('capybara')" alt="" width="96" height="96" />
+      <img class="gt-jaguar" [src]="sprite('jaguar')" alt="" width="96" height="96" />
+    </div>
+    <div class="game-teaser-text">
+      <p class="mono-label">{{ text().game.eyebrow }}</p>
+      <h2 id="game-teaser-title">{{ text().game.title }}</h2>
+      <p>{{ text().game.text }}</p>
+      <span class="btn btn-primary">{{ text().game.cta }} <span aria-hidden="true">→</span></span>
+    </div>
+  </a>
+</section>

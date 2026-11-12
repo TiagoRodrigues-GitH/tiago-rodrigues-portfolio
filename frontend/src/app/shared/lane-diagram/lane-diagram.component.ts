@@ -30,7 +30,6 @@ const CALLOUTS: Record<Locale, string[]> = {
 /** Road in perspective with row anchors: on each row, one cell per lane is selected (UFLD-style). */
 @Component({
   selector: 'app-lane-diagram',
-  standalone: false,
   templateUrl: './lane-diagram.component.html',
   styleUrls: ['./lane-diagram.component.css'],
 })
