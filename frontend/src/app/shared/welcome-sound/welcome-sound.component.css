@@ -1,0 +1,54 @@
+/* Sound control: same navy glass button as the film's pause control (cinema.component.css), in the other corner */
+.welcome-sound {
+  position: fixed;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgba(157, 188, 255, 0.28);
+  border-radius: 50%;
+  background: rgba(7, 15, 34, 0.72);
+  backdrop-filter: blur(10px);
+  color: var(--text-on-dark, #fff);
+  font-size: 0.72rem;
+  letter-spacing: -0.05em;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -12px rgba(4, 9, 20, 0.7);
+  transition: border-color 0.3s var(--ease, ease), background-color 0.3s var(--ease, ease);
+}
+
+.welcome-sound:hover,
+.welcome-sound.playing {
+  border-color: var(--gold, #d9b45a);
+}
+
+.welcome-sound:hover {
+  background: rgba(7, 15, 34, 0.9);
+}
+
+.welcome-sound:focus-visible {
+  outline: 3px solid var(--signal, #93c5fd);
+  outline-offset: 3px;
+}
+
+.welcome-sound .icon.note {
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-sound {
+    transition: none;
+  }
+}
+
+@media print {
+  .welcome-sound {
+    display: none;
+  }
+}

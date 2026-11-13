@@ -5,6 +5,7 @@ import { I18nService, Locale } from './services/i18n.service';
 import { ARTICLES } from './content/articles';
 import { getPortfolioProjects } from './shared/portfolio-projects';
 import { CinemaComponent } from './shared/cinema/cinema.component';
+import { WelcomeSoundComponent } from './shared/welcome-sound/welcome-sound.component';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -12,7 +13,7 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([]), CinemaComponent],
+      imports: [RouterModule.forRoot([]), CinemaComponent, WelcomeSoundComponent],
       declarations: [AppComponent],
     }).compileComponents();
 

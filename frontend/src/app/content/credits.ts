@@ -1,4 +1,5 @@
 import { CINEMA_SOURCES } from './cinema';
+import { MUSIC } from './music';
 
 export interface ImageCredit {
   title: string;
@@ -62,4 +63,6 @@ export const IMAGE_CREDITS: ImageCredit[] = [
   },
   // background films (assets/videos/cinema, cut to loops and colour-graded)
   ...Object.values(CINEMA_SOURCES).map(({ title, url, author, license }) => ({ title, author, license, url })),
+  // background music (assets/audio, one piece per language)
+  ...Object.values(MUSIC).map(({ credit }) => credit),
 ];

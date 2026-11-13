@@ -103,6 +103,29 @@ const PENDENCY = { width: 960, height: 540 };
 const CUTAWAY = { src: 'assets/images/blueprints/cutaway-1931.webp', width: 1475, height: 622, blueprint: 'cutaway1931' as const };
 const BODY_FRAME = { src: 'assets/images/blueprints/body-frame.webp', width: 583, height: 382, blueprint: 'bodyFrame' as const };
 
+/* ---------- Chapter 5: from research to the road ---------- */
+
+const REF_ELAS: ArticleReference = {
+  text: 'R. F. Berriel, E. de Aguiar, A. F. de Souza and T. Oliveira-Santos, “Ego-Lane Analysis System (ELAS): Dataset and Algorithms,” Image and Vision Computing, vol. 68, pp. 64–75, 2017.',
+  url: 'https://arxiv.org/abs/1806.05984',
+};
+const REF_CARLA: ArticleReference = {
+  text: 'A. Dosovitskiy, G. Ros, F. Codevilla, A. López and V. Koltun, “CARLA: An Open Urban Driving Simulator,” in Proc. 1st Annual Conference on Robot Learning (CoRL), 2017, pp. 1–16.',
+  url: 'https://arxiv.org/abs/1711.03938',
+};
+const REF_TAC_UFLD: ArticleReference = {
+  text: 'T. Rodrigues, E. Laussac and E. Gomede, “TAC-UFLD: code, protocol and results,” UTFPR, 2026.',
+  url: 'https://github.com/TiagoRodrigues-GitH/tac-ufld-lane-detection',
+};
+const REF_SOTIF: ArticleReference = {
+  text: 'International Organization for Standardization, “ISO 21448:2022 — Road vehicles — Safety of the intended functionality,” Geneva: ISO, 2022.',
+};
+const REF_TRL: ArticleReference = {
+  text: 'Finep, MCTI and MDIC, “Finep MOVER Empresarial — Anexo 5: Definição de Nível de Maturidade Tecnológica (TRL),” Brasília, 2025.',
+};
+const ROAD_REFS = [REF_UFLD, REF_ELAS, REF_CARLA, REF_TAC_UFLD, REF_SOTIF, REF_TRL];
+const LANE_POSTER = { src: 'assets/videos/lane-lite-v05-elas-poster.jpg', width: 1280, height: 480 };
+
 export const ARTICLES: Record<Locale, Article[]> = {
   pt: [
     {
@@ -189,6 +212,25 @@ export const ARTICLES: Record<Locale, Article[]> = {
         caption: 'Fig. 04 — Tempo médio até a decisão final, em meses, contado do pedido de exame (ou do depósito). Fonte: OMPI, WIPI 2017 e 2025 [3], [4].',
       },
       references: PATENT_REFS,
+    },
+    {
+      id: 'estrada',
+      tag: 'Da pesquisa ao carro',
+      title: 'O que falta para chegar à estrada',
+      lede: 'Os quatro capítulos anteriores fazem a mesma pergunta por ângulos diferentes: o que separa um algoritmo que funciona de um sistema em que se pode confiar ao volante?',
+      paragraphs: [
+        'Recapitulando o caminho: um ADAS é uma cadeia que transforma o que a câmera vê em alertas e ações (capítulo 1); antes de chegar às ruas, essa cadeia precisa atender a leis, normas e a uma escala de maturidade (capítulo 2); a percepção tem de caber em um processador embarcado e responder a tempo (capítulo 3); e a solução técnica, quando é nova, tem um relógio próprio de proteção (capítulo 4). Na detecção de faixas, as quatro exigências se encontram em um mesmo componente.',
+        'Na pesquisa que conduzo na UTFPR com Eva Laussac e o Prof. Everton Gomede, o ponto de partida é o UFLD [1]. O modelo leve v0.5 alinha os quadros anteriores do vídeo ao quadro atual e os funde com uma porta residual, para manter as faixas contínuas quando a pintura está gasta ou encoberta. No dataset ELAS, gravado em estradas brasileiras [2], o piloto chegou a F1 de 0,933, contra 0,881 do UFLD, com 2,84 milhões de parâmetros (contra 21,78 milhões) e 2,39 GMACs (contra 7,12) [4]. São resultados preliminares, de treinos curtos — e, por isso mesmo, um começo, não uma conclusão.',
+        'O simulador CARLA [3] mostrou o outro lado. Treinados só com imagens reais do ELAS, os modelos perdem desempenho no ambiente sintético — os leves, treinados do zero, mais que o UFLD. O ajuste fino com dados do simulador recupera parte dessa perda, mas a chuva forte com reflexos no asfalto continua sem solução. É exatamente o tipo de situação que a ISO 21448 (SOTIF) manda investigar: nada falhou, e ainda assim a faixa foi mal interpretada [5].',
+        'Na escala TRL [6], validar em datasets e em simulador ainda é um degrau inicial: a tecnologia foi demonstrada em laboratório, não em um veículo. Os próximos passos seguem a ordem dos capítulos: exportar o modelo para ONNX e TensorRT e medir latência e consumo em hardware embarcado real; ampliar os dados de chuva e de noite; e, se houver uma solução técnica nova, decidir sobre o pedido de patente antes da publicação, para não comprometer a novidade.',
+        'Em 1931, explicar um carro era desenhar suas molas e engrenagens. Hoje, é também explicar como ele enxerga — e provar que enxerga bem o suficiente, rápido o suficiente e com segurança. Esta série termina aqui, mas a pesquisa continua: código, protocolo e resultados estão abertos no repositório do projeto [4], e as novidades aparecem na página de projetos deste site.',
+      ],
+      figure: {
+        ...LANE_POSTER,
+        alt: 'Avenida em Vitória lado a lado: à esquerda a imagem original, à direita as bordas da faixa previstas pelo modelo leve e a faixa ego em verde.',
+        caption: 'Fig. 05 — Modelo leve v0.5 em uma cena do dataset ELAS: imagem original (à esquerda) e bordas da faixa previstas, com a faixa ego em verde (à direita).',
+      },
+      references: ROAD_REFS,
     },
   ],
   en: [
@@ -277,6 +319,25 @@ export const ARTICLES: Record<Locale, Article[]> = {
       },
       references: PATENT_REFS,
     },
+    {
+      id: 'road',
+      tag: 'From research to the car',
+      title: 'What it takes to reach the road',
+      lede: 'The four previous chapters ask the same question from different angles: what separates an algorithm that works from a system you can trust at the wheel?',
+      paragraphs: [
+        'To recap the journey: ADAS is a chain that turns what the camera sees into warnings and actions (chapter 1); before it reaches the streets, that chain must meet laws, standards and a maturity scale (chapter 2); perception has to fit an embedded processor and answer in time (chapter 3); and a technical solution, when it is new, runs on its own protection clock (chapter 4). In lane detection, all four requirements meet in a single component.',
+        'In the research I am conducting at UTFPR with Eva Laussac and Prof. Everton Gomede, the starting point is UFLD [1]. The lightweight v0.5 model aligns the previous video frames with the current one and fuses them through a residual gate, to keep lanes continuous when the paint is worn or hidden. On the ELAS dataset, recorded on Brazilian roads [2], the pilot reached an F1 of 0.933 against 0.881 for UFLD, with 2.84 million parameters (against 21.78 million) and 2.39 GMACs (against 7.12) [4]. These are preliminary results from short training runs — and, for that very reason, a beginning rather than a conclusion.',
+        'The CARLA simulator [3] showed the other side. Trained only on real ELAS images, the models lose accuracy in the synthetic environment — the lightweight ones, trained from scratch, more than UFLD. Fine-tuning with simulator data recovers part of that loss, but heavy rain with reflections on the asphalt remains unsolved. This is exactly the kind of situation ISO 21448 (SOTIF) asks us to investigate: nothing failed, and still the lane was misread [5].',
+        'On the TRL scale [6], validating on datasets and in a simulator is still an early step: the technology has been demonstrated in the lab, not in a vehicle. The next steps follow the order of the chapters: export the model to ONNX and TensorRT and measure latency and power on real embedded hardware; extend the rain and night data; and, if there is a new technical solution, decide on a patent application before publishing, so as not to compromise novelty.',
+        'In 1931, explaining a car meant drawing its springs and gears. Today it also means explaining how it sees — and proving that it sees well enough, fast enough and safely. This series ends here, but the research goes on: code, protocol and results are open in the project repository [4], and updates appear on the projects page of this site.',
+      ],
+      figure: {
+        ...LANE_POSTER,
+        alt: 'An avenue in Vitória side by side: the original frame on the left, and on the right the lane boundaries predicted by the lightweight model with the ego lane in green.',
+        caption: 'Fig. 05 — Lightweight v0.5 model on an ELAS scene: original frame (left) and predicted lane boundaries, with the ego lane in green (right).',
+      },
+      references: ROAD_REFS,
+    },
   ],
   de: [
     {
@@ -363,6 +424,25 @@ export const ARTICLES: Record<Locale, Article[]> = {
         caption: 'Abb. 04 – Mittlere Dauer bis zur endgültigen Entscheidung in Monaten, gezählt ab Prüfungsantrag (oder Anmeldung). Quelle: WIPO, WIPI 2017 und 2025 [3], [4].',
       },
       references: PATENT_REFS,
+    },
+    {
+      id: 'strasse',
+      tag: 'Von der Forschung ins Auto',
+      title: 'Was bis zur Straße noch fehlt',
+      lede: 'Die vier vorherigen Kapitel stellen dieselbe Frage aus verschiedenen Blickwinkeln: Was unterscheidet einen Algorithmus, der funktioniert, von einem System, dem man am Steuer vertrauen kann?',
+      paragraphs: [
+        'Der Weg im Rückblick: Ein ADAS ist eine Kette, die das, was die Kamera sieht, in Warnungen und Eingriffe übersetzt (Kapitel 1); bevor sie auf die Straße kommt, muss diese Kette Gesetze, Normen und eine Reifegradskala erfüllen (Kapitel 2); die Wahrnehmung muss auf einen eingebetteten Prozessor passen und rechtzeitig antworten (Kapitel 3); und eine technische Lösung hat, wenn sie neu ist, ihre eigene Schutzuhr (Kapitel 4). In der Spurerkennung treffen alle vier Anforderungen in einer einzigen Komponente zusammen.',
+        'In meiner Forschung an der UTFPR mit Eva Laussac und Prof. Everton Gomede ist UFLD der Ausgangspunkt [1]. Das leichte Modell v0.5 richtet die vorherigen Videobilder am aktuellen Bild aus und fügt sie über ein residuales Gate zusammen, damit die Fahrspuren auch bei abgenutzter oder verdeckter Markierung durchgehend bleiben. Auf dem ELAS-Datensatz, aufgenommen auf brasilianischen Straßen [2], erreichte der Pilot einen F1-Wert von 0,933 gegenüber 0,881 für UFLD, mit 2,84 Millionen Parametern (statt 21,78 Millionen) und 2,39 GMACs (statt 7,12) [4]. Es sind vorläufige Ergebnisse aus kurzen Trainingsläufen – und gerade deshalb ein Anfang, kein Abschluss.',
+        'Der CARLA-Simulator [3] zeigte die andere Seite. Nur mit echten ELAS-Bildern trainiert, verlieren die Modelle in der synthetischen Umgebung an Genauigkeit – die leichten, von Grund auf trainierten stärker als UFLD. Feinabstimmung mit Simulatordaten holt einen Teil davon zurück, doch starker Regen mit Spiegelungen auf dem Asphalt bleibt ungelöst. Genau solche Situationen verlangt die ISO 21448 (SOTIF) zu untersuchen: Nichts ist ausgefallen, und trotzdem wurde die Spur falsch gedeutet [5].',
+        'Auf der TRL-Skala [6] ist die Validierung mit Datensätzen und im Simulator noch eine frühe Stufe: Die Technologie wurde im Labor gezeigt, nicht im Fahrzeug. Die nächsten Schritte folgen der Reihenfolge der Kapitel: das Modell nach ONNX und TensorRT exportieren und Latenz und Verbrauch auf echter eingebetteter Hardware messen; die Daten für Regen und Nacht erweitern; und, falls eine neue technische Lösung entsteht, vor der Veröffentlichung über eine Patentanmeldung entscheiden, um die Neuheit nicht zu gefährden.',
+        '1931 hieß ein Auto zu erklären, seine Federn und Zahnräder zu zeichnen. Heute heißt es auch zu erklären, wie es sieht – und zu belegen, dass es gut genug, schnell genug und sicher sieht. Diese Reihe endet hier, die Forschung geht weiter: Code, Protokoll und Ergebnisse sind im Projekt-Repository offen [4], und Neuigkeiten erscheinen auf der Projektseite dieser Website.',
+      ],
+      figure: {
+        ...LANE_POSTER,
+        alt: 'Eine Straße in Vitória nebeneinander: links das Originalbild, rechts die vom leichten Modell erkannten Fahrspurränder mit der Ego-Spur in Grün.',
+        caption: 'Abb. 05 – Leichtes Modell v0.5 in einer Szene des ELAS-Datensatzes: Originalbild (links) und erkannte Fahrspurränder mit der Ego-Spur in Grün (rechts).',
+      },
+      references: ROAD_REFS,
     },
   ],
 };

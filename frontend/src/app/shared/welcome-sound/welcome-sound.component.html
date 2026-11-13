@@ -1,0 +1,16 @@
+<button
+  type="button"
+  class="welcome-sound"
+  [class.playing]="state() === 'playing'"
+  [attr.title]="label"
+  (click)="toggle()"
+>
+  <span class="icon" [class.note]="state() === 'idle'" aria-hidden="true">
+    @switch (state()) {
+      @case ('idle') { ♪ }
+      @case ('playing') { ❚❚ }
+      @case ('paused') { ▶ }
+    }
+  </span>
+  <span class="visually-hidden">{{ label }}</span>
+</button>
